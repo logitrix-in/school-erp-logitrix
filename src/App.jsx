@@ -4,12 +4,12 @@ import { useContext, useEffect, useState } from "react";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import {
-  Outlet,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  BrowserRouter as Router,
+	Outlet,
+	Route,
+	Routes,
+	useLocation,
+	useNavigate,
+	BrowserRouter as Router,
 } from "react-router-dom";
 import "./App.scss";
 import "./assets/scss/scrollbar.scss";
@@ -66,286 +66,312 @@ import StudentView from "./components/student/Attendance/StudentView";
 import LongLeaveRequest from "./components/student/Attendance/LongLeaveRequest";
 import ActionIndividualInitiate from "./components/student/action/ActionIndividualInitiate";
 import ActionBulkInitiate from "./components/student/action/ActionBulkInitiate";
+import LibraryInformation from "./pages/Library/LibraryInformation";
 
 dayjs.locale("en-in");
 
 const NavLayout = () => {
-  const [loading, setLoading] = useState(true);
-  const ux = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const currentRoute = location.pathname;
+	const [loading, setLoading] = useState(true);
+	const ux = useAuth();
+	const navigate = useNavigate();
+	const location = useLocation();
+	const currentRoute = location.pathname;
 
-  useEffect(() => {
-    axios
-      .get("https://server.sociolinq.com/api/login/current/", {
-        headers: {
-          "x-api-key": "a8518942-17ea-44a6-b4e1-a974189a9a90",
-        },
-        withCredentials: true,
-      })
-      .then((res) => {
-        ux.setUser(res.data);
-        if (currentRoute == "/") navigate("/dashboard/");
-      })
-      .catch((er) => {
-        ux.setUser(null);
-        navigate("/login");
-      })
-      .finally(() => setLoading(false));
-  }, []);
+	useEffect(() => {
+		axios
+			.get("https://server.sociolinq.com/api/login/current/", {
+				headers: {
+					"x-api-key": "a8518942-17ea-44a6-b4e1-a974189a9a90",
+				},
+				withCredentials: true,
+			})
+			.then((res) => {
+				ux.setUser(res.data);
+				if (currentRoute == "/") navigate("/dashboard/");
+			})
+			.catch((er) => {
+				ux.setUser(null);
+				navigate("/login");
+			})
+			.finally(() => setLoading(false));
+	}, []);
 
-  return (
-    <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <Box
-            display={"flex"}
-            width={"100vw"}
-            position={"fixed"}
-            top={0}
-            zIndex={100}
-            sx={{ pointerEvents: "none" }}
-            overflow={"hidden"}
-            height={"100vh"}
-          >
-            <Sidebar />
-            <Navbar />
-          </Box>
+	return (
+		<>
+			{loading ? (
+				<Loader />
+			) : (
+				<>
+					<Box
+						display={"flex"}
+						width={"100vw"}
+						position={"fixed"}
+						top={0}
+						zIndex={100}
+						sx={{ pointerEvents: "none" }}
+						overflow={"hidden"}
+						height={"100vh"}
+					>
+						<Sidebar />
+						<Navbar />
+					</Box>
 
-          <Box
-            flex={1}
-            bgcolor={"#ffffff"}
-            pt={2}
-            px={3}
-            sx={{ borderRadius: 2 }}
-            paddingTop={"7rem"}
-            ml={config.NAVBAR_WIDTH}
-          >
-            <Breadcrumb />
-            <Outlet />
-            <Footer />
-          </Box>
-        </>
-      )}
-    </>
-  );
+					<Box
+						flex={1}
+						bgcolor={"#ffffff"}
+						pt={2}
+						px={3}
+						sx={{ borderRadius: 2 }}
+						paddingTop={"7rem"}
+						ml={config.NAVBAR_WIDTH}
+					>
+						<Breadcrumb />
+						<Outlet />
+						<Footer />
+					</Box>
+				</>
+			)}
+		</>
+	);
 };
 
 function App() {
-  const context = useContext(AppContext);
+	const context = useContext(AppContext);
 
-  return (
-    <>
-      <Routes>
-        <Route path="/" element={<NavLayout />}>
-          <Route path="dashboard/" element={<Dashboard />} />
+	return (
+		<>
+			<Routes>
+				<Route path="/" element={<NavLayout />}>
+					<Route path="dashboard/" element={<Dashboard />} />
 
-          {/* application Routes */}
-          <Route
-            path="admission/application/"
-            element={<AdmissionApplication />}
-          />
-          <Route
-            path="admission/application/view"
-            element={<ApplicationView />}
-          />
+					{/* application Routes */}
+					<Route
+						path="admission/application/"
+						element={<AdmissionApplication />}
+					/>
+					<Route
+						path="admission/application/view"
+						element={<ApplicationView />}
+					/>
 
-          <Route
-            path="admission/application/view/:id/"
-            element={<DetailedView />}
-          />
+					<Route
+						path="admission/application/view/:id/"
+						element={<DetailedView />}
+					/>
 
-          {/* screening */}
-          <Route path="admission/screening/" element={<AdmissionScreening />} />
-          <Route
-            path="admission/screening/edit/"
-            element={<ScreeningRuleEdit />}
-          />
+					{/* screening */}
+					<Route
+						path="admission/screening/"
+						element={<AdmissionScreening />}
+					/>
+					<Route
+						path="admission/screening/edit/"
+						element={<ScreeningRuleEdit />}
+					/>
 
-          <Route
-            path="admission/screening/review/"
-            element={<ReviewScreening />}
-          />
+					<Route
+						path="admission/screening/review/"
+						element={<ReviewScreening />}
+					/>
 
-          {/* Test Center */}
+					{/* Test Center */}
 
-          {/* -- Manage Test / Interview */}
-          <Route
-            path="admission/test-center/"
-            element={<AdmissionTestCenter />}
-          />
-          <Route
-            path="admission/test-center/admit-card/"
-            element={<IssueAdmitCard />}
-          />
-          <Route
-            path="admission/test-center/admit-card/bulk-manage/"
-            element={<BulkManage />}
-          />
+					{/* -- Manage Test / Interview */}
+					<Route
+						path="admission/test-center/"
+						element={<AdmissionTestCenter />}
+					/>
+					<Route
+						path="admission/test-center/admit-card/"
+						element={<IssueAdmitCard />}
+					/>
+					<Route
+						path="admission/test-center/admit-card/bulk-manage/"
+						element={<BulkManage />}
+					/>
 
-          {/* -- Evalution */}
+					{/* -- Evalution */}
 
-          <Route
-            path="admission/test-center/upload-offline-test-score/"
-            element={<UploadOfflineScore />}
-          />
-          <Route
-            path="admission/test-center/upload-interview-score/"
-            element={<UploadInterviewScore />}
-          />
+					<Route
+						path="admission/test-center/upload-offline-test-score/"
+						element={<UploadOfflineScore />}
+					/>
+					<Route
+						path="admission/test-center/upload-interview-score/"
+						element={<UploadInterviewScore />}
+					/>
 
-          {/* -- Merit List */}
+					{/* -- Merit List */}
 
-          <Route
-            path="admission/test-center/set-rule/"
-            element={<SetMeritListRule />}
-          />
+					<Route
+						path="admission/test-center/set-rule/"
+						element={<SetMeritListRule />}
+					/>
 
-          <Route
-            path="admission/test-center/generate-merit-list/"
-            element={<GenerateMeritList />}
-          />
+					<Route
+						path="admission/test-center/generate-merit-list/"
+						element={<GenerateMeritList />}
+					/>
 
-          {/* Onboarding */}
+					{/* Onboarding */}
 
-          <Route
-            path="admission/onboarding/"
-            element={<AdmissionOnboarding />}
-          />
+					<Route
+						path="admission/onboarding/"
+						element={<AdmissionOnboarding />}
+					/>
 
-          {/* -- Manage */}
+					{/* -- Manage */}
 
-          <Route
-            path="admission/onboarding/manage/"
-            element={<ManageOnboarding />}
-          />
+					<Route
+						path="admission/onboarding/manage/"
+						element={<ManageOnboarding />}
+					/>
 
-          {/* -- Merit List */}
-          <Route
-            path="admission/onboarding/manage/merit-list/"
-            element={<OnboardingMeritList />}
-          />
+					{/* -- Merit List */}
+					<Route
+						path="admission/onboarding/manage/merit-list/"
+						element={<OnboardingMeritList />}
+					/>
 
-          {/* -- Waiting List */}
-          <Route
-            path="admission/onboarding/manage/waiting-list/"
-            element={<OnboardingWaitingList />}
-          />
+					{/* -- Waiting List */}
+					<Route
+						path="admission/onboarding/manage/waiting-list/"
+						element={<OnboardingWaitingList />}
+					/>
 
-          {/* -- Approval */}
+					{/* -- Approval */}
 
-          <Route
-            path="admission/onboarding/:id"
-            element={<OnboardingApproval />}
-          />
+					<Route
+						path="admission/onboarding/:id"
+						element={<OnboardingApproval />}
+					/>
 
-          {/* Post Onboarding */}
+					{/* Post Onboarding */}
 
-          <Route
-            path={"admission/post-onboarding/"}
-            element={<AdmissionPostOnboarding />}
-          />
+					<Route
+						path={"admission/post-onboarding/"}
+						element={<AdmissionPostOnboarding />}
+					/>
 
-          {/* -- Ticket */}
-          <Route
-            path={"admission/post-onboarding/manage-ticket/"}
-            element={<ManageTickets />}
-          />
+					{/* -- Ticket */}
+					<Route
+						path={"admission/post-onboarding/manage-ticket/"}
+						element={<ManageTickets />}
+					/>
 
-          {/* student-information */}
-          <Route path={"student/information/"} element={<Information />} />
+					{/* student-information */}
+					<Route
+						path={"student/information/"}
+						element={<Information />}
+					/>
 
-          {/* student > manage */}
-          {/* student-manage (edit information) */}
-          <Route path={"/student/manage/"} element={<Manage />} />
-          {/* student-manage (student account) */}
-          <Route
-            path="/student/manage/student-account/"
-            element={StudentAccount}
-          />
-          {/* student-manage (id card / pass) */}
-          <Route path="/student/manage/id-card-pass/" element={IDCardPass} />
-          {/* student-manage (section allotment) */}
-          <Route
-            path="/student/manage/section-allotment/"
-            element={SectionAllotment}
-          />
-          {/* student-manage (promotion) */}
-          <Route path="/student/manage/promotion/" element={Promotion} />
+					{/* student > manage */}
+					{/* student-manage (edit information) */}
+					<Route path={"/student/manage/"} element={<Manage />} />
+					{/* student-manage (student account) */}
+					<Route
+						path="/student/manage/student-account/"
+						element={StudentAccount}
+					/>
+					{/* student-manage (id card / pass) */}
+					<Route
+						path="/student/manage/id-card-pass/"
+						element={IDCardPass}
+					/>
+					{/* student-manage (section allotment) */}
+					<Route
+						path="/student/manage/section-allotment/"
+						element={SectionAllotment}
+					/>
+					{/* student-manage (promotion) */}
+					<Route
+						path="/student/manage/promotion/"
+						element={Promotion}
+					/>
 
-          {/* manage stream request */}
-          <Route
-            path={"/student/manage/section-allotment/manage-stream-request"}
-            element={<ManageStreamRequest />}
-          />
-          {/* manage system request */}
-          <Route
-            path={
-              "/student/manage/section-allotment/manage-stream-request/rationalise"
-            }
-            element={<ManageSystemRequest />}
-          />
-          {/* review promotion */}
-          <Route
-            path="/student/manage/promotion/review"
-            element={<ReviewPromotion />}
-          />
+					{/* manage stream request */}
+					<Route
+						path={
+							"/student/manage/section-allotment/manage-stream-request"
+						}
+						element={<ManageStreamRequest />}
+					/>
+					{/* manage system request */}
+					<Route
+						path={
+							"/student/manage/section-allotment/manage-stream-request/rationalise"
+						}
+						element={<ManageSystemRequest />}
+					/>
+					{/* review promotion */}
+					<Route
+						path="/student/manage/promotion/review"
+						element={<ReviewPromotion />}
+					/>
 
-          {/* student-action */}
-          <Route path={"student/action/"} element={<Action />} />
-          {/* action action tray */}
-          <Route
-            path={"/student/action/action-tray"}
-            element={<ActionProceedNavigate />}
-          />
-          {/* action individual initiate */}
-          <Route
-            path={"/student/action/individual-initiate"}
-            element={<ActionIndividualInitiate />}
-          />
-          {/* action bulk initiate */}
-          <Route
-            path={"/student/action/bulk-initiate"}
-            element={<ActionBulkInitiate />}
-          />
+					{/* student-action */}
+					<Route path={"student/action/"} element={<Action />} />
+					{/* action action tray */}
+					<Route
+						path={"/student/action/action-tray"}
+						element={<ActionProceedNavigate />}
+					/>
+					{/* action individual initiate */}
+					<Route
+						path={"/student/action/individual-initiate"}
+						element={<ActionIndividualInitiate />}
+					/>
+					{/* action bulk initiate */}
+					<Route
+						path={"/student/action/bulk-initiate"}
+						element={<ActionBulkInitiate />}
+					/>
 
-          {/* student-attendance */}
-          <Route path={"student/attendance/"} element={<Attendance />} />
-          {/* class view */}
-          <Route
-            path={"/student/attendance/class-view"}
-            element={<ClassView />}
-          />
-          {/* student view */}
-          <Route
-            path={"/student/attendance/student-view"}
-            element={<StudentView />}
-          />
-          {/* Long Leave Request */}
-          <Route
-            path={"/student/attendance/long-leave-request"}
-            element={<LongLeaveRequest />}
-          />
+					{/* student-attendance */}
+					<Route
+						path={"student/attendance/"}
+						element={<Attendance />}
+					/>
+					{/* class view */}
+					<Route
+						path={"/student/attendance/class-view"}
+						element={<ClassView />}
+					/>
+					{/* student view */}
+					<Route
+						path={"/student/attendance/student-view"}
+						element={<StudentView />}
+					/>
+					{/* Long Leave Request */}
+					<Route
+						path={"/student/attendance/long-leave-request"}
+						element={<LongLeaveRequest />}
+					/>
 
-          <Route path="*" element={<_404 />} />
-        </Route>
+					<Route
+						path={"library/Information/"}
+						element={<LibraryInformation />}
+					/>
 
-        <Route path="admission/onboarding-form/" element={<OnboardingForm />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/test" element={<Test />} />
+					<Route path="*" element={<_404 />} />
+				</Route>
 
-        {/* student>manage - on boarding edit */}
-        <Route
-          path={"/student/manage/OnBoardingEdit"}
-          element={<OnBoardingEdit />}
-        />
-      </Routes>
-    </>
-  );
+				<Route
+					path="admission/onboarding-form/"
+					element={<OnboardingForm />}
+				/>
+				<Route path="/login" element={<Login />} />
+				<Route path="/register" element={<Register />} />
+				<Route path="/test" element={<Test />} />
+
+				{/* student>manage - on boarding edit */}
+				<Route
+					path={"/student/manage/OnBoardingEdit"}
+					element={<OnBoardingEdit />}
+				/>
+			</Routes>
+		</>
+	);
 }
 
 export default App;

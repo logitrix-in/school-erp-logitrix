@@ -72,20 +72,10 @@ export const navigations = [
     dropdown: true,
     subMenu: [
       {
-        name: "menu 1",
-        path: "library/menu1/",
+        name: "Information",
+        path: "library/Information/",
         icon: "material-symbols:folder",
-      },
-      {
-        name: "menu 2",
-        path: "library/menu2/",
-        icon: "material-symbols:folder",
-      },
-      {
-        name: "menu 3",
-        path: "library/menu2/",
-        icon: "material-symbols:folder",
-      },
+      }
     ],
   },
   {
