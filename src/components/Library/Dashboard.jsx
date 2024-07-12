@@ -7,8 +7,8 @@ import useClasses from "../../hooks/useClasses";
 
 const Dashboard = () => {
 	const ctx = useContext(AppContext);
-	const classes = useClasses();
-	const [academicYear, setAcademicYear] = useState(classes.curYear);
+	const { classes, sections, acYear, curYear, status } = useClasses();
+	const [academicYear, setAcademicYear] = useState(curYear);
 
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
@@ -17,7 +17,7 @@ const Dashboard = () => {
 					Dashboard
 				</Typography>
 			</Box>
-
+		
 			<Divider />
 			<Box
 				p={2}
@@ -37,17 +37,16 @@ const Dashboard = () => {
 					gap={2}
 				>
 					<ReignsSelect
-						items={[...classes.acYear]}
-						value={academicYear}
+						items={acYear}
 						onChange={(e) =>
 							setAcademicYear(e?.target.value ?? academicYear)
 						}
 						label="Academic Year"
 					/>
-					<ReignsSelect items={["2023-24"]} label="Class" />
-					<ReignsSelect items={["2023-24"]} label="Section" />
-					<ReignsSelect items={["2023-24"]} label="Staff Category" />
-					<ReignsSelect items={["2023-24"]} label="Status" />
+					<ReignsSelect items={classes} multiple label="Class"  />
+					<ReignsSelect items={sections} multiple label="Section" />
+					<ReignsSelect items={[""]} multiple label="Employee Category" />
+					<ReignsSelect items={status} multiple label="Status" />
 				</Bbox>
 				<Grid container flex={2} spacing={1}>
 					<DisplayCard
@@ -154,7 +153,7 @@ const DisplayCard = ({ bgColor, header = "", value = "", data, color }) => {
 
 				<Box display={"flex"} gap={1} mt={"auto"}>
 					{data?.map((e, idx) => (
-						<Box display={"flex"} gap={1}>
+						<Box display={"flex"} gap={2} key={idx}>
 							<Box>
 								<Typography sx={{ fontWeight: 800 }}>
 									{e.val}
@@ -166,7 +165,8 @@ const DisplayCard = ({ bgColor, header = "", value = "", data, color }) => {
 									orientation="vertical"
 									sx={{
 										borderRightWidth: "1px",
-										borderColor: "black",
+										borderColor: "#00000059",
+
 									}}
 									flexItem
 								/>
