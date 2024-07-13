@@ -758,14 +758,14 @@ const StudentDashboard = () => {
                     }}
                   >
                     {/* adding the total and displaying it */}
-                    <span style={{ paddingLeft: "25%" }}>
+                    <span style={{ paddingLeft: "45%" }}>
                       {apiData &&
                         apiData.gender_distribution.male +
                           apiData.gender_distribution.female +
                           apiData.gender_distribution.others}
                     </span>
                     <br />
-                    Total
+                    <span style={{ paddingLeft: "20%" }}>Total</span>
                   </div>
 
                   {/* Custom label names */}
@@ -1228,9 +1228,9 @@ const StudentDashboard = () => {
                       color: "black",
                     }}
                   >
-                    <span style={{ paddingLeft: "16%" }}>100</span>
+                    <span style={{ paddingLeft: "40%" }}>100</span>
                     <br />
-                    Total
+                    <span style={{ paddingLeft: "20%" }}>Total</span>
                   </div>
 
                   {/* Custom label names */}
