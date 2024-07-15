@@ -1,10 +1,10 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
-import Bbox from "../UiComponents/Bbox";
+import Bbox from "../../UiComponents/Bbox";
 import Chart from "react-apexcharts";
 import { Stack } from "@mui/system";
-import ReignsSelect from "../UiComponents/ReignsSelect";
-import useClasses from "../../hooks/useClasses";
+import ReignsSelect from "../../UiComponents/ReignsSelect";
+import useClasses from "../../../hooks/useClasses";
 
 const Inventory = () => {
 	const { days } = useClasses();
@@ -78,6 +78,7 @@ const Inventory = () => {
 			},
 		},
 	};
+	
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
 			<Box bgcolor={"white"} py={1.3} px={2} borderRadius={2}>

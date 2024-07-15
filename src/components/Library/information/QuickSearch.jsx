@@ -11,11 +11,10 @@ import {
 	Dialog,
 } from "@mui/material";
 
-import Img from "../../assets/schoolLogo.png";
 
 // quick search will render 3 different types of data set - student, employee, media
 import React, { useState } from "react";
-import Bbox from "../UiComponents/Bbox";
+import Bbox from "../../UiComponents/Bbox";
 import { Icon } from "@iconify/react";
 import { DataGrid } from "@mui/x-data-grid";
 

@@ -67,6 +67,8 @@ import LongLeaveRequest from "./components/student/Attendance/LongLeaveRequest";
 import ActionIndividualInitiate from "./components/student/action/ActionIndividualInitiate";
 import ActionBulkInitiate from "./components/student/action/ActionBulkInitiate";
 import LibraryInformation from "./pages/Library/LibraryInformation";
+import LibraryCaralogue from "./pages/Library/LibraryCatalogue";
+import LibraryCatalogue from "./pages/Library/LibraryCatalogue";
 
 dayjs.locale("en-in");
 
@@ -351,6 +353,10 @@ function App() {
 					<Route
 						path={"library/Information/"}
 						element={<LibraryInformation />}
+					/>
+					<Route
+						path={"library/catalogue/"}
+						element={<LibraryCatalogue />}
 					/>
 
 					<Route path="*" element={<_404 />} />

@@ -1,9 +1,9 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import Bbox from "../UiComponents/Bbox";
-import ReignsSelect from "../UiComponents/ReignsSelect";
-import { AppContext } from "../../context/AppContext";
-import useClasses from "../../hooks/useClasses";
+import Bbox from "../../UiComponents/Bbox";
+import ReignsSelect from "../../UiComponents/ReignsSelect";
+import { AppContext } from "../../../context/AppContext";
+import useClasses from "../../../hooks/useClasses";
 
 const Dashboard = () => {
 	const ctx = useContext(AppContext);
