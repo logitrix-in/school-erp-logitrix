@@ -1,9 +1,9 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import Bbox from "../UiComponents/Bbox";
-import ReignsSelect from "../UiComponents/ReignsSelect";
-import { AppContext } from "../../context/AppContext";
-import useClasses from "../../hooks/useClasses";
+import Bbox from "../../UiComponents/Bbox";
+import ReignsSelect from "../../UiComponents/ReignsSelect";
+import { AppContext } from "../../../context/AppContext";
+import useClasses from "../../../hooks/useClasses";
 
 const Dashboard = () => {
 	const ctx = useContext(AppContext);
@@ -17,7 +17,7 @@ const Dashboard = () => {
 					Dashboard
 				</Typography>
 			</Box>
-		
+
 			<Divider />
 			<Box
 				p={2}
@@ -36,16 +36,24 @@ const Dashboard = () => {
 					flexDirection={"column"}
 					gap={2}
 				>
-					<ReignsSelect
+					<ReignsSelect 	
 						items={acYear}
 						onChange={(e) =>
 							setAcademicYear(e?.target.value ?? academicYear)
 						}
 						label="Academic Year"
 					/>
-					<ReignsSelect items={classes} multiple label="Class"  />
+					<ReignsSelect items={classes} multiple label="Class" />
 					<ReignsSelect items={sections} multiple label="Section" />
-					<ReignsSelect items={[""]} multiple label="Employee Category" />
+					<ReignsSelect
+						items={[
+							"Management",
+							"Teaching Staff",
+							"Support Staff",
+						]}
+						multiple
+						label="Employee Category"
+					/>
 					<ReignsSelect items={status} multiple label="Status" />
 				</Bbox>
 				<Grid container flex={2} spacing={1}>
@@ -166,7 +174,6 @@ const DisplayCard = ({ bgColor, header = "", value = "", data, color }) => {
 									sx={{
 										borderRightWidth: "1px",
 										borderColor: "#00000059",
-
 									}}
 									flexItem
 								/>
