@@ -76,13 +76,13 @@ const Submit = () => {
 
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
-			{/* <Box bgcolor={"white"} py={1.3} px={2} borderRadius={2}>
+			<Box bgcolor={"white"} py={1.3} px={2} borderRadius={2}>
 				<Typography fontWeight={"700"} fontSize={"1.1rem"}>
-					Catelogue
+					Search
 				</Typography>
 			</Box>
 
-			<Divider /> */}
+			<Divider />
 			<Box p={2}>
 				<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
 					<Button variant="outlined">Clear All</Button>
