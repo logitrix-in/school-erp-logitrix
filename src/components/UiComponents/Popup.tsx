@@ -9,7 +9,11 @@ import {
 	Typography,
 } from "@mui/material";
 
-const Popup = ({ open, close, children, dialogProps, title }) => {
+interface Props extends DialogProps {
+	close: () => void;
+}
+
+const Popup = ({ open, children, close, title, ...rest }: Props) => {
 	return (
 		<Dialog
 			fullWidth
@@ -20,9 +24,9 @@ const Popup = ({ open, close, children, dialogProps, title }) => {
 			}}
 			maxWidth="md"
 			open={open}
-			{...dialogProps}
 			onClose={() => close()}
 			disableEnforceFocus={true}
+			{...rest}
 		>
 			<Box overflow={"hidden"}>
 				<Box

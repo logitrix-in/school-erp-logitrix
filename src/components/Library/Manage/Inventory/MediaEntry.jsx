@@ -21,10 +21,10 @@ import { DataGrid } from "@mui/x-data-grid";
 
 const columns = [
 	{ field: "id", headerName: "Media ID", flex: 1 },
-	{ field: "id", headerName: "Media Type", flex: 1 },
-	{ field: "id", headerName: "Media Name", flex: 2 },
-	{ field: "id", headerName: "Author", flex: 1 },
-	{ field: "id", headerName: "Note", flex: 2 },
+	{ field: "mediaType", headerName: "Media Type", flex: 1 },
+	{ field: "mediaName", headerName: "Media Name", flex: 2 },
+	{ field: "author", headerName: "Author", flex: 1 },
+	{ field: "note", headerName: "Note", flex: 2 },
 ];
 
 const MediaEntry = () => {
