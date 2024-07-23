@@ -26,11 +26,11 @@ const LibraryManage = () => {
 
 	return (
 		<>
-			<Navigtor navs={navs} onChange={(v) => setActive(v)} />
-            <Box mb={2} />
+			<Navigtor navs={navs} onChange={setActive} />
+			<Box mb={2} />
 			{active == 0 && <ManageInventory />}
 			{active == 1 && <ManageCirculation />}
-			{active == 2 && <ManageLibrarayCard/>}
+			{active == 2 && <ManageLibrarayCard />}
 		</>
 	);
 };
