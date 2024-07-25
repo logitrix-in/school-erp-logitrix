@@ -54,6 +54,19 @@ const StudentDashboard = () => {
   const [curStatus, setStatus] = useState([]);
 
   const [type, setType] = useState("all");
+  
+  useEffect(() => {
+    if (classes.length > 0) {
+      setClass(classes);
+    }
+    if (sections.length > 0) {
+      setSection(sections);
+    }
+    if (status.length > 0) {
+      setStatus(status);
+    }
+  }, [classes, sections, status]);
+  
 
   // context useEffect
   useEffect(() => {
@@ -478,18 +491,21 @@ const StudentDashboard = () => {
 
                 {/* flex-row */}
                 <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  style={{ paddingBottom: "0.5rem", paddingRight: "3rem" }}
+                  display="flex" 
+                  style={{ paddingBottom: "1rem", paddingRight: "3rem" }}
                 >
                   {/* active section */}
                   <Box
+                    flexGrow={1}
                     display="flex"
                     flexDirection="column"
-                    alignItems="left"
+                  
                     borderRight="1px solid black"
                     paddingRight={isTablet ? "0.5rem" : "1rem"}
-                    paddingBottom="0.5rem"
+                 
+                    justifyContent="center"
+                    textAlign="center"
+                    alignContent="center"
                   >
                     <Typography
                       fontSize={14}
@@ -508,12 +524,16 @@ const StudentDashboard = () => {
                   </Box>
                   {/* suspended section */}
                   <Box
+                    flexGrow={1}
                     display="flex"
                     flexDirection="column"
-                    alignItems="left"
+                  
                     borderRight="1px solid black"
                     paddingRight={isTablet ? "0.5rem" : "1rem"}
                     marginLeft={isLarge ? "20px" : isSmall ? "0.5rem" : ""}
+                    justifyContent="center"
+                    textAlign="center"
+                    alignContent="center"
                   >
                     <Typography
                       fontSize={14}
@@ -532,11 +552,14 @@ const StudentDashboard = () => {
                   </Box>
                   {/* saperated section */}
                   <Box
+                    flexGrow={1}
                     display="flex"
                     flexDirection="column"
-                    alignItems="left"
                     paddingLeft={isLarge ? "1rem" : ""}
                     marginLeft={isSmall ? "0.5rem" : ""}
+                    justifyContent="center"
+                    textAlign="center"
+                    alignContent="center"
                   >
                     <Typography
                       fontSize={14}
@@ -1035,20 +1058,21 @@ const StudentDashboard = () => {
                 {/* flex-row */}
                 <Box
                   display="flex"
-                  justifyContent="space-between"
-                  style={{
-                    paddingRight: "1rem",
-                    paddingTop: "0.5rem",
-                  }}
+                  style={{ paddingTop: "0.5rem", paddingRight: "3rem" }}
+
                 >
                   {/* fee / penalty section */}
                   <Box
                     display="flex"
                     flexDirection="column"
-                    alignItems="left"
+               
                     borderRight="1px solid black"
                     paddingRight={isTablet || isSmall ? "0.4rem" : "1rem"}
-                    paddingBottom="0.5rem"
+                    
+                    flexGrow={1}   
+                    justifyContent="center"
+                    textAlign="center"
+                    alignContent="center"
                   >
                     <Typography
                       fontSize={14}
@@ -1069,10 +1093,14 @@ const StudentDashboard = () => {
                   <Box
                     display="flex"
                     flexDirection="column"
-                    alignItems="left"
+            
                     borderRight="1px solid black"
                     paddingRight={isTablet || isSmall ? "0.5rem" : "1rem"}
                     marginLeft={isLarge ? "20px" : ""}
+                    flexGrow={1}   
+                    justifyContent="center"
+                    textAlign="center"
+                    alignContent="center"
                   >
                     <Typography
                       fontSize={14}
@@ -1093,8 +1121,11 @@ const StudentDashboard = () => {
                   <Box
                     display="flex"
                     flexDirection="column"
-                    alignItems="left"
                     marginLeft={isLarge ? "1rem" : ""}
+                    flexGrow={1}   
+                    justifyContent="center"
+                    textAlign="center"
+                    alignContent="center"
                   >
                     <Typography
                       fontSize={14}
