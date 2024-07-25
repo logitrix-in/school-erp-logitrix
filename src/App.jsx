@@ -67,9 +67,12 @@ import LongLeaveRequest from "./components/student/Attendance/LongLeaveRequest";
 import ActionIndividualInitiate from "./components/student/action/ActionIndividualInitiate";
 import ActionBulkInitiate from "./components/student/action/ActionBulkInitiate";
 import LibraryInformation from "./pages/Library/LibraryInformation";
+
+import OnBoardingDetails from "./components/student/manage/EditInformation/OnBoardingDetails";
 import LibraryCaralogue from "./pages/Library/LibraryCatalogue";
 import LibraryCatalogue from "./pages/Library/LibraryCatalogue";
 import LibraryManage from "./pages/Library/LibraryManage";
+
 
 dayjs.locale("en-in");
 
@@ -380,6 +383,10 @@ function App() {
 				<Route
 					path={"/student/manage/OnBoardingEdit"}
 					element={<OnBoardingEdit />}
+				/>
+				<Route
+					path={"/student/manage/OnBoardingDetails"}
+					element={<OnBoardingDetails />}
 				/>
 			</Routes>
 		</>

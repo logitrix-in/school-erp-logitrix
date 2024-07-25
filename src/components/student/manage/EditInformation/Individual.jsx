@@ -181,7 +181,7 @@ const Individual = () => {
                 backgroundColor: isEditButtonActive ? "#A14E2C" : "#ccc",
               },
             }}
-            onClick={() => navigate("/student/manage/OnBoardingEdit")}
+            onClick={() => navigate("/student/manage/OnBoardingDetails")}
             disabled={!isEditButtonActive}
           >
             Edit
