@@ -1,9 +1,10 @@
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { Box, Divider, Grid, Typography, IconButton } from "@mui/material";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import Bbox from "../../UiComponents/Bbox";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
 import { AppContext } from "../../../context/AppContext";
 import useClasses from "../../../hooks/useClasses";
+import { Icon } from "@iconify/react";
 
 const Dashboard = () => {
 	const ctx = useContext(AppContext);
@@ -24,8 +25,8 @@ const Dashboard = () => {
 				display={"flex"}
 				gap={1}
 				flexDirection={{
-					xs: "column",
-					md: "row",
+					md: "column",
+					lg: "row",
 				}}
 			>
 				<Bbox
@@ -36,7 +37,7 @@ const Dashboard = () => {
 					flexDirection={"column"}
 					gap={2}
 				>
-					<ReignsSelect 	
+					<ReignsSelect
 						items={acYear}
 						onChange={(e) =>
 							setAcademicYear(e?.target.value ?? academicYear)
@@ -52,7 +53,7 @@ const Dashboard = () => {
 							"Support Staff",
 						]}
 						multiple
-						label="Employee Category"
+						label="Employee Type"
 					/>
 					<ReignsSelect items={status} multiple label="Status" />
 				</Bbox>
@@ -141,29 +142,30 @@ const Dashboard = () => {
 
 const DisplayCard = ({ bgColor, header = "", value = "", data, color }) => {
 	return (
-		<Grid item xs={12} md={6}>
+		<Grid item xs={12} md={6} position={"relative"}>
 			<Box
 				bgcolor={bgColor}
 				height={"100%"}
-				p={4}
+				p={3}
 				borderRadius={1}
 				display={"flex"}
 				flexDirection={"column"}
 			>
-				<Typography sx={{ fontSize: "1.4rem", fontWeight: "600" }}>
+				<Typography sx={{ fontSize: "1.2rem", fontWeight: "600" }}>
 					{value}
 				</Typography>
 				<Typography
-					sx={{ fontSize: "1rem", fontWeight: "500", color: color }}
+					mb={2}
+					sx={{ fontSize: "0.9rem", fontWeight: "500", color: color }}
 				>
 					{header}
 				</Typography>
 
-				<Box display={"flex"} gap={1} mt={"auto"}>
+				<Box display={"flex"} gap={1} mt={"auto"} flexWrap={"wrap"}>
 					{data?.map((e, idx) => (
-						<Box display={"flex"} gap={2} key={idx}>
+						<Box display={"flex"} gap={3} key={idx}>
 							<Box>
-								<Typography sx={{ fontWeight: 800 }}>
+								<Typography sx={{ fontWeight: 700, mb: 0.3 }}>
 									{e.val}
 								</Typography>
 								<Typography>{e.title}</Typography>
@@ -180,6 +182,22 @@ const DisplayCard = ({ bgColor, header = "", value = "", data, color }) => {
 							)}
 						</Box>
 					))}
+					<Box
+						position={"absolute"}
+						bottom={"0.2rem"}
+						right={"0.5rem"}
+					>
+						<IconButton
+							onClick={() =>
+								download("total_application_recieved")
+							}
+						>
+							<Icon
+								icon={"ic:round-download"}
+								fontSize={"1.4rem"}
+							/>
+						</IconButton>
+					</Box>
 				</Box>
 			</Box>
 		</Grid>

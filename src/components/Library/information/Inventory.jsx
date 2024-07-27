@@ -10,26 +10,26 @@ const Inventory = () => {
 	const { days } = useClasses();
 	const series = [
 		{
-			name: "Books",
+			name: "Books In Circulation",
 			data: [430, 320, 580, 450, 690, 1100, 1200],
 			type: "column",
 		},
 		{
-			name: "Periodicals",
+			name: "Periodicals In Circulation",
 			data: [130, 350, 380, 250, 590, 100, 400],
 			type: "column",
 		},
 		{
-			name: "Research papers",
+			name: "Research papers In Circulation",
 			data: [130, 350, 380, 250, 590, 100, 400],
 			type: "column",
 		},
 		{
-			name: "Media",
+			name: "Media Inventory",
 			data: [1010, 970, 1050, 950, 810, 940, 1050],
 			type: "line",
 		},
-	];
+	];	
 
 	const options = {
 		chart: {
@@ -78,12 +78,13 @@ const Inventory = () => {
 			},
 		},
 	};
-	
+
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
 			<Box bgcolor={"white"} py={1.3} px={2} borderRadius={2}>
 				<Typography fontWeight={"700"} fontSize={"1.1rem"}>
-					Inventory Utilization
+					Inventory Utilization - Media in Circulation Vs
+					Media Inventorys
 				</Typography>
 			</Box>
 

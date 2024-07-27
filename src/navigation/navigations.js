@@ -87,6 +87,11 @@ export const navigations = [
 				icon: "material-symbols:folder",
 			},
 			{
+				name: "Action",
+				path: "library/action/",
+				icon: "material-symbols:folder",
+			},
+			{
 				name: "Visitors",
 				path: "library/visitors/",
 				icon: "material-symbols:folder",
