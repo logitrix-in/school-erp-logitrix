@@ -25,12 +25,12 @@ const Dashboard = () => {
 				display={"flex"}
 				gap={1}
 				flexDirection={{
-					md: "column",
-					lg: "row",
+					sm: "column",
+					md: "row",
 				}}
 			>
 				<Bbox
-					flex={1}
+					flex={0.8}
 					p={2}
 					borderRadius={1}
 					display={"flex"}
@@ -163,7 +163,13 @@ const DisplayCard = ({ bgColor, header = "", value = "", data, color }) => {
 
 				<Box display={"flex"} gap={1} mt={"auto"} flexWrap={"wrap"}>
 					{data?.map((e, idx) => (
-						<Box display={"flex"} gap={3} key={idx}>
+						<Box
+							display={"flex"}
+							key={idx}
+							sx={{
+								gap: 1,
+							}}
+						>
 							<Box>
 								<Typography sx={{ fontWeight: 700, mb: 0.3 }}>
 									{e.val}
