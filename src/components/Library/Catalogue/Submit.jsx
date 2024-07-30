@@ -13,6 +13,7 @@ import ReignsSelect from "../../UiComponents/ReignsSelect";
 import { Stack } from "@mui/system";
 import { Icon } from "@iconify/react";
 import { DataGrid } from "@mui/x-data-grid";
+import AutocompleteWithAll from "../../UiComponents/AutocompleteWithAll";
 
 const Submit = () => {
 	const columns = [
@@ -63,7 +64,7 @@ const Submit = () => {
 
 	const rows = [
 		{
-            id: 1,
+			id: 1,
 			copiesAvailable: "5",
 			mediaLanguage: "English",
 			publisher: "Neeraj Publication",
@@ -101,6 +102,9 @@ const Submit = () => {
 							multiple
 							disableCloseOnSelect
 							limitTags={2}
+							renderTags={(val, props) => {
+								return <Box {...props}>{val}</Box>;
+							}}
 							options={[
 								"Bengali literature",
 								"Hindi literature",
@@ -204,6 +208,9 @@ const Submit = () => {
 								/>
 							)}
 						/>
+					</Grid>
+					<Grid item xs={4}>
+						<AutocompleteWithAll />
 					</Grid>
 				</Grid>
 

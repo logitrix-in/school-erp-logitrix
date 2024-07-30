@@ -41,6 +41,7 @@ const issue_columns = [
 const MediaCirculation = () => {
 	const [returnState, setReturnState] = useState(false);
 	const [issueState, setIssueState] = useState(false);
+	const [renewOpen, setRenewOpen] = useState(false);
 
 	useEffect(() => {
 		if (issueState == "scan") {
@@ -102,7 +103,9 @@ const MediaCirculation = () => {
 				>
 					New Issue
 				</Button>
-				<Button variant="outlined">Renew</Button>
+				<Button variant="outlined" onClick={() => setRenewOpen(true)}>
+					Renew
+				</Button>
 				<Button
 					variant="contained"
 					color={"secondary"}
@@ -278,7 +281,50 @@ const MediaCirculation = () => {
 			</Popup>
 
 			<IssuePage issueState={issueState} setIssueState={setIssueState} />
+			<Renew setRenewOpen={setRenewOpen} renewOpen={renewOpen} />
 		</Section>
+	);
+};
+
+const Renew = ({ setRenewOpen, renewOpen }) => {
+	return (
+		<Popup
+			close={() => setRenewOpen(false)}
+			title={"Renew - Confirmation"}
+			open={renewOpen}
+			maxWidth={"sm"}
+		>
+			<Stack p={3} gap={2} alignItems={"center"}>
+				<TextField
+					multiline
+					label={"Note"}
+					fullWidth
+					minRows={4}
+					placeholder="Use this field to record issues specific to the media (Example wear and tear, spot marks, missing pages etc.)"
+				></TextField>
+
+				<Flex>
+					<Typography>Return Date: </Typography>
+					<DatePicker />
+				</Flex>
+
+				<Typography fontWeight={700} mt={2} fontSize={"1.1rem"}>
+					Are toy sure you want to proceed?
+				</Typography>
+				<Flex gap={2}>
+					<Button variant="contained" sx={{ width: "8rem" }}>
+						Yes
+					</Button>
+					<Button
+						variant="outlined"
+						sx={{ width: "8rem" }}
+						onClick={() => setNewIssueOpen(false)}
+					>
+						No
+					</Button>
+				</Flex>
+			</Stack>
+		</Popup>
 	);
 };
 
@@ -358,7 +404,7 @@ const IssuePage = ({ issueState, setIssueState }) => {
 						<DatePicker />
 					</Flex>
 
-					<Typography fontWeight={700} mt={2} fontSize={'1.1rem'}>
+					<Typography fontWeight={700} mt={2} fontSize={"1.1rem"}>
 						Are toy sure you want to proceed?
 					</Typography>
 					<Flex gap={2}>
