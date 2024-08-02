@@ -72,7 +72,8 @@ import OnBoardingDetails from "./components/student/manage/EditInformation/OnBoa
 import LibraryCaralogue from "./pages/Library/LibraryCatalogue";
 import LibraryCatalogue from "./pages/Library/LibraryCatalogue";
 import LibraryManage from "./pages/Library/LibraryManage";
-
+import LibraryVisitors from "./pages/Library/LibraryVisitors";
+import LibraryRecommandation from "./pages/Library/LibraryRecommandation";
 
 dayjs.locale("en-in");
 
@@ -366,6 +367,15 @@ function App() {
 					<Route
 						path={"library/manage/"}
 						element={<LibraryManage />}
+					/>
+
+					<Route
+						path={"library/visitors/"}
+						element={<LibraryVisitors />}
+					/>
+					<Route
+						path={"library/recommendation/"}
+						element={<LibraryRecommandation />}
 					/>
 
 					<Route path="*" element={<_404 />} />

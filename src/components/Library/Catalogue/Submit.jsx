@@ -102,9 +102,6 @@ const Submit = () => {
 							multiple
 							disableCloseOnSelect
 							limitTags={2}
-							renderTags={(val, props) => {
-								return <Box {...props}>{val}</Box>;
-							}}
 							options={[
 								"Bengali literature",
 								"Hindi literature",

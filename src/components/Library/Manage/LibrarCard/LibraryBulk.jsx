@@ -21,9 +21,9 @@ const LibraryBulk = () => {
 		<Box>
 			<Flex>
 				<ReignsSelect items={c.acYear} label="Academic Year" />
-				<ReignsSelect items={c.classes} label="Class" />
-				<ReignsSelect items={c.sections} label="Section" />
-				<ReignsSelect items={c.roll} label="Roll #" />
+				<ReignsSelect multiple items={c.classes} label="Class" />
+				<ReignsSelect multiple items={c.sections} label="Section" />
+				<ReignsSelect multiple items={c.roll} label="Roll #" />
 			</Flex>
 			<Flex justifyContent={"center"} mt={2}>
 				<Button sx={{ width: "30rem" }} variant="contained">

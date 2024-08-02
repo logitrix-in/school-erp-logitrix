@@ -8,6 +8,7 @@ import {
 	Checkbox,
 	FormControlLabel,
 	Divider,
+	Chip,
 } from "@mui/material";
 
 const allOptions = ["foo", "bar", "var", "let"];
@@ -41,6 +42,10 @@ export const AutocompleteWithAll = () => {
 				)
 					setSelectAll(true);
 				setColumns(value);
+			}}
+			renderTags={(val, props, state) => {
+				console.log(state);
+				return val.length == allOptions.length ? "All" : val.join(", ");
 			}}
 			renderInput={(params) => (
 				<TextField {...params} label={"Click me!"} />
