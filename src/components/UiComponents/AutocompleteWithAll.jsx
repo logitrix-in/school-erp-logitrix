@@ -44,7 +44,6 @@ export const AutocompleteWithAll = () => {
 				setColumns(value);
 			}}
 			renderTags={(val, props, state) => {
-				console.log(state);
 				return val.length == allOptions.length ? "All" : val.join(", ");
 			}}
 			renderInput={(params) => (
