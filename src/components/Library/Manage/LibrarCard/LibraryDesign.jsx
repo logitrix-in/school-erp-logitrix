@@ -5,18 +5,14 @@ import ReactFlipCard from "reactjs-flip-card";
 import LeftIcon from "@mui/icons-material/ChevronLeft";
 import RightIcon from "@mui/icons-material/ChevronRight";
 
+import LibraryCard1Front from "@/assets/cards/LibraryCard.png";
+import LibraryCard1Back from "@/assets/cards/LibraryCardBack.png";
+
 const formats = [
 	{
 		id: 1,
-		img: "https://marketplace.canva.com/EAFsRMmBIMI/1/0/941w/canva-blue-modern-business-id-card-UHRf_NCyJ7c.jpg",
-	},
-	{
-		id: 2,
-		img: "https://marketplace.canva.com/EAFl_lEB6yk/1/0/941w/canva-black-and-red-modern-corporate-business-id-card-IDsI-atpEDI.jpg",
-	},
-	{
-		id: 3,
-		img: "https://marketplace.canva.com/EAFxbILw0pI/1/0/941w/canva-green-simple-medical-id-card-GkLGby9PwCs.jpg",
+		front: LibraryCard1Front,
+		back: LibraryCard1Back,
 	},
 ];
 
@@ -30,7 +26,7 @@ const LibraryDesign = () => {
 						key={idx}
 						height={"5rem"}
 						sx={{
-							aspectRatio: "9/16",
+							aspectRatio: "406/641",
 							cursor: "pointer",
 							transition: "all 0.1s",
 							boxShadow: selected == idx && "0 0 15px -5px #000",
@@ -42,7 +38,7 @@ const LibraryDesign = () => {
 						onClick={() => setSelected(idx)}
 					>
 						<img
-							src={img.img}
+							src={img.front}
 							alt={`img-${img.id}`}
 							style={{ objectFit: "cover" }}
 						/>
@@ -68,32 +64,22 @@ const LibraryDesign = () => {
 					</Flex>
 					<ReactFlipCard
 						flipTrigger="onClick"
-						frontStyle={{
-							boxShadow: "0 0 15px -3px #00000068",
-						}}
-						backStyle={{
+						flipCardStyle={{
 							boxShadow: "0 0 15px -3px #00000068",
 						}}
 						containerStyle={{
 							height: "24rem",
-							width: "13.5rem",
-							aspectRatio: "1",
+							width: "15.2rem",
 						}}
 						frontComponent={
 							<img
-								src={formats[selected].img}
-								style={{
-									objectFit: "cover",
-								}}
+								src={formats[selected].front}
 								alt="selected-img"
 							/>
 						}
 						backComponent={
 							<img
-								src={
-									formats[(selected + 1) % formats.length].img
-								}
-								style={{ objectFit: "cover" }}
+								src={formats[selected].back}
 								alt="selected-img"
 							/>
 						}

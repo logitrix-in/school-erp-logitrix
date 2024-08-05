@@ -221,7 +221,7 @@ const MediaCirculation = () => {
 							<Icon
 								icon="ic:round-error"
 								color="#C4673B"
-								height={34}
+								height={34}className=""
 							/>
 							<Typography
 								fontSize={"1.1rem"}
