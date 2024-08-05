@@ -7,7 +7,7 @@ import LibraryIndividual from "../../../components/Library/Manage/LibrarCard/Lib
 import LibraryBulk from "../../../components/Library/Manage/LibrarCard/LibraryBulk";
 import LibraryDesign from "../../../components/Library/Manage/LibrarCard/LibraryDesign";
 const ManageLibrarayCard = () => {
-	const [value, setValue] = React.useState(2);
+	const [value, setValue] = React.useState(0);
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);

@@ -196,7 +196,7 @@ const MediaCirculation = () => {
 								fontWeight={500}
 								textAlign={"center"}
 							>
-								Authenticated and Return Successfully
+								Authenticated and Returned Successfully
 							</Typography>
 							<Button
 								variant={"contained"}
@@ -228,7 +228,7 @@ const MediaCirculation = () => {
 								fontWeight={600}
 								textAlign={"center"}
 							>
-								Authenticated and Return Successfully
+								Authenticated and Returned Successfully
 							</Typography>
 							<Typography
 								fontSize={"0.9rem"}
@@ -309,7 +309,7 @@ const Renew = ({ setRenewOpen, renewOpen }) => {
 				</Flex>
 
 				<Typography fontWeight={700} mt={2} fontSize={"1.1rem"}>
-					Are toy sure you want to proceed?
+					Are you sure you want to proceed?
 				</Typography>
 				<Flex gap={2}>
 					<Button variant="contained" sx={{ width: "8rem" }}>
@@ -405,7 +405,7 @@ const IssuePage = ({ issueState, setIssueState }) => {
 					</Flex>
 
 					<Typography fontWeight={700} mt={2} fontSize={"1.1rem"}>
-						Are toy sure you want to proceed?
+						Are you sure you want to proceed?
 					</Typography>
 					<Flex gap={2}>
 						<Button variant="contained" sx={{ width: "8rem" }}>

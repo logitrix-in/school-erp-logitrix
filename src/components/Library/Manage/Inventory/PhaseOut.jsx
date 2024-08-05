@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Section from "../../../Section";
+import { toast, ToastContainer } from "react-toastify";
 import {
 	Box,
 	Button,
@@ -39,6 +40,8 @@ const PhaseOut = () => {
 
 	return (
 		<Section title={"Phase Out / Edit Media"}>
+			<ToastContainer autoClose={1000} />
+
 			{addToTable && (
 				<Box my={2}>
 					<DataGrid
@@ -61,8 +64,7 @@ const PhaseOut = () => {
 				<Button
 					variant="contained"
 					onClick={() => {
-						setScanType("barcode");
-						setDialogOpen(true);
+						toast.info("Barcode Enabled");
 					}}
 				>
 					Enable Barcode Scan

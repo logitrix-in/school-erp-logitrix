@@ -24,6 +24,7 @@ interface ReignsSelectProps {
 	size?: "small" | "medium";
 	error?: boolean;
 	helperText?: string;
+	defaultVal: string;
 	required?: boolean;
 	value?: string;
 }
@@ -32,6 +33,7 @@ const ReignsSelect: React.FC<ReignsSelectProps> = ({
 	items = ["item 1", "item 2", "item 3"],
 	label,
 	sx = {},
+	defaultVal,
 	onChange = () => {},
 	multiple,
 	full = true,
@@ -114,11 +116,12 @@ const ReignsSelect: React.FC<ReignsSelectProps> = ({
 			<InputLabel>{label}</InputLabel>
 			<Select
 				required={required}
-				{...rest}
 				label={label}
 				onChange={onChange}
 				error={error}
+				defaultValue={defaultVal}
 				value={v}
+				{...rest}
 			>
 				{items.map((name, idx) => (
 					<MenuItem key={idx} value={name}>

@@ -30,7 +30,7 @@ const Dashboard = () => {
 				}}
 			>
 				<Bbox
-					flex={0.8}
+					width={"23rem"}
 					p={2}
 					borderRadius={1}
 					display={"flex"}

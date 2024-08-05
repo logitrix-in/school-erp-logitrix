@@ -5,6 +5,7 @@ import ReignsSelect from "../../UiComponents/ReignsSelect";
 import { AppContext } from "../../../context/AppContext";
 import useClasses from "../../../hooks/useClasses";
 import { Icon } from "@iconify/react";
+import { maxWidth } from "@mui/system";
 
 const Dashboard = () => {
 	const ctx = useContext(AppContext);
@@ -30,7 +31,7 @@ const Dashboard = () => {
 				}}
 			>
 				<Bbox
-					flex={0.8}
+					width={"23rem"}
 					p={2}
 					borderRadius={1}
 					display={"flex"}

@@ -9,7 +9,7 @@ import {
 import Flex from "../../../UiComponents/Flex";
 
 const Navigtor = ({ onChange, navs }) => {
-	const [selectedNav, setSelectedNav] = useState(2);
+	const [selectedNav, setSelectedNav] = useState(0);
 
 	useEffect(() => {
 		onChange(selectedNav);

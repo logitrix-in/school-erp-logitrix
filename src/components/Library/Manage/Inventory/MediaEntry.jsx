@@ -75,8 +75,16 @@ const MediaEntry = () => {
 					Manual
 				</Button>
 
-				{addToTable && <Button sx={{ml:'auto'}} variant="contained">Submit</Button>}
-				{addToTable && <Button variant="contained" color="secondary">Delete</Button>}
+				{addToTable && (
+					<Button sx={{ ml: "auto" }} variant="contained">
+						Submit
+					</Button>
+				)}
+				{addToTable && (
+					<Button variant="contained" color="secondary">
+						Delete
+					</Button>
+				)}
 			</Flex>
 
 			<Popup title={"Media Details"} open={dialogOpen} close={close}>
@@ -120,7 +128,8 @@ const MediaEntry = () => {
 
 						<FormControl>
 							<FormLabel sx={{ display: "inline" }}>
-								Do you want more copies of the same media?
+								Do you want to add more copies of the same
+								media?
 							</FormLabel>
 							<RadioGroup row sx={{ display: "inline" }}>
 								<FormControlLabel
