@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, lazy, Suspense } from "react";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import {
@@ -26,10 +26,22 @@ import { AppContext } from "./context/AppContext";
 import useAuth from "./hooks/useAuth";
 import _404 from "./pages/404Page";
 import Dashboard from "./pages/Dashboard";
-import AdmissionApplication from "./pages/admission/AdmissionApplication";
-import AdmissionOnboarding from "./pages/admission/AdmissionOnboarding";
-import AdmissionScreening from "./pages/admission/AdmissionScreening";
-import AdmissionTestCenter from "./pages/admission/AdmissionTestCenter";
+const AdmissionApplication = lazy(() =>
+	import("./pages/admission/AdmissionApplication")
+);
+const AdmissionOnboarding = lazy(() =>
+	import("./pages/admission/AdmissionOnboarding")
+);
+const AdmissionScreening = lazy(() =>
+	import("./pages/admission/AdmissionScreening")
+);
+const AdmissionTestCenter = lazy(() =>
+	import("./pages/admission/AdmissionTestCenter")
+);
+
+const AdmissionPostOnboarding = lazy(() =>
+	import("./pages/admission/AdmissionPostOnboarding")
+);
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import IssueAdmitCard from "./components/admission/test-center/pages/ManageList/IssueAdmitCard";
@@ -42,7 +54,6 @@ import ManageOnboarding from "./components/admission/onboarding/pages/ManageOnbo
 import OnboardingMeritList from "./components/admission/onboarding/pages/OnboardingMeritList";
 import OnboardingWaitingList from "./components/admission/onboarding/pages/OnboardingWaitingList";
 import OnboardingForm from "./pages/OnboardingForm";
-import AdmissionPostOnboarding from "./pages/admission/AdmissionPostOnboarding";
 import ManageTickets from "./components/admission/post onboarding/ManageTickets";
 import DetailedView from "./components/admission/application/DetailedView";
 import OnboardingApproval from "./components/admission/onboarding/pages/OnboardingApproval";
@@ -69,11 +80,13 @@ import ActionBulkInitiate from "./components/student/action/ActionBulkInitiate";
 import LibraryInformation from "./pages/Library/LibraryInformation";
 
 import OnBoardingDetails from "./components/student/manage/EditInformation/OnBoardingDetails";
-import LibraryCaralogue from "./pages/Library/LibraryCatalogue";
-import LibraryCatalogue from "./pages/Library/LibraryCatalogue";
-import LibraryManage from "./pages/Library/LibraryManage";
-import LibraryVisitors from "./pages/Library/LibraryVisitors";
-import LibraryRecommandation from "./pages/Library/LibraryRecommandation";
+
+const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
+const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
+const LibraryVisitors = lazy(() => import("./pages/Library/LibraryVisitors"));
+const LibraryRecommandation = lazy(() =>
+	import("./pages/Library/LibraryRecommandation")
+);
 
 dayjs.locale("en-in");
 
@@ -133,7 +146,9 @@ const NavLayout = () => {
 						ml={config.NAVBAR_WIDTH}
 					>
 						<Breadcrumb />
-						<Outlet />
+						<Suspense fallback={<>loading..</>}>
+							<Outlet />
+						</Suspense>
 						<Footer />
 					</Box>
 				</>
