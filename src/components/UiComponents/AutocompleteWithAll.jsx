@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import {
 	TextField,
@@ -11,10 +11,14 @@ import {
 	Chip,
 } from "@mui/material";
 
-const allOptions = ["foo", "bar", "var", "let"];
-
-export const AutocompleteWithAll = () => {
-	const [columns, setColumns] = useState([]);
+export const AutocompleteWithAll = ({
+	title,
+	items,
+	onChange = () => {},
+	value,
+	limitTags,
+}) => {
+	const [columns, setColumns] = useState([...(value ?? [])]);
 	const [selectAll, setSelectAll] = useState(false);
 
 	const handleToggleSelectAll = () => {
@@ -24,12 +28,18 @@ export const AutocompleteWithAll = () => {
 			return !prev;
 		});
 	};
+	const allOptions = [...(items ?? [])];
+
+	useEffect(() => {
+		onChange(columns);
+	}, [columns, selectAll]);
 
 	return (
 		<Autocomplete
 			multiple
 			options={allOptions}
 			disableCloseOnSelect
+			limitTags={limitTags}
 			// filterSelectedOptions
 			freeSolo={false}
 			value={columns}
@@ -44,11 +54,14 @@ export const AutocompleteWithAll = () => {
 				setColumns(value);
 			}}
 			renderTags={(val, props, state) => {
-				return val.length == allOptions.length ? "All" : val.join(", ");
+				return val.length == allOptions.length
+					? "All"
+					: columns.length > limitTags
+					? val.slice(0, limitTags).join(", ") +
+					  ` +${columns.length - limitTags}`
+					: val.join(", ");
 			}}
-			renderInput={(params) => (
-				<TextField {...params} label={"Click me!"} />
-			)}
+			renderInput={(params) => <TextField {...params} label={title} />}
 			PaperComponent={(paperProps) => {
 				const { children, ...restPaperProps } = paperProps;
 				return (

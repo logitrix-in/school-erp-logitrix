@@ -22,142 +22,6 @@ import { Icon } from "@iconify/react";
 import Flex from "../../UiComponents/Flex";
 import { useState } from "react";
 
-const columns = [
-	{
-		field: "id",
-		headerName: "Req ID",
-		flex: 1,
-	},
-	{
-		field: "employeeName",
-		headerName: "Employee Name",
-		renderCell: (p) => (
-			<Flex>
-				<Avatar sx={{ width: 35, height: 35 }}>
-					<img src={p.value.img} alt="" />
-				</Avatar>
-				<Stack>
-					<Typography fontWeight={500} color="text.primary">
-						{p.value.name}
-					</Typography>
-					<Typography
-						fontSize={"0.7rem"}
-						variant="body2"
-						color="text.secondary"
-					>
-						{p.value.id}
-					</Typography>
-				</Stack>
-			</Flex>
-		),
-		flex: 2,
-	},
-	{
-		field: "Reqdate",
-		headerName: "Req date",
-		flex: 1,
-	},
-	{
-		field: "Department",
-		headerName: "Department",
-		flex: 1,
-	},
-	{
-		field: "Media Type",
-		headerName: "Media Type",
-		flex: 1,
-	},
-	{
-		field: "Media Name",
-		headerName: "Media Name",
-		flex: 1,
-	},
-	{
-		field: "Author",
-		headerName: "Author",
-		flex: 1,
-	},
-	{
-		field: "Purpose",
-		headerName: "Purpose",
-		flex: 2,
-	},
-	{
-		field: "Status",
-		headerName: "Status",
-		renderCell: (params) => {
-			const [anchorEl, setAnchorEl] = useState(null);
-			const [selected, setSelected] = useState(params.value);
-
-			const open = Boolean(anchorEl);
-			const handleClick = (event) => {
-				setAnchorEl(event.currentTarget);
-			};
-			const handleClose = () => {
-				setAnchorEl(null);
-			};
-			return (
-				<Box>
-					<Flex
-						bgcolor={"#C6F6D5"}
-						p={0.5}
-						px={1.5}
-						borderRadius={1}
-						onClick={handleClick}
-					>
-						<Flex>
-							{selected}
-							<Icon
-								icon={"teenyicons:down-solid"}
-								fontSize={"0.7rem"}
-							/>
-						</Flex>
-					</Flex>
-					<Menu
-						anchorEl={anchorEl}
-						open={open}
-						onClose={handleClose}
-						anchorOrigin={{
-							vertical: "bottom",
-							horizontal: "right",
-						}}
-						transformOrigin={{
-							vertical: "top",
-							horizontal: "right",
-						}}
-					>
-						{["In Review", "Accept", "Reject", "Fullfill"].map(
-							(opt, idx) => (
-								<MenuItem
-									onClick={() => {
-										setSelected(opt);
-										handleClose();
-									}}
-									sx={{ width: "10rem" }}
-								>
-									{opt}
-								</MenuItem>
-							)
-						)}
-					</Menu>
-				</Box>
-			);
-		},
-		flex: 1,
-	},
-	{
-		field: "actions",
-		headerName: "",
-		width: 1,
-		disableColumnMenu: true,
-		sortable: false,
-		renderCell: () => (
-			<IconButton size="small">
-				<Icon icon="tabler:dots-vertical" />
-			</IconButton>
-		),
-	},
-];
 const rows = [
 	{
 		id: "RQ1234",
@@ -179,6 +43,138 @@ const rows = [
 
 const Recommendation = () => {
 	const { acYear } = useClasses();
+	const [selected, setSelected] = useState("Mark as Open");
+
+	const columns = [
+		{
+			field: "id",
+			headerName: "Req ID",
+			flex: 1,
+		},
+		{
+			field: "employeeName",
+			headerName: "Employee Name",
+			renderCell: (p) => (
+				<Flex>
+					<Avatar sx={{ width: 35, height: 35 }}>
+						<img src={p.value.img} alt="" />
+					</Avatar>
+					<Stack>
+						<Typography fontWeight={500} color="text.primary">
+							{p.value.name}
+						</Typography>
+						<Typography
+							fontSize={"0.7rem"}
+							variant="body2"
+							color="text.secondary"
+						>
+							{p.value.id}
+						</Typography>
+					</Stack>
+				</Flex>
+			),
+			flex: 2,
+		},
+		{
+			field: "Reqdate",
+			headerName: "Req date",
+			flex: 1,
+		},
+		{
+			field: "Department",
+			headerName: "Department",
+			flex: 1,
+		},
+		{
+			field: "Media Type",
+			headerName: "Media Type",
+			flex: 1,
+		},
+		{
+			field: "Media Name",
+			headerName: "Media Name",
+			flex: 1,
+		},
+		{
+			field: "Author",
+			headerName: "Author",
+			flex: 1,
+		},
+		{
+			field: "Purpose",
+			headerName: "Purpose",
+			flex: 2,
+		},
+		{
+			field: "Status",
+			headerName: "Status",
+			flex: 1,
+			renderCell: (parmas) => (
+				<Flex bgcolor={"#C6F6D5"} p={0.5} px={1.5} borderRadius={1}>
+					<Flex>{selected}</Flex>
+				</Flex>
+			),
+		},
+		{
+			field: "actions",
+			headerName: "",
+			width: 1,
+			disableColumnMenu: true,
+			sortable: false,
+			renderCell: (params) => {
+				const [anchorEl, setAnchorEl] = useState(null);
+
+				const open = Boolean(anchorEl);
+				const handleClick = (event) => {
+					setAnchorEl(event.currentTarget);
+				};
+				const handleClose = () => {
+					setAnchorEl(null);
+				};
+
+				return (
+					<>
+						<IconButton size="small" onClick={handleClick}>
+							<Icon icon="tabler:dots-vertical" />
+						</IconButton>
+						<Box>
+							<Menu
+								anchorEl={anchorEl}
+								open={open}
+								onClose={handleClose}
+								anchorOrigin={{
+									vertical: "bottom",
+									horizontal: "right",
+								}}
+								transformOrigin={{
+									vertical: "top",
+									horizontal: "right",
+								}}
+							>
+								{[
+									"Mark as Open",
+									"In Review",
+									"Accept",
+									"Reject",
+									"Fullfill",
+								].map((opt, idx) => (
+									<MenuItem
+										onClick={() => {
+											setSelected(opt);
+											handleClose();
+										}}
+										sx={{ width: "10rem" }}
+									>
+										{opt}
+									</MenuItem>
+								))}
+							</Menu>
+						</Box>
+					</>
+				);
+			},
+		},
+	];
 
 	return (
 		<Section title={"Recommendation"}>
