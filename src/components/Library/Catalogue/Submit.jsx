@@ -90,19 +90,15 @@ const Submit = () => {
 				</Box>
 				<Grid container spacing={2} mt={1}>
 					<Grid item xs={4}>
-						<ReignsSelect
-							full
+						<AutocompleteWithAll
 							items={["Books", "Periodicals", "Research Papers"]}
-							label="Media Type"
-							multiple
+							title="Media Type"
 						/>
 					</Grid>
 					<Grid item xs={4}>
-						<Autocomplete
-							multiple
-							disableCloseOnSelect
+						<AutocompleteWithAll
 							limitTags={2}
-							options={[
+							items={[
 								"Bengali literature",
 								"Hindi literature",
 								"English literature",
@@ -123,70 +119,35 @@ const Submit = () => {
 								"Fiction",
 								"Non-fiction",
 							]}
-							getOptionLabel={(option) => option}
-							renderInput={(params) => (
-								<TextField
-									fullWidth
-									{...params}
-									label="Select Category"
-								/>
-							)}
+							title="Select Category"
 						/>
 					</Grid>
 					<Grid item xs={4}>
-						<Autocomplete
-							multiple
-							disableCloseOnSelect
+						<AutocompleteWithAll
 							limitTags={2}
-							options={["Bengali literature", "Hindi literature"]}
-							getOptionLabel={(option) => option}
-							renderInput={(params) => (
-								<TextField
-									fullWidth
-									{...params}
-									label="Select Name"
-								/>
-							)}
+							items={["Bengali literature", "Hindi literature"]}
+							title="Select Name"
 						/>
 					</Grid>
 					<Grid item xs={4}>
-						<Autocomplete
-							multiple
-							disableCloseOnSelect
+						<AutocompleteWithAll
 							limitTags={2}
-							options={["Bengali literature", "Hindi literature"]}
-							getOptionLabel={(option) => option}
-							renderInput={(params) => (
-								<TextField
-									fullWidth
-									{...params}
-									label="Select Author"
-								/>
-							)}
+							items={["Bengali literature", "Hindi literature"]}
+							title="Select Author"
 						/>
 					</Grid>
 					<Grid item xs={4}>
-						<Autocomplete
-							multiple
-							disableCloseOnSelect
+						<AutocompleteWithAll
 							limitTags={2}
-							options={["Bengali literature", "Hindi literature"]}
-							getOptionLabel={(option) => option}
-							renderInput={(params) => (
-								<TextField
-									fullWidth
-									{...params}
-									label="Select Publisher"
-								/>
-							)}
+							items={["Bengali literature", "Hindi literature"]}
+							title={"Select Publisher"}
 						/>
 					</Grid>
 					<Grid item xs={4}>
-						<Autocomplete
-							multiple
-							disableCloseOnSelect
+						<AutocompleteWithAll
+							title={"Language"}
 							limitTags={2}
-							options={[
+							items={[
 								"English",
 								"Bengali",
 								"Hindi",
@@ -196,18 +157,7 @@ const Submit = () => {
 								"Kannada",
 								"Malayalam",
 							]}
-							getOptionLabel={(option) => option}
-							renderInput={(params) => (
-								<TextField
-									fullWidth
-									{...params}
-									label="Select Media Language"
-								/>
-							)}
 						/>
-					</Grid>
-					<Grid item xs={4}>
-						<AutocompleteWithAll />
 					</Grid>
 				</Grid>
 

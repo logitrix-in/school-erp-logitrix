@@ -5,14 +5,42 @@ import ReactFlipCard from "reactjs-flip-card";
 import LeftIcon from "@mui/icons-material/ChevronLeft";
 import RightIcon from "@mui/icons-material/ChevronRight";
 
-import LibraryCard1Front from "@/assets/cards/LibraryCard.png";
-import LibraryCard1Back from "@/assets/cards/LibraryCardBack.png";
+import LibraryCard1Front from "@/assets/cards/lib cards/library Card-1.jpg";
+import LibraryCard2Front from "@/assets/cards/lib cards/library Card-2.jpg";
+import LibraryCard3Front from "@/assets/cards/lib cards/library Card-3.jpg";
+import LibraryCard4Front from "@/assets/cards/lib cards/library Card-4.jpg";
+import LibraryCard5Front from "@/assets/cards/lib cards/library Card-5.jpg";
+import LibraryCard1Back from "@/assets/cards/lib cards/Back-1.jpg";
+import LibraryCard2Back from "@/assets/cards/lib cards/Back-2.jpg";
+import LibraryCard3Back from "@/assets/cards/lib cards/Back-3.jpg";
+import LibraryCard4Back from "@/assets/cards/lib cards/Back-4.jpg";
+import LibraryCard5Back from "@/assets/cards/lib cards/Back-5.jpg";
 
 const formats = [
 	{
 		id: 1,
+		front: LibraryCard5Front,
+		back: LibraryCard5Back,
+	},
+	{
+		id: 2,
 		front: LibraryCard1Front,
 		back: LibraryCard1Back,
+	},
+	{
+		id: 3,
+		front: LibraryCard2Front,
+		back: LibraryCard2Back,
+	},
+	{
+		id: 4,
+		front: LibraryCard3Front,
+		back: LibraryCard3Back,
+	},
+	{
+		id: 5,
+		front: LibraryCard4Front,
+		back: LibraryCard4Back,
 	},
 ];
 
