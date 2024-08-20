@@ -104,6 +104,54 @@ export const navigations = [
 		],
 	},
 	{
+		name: "Employee",
+		path: "employee/",
+		icon: "solar:library-bold-duotone",
+		dropdown: true,
+		subMenu: [
+			{
+				name: "Recruitment",
+				path: "employee/recruitment/",
+				icon: "material-symbols:folder",
+			},
+			{
+				name: "Information",
+				path: "employee/information/",
+				icon: "material-symbols:folder",
+			},
+			{
+				name: "Manage",
+				path: "employee/manage/",
+				icon: "material-symbols:folder",
+			},
+			{
+				name: "Timetable",
+				path: "employee/timetable/",
+				icon: "material-symbols:folder",
+			},
+			{
+				name: "Leave",
+				path: "employee/leave/",
+				icon: "material-symbols:folder",
+			},
+			{
+				name: "Action",
+				path: "employee/action/",
+				icon: "material-symbols:folder",
+			},
+			{
+				name: "Appraisal",
+				path: "employee/appraisal/",
+				icon: "material-symbols:folder",
+			},
+			{
+				name: "Claims & Bonuses",
+				path: "employee/claims&bonuses/",
+				icon: "material-symbols:folder",
+			},
+		],
+	},
+	{
 		name: "Utilities",
 		path: "utilities/",
 		icon: "solar:document-bold",

@@ -80,6 +80,7 @@ import ActionBulkInitiate from "./components/student/action/ActionBulkInitiate";
 import LibraryInformation from "./pages/Library/LibraryInformation";
 
 import OnBoardingDetails from "./components/student/manage/EditInformation/OnBoardingDetails";
+import ClaimsBonuses from "./pages/employee/Claims&Bonuses";
 
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
 const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
@@ -392,6 +393,42 @@ function App() {
 						path={"library/recommendation/"}
 						element={<LibraryRecommandation />}
 					/>
+
+
+					{/* EMPLOYEE */}
+					<Route
+						path={"employee/recruitment/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/information/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/manage/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/timetable/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/leave/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/action/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/appraisal/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/claims&bonuses/"}
+						element={<ClaimsBonuses />}
+					/>
+
 
 					<Route path="*" element={<_404 />} />
 				</Route>

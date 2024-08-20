@@ -41,7 +41,7 @@ const ManageApplications = () => {
           })
         );
       })
-      .catch((err) => {});
+      .catch((err) => { });
   }
   useEffect(() => {
     fetchData();
@@ -54,7 +54,7 @@ const ManageApplications = () => {
     end_date: new Date(dayjs().add(7, "day")).toLocaleDateString("en-CA"),
   });
 
-  useEffect(() => {}, [openDates]);
+  useEffect(() => { }, [openDates]);
 
   // close all
 
@@ -62,7 +62,7 @@ const ManageApplications = () => {
     new Date(dayjs().add(1, "day")).toLocaleDateString("en-CA")
   );
 
-  useEffect(() => {}, [closeDate]);
+  useEffect(() => { }, [closeDate]);
 
   return (
     <>
@@ -233,6 +233,11 @@ const ManageApplications = () => {
                 onClick={() => setShowDialog(true)}
               >
                 Edit
+              </Button>
+
+              {/* Search button */}
+              <Button variant="contained" sx={{ marginLeft: "20px" }}>
+                Search
               </Button>
             </Box>
           </Box>
