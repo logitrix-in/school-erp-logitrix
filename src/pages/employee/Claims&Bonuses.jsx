@@ -19,9 +19,11 @@ import RevealCard from "../../components/AnimationComponents/RevealCard";
 import { DataGrid } from "@mui/x-data-grid";
 import { useMediaQuery } from "@material-ui/core";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import { ToastContainer, toast } from "react-toastify";
 import Approve from "../../components/employee/claim&bonus/popups/Approve";
 import Reject from "../../components/employee/claim&bonus/popups/Reject";
 import Raise from "../../components/employee/claim&bonus/popups/Raise";
+import ClaimID from "../../components/employee/claim&bonus/popups/ClaimID";
 
 const ClaimsBonuses = () => {
 
@@ -47,6 +49,7 @@ const ClaimsBonuses = () => {
   const [rejectPopup, setRejectPopup] = useState(false);
   const [downloadPopup, setDownloadPopup] = useState(false);
   const [raisePopup, setRaisePopup] = useState(false);
+  const [claimIDPopup, setClaimIDPopup] = useState(false);
 
   // table columns
   const columns = [
@@ -72,6 +75,11 @@ const ClaimsBonuses = () => {
     {
       field: "id", headerName: "Claim ID",
       width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 110 : isSmall ? 70 : 90,
+      renderCell: (params) => (
+        <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setClaimIDPopup(true)}>
+          {params.value}
+        </Typography>
+      ),
     },
     {
       field: "claim_type", headerName: "Claim Request Type",
@@ -88,6 +96,11 @@ const ClaimsBonuses = () => {
     {
       field: "employee_id", headerName: "Employee ID",
       width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 110 : isSmall ? 70 : 90,
+      renderCell: (params) => (
+        <Typography sx={{ cursor: "pointer", color: "primary.main" }}>
+          {params.value}
+        </Typography>
+      ),
     },
     {
       field: "employee_name", headerName: "Employee Name",
@@ -300,9 +313,12 @@ const ClaimsBonuses = () => {
           />
         </Box>
 
+        <ToastContainer />
+
         <Approve open={approvePopup} close={() => setApprovePopup(false)} />
-        {/* <Reject open={rejectPopup} close={() => setRejectPopup(false)} /> */}
-        {/* <Raise open={raisePopup} close={() => setRaisePopup(false)} /> */}
+        <Reject open={rejectPopup} close={() => setRejectPopup(false)} />
+        <Raise open={raisePopup} close={() => setRaisePopup(false)} />
+        <ClaimID open={claimIDPopup} close={() => setClaimIDPopup(false)} />
 
         <Box display="flex" justifyContent="flex-end" mt={2} mb={5} mr={2}>
           <Button

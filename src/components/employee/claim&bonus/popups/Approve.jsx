@@ -1,14 +1,20 @@
 import React from "react";
 import {
     Box,
+    Button,
     Dialog,
+    InputLabel,
     Divider,
+    TextField,
     IconButton,
     Tab,
     Tabs,
     Typography,
 } from "@mui/material";
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import CloseIcon from "@mui/icons-material/Close";
+import { ToastContainer, toast } from "react-toastify";
+
 
 const Approve = ({ open, close }) => {
     const [value, setValue] = React.useState(0);
@@ -54,59 +60,57 @@ const Approve = ({ open, close }) => {
                     </IconButton>
                 </Box>
 
-                <div className="modal-body">
-                    <div className="employee-info">
-                        <div className="info-row">
-                            <div className="info-item">
-                                <span className="label">Employee Name:</span>
-                                <span className="value">Priya Naskar</span>
-                            </div>
-                            <div className="info-item">
-                                <span className="label">Employee ID:</span>
-                                <span className="value">AUG202456</span>
-                            </div>
-                        </div>
-                        <div className="info-row">
-                            <div className="info-item">
-                                <span className="label">Department:</span>
-                                <span className="value">Physics</span>
-                            </div>
-                            <div className="info-item">
-                                <span className="label">Grade:</span>
-                                <span className="value">B2</span>
-                            </div>
-                        </div>
-                        <div className="info-row">
-                            <div className="info-item">
-                                <span className="label">Claim Request Type:</span>
-                                <span className="value">Travel Expense</span>
-                            </div>
-                            <div className="info-item">
-                                <span className="label">Claim Amount:</span>
-                                <span className="value">₹10,000</span>
-                            </div>
-                        </div>
-                    </div>
-                    <p>Are you sure you want to approve the claim(s)?</p>
-                    <div className="comments-section">
-                        <label htmlFor="comments">Reason / Comments</label>
-                        <textarea
-                            id="comments"
-                            // value={comments}
-                            // onChange={(e) => setComments(e.target.value)}
-                            placeholder="Use this field to record any additional information which could be considered for the subsequent steps."
-                        />
-                    </div>
-                </div>
-                <div className="modal-footer">
-                    <button className="submit-button">Submit</button>
-                </div>
+                <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"75%"} margin="auto" alignItems="center">
+                    <Box display="flex" justifyContent="center" width="100%" alignItems="center">
+                        <Box display="flex" gap={2} width="48%" justifyContent="center">
+                            <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography mb={2}>Employee Name</Typography>
+                                <Typography mb={2}>Department</Typography>
+                                <Typography mb={2}>Claim Request Type</Typography>
+                            </Box>
+                            <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography fontWeight="medium" ml={1} mb={2}>: Priya Naskar</Typography>
+                                <Typography fontWeight="medium" ml={1} mb={2}>: Physics</Typography>
+                                <Typography fontWeight="medium" ml={1} mb={2}>: Travel Expense</Typography>
+                            </Box>
+                        </Box>
+                        <Box display="flex" gap={2} width="48%" justifyContent="center">
+                            <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography mb={2}>Employee ID</Typography>
+                                <Typography mb={2}>Grade</Typography>
+                                <Typography mb={2}>Claim Amount</Typography>
+                            </Box>
+                            <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography fontWeight="medium" ml={1} mb={2}>: B2</Typography>
+                                <Typography fontWeight="medium" ml={1} mb={2}>: AUG202456</Typography>
+                                <Typography fontWeight="medium" ml={1} mb={2}>: ₹10,000</Typography>
+                            </Box>
+                        </Box>
+                    </Box>
+                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to approve the claim(s)?</Typography>
 
-                <Box>
+                    <TextField
+                        id="comments"
+                        label="Reason / Comments"
+                        placeholder="Use this field to record any additional information which could be considered for the subsequent steps."
+                        // value={comments}
+                        // onChange={(e) => setComments(e.target.value)}
+                        variant="outlined"
+                        fullWidth
+                        multiline
+                        rows={4}
 
+                    />
+
+                    <Box marginY={4} width={"100%"}>
+                        <Button variant="contained" color="primary" fullWidth onClick={() => {
+                            toast.success("Updated Successfully");
+                            close();
+                        }}>Submit</Button>
+                    </Box>
                 </Box>
             </Box>
-        </Dialog>
+        </Dialog >
     );
 };
 
