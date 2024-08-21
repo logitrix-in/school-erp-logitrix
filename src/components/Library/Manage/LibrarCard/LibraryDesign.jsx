@@ -5,11 +5,19 @@ import ReactFlipCard from "reactjs-flip-card";
 import LeftIcon from "@mui/icons-material/ChevronLeft";
 import RightIcon from "@mui/icons-material/ChevronRight";
 
+<<<<<<< HEAD
 import LibraryCard1Front from "@/assets/cards/lib cards/library Card-1.jpg";
 import LibraryCard2Front from "@/assets/cards/lib cards/library Card-2.jpg";
 import LibraryCard3Front from "@/assets/cards/lib cards/library Card-3.jpg";
 import LibraryCard4Front from "@/assets/cards/lib cards/library Card-4.jpg";
 import LibraryCard5Front from "@/assets/cards/lib cards/library Card-5.jpg";
+=======
+import LibraryCard1Front from "@/assets/cards/lib cards/Library Card-1.jpg";
+import LibraryCard2Front from "@/assets/cards/lib cards/Library Card-2.jpg";
+import LibraryCard3Front from "@/assets/cards/lib cards/Library Card-3.jpg";
+import LibraryCard4Front from "@/assets/cards/lib cards/Library Card-4.jpg";
+import LibraryCard5Front from "@/assets/cards/lib cards/Library Card-5.jpg";
+>>>>>>> 75e9332c5a0a1e4e751f9b6a8fb31bf79f2e1d62
 import LibraryCard1Back from "@/assets/cards/lib cards/Back-1.jpg";
 import LibraryCard2Back from "@/assets/cards/lib cards/Back-2.jpg";
 import LibraryCard3Back from "@/assets/cards/lib cards/Back-3.jpg";

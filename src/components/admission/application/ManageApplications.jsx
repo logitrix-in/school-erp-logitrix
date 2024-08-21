@@ -41,7 +41,11 @@ const ManageApplications = () => {
           })
         );
       })
+<<<<<<< HEAD
       .catch((err) => {});
+=======
+      .catch((err) => { });
+>>>>>>> 75e9332c5a0a1e4e751f9b6a8fb31bf79f2e1d62
   }
   useEffect(() => {
     fetchData();
@@ -54,7 +58,11 @@ const ManageApplications = () => {
     end_date: new Date(dayjs().add(7, "day")).toLocaleDateString("en-CA"),
   });
 
+<<<<<<< HEAD
   useEffect(() => {}, [openDates]);
+=======
+  useEffect(() => { }, [openDates]);
+>>>>>>> 75e9332c5a0a1e4e751f9b6a8fb31bf79f2e1d62
 
   // close all
 
@@ -62,7 +70,11 @@ const ManageApplications = () => {
     new Date(dayjs().add(1, "day")).toLocaleDateString("en-CA")
   );
 
+<<<<<<< HEAD
   useEffect(() => {}, [closeDate]);
+=======
+  useEffect(() => { }, [closeDate]);
+>>>>>>> 75e9332c5a0a1e4e751f9b6a8fb31bf79f2e1d62
 
   return (
     <>
@@ -234,6 +246,14 @@ const ManageApplications = () => {
               >
                 Edit
               </Button>
+<<<<<<< HEAD
+=======
+
+              {/* Search button */}
+              <Button variant="contained" sx={{ marginLeft: "20px" }}>
+                Search
+              </Button>
+>>>>>>> 75e9332c5a0a1e4e751f9b6a8fb31bf79f2e1d62
             </Box>
           </Box>
         </Bbox>

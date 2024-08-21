@@ -67,6 +67,10 @@ import ManageSystemRequest from "./components/student/manage/SectionAllotment/Ma
 import ReviewPromotion from "./components/student/manage/SectionAllotment/ReviewPromotion";
 import Action from "./pages/student/Action";
 import Attendance from "./components/student/Attendance/Attendance";
+<<<<<<< HEAD
+=======
+import ActionProceedNavigate from "./components/student/action/ActionProceedNavigate";
+>>>>>>> 75e9332c5a0a1e4e751f9b6a8fb31bf79f2e1d62
 import StudentAccount from "./components/student/manage/StudentAccount/StudentAccount";
 import IDCardPass from "./components/student/manage/IDCardPass/IDCardPass";
 import SectionAllotment from "./components/student/manage/SectionAllotment/SectionAllotment";
@@ -74,10 +78,19 @@ import Promotion from "./components/student/manage/Promotion/Promotion";
 import ClassView from "./components/student/Attendance/ClassView";
 import StudentView from "./components/student/Attendance/StudentView";
 import LongLeaveRequest from "./components/student/Attendance/LongLeaveRequest";
+<<<<<<< HEAD
 import LibraryInformation from "./pages/Library/LibraryInformation";
 
 import OnBoardingDetails from "./components/student/manage/EditInformation/OnBoardingDetails";
 import ActionSuspend from "./components/student/action/ActionSuspend";
+=======
+import ActionIndividualInitiate from "./components/student/action/ActionIndividualInitiate";
+import ActionBulkInitiate from "./components/student/action/ActionBulkInitiate";
+import LibraryInformation from "./pages/Library/LibraryInformation";
+
+import OnBoardingDetails from "./components/student/manage/EditInformation/OnBoardingDetails";
+import ClaimsBonuses from "./pages/employee/Claims&Bonuses";
+>>>>>>> 75e9332c5a0a1e4e751f9b6a8fb31bf79f2e1d62
 
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
 const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
@@ -331,9 +344,27 @@ function App() {
 
 					{/* student-action */}
 					<Route path={"student/action/"} element={<Action />} />
+<<<<<<< HEAD
 
 					<Route path={"/student/action/deliver/"} element={<ActionSuspend />} />
 
+=======
+					{/* action action tray */}
+					<Route
+						path={"/student/action/action-tray"}
+						element={<ActionProceedNavigate />}
+					/>
+					{/* action individual initiate */}
+					<Route
+						path={"/student/action/individual-initiate"}
+						element={<ActionIndividualInitiate />}
+					/>
+					{/* action bulk initiate */}
+					<Route
+						path={"/student/action/bulk-initiate"}
+						element={<ActionBulkInitiate />}
+					/>
+>>>>>>> 75e9332c5a0a1e4e751f9b6a8fb31bf79f2e1d62
 
 					{/* student-attendance */}
 					<Route
@@ -379,6 +410,45 @@ function App() {
 						element={<LibraryRecommandation />}
 					/>
 
+<<<<<<< HEAD
+=======
+
+					{/* EMPLOYEE */}
+					<Route
+						path={"employee/recruitment/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/information/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/manage/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/timetable/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/leave/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/action/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/appraisal/"}
+						element={<LibraryRecommandation />}
+					/>
+					<Route
+						path={"employee/claims&bonuses/"}
+						element={<ClaimsBonuses />}
+					/>
+
+
+>>>>>>> 75e9332c5a0a1e4e751f9b6a8fb31bf79f2e1d62
 					<Route path="*" element={<_404 />} />
 				</Route>
 
