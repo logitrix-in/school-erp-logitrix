@@ -1,0 +1,21 @@
+$scrollbar-thumb-color: #c8c8c8;
+$scrollbar-track-color: #f1f1f1;
+$scrollbar-width: 8px;
+$scrollbar-transition-duration: 0.3s;
+
+* {
+  scrollbar-width: $scrollbar-width;
+
+  &::-webkit-scrollbar {
+    width: $scrollbar-width;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: $scrollbar-thumb-color;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $scrollbar-track-color;
+  }
+}
