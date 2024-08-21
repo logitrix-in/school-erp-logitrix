@@ -67,7 +67,6 @@ import ManageSystemRequest from "./components/student/manage/SectionAllotment/Ma
 import ReviewPromotion from "./components/student/manage/SectionAllotment/ReviewPromotion";
 import Action from "./pages/student/Action";
 import Attendance from "./components/student/Attendance/Attendance";
-import ActionProceedNavigate from "./components/student/action/ActionProceedNavigate";
 import StudentAccount from "./components/student/manage/StudentAccount/StudentAccount";
 import IDCardPass from "./components/student/manage/IDCardPass/IDCardPass";
 import SectionAllotment from "./components/student/manage/SectionAllotment/SectionAllotment";
@@ -75,11 +74,9 @@ import Promotion from "./components/student/manage/Promotion/Promotion";
 import ClassView from "./components/student/Attendance/ClassView";
 import StudentView from "./components/student/Attendance/StudentView";
 import LongLeaveRequest from "./components/student/Attendance/LongLeaveRequest";
-import ActionIndividualInitiate from "./components/student/action/ActionIndividualInitiate";
-import ActionBulkInitiate from "./components/student/action/ActionBulkInitiate";
 import LibraryInformation from "./pages/Library/LibraryInformation";
-
 import OnBoardingDetails from "./components/student/manage/EditInformation/OnBoardingDetails";
+import ActionSuspend from "./components/student/action/ActionSuspend";
 import ClaimsBonuses from "./pages/employee/Claims&Bonuses";
 
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
@@ -334,21 +331,9 @@ function App() {
 
 					{/* student-action */}
 					<Route path={"student/action/"} element={<Action />} />
-					{/* action action tray */}
-					<Route
-						path={"/student/action/action-tray"}
-						element={<ActionProceedNavigate />}
-					/>
-					{/* action individual initiate */}
-					<Route
-						path={"/student/action/individual-initiate"}
-						element={<ActionIndividualInitiate />}
-					/>
-					{/* action bulk initiate */}
-					<Route
-						path={"/student/action/bulk-initiate"}
-						element={<ActionBulkInitiate />}
-					/>
+
+					<Route path={"/student/action/deliver/"} element={<ActionSuspend />} />
+
 
 					{/* student-attendance */}
 					<Route

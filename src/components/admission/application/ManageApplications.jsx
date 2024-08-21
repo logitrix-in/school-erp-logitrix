@@ -41,7 +41,7 @@ const ManageApplications = () => {
           })
         );
       })
-      .catch((err) => { });
+      .catch((err) => {});
   }
   useEffect(() => {
     fetchData();
@@ -54,6 +54,7 @@ const ManageApplications = () => {
     end_date: new Date(dayjs().add(7, "day")).toLocaleDateString("en-CA"),
   });
 
+  useEffect(() => {}, [openDates]);
   useEffect(() => { }, [openDates]);
 
   // close all
@@ -62,6 +63,7 @@ const ManageApplications = () => {
     new Date(dayjs().add(1, "day")).toLocaleDateString("en-CA")
   );
 
+  useEffect(() => {}, [closeDate]);
   useEffect(() => { }, [closeDate]);
 
   return (
