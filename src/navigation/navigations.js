@@ -104,8 +104,6 @@ export const navigations = [
 		],
 	},
 	{
-<<<<<<< HEAD
-=======
 		name: "Employee",
 		path: "employee/",
 		icon: "solar:library-bold-duotone",
@@ -154,7 +152,6 @@ export const navigations = [
 		],
 	},
 	{
->>>>>>> 75e9332c5a0a1e4e751f9b6a8fb31bf79f2e1d62
 		name: "Utilities",
 		path: "utilities/",
 		icon: "solar:document-bold",
