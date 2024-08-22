@@ -9,11 +9,11 @@ import {
     Typography,
     Select,
     FormControl,
+    Autocomplete,
     MenuItem
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { ToastContainer, toast } from "react-toastify";
-
 
 const Raise = ({ open, close }) => {
     const [value, setValue] = React.useState(0);
@@ -23,12 +23,15 @@ const Raise = ({ open, close }) => {
         setValue(newValue);
     };
 
+    const names = ["Amartya Ghosh (EMP1234)", "Rajesh Kumar (EMP1235)", "Shubham Sharma (EMP1236)", "Rajesh Kumar (EMP1235)", "Shubham Sharma (EMP1236)"];
+
     return (
         <Dialog
-            fullWidth
+            fullWidth={false}
             PaperProps={{
                 sx: {
-                    maxHeight: "100%",
+                    maxHeight: "90%",
+                    width: "50%",
                 },
             }}
             maxWidth="lg"
@@ -60,7 +63,7 @@ const Raise = ({ open, close }) => {
                     </IconButton>
                 </Box>
 
-                <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"75%"} margin="auto" alignItems="center">
+                <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"95%"} margin="auto" alignItems="center">
                     <Box display="flex" justifyContent="space-between" width="100%" alignItems="center">
 
                         <FormControl sx={{ width: "48%" }}>
@@ -78,21 +81,19 @@ const Raise = ({ open, close }) => {
                             </Select>
                         </FormControl>
 
-                        <FormControl sx={{ width: "48%" }}>
-                            <InputLabel id="employee-name">Employee Name</InputLabel>
-                            <Select
-                                labelId="employee-name"
-                                id="employee-name"
-                                label="Employee Name"
-                                placeholder="Enter Employee Name"
-                            // value={'age'}
-                            // onChange={handleChange}
-                            >
-                                <MenuItem value={"emp1234"}>Amartya Ghosh (EMP1234)</MenuItem>
-                                <MenuItem value={"emp1235"}>Rajesh Kumar (EMP1235)</MenuItem>
-                            </Select>
-                        </FormControl>
-
+                        <Autocomplete
+                            options={names}
+                            filterSelectedOptions
+                            freeSolo={false}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Employee Name"
+                                    placeholder="Select Employee(s)"
+                                />
+                            )}
+                            sx={{ width: "48%" }}
+                        />
                     </Box>
 
                     <Box display="flex" justifyContent="space-between" width="100%" alignItems="center">
@@ -108,8 +109,8 @@ const Raise = ({ open, close }) => {
                         />
 
                         <Box sx={{ width: "48%" }}>
-                            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                <Typography>Supporting Document :</Typography>
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                                <Typography>Supporting Document</Typography>
 
                                 <input
                                     type="file"
@@ -118,8 +119,8 @@ const Raise = ({ open, close }) => {
                                 // onChange={handleFileChange}
                                 />
 
-                                <InputLabel htmlFor="claim-doc">
-                                    <Button variant="contained" color="primary" component="span">Upload</Button>
+                                <InputLabel htmlFor="claim-doc" sx={{ marginLeft: "12px" }}>
+                                    <Button variant="contained" color="primary" component="span" sx={{ padding: "6px 32px" }}>Upload</Button>
                                 </InputLabel>
                             </Box>
 
