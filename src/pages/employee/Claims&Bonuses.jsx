@@ -77,7 +77,7 @@ const ClaimsBonuses = () => {
     },
     {
       field: "id", headerName: "Claim ID",
-      width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 110 : isSmall ? 70 : 90,
+      flex: 1,
       renderCell: (params) => (
         <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setClaimIDPopup(true)}>
           {params.value}
@@ -86,23 +86,11 @@ const ClaimsBonuses = () => {
     },
     {
       field: "claim_type", headerName: "Claim Request Type",
-      width: isLaptop
-        ? 120
-        : isLarge
-          ? 150
-          : isTablet
-            ? 170
-            : isSmall
-              ? 120
-              : 140,
+      flex: 2,
     },
     {
       field: "employee_name", headerName: "Employee Name",
-      width: isLaptop ? 140
-        : isLarge ? 160
-          : isTablet ? 180
-            : isSmall ? 150
-              : 170,
+      flex: 2,
       renderCell: (params) => (
         <Typography>
           {params.value.name}{' '}
@@ -117,22 +105,14 @@ const ClaimsBonuses = () => {
     },
     {
       field: "claim_raised_on", headerName: "Claim Raised on",
-      width: isLaptop ? 100
-        : isLarge ? 110
-          : isTablet ? 120
-            : isSmall ? 100
-              : 140,
+      flex: 1,
     },
     {
       field: "claim_amount", headerName: "Claim Amount",
-      width: isLaptop ? 100
-        : isLarge ? 110
-          : isTablet ? 120
-            : isSmall ? 100
-              : 140,
+      flex: 1,
     },
     {
-      field: "claim_status", headerName: "Claim Status", width: isLaptop ? 80 : isLarge ? 100 : isTablet ? 100 : isSmall ? 80 : 100, renderCell: (params) => (
+      field: "claim_status", headerName: "Claim Status", flex: 1, renderCell: (params) => (
         <Box
           style={{
             backgroundColor:
@@ -165,20 +145,8 @@ const ClaimsBonuses = () => {
       ),
     },
     {
-      field: "actioned_by", headerName: "Actioned By",
-      width: isLaptop
-        ? 120
-        : isLarge
-          ? 150
-          : isTablet
-            ? 170
-            : isSmall
-              ? 120
-              : 140,
-    },
-    {
       field: "attachment", headerName: "Attachment",
-      width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 110 : isSmall ? 70 : 90,
+      flex: 1,
       renderCell: (params) => (
         <Box
           style={{
@@ -204,7 +172,6 @@ const ClaimsBonuses = () => {
       claim_raised_on: "4 Jul 2024",
       claim_amount: "₹ 2500",
       claim_status: "Approved",
-      actioned_by: "Topesh Mata(CBH9890)",
       attachment: true,
     },
     {
@@ -217,7 +184,6 @@ const ClaimsBonuses = () => {
       claim_raised_on: "4 Jul 2024",
       claim_amount: "₹ 2500",
       claim_status: "Rejected",
-      actioned_by: "Topesh Mata(CBH9890)",
       attachment: true,
     },
     {
@@ -230,7 +196,6 @@ const ClaimsBonuses = () => {
       claim_raised_on: "4 Jul 2024",
       claim_amount: "₹ 2500",
       claim_status: "Pending",
-      actioned_by: "Topesh Mata(CBH9890)",
       attachment: true,
     },
     {
@@ -243,7 +208,6 @@ const ClaimsBonuses = () => {
       claim_raised_on: "4 Jul 2024",
       claim_amount: "₹ 2500",
       claim_status: "Approved",
-      actioned_by: "Topesh Mata(CBH9890)",
       attachment: true,
     }
   ];
