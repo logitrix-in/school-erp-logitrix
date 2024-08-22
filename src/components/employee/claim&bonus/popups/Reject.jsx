@@ -24,10 +24,11 @@ const Reject = ({ open, close }) => {
 
     return (
         <Dialog
-            fullWidth
+            fullWidth={false}
             PaperProps={{
                 sx: {
-                    maxHeight: "100%",
+                    maxHeight: "90%",
+                    width: "50%",
                 },
             }}
             maxWidth="lg"
@@ -59,7 +60,7 @@ const Reject = ({ open, close }) => {
                     </IconButton>
                 </Box>
 
-                <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"75%"} margin="auto" alignItems="center">
+                <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"95%"} margin="auto" alignItems="center">
                     <Box display="flex" justifyContent="center" width="100%" alignItems="center">
                         <Box display="flex" gap={2} width="48%" justifyContent="center">
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
@@ -86,11 +87,11 @@ const Reject = ({ open, close }) => {
                             </Box>
                         </Box>
                     </Box>
-                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to approve the claim(s)?</Typography>
+
 
                     <TextField
                         id="comments"
-                        label="Reason for Rejection"
+                        label="Enter Reason for Rejection"
                         placeholder="Use this field to record any additional information which could be considered for the subsequent steps."
                         // value={comments}
                         // onChange={(e) => setComments(e.target.value)}
@@ -101,11 +102,17 @@ const Reject = ({ open, close }) => {
 
                     />
 
-                    <Box marginY={4} width={"100%"}>
+                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to reject the claim(s)?</Typography>
+
+                    <Box marginY={2} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="secondary" fullWidth onClick={() => {
                             toast.success("Updated Successfully");
                             close();
-                        }}>Submit</Button>
+                        }}>Yes</Button>
+                        <Button variant="outlined" color="secondary" fullWidth onClick={() => {
+                            toast.success("Updated Successfully");
+                            close();
+                        }}>No</Button>
                     </Box>
                 </Box>
             </Box >

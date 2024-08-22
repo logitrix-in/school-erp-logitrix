@@ -81,6 +81,7 @@ import LibraryInformation from "./pages/Library/LibraryInformation";
 
 import OnBoardingDetails from "./components/student/manage/EditInformation/OnBoardingDetails";
 import ClaimsBonuses from "./pages/employee/Claims&Bonuses";
+import Appraisal from "./pages/employee/Appraisal";
 
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
 const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
@@ -422,7 +423,7 @@ function App() {
 					/>
 					<Route
 						path={"employee/appraisal/"}
-						element={<LibraryRecommandation />}
+						element={<Appraisal />}
 					/>
 					<Route
 						path={"employee/claims&bonuses/"}
