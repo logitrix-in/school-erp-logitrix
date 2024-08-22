@@ -38,62 +38,35 @@ export default function Bonus() {
 
     const columns = [
         {
-            field: "bonus_head_name", headerName: "Bonus Head Name", width: isLaptop
-                ? 120
-                : isLarge
-                    ? 150
-                    : isTablet
-                        ? 170
-                        : isSmall
-                            ? 120
-                            : 140,
+            field: "space",
+            headerName: "",
+            flex: 0.2,
         },
         {
-            field: "period", headerName: "Period", width: isLaptop
-                ? 120
-                : isLarge
-                    ? 150
-                    : isTablet
-                        ? 170
-                        : isSmall
-                            ? 120
-                            : 140,
+            field: "bonus_head_name", headerName: "Bonus Head Name", flex: 1,
         },
         {
-            field: "bonus_amount", headerName: "Bonus Amount", width: isLaptop
-                ? 300
-                : isLarge
-                    ? 350
-                    : isTablet
-                        ? 370
-                        : isSmall
-                            ? 320
-                            : 340, renderCell: (params) => {
-                                return (
-                                    <Box display={"grid"} gridTemplateColumns={"repeat(2, 1fr)"} gap={2}>
-                                        {Object.entries(params.value).map(([key, value]) => (
-                                            <Box key={key} display={"flex"} alignItems={"center"} justifyContent={"space-between"} borderRadius={10} bgcolor={"#FEF7FF"} sx={{ paddingX: "10px", paddingY: "4px" }}>
-                                                <Typography fontSize={"0.8rem"}>{key}: {value}</Typography>
-                                                <CloseIcon />
-                                            </Box>
-                                        ))}
-                                    </Box>
-                                );
-                            }
+            field: "period", headerName: "Period", flex: 1,
         },
         {
-            field: "tds_applicable", headerName: "TDS Applicable", width: isLaptop
-                ? 120
-                : isLarge
-                    ? 150
-                    : isTablet
-                        ? 170
-                        : isSmall
-                            ? 120
-                            : 140,
+            field: "bonus_amount", headerName: "Bonus Amount", flex: 2, renderCell: (params) => {
+                return (
+                    <Box display={"grid"} gridTemplateColumns={"repeat(2, 1fr)"} gap={2}>
+                        {Object.entries(params.value).map(([key, value]) => (
+                            <Box key={key} display={"flex"} alignItems={"center"} justifyContent={"space-between"} borderRadius={10} bgcolor={"#E5E5E5"} sx={{ paddingLeft: "12px", paddingRight: "8px", paddingY: "4px" }}>
+                                <Typography fontSize={"0.8rem"}>{key}: {value}</Typography>
+                                <CloseIcon sx={{ backgroundColor: "#BBB0B0", color: "white", borderRadius: "50%", padding: "2px", marginLeft: "4px" }} cursor={"pointer"} />
+                            </Box>
+                        ))}
+                    </Box>
+                );
+            }
         },
         {
-            field: "elligiblity_criteria", headerName: "Elligibility Criteria", flex: 1, renderCell: (params) => {
+            field: "tds_applicable", headerName: "TDS Applicable", flex: 1,
+        },
+        {
+            field: "elligiblity_criteria", headerName: "Elligibility Criteria", flex: 1.5, renderCell: (params) => {
                 return (
                     <Box>
                         {Object.entries(params.value).map(([key, value]) => (
@@ -161,7 +134,6 @@ export default function Bonus() {
                                 rows={rows}
                                 columns={columns}
                                 rowHeight={100}
-                                paddingX={10}
                                 initialState={{
                                     pagination: {
                                         paginationModel: { page: 0, pageSize: 5 },
