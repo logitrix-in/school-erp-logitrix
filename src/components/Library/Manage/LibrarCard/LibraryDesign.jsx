@@ -10,6 +10,7 @@ import LibraryCard2Front from "@/assets/cards/lib cards/Library Card-2.jpg";
 import LibraryCard3Front from "@/assets/cards/lib cards/Library Card-3.jpg";
 import LibraryCard4Front from "@/assets/cards/lib cards/Library Card-4.jpg";
 import LibraryCard5Front from "@/assets/cards/lib cards/Library Card-5.jpg";
+
 import LibraryCard1Back from "@/assets/cards/lib cards/Back-1.jpg";
 import LibraryCard2Back from "@/assets/cards/lib cards/Back-2.jpg";
 import LibraryCard3Back from "@/assets/cards/lib cards/Back-3.jpg";
