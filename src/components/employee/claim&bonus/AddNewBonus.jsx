@@ -33,7 +33,7 @@ const AddNewBonus = ({ open, close }) => {
             PaperProps={{
                 sx: {
                     maxHeight: "90%",
-                    width: "70%",
+                    width: "60%",
                 },
             }}
             maxWidth="lg"

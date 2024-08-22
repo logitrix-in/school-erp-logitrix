@@ -24,7 +24,7 @@ import Approve from "../../components/employee/claim&bonus/popups/Approve";
 import Reject from "../../components/employee/claim&bonus/popups/Reject";
 import Raise from "../../components/employee/claim&bonus/popups/Raise";
 import ClaimID from "../../components/employee/claim&bonus/popups/ClaimID";
-import AddNewBonus from "../../components/employee/claim&bonus/AddNewBonus";
+import Bonus from "../../components/employee/claim&bonus/Bonus";
 import { useNavigate } from "react-router-dom";
 
 const ClaimsBonuses = () => {
@@ -46,13 +46,11 @@ const ClaimsBonuses = () => {
   const isLarge = useMediaQuery("(min-width: 1920px)");
   const isXlarge = useMediaQuery("(min-width: 2560px)");
 
-
   const [approvePopup, setApprovePopup] = useState(false);
   const [rejectPopup, setRejectPopup] = useState(false);
   const [downloadPopup, setDownloadPopup] = useState(false);
   const [raisePopup, setRaisePopup] = useState(false);
   const [claimIDPopup, setClaimIDPopup] = useState(false);
-  const [addNewBonusPopup, setAddNewBonusPopup] = useState(false);
   const [tab, setTab] = useState("claims");
   const navigate = useNavigate();
 
@@ -419,31 +417,7 @@ const ClaimsBonuses = () => {
         </RevealCard>
       ) : (
         <>
-          <Typography>Bonuses</Typography>
-          <RevealCard>
-            <Bbox borderRadius={2} overflow={"hidden"}>
-              <Box
-                bgcolor={"white"}
-                py={1.3}
-                px={3}
-                borderRadius={2}
-                display={"flex"}
-                justifyContent={"space-between"}
-                alignItems={"center"}
-              >
-                <Typography fontWeight={"700"} borderRadius={1} fontSize={"1.1rem"}>
-                  Active Bonuses
-                </Typography>
-              </Box>
-
-              <Divider />
-
-              <Box>
-
-              </Box>
-            </Bbox>
-          </RevealCard>
-          <AddNewBonus open={addNewBonusPopup} close={() => setAddNewBonusPopup(false)} />
+          <Bonus />
         </>
       )}
     </>
