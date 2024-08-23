@@ -923,6 +923,17 @@ const AttendanceOverview = () => {
             </Grid>
           </Grid>
         </Box>
+
+            {/* Set Attendance Criteria button */}
+      <Box display={"flex"} justifyContent={"center"} mt={7} mb={3}>
+        <Button
+          variant="contained"
+          sx={{ width: "766px" }}
+          onClick={() => setShowDialog(true)}
+        >
+          Set Attendance Criteria
+        </Button>
+      </Box>
       </Bbox>
 
       <Bbox borderRadius={1} flex={2} width={"100%"}>
@@ -934,17 +945,6 @@ const AttendanceOverview = () => {
           />
         )}
       </Bbox>
-
-      {/* Set Attendance Criteria button */}
-      <Box display={"flex"} justifyContent={"center"} mt={7} mb={3}>
-        <Button
-          variant="contained"
-          sx={{ width: "766px" }}
-          onClick={() => setShowDialog(true)}
-        >
-          Set Attendance Criteria
-        </Button>
-      </Box>
     </RevealCard>
   );
 };
