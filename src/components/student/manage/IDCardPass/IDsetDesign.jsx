@@ -199,7 +199,7 @@ const IDsetDesign = () => {
                   alt="Library Card"
                   style={{
                     width: "520px",
-                    height: "300px",
+                    height: "700px",
                     margin: "0 auto",
                     display: "block",
                   }}

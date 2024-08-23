@@ -68,7 +68,7 @@ const Manage = () => {
             }}
             onClick={() => navigate("/student/manage/id-card-pass/")}
           >
-            ID Card / Pass
+            Card / Pass
           </button>
 
           <button

@@ -21,9 +21,13 @@ import { useMediaQuery } from "@material-ui/core";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import IDCard from "../../../../assets/cards/IDCard.png";
+import IDCardBack from "../../../../assets/cards/IDCardBack.png";
 import GuardianCard from "../../../../assets/cards/GuardianCard.png";
+import GuardianCardBack from "../../../../assets/cards/GuardianCardBack.png";
+import GuestPass from "../../../../assets/cards/GuestPass.png";
 import EventPass from "../../../../assets/cards/EventPass.png";
 import LibraryCard from "../../../../assets/cards/LibraryCard.png";
+import LibraryCardBack from "../../../../assets/cards/LibraryCardBack.png";
 import { DataGrid } from "@mui/x-data-grid";
 
 const IDbulk = () => {
@@ -234,6 +238,8 @@ const IDbulk = () => {
     },
   ];
 
+  const [flip, setFlip] = useState(false);
+
   return (
     <RevealCard>
       <ToastContainer />
@@ -269,7 +275,7 @@ const IDbulk = () => {
         flex={0}
         py={4}
         display="flex"
-        flexDirection="column"
+        flexDirection="row"
         gap="1.6rem"
         bgcolor="white"
       >
@@ -572,55 +578,132 @@ const IDbulk = () => {
         <Box>
           {/* id card */}
           {selectedValue === "ID Card" && (
-            <img
-              src={IDCard}
-              alt="ID Card"
-              style={{
-                width: "420px",
-                height: "220px",
-                display: "block",
-                margin: "3rem",
+            <Box
+              onClick={() => {
+                setFlip(!flip);
               }}
-            />
+            >
+              {!flip ? (
+                <img
+                  src={IDCard}
+                  alt="ID Card"
+                  style={{
+                    width: "420px",
+                    height: "220px",
+                    display: "block",
+                    margin: "3rem",
+                  }}
+                />
+              ) : (
+                <img
+                  src={IDCardBack}
+                  alt="ID Card Back"
+                  style={{
+                    width: "420px",
+                    height: "220px",
+                    display: "block",
+                    margin: "3rem",
+                  }}
+                />
+              )}
+            </Box>
           )}
           {/* parent's card */}
           {selectedValue === "Parent's Card" && (
-            <img
-              src={GuardianCard}
-              alt="ID Card"
-              style={{
-                width: "420px",
-                height: "220px",
-                display: "block",
-                margin: "3rem",
-              }}
-            />
+            <Box
+            onClick={() => {
+              setFlip(!flip);
+            }}
+          >
+            {!flip ? (
+              <img
+                src={GuardianCard}
+                alt="Guardian Card"
+                style={{
+                  width: "420px",
+                  height: "220px",
+                  display: "block",
+                  margin: "3rem",
+                }}
+              />
+            ) : (
+              <img
+                src={GuardianCardBack}
+                alt="Guardian Card Back"
+                style={{
+                  width: "420px",
+                  height: "220px",
+                  display: "block",
+                  margin: "3rem",
+                }}
+              />
+            )}
+          </Box>
           )}
           {/* guardian's card */}
           {selectedValue === "Local Guardian's Card" && (
-            <img
-              src={GuardianCard}
-              alt="ID Card"
-              style={{
-                width: "420px",
-                height: "220px",
-                display: "block",
-                margin: "3rem",
-              }}
-            />
+            <Box
+            onClick={() => {
+              setFlip(!flip);
+            }}
+          >
+            {!flip ? (
+              <img
+                src={GuardianCard}
+                alt="Guardian Card"
+                style={{
+                  width: "420px",
+                  height: "220px",
+                  display: "block",
+                  margin: "3rem",
+                }}
+              />
+            ) : (
+              <img
+                src={GuardianCardBack}
+                alt="Guardian Card Back"
+                style={{
+                  width: "420px",
+                  height: "220px",
+                  display: "block",
+                  margin: "3rem",
+                }}
+              />
+            )}
+          </Box>
           )}
           {/* library card */}
           {selectedValue === "Library Card" && (
-            <img
-              src={LibraryCard}
-              alt="ID Card"
-              style={{
-                width: "200px",
-                height: "260px",
-                display: "block",
-                margin: "2rem 7rem",
-              }}
-            />
+           <Box
+           onClick={() => {
+             setFlip(!flip);
+           }}
+           sx={{height: "500px"}}
+         >
+           {!flip ? (
+             <img
+               src={LibraryCard}
+               alt="Library Card"
+               style={{
+                 width: "400px",
+                 height: "450px",
+                 display: "block",
+                 margin: "3rem",
+               }}
+             />
+           ) : (
+             <img
+               src={LibraryCardBack}
+               alt="Library Card Back"
+               style={{
+                 width: "400px",
+                 height: "450px",
+                 display: "block",
+                 margin: "3rem",
+               }}
+             />
+           )}
+         </Box>
           )}
           {/* event pass */}
           {selectedValue === "Event Pass" && (

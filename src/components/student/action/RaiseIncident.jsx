@@ -14,6 +14,7 @@ import {
   ListItemIcon,
   Checkbox,
   ListItemText,
+  IconButton,
 } from "@mui/material";
 import { CheckBox, Search } from "@mui/icons-material";
 import { useMediaQuery } from "@material-ui/core";
@@ -46,11 +47,7 @@ const RaiseIncident = () => {
   const [isChecked, setIsChecked] = useState(true);
   const [modeSwitch, setModeSwitch] = useState(true);
 
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-  };
-
-  const handleProceed = () => {    
+  const handleProceed = () => {
     return <ActionSuspend />;
   };
 
@@ -247,6 +244,26 @@ const RaiseIncident = () => {
     },
   ];
 
+  const [checkboxState, setCheckboxState] = useState({});
+
+  const handleCheckboxChange = (id, field) => {
+    setCheckboxState((prevState) => ({
+      ...prevState,
+      [id]: {
+        ...prevState[id],
+        [field]: !prevState[id]?.[field],
+      },
+    }));
+  };
+
+  const handleSelectAll = (field, checked) => {
+    const newState = {};
+    rows2.forEach((row) => {
+      newState[row.id] = { ...checkboxState[row.id], [field]: checked };
+    });
+    setCheckboxState(newState);
+  };
+
   const columns2 = [
     { field: "space", headerName: "", width: 50 },
     {
@@ -276,13 +293,12 @@ const RaiseIncident = () => {
         ? 100
         : 140,
     },
-    { field: "space", headerName: "", width: 50 },
     {
       field: "class",
       headerName: "Class",
       width: isLaptop ? 50 : isLarge ? 90 : isTablet ? 110 : isSmall ? 60 : 70,
     },
-    { field: "space", headerName: "", width: 50 },
+    {field: "space", headerName: "", width: 50},
     {
       field: "section",
       headerName: "Section",
@@ -296,13 +312,14 @@ const RaiseIncident = () => {
         ? 70
         : 100,
     },
-    { field: "space", headerName: "", width: 50 },
+    {field: "space", headerName: "", width: 50},
+
     {
       field: "roll",
       headerName: "Roll #",
       width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 110 : isSmall ? 70 : 90,
     },
-    { field: "space", headerName: "", width: 50 },
+    {field: "space", headerName: "", width: 50},
     {
       field: "status",
       headerName: "Status",
@@ -350,32 +367,53 @@ const RaiseIncident = () => {
     },
 
     {
-      field: "suspend",
+      field: 'suspend',
       headerName: (
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <CheckBox checked={isChecked} onChange={handleCheckboxChange} />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Checkbox
+            checked={Object.values(checkboxState).every((row) => row?.suspend)}
+            onChange={(e) => handleSelectAll('suspend', e.target.checked)}
+          />
           Suspend
         </div>
       ),
-      renderCell: (params) => <CheckBox />,
+      width: 150,
+      renderCell: (params) => (
+        <Checkbox
+          checked={checkboxState[params.row.id]?.suspend || false}
+          onChange={() => handleCheckboxChange(params.row.id, 'suspend')}
+        />
+      ),
     },
     {
-      field: "penalty",
+      field: 'penalty',
       headerName: (
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <CheckBox checked={isChecked} onChange={handleCheckboxChange} />
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Checkbox
+            checked={Object.values(checkboxState).every((row) => row?.penalty)}
+            onChange={(e) => handleSelectAll('penalty', e.target.checked)}
+          />
           Impose Penalty
         </div>
       ),
-      width: 130,
-      renderCell: (params) => <CheckBox />,
+      width: 150,
+      renderCell: (params) => (
+        <Checkbox
+          checked={checkboxState[params.row.id]?.penalty || false}
+          onChange={() => handleCheckboxChange(params.row.id, 'penalty')}
+        />
+      ),
     },
     { field: "space", headerName: "", width: 50 },
     {
       field: "delete",
       headerName: "",
       width: 100,
-      renderCell: (params) => <DeleteIcon />,
+      renderCell: (params) => (
+        <IconButton>
+          <DeleteIcon />
+        </IconButton>
+      ),
     },
   ];
 
@@ -605,14 +643,29 @@ const RaiseIncident = () => {
             </Box>
           ) : (
             <Box display={"flex"}>
-              <ReignsSelect items={classes} multiple label="Class" sx={{width: "15rem", marginRight: "2rem"}}/>
-              <ReignsSelect items={sections} multiple label="Section" sx={{width: "15rem", marginRight: "2rem"}}/>
-              <ReignsSelect items={roll} multiple label="Roll#" sx={{width: "15rem", marginRight: "2rem"}}/>
+              <ReignsSelect
+                items={classes}
+                multiple
+                label="Class"
+                sx={{ width: "15rem", marginRight: "2rem" }}
+              />
+              <ReignsSelect
+                items={sections}
+                multiple
+                label="Section"
+                sx={{ width: "15rem", marginRight: "2rem" }}
+              />
+              <ReignsSelect
+                items={roll}
+                multiple
+                label="Roll#"
+                sx={{ width: "15rem", marginRight: "2rem" }}
+              />
             </Box>
           )}
 
           <Box flex={1} />
-          
+
           {modeSwitch ? (
             <Button
               variant="contained"
@@ -723,6 +776,31 @@ const RaiseIncident = () => {
           </Button>
         </Box>
 
+        <Box style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Box
+          mt={2}
+          mr={2}
+          style={{
+            backgroundColor: "#E1EEFB",
+            border: "1px solid #3381A5",
+            borderRadius: "16px",
+            width: 107,
+            height: 25,
+            padding: "3.7px 14px",
+          }}
+        >
+          <Typography
+            style={{
+              fontSize: "10px",
+              fontWeight: "400",
+              color: "#3381A5",
+            }}
+          >
+            {rows2.length} Results found
+          </Typography>
+        </Box>
+      </Box>
+
         <Box mt={2} mb={5} style={{ height: "100%" }}>
           <DataGrid
             rows={rows2}
@@ -739,7 +817,7 @@ const RaiseIncident = () => {
         <Box mt={4} mb={7} display="flex" justifyContent="flex-end">
           <Button
             variant="contained"
-            onClick={()=>navigate("/student/action/deliver/")}
+            onClick={() => navigate("/student/action/deliver/")}
             sx={{ marginRight: "10px", width: "120px" }}
           >
             Proceed

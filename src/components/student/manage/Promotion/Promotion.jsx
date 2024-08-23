@@ -143,7 +143,11 @@ const Promotion = () => {
             <span style={{ color: "#B72020" }}>{params.value}</span>
           ),
         },
-        { field: "promotion", headerName: "Promotion %", width: isTablet ? 150 : 100 },
+        {
+          field: "promotion",
+          headerName: "Promotion %",
+          width: isTablet ? 150 : 100,
+        },
       ];
 
       setRows(updatedRows);
@@ -160,6 +164,8 @@ const Promotion = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+
+  const [promotionstatus, setPromotionStatus] = useState("");
 
   // table 2 columns
   const columns2 = [
@@ -273,7 +279,7 @@ const Promotion = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/")}
+            onClick={() => navigate("/student/manage/edit-information/")}
           >
             Edit Information
           </button>
@@ -309,7 +315,7 @@ const Promotion = () => {
             }}
             onClick={() => navigate("/student/manage/id-card-pass/")}
           >
-            ID Card / Pass
+            Card / Pass
           </button>
 
           <button
@@ -526,7 +532,8 @@ const Promotion = () => {
             style={{ width: "550px" }}
             disabled={selectedRow === null}
           >
-            Promote
+            {/* {promotionstatus === 'Promoted' ? 'Cancel Promotion' : 'Promote'} */}
+            Promote / Cancel Promotion
           </Button>
         </Box>
       </Bbox>

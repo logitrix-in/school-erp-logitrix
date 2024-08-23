@@ -51,7 +51,7 @@ const IDCardPass = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/")}
+            onClick={() => navigate("/student/manage/edit-information/")}
           >
             Edit Information
           </button>
@@ -87,7 +87,7 @@ const IDCardPass = () => {
             }}
             onClick={() => navigate("/student/manage/id-card-pass/")}
           >
-            ID Card / Pass
+            Card / Pass
           </button>
 
           <button

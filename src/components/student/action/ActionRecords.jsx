@@ -100,8 +100,8 @@ const ActionRecords = () => {
               key={index}
               variant="body2"
               sx={{
-                backgroundColor: "#C4673B",
-                color: "#FFFFFF",
+                backgroundColor: "#e8def8",
+                color: "black",
                 padding: "2px 4px",
                 borderRadius: "4px",
               }}
