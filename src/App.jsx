@@ -288,7 +288,7 @@ function App() {
 
 					{/* student > manage */}
 					{/* student-manage (edit information) */}
-					<Route path={"/student/manage/"} element={<Manage />} />
+					<Route path={"/student/manage/edit-information"} element={<Manage />} />
 					{/* student-manage (student account) */}
 					<Route
 						path="/student/manage/student-account/"

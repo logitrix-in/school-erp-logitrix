@@ -437,6 +437,28 @@ const ManageSystemRequest = () => {
               </Typography>
             </Box>
 
+            <Box
+              mt={2}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              {/* checkbox */}
+              <Checkbox
+                checked={isChecked}
+                onChange={(event) => setIsChecked(event.target.checked)}
+                color="primary"
+                style={{ fontSize: 16 }}
+              />
+
+              {/* text */}
+              <Typography fontSize={"14px"} fontWeight={"400"}>
+                Only select students who have not received their selection letter yet.
+              </Typography>
+            </Box>
+
             {/* min max % input and submit button */}
             <Box
               mt={3.6}
@@ -498,7 +520,7 @@ const ManageSystemRequest = () => {
 
         {/* Total number of results found */}
         <Box
-          mt={8}
+          mt={2}
           mr={3}
           style={{
             backgroundColor: "#E1EEFB",

@@ -774,7 +774,7 @@ const StudentDashboard = () => {
                         : isSmall
                         ? "38%"
                         : "37%",
-                      transform: "translate(-50%, -50%)",
+                      transform: "translate(-70%, -70%)",
                       fontSize: "16px",
                       fontWeight: "500",
                       color: "black",
@@ -1253,7 +1253,7 @@ const StudentDashboard = () => {
                         : isSmall
                         ? "38%"
                         : "37%",
-                      transform: "translate(-50%, -50%)",
+                      transform: "translate(-70%, -60%)",
                       fontSize: "16px",
                       fontWeight: "500",
                       color: "black",

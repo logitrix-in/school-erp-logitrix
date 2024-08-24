@@ -158,7 +158,7 @@ const ActionSuspend = () => {
         sx={{
           marginTop: "2",
           width: "100%",
-          height: extendedView ? "1200px" : "1000px",
+          height: progress === 1 ? (multiple ? (extendedView ? "1100px" : "780px") : "780px") : (progress === 2 ? (multiple ? (extendedView ? "1300px" : "1000px") : "1000px") : "0px"),
           borderRadius: 2,
           overflow: "hidden",
         }}

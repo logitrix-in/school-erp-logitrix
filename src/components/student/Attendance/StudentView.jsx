@@ -307,6 +307,81 @@ const StudentView = () => {
     },
   ];
 
+  const carouselData = [
+    {
+      key: "1",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+    {
+      key: "2",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+    {
+      key: "3",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+    {
+      key: "4",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+    {
+      key: "5",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+    {
+      key: "6",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+    {
+      key: "7",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+    {
+      key: "8",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+    {
+      key: "9",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+    {
+      key: "10",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+    {
+      key: "11",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+    {
+      key: "12",
+      content: (
+        <Calendar onChange={setValue} value={value} className="calendar" />
+      ),
+    },
+  ];
+
   return (
     <RevealCard>
       <Bbox

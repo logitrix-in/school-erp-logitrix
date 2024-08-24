@@ -93,7 +93,7 @@ const ManageStreamRequest = () => {
         <Box mt={4} ml={3} display="flex" flexDirection="row">
           {/* Set Stream Eligibility button */}
           <Button variant="outlined" onClick={handleOpenDialog}>
-            Set Stream Eligibility
+            Set Stream Eligibility for Admission
           </Button>
 
           {/* Download Stream Preference List button */}
@@ -122,7 +122,7 @@ const ManageStreamRequest = () => {
               marginLeft: "15px",
             }}
           >
-            Dashboard
+            Dashboard - Existing Students
           </Typography>
 
           {/* stream selection dropdown */}
@@ -176,7 +176,7 @@ const ManageStreamRequest = () => {
                   0/100
                 </Typography>
                 <Typography fontSize={"20px"} fontWeight={"700"} color={"#FFF"}>
-                  Confirmed Seats
+                  Confirmed Seats (Science)
                 </Typography>
               </Box>
 
@@ -289,7 +289,7 @@ const ManageStreamRequest = () => {
                 )
               }
             >
-              Rationalise
+              Rationalise Seats for Existing Students
             </Button>
 
             {/* Allocate Seat for External Admission button */}
@@ -306,7 +306,7 @@ const ManageStreamRequest = () => {
                 },
               }}
             >
-              Allocate Seat for External Admission
+              Allocate Seats for External Admission
             </Button>
           </Box>
         </Box>

@@ -198,7 +198,7 @@ const SectionAllotment = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/")}
+            onClick={() => navigate("/student/manage/edit-information/")}
           >
             Edit Information
           </button>
@@ -234,7 +234,7 @@ const SectionAllotment = () => {
             }}
             onClick={() => navigate("/student/manage/id-card-pass/")}
           >
-            ID Card / Pass
+            Card / Pass
           </button>
 
           <button
@@ -321,15 +321,6 @@ const SectionAllotment = () => {
 
           {/* buttons */}
           <Box mt={2} display="flex" flexDirection="row">
-            {/* preview button */}
-            <Button
-              variant="outlined"
-              sx={{
-                marginRight: "30px",
-              }}
-            >
-              Preview
-            </Button>
 
             {/* strength allocation button */}
             <Button variant="outlined" onClick={handleOpenDialog}>
@@ -606,25 +597,8 @@ const SectionAllotment = () => {
           mr={3}
           mb={5}
           display="flex"
-          justifyContent="space-between"
+          justifyContent="center"
         >
-          {/* Map Section to Stream button */}
-          <Button
-            variant="contained"
-            style={{
-              width: isLaptop
-                ? "35rem"
-                : isLarge
-                ? "47rem"
-                : isTablet
-                ? "31rem"
-                : isSmall
-                ? "25rem"
-                : "41rem",
-            }}
-          >
-            Map Section to Stream (Class XI & XII)
-          </Button>
 
           {/* Manage Stream Request button */}
           <Button
@@ -646,7 +620,7 @@ const SectionAllotment = () => {
               )
             }
           >
-            Manage Stream Request (Class X)
+            Manage Stream Request (Class XI)
           </Button>
         </Box>
 
