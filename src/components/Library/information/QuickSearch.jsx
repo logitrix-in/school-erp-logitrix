@@ -6,8 +6,10 @@ import {
 	Stack,
 	InputBase,
 	Typography,
+	TextField,
 	Badge,
 	Chip,
+	Autocomplete,
 	Dialog,
 } from "@mui/material";
 
@@ -155,14 +157,21 @@ const QuickSearch = () => {
 			<Divider />
 			<Stack p={2} gap={2}>
 				<Box display={"flex"} gap={1}>
-					<SearchBox />
-					<Button
-						variant="contained"
-						size="small"
-						sx={{ px: 2, ml: 2 }}
-					>
-						Search
-					</Button>
+					<Autocomplete
+						options={["Library Card #", "Media ID"]}
+						filterSelectedOptions
+						sx={{ width: "30%" }}
+						freeSolo={false}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								label="Employee Name"
+								placeholder="Select Employee(s)"
+							/>
+						)}
+						placeholder="Search by Library Card # / Media ID"
+
+					/>
 				</Box>
 				<Box sx={{ width: "100%" }}>
 					<DataGrid
@@ -477,11 +486,8 @@ const SearchBox = () => {
 				alignItems: "center",
 			}}
 		>
-			<InputBase
-				fullWidth
-				placeholder="Search by Library Card # / Media ID"
-			/>
-			<Icon icon={"tabler:search"} fontSize={"1.2rem"} />
+
+
 		</Box>
 	);
 };

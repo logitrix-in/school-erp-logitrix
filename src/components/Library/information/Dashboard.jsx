@@ -11,6 +11,7 @@ const Dashboard = () => {
 	const ctx = useContext(AppContext);
 	const { classes, sections, acYear, curYear, status } = useClasses();
 	const [academicYear, setAcademicYear] = useState(curYear);
+	console.log(classes);
 
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
@@ -44,9 +45,20 @@ const Dashboard = () => {
 							setAcademicYear(e?.target.value ?? academicYear)
 						}
 						label="Academic Year"
+						value={academicYear}
 					/>
-					<ReignsSelect items={classes} multiple label="Class" />
-					<ReignsSelect items={sections} multiple label="Section" />
+					<ReignsSelect
+						items={classes}
+						multiple
+						label="Class"
+						defaultValues={classes}
+					/>
+					<ReignsSelect
+						items={sections}
+						multiple
+						label="Section"
+						defaultValues={sections}
+					/>
 					<ReignsSelect
 						items={[
 							"Management",
@@ -55,8 +67,14 @@ const Dashboard = () => {
 						]}
 						multiple
 						label="Employee Type"
+						defaultValues={["Management", "Teaching Staff", "Support Staff"]}
 					/>
-					<ReignsSelect items={status} multiple label="Status" />
+					<ReignsSelect
+						items={status}
+						multiple
+						label="Status"
+						defaultValues={status}
+					/>
 				</Bbox>
 				<Grid container flex={2} spacing={1}>
 					<DisplayCard
