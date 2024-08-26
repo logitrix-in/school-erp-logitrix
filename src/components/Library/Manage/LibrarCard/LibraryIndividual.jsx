@@ -1,6 +1,6 @@
 import React from "react";
 import Flex from "../../../UiComponents/Flex";
-import { Button, InputAdornment, TextField, Box } from "@mui/material";
+import { Button, InputAdornment, TextField, Box, Autocomplete } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -14,28 +14,27 @@ const columns = [
 ];
 
 const LibraryIndividual = () => {
+	const names = [];
+
 	return (
 		<Box>
 			<Flex mb={2}>
-				<TextField
+
+				<Autocomplete
 					size="small"
-					placeholder="Search by Library ID or Student Name"
-					sx={{ width: "25rem" }}
 					variant="outlined"
-					InputProps={{
-						sx: {
-							fontSize: "0.9rem",
-						},
-						endAdornment: (
-							<InputAdornment position="end">
-								<Search sx={{ fontSize: "1.3rem" }} />
-							</InputAdornment>
-						),
-					}}
+					options={names}
+					filterSelectedOptions
+					freeSolo={false}
+					renderInput={(params) => (
+						<TextField
+							{...params}
+							label="Search by Library ID or Student Name"
+							placeholder="Search by Library ID or Student Name"
+						/>
+					)}
+					sx={{ width: "30%" }}
 				/>
-				<Button variant="contained" sx={{ mr: "auto" }}>
-					Search
-				</Button>
 			</Flex>
 
 			<Box mt={3}>

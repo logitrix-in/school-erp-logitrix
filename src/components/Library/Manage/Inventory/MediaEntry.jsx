@@ -10,6 +10,7 @@ import {
 	IconButton,
 	Radio,
 	RadioGroup,
+	Divider,
 	Stack,
 	TextField,
 	Typography,
@@ -18,6 +19,7 @@ import Flex from "../../../UiComponents/Flex";
 import Popup from "../../../UiComponents/Popup";
 import ReignsSelect from "../../../UiComponents/ReignsSelect";
 import { DataGrid } from "@mui/x-data-grid";
+import { Icon } from "@iconify/react";
 
 const columns = [
 	{ field: "id", headerName: "Media ID", flex: 1 },
@@ -30,10 +32,9 @@ const columns = [
 const MediaEntry = () => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const close = () => setDialogOpen(false);
-
 	const [scanType, setScanType] = useState("manual");
-
 	const [addToTable, setAddToTable] = useState(false);
+	const [mediaId, setMediaId] = useState("");
 
 	return (
 		<Section title={"Media Entry"}>
@@ -56,24 +57,51 @@ const MediaEntry = () => {
 				</Box>
 			)}
 			<Flex>
-				<Button
-					variant="contained"
-					onClick={() => {
-						setScanType("barcode");
-						setDialogOpen(true);
-					}}
-				>
-					Enable Barcode Scan
-				</Button>
-				<Button
-					variant="outlined"
-					onClick={() => {
-						setScanType("manual");
-						setDialogOpen(true);
-					}}
-				>
-					Manual
-				</Button>
+
+				{
+					!addToTable && (
+
+						<Box display={'flex'} flexDirection={'column'} alignItems={'center'} margin={'auto'}>
+							<Stack alignItems={"center"} gap={1} p={2}>
+								<Icon icon="bx:qr-scan" fontSize="8rem" />
+								<Typography>Scan media ID to proceed...</Typography>
+							</Stack>
+
+							<Box my={2} display="flex" alignItems="center" width="100%">
+								<Divider sx={{ flex: 1 }} />
+								<Typography
+									variant="body2"
+									color="text.secondary"
+									mx={2}
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+										'&::before, &::after': {
+											content: '""',
+											flex: '1',
+											borderBottom: '1px solid',
+											borderColor: 'text.secondary',
+											marginX: 1,
+										},
+									}}
+								>
+									OR
+								</Typography>
+								<Divider sx={{ flex: 1 }} />
+							</Box>
+
+							<Button
+								variant="outlined"
+								onClick={() => {
+									setScanType("manual");
+									setDialogOpen(true);
+								}}
+							>
+								Manual
+							</Button>
+						</Box>
+					)
+				}
 
 				{addToTable && (
 					<Button sx={{ ml: "auto" }} variant="contained">
@@ -93,7 +121,7 @@ const MediaEntry = () => {
 						{scanType == "manual" ? (
 							<TextField required label="Enter Media ID" />
 						) : (
-							<Typography mb={2}>Media ID: </Typography>
+							<Typography mb={2}>Media ID: {mediaId}</Typography>
 						)}
 						<ReignsSelect
 							required
@@ -119,7 +147,7 @@ const MediaEntry = () => {
 						/>
 						<TextField required label="Enter Edition" />
 						<TextField
-							multilineF
+							multiline
 							minRows={5}
 							label={"Note"}
 							placeholder="Use this field to record issues specific to the media (Example wear and tear, spot

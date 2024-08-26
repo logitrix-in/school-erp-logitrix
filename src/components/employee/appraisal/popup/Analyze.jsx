@@ -87,6 +87,7 @@ const Analyze = ({ open, close }) => {
         },
     };
 
+
     const dataset = [
         {
             eligibility: 'Not Eligible',

@@ -7,6 +7,8 @@ import {
 	InputAdornment,
 	TextField,
 	Toolbar,
+	Divider,
+	Autocomplete,
 	Typography,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
@@ -23,7 +25,7 @@ const columns = [
 	{ field: "studentName", headerName: "Student Name", flex: 2 },
 	{ field: "author", headerName: "Class", flex: 1 },
 	{ field: "note", headerName: "Section", flex: 1 },
-	{ field: "mediaId", headerName: "media IISN / ISBN / ID", flex: 1 },
+	{ field: "mediaId", headerName: "media IISN / ISBN / ID", flex: 2 },
 	{ field: "mediaName", headerName: "media Name", flex: 1 },
 	{ field: "dueDate", headerName: "Due Date", flex: 1 },
 	{ field: "penalty", headerName: "Penalty Due", flex: 1 },
@@ -37,6 +39,8 @@ const issue_columns = [
 	{ field: "note", headerName: "Section", flex: 1 },
 	{ field: "mediaId", headerName: "Notes", flex: 3 },
 ];
+
+const names = [];
 
 const MediaCirculation = () => {
 	const [returnState, setReturnState] = useState(false);
@@ -53,26 +57,21 @@ const MediaCirculation = () => {
 
 	return (
 		<Section title={"Media Circulation - Scan / Manual"}>
-			<Flex mb={2}>
-				<TextField
-					size="small"
-					placeholder="Enter Library Card #"
-					sx={{ width: "22rem" }}
-					variant="outlined"
-					InputProps={{
-						sx: {
-							fontSize: "0.9rem",
-						},
-						endAdornment: (
-							<InputAdornment position="end">
-								<Search sx={{ fontSize: "1.3rem" }} />
-							</InputAdornment>
-						),
-					}}
+			<Flex mb={2} justifyContent={'space-between'}>
+				<Autocomplete
+					options={names}
+					filterSelectedOptions
+					freeSolo={false}
+					renderInput={(params) => (
+						<TextField
+							{...params}
+							label="Enter Library Card #"
+							placeholder="Library Card #"
+						/>
+					)}
+					sx={{ width: "30%" }}
 				/>
-				<Button variant="contained" sx={{ mr: "auto" }}>
-					Submit
-				</Button>
+
 				<Button variant="contained">Set Rule</Button>
 			</Flex>
 
@@ -83,7 +82,8 @@ const MediaCirculation = () => {
 				columnGroupingModel={[
 					{
 						groupId: "media",
-
+						headerName: 'Media',
+						headerAlign: 'center',
 						children: [
 							{ field: "mediaName" },
 							{ field: "mediaId" },
@@ -123,23 +123,43 @@ const MediaCirculation = () => {
 			>
 				{returnState == "scan-auto" && (
 					<>
-						<Flex justifyContent={"center"} height={"10rem"}>
-							<Typography>
-								Scan Media ID to Authenticate...
-							</Typography>
-						</Flex>
-						<Flex justifyContent={"flex-end"}>
-							<Typography
-								onClick={() => setReturnState("scan-manual")}
-								color={"primary"}
-								fontWeight={500}
-								sx={{
-									textDecoration: "underline",
-									cursor: "pointer",
-								}}
-							>
-								Manual Entry
-							</Typography>
+						<Flex justifyContent={"center"}>
+							<Box display={'flex'} flexDirection={'column'} alignItems={'center'} margin={'auto'}>
+								<Stack alignItems={"center"} gap={1} p={2}>
+									<Icon icon="bx:qr-scan" fontSize="8rem" />
+									<Typography>Scan media ID to Authenticate...</Typography>
+								</Stack>
+
+								<Box my={2} display="flex" alignItems="center" width="100%">
+									<Divider sx={{ flex: 1 }} />
+									<Typography
+										variant="body2"
+										color="text.secondary"
+										mx={2}
+										sx={{
+											display: 'flex',
+											alignItems: 'center',
+											'&::before, &::after': {
+												content: '""',
+												flex: '1',
+												borderBottom: '1px solid',
+												borderColor: 'text.secondary',
+												marginX: 1,
+											},
+										}}
+									>
+										OR
+									</Typography>
+									<Divider sx={{ flex: 1 }} />
+								</Box>
+
+								<Button
+									variant="outlined"
+									onClick={() => setReturnState("scan-manual")}
+								>
+									Manual Entry
+								</Button>
+							</Box>
 						</Flex>
 					</>
 				)}
@@ -162,19 +182,34 @@ const MediaCirculation = () => {
 								Submit
 							</Button>
 						</Stack>
-						<Flex justifyContent={"flex-end"}>
+
+						<Box my={2} display="flex" alignItems="center" width="100%">
+							<Divider sx={{ flex: 1 }} />
 							<Typography
-								onClick={() => setReturnState("scan-auto")}
-								color={"primary"}
-								fontWeight={500}
+								variant="body2"
+								color="text.secondary"
+								mx={2}
 								sx={{
-									textDecoration: "underline",
-									cursor: "pointer",
+									display: 'flex',
+									alignItems: 'center',
+									'&::before, &::after': {
+										content: '""',
+										flex: '1',
+										borderBottom: '1px solid',
+										borderColor: 'text.secondary',
+										marginX: 1,
+									},
 								}}
 							>
-								Scan Media ID
+								OR
 							</Typography>
-						</Flex>
+							<Divider sx={{ flex: 1 }} />
+						</Box>
+
+						<Stack alignItems={"center"} gap={1} p={2}>
+							<Icon icon="bx:qr-scan" fontSize="8rem" />
+							<Typography>Scan media ID to Authenticate...</Typography>
+						</Stack>
 					</>
 				)}
 				{returnState == "auth-success" && (
@@ -221,7 +256,7 @@ const MediaCirculation = () => {
 							<Icon
 								icon="ic:round-error"
 								color="#C4673B"
-								height={34}className=""
+								height={34} className=""
 							/>
 							<Typography
 								fontSize={"1.1rem"}
@@ -236,7 +271,14 @@ const MediaCirculation = () => {
 								textAlign={"center"}
 							>
 								Return is delayed by 20 days( Due date : Mar 07,
-								2024). Do you want to take any action?
+								2024).
+							</Typography>
+							<Typography
+								fontSize={"0.9rem"}
+								fontWeight={400}
+								textAlign={"center"}
+							>
+								Do you want to take any action?
 							</Typography>
 							<Flex gap={2} mt={2}>
 								<Button
@@ -272,7 +314,7 @@ const MediaCirculation = () => {
 				title={"Scan"}
 				maxWidth="sm"
 				open={issueState == "scan"}
-				close={() => {}}
+				close={() => { }}
 			>
 				<Stack alignItems={"center"} gap={1} p={2}>
 					<Icon icon="bx:qr-scan" fontSize="3rem" />
@@ -287,6 +329,7 @@ const MediaCirculation = () => {
 };
 
 const Renew = ({ setRenewOpen, renewOpen }) => {
+
 	return (
 		<Popup
 			close={() => setRenewOpen(false)}
@@ -304,7 +347,7 @@ const Renew = ({ setRenewOpen, renewOpen }) => {
 				></TextField>
 
 				<Flex>
-					<Typography>Return Date: </Typography>
+					<Typography>Revised Return Date: </Typography>
 					<DatePicker />
 				</Flex>
 
@@ -312,13 +355,15 @@ const Renew = ({ setRenewOpen, renewOpen }) => {
 					Are you sure you want to proceed?
 				</Typography>
 				<Flex gap={2}>
-					<Button variant="contained" sx={{ width: "8rem" }}>
+					<Button variant="contained" sx={{ width: "8rem" }}
+						onClick={() => setRenewOpen(false)}
+					>
 						Yes
 					</Button>
 					<Button
 						variant="outlined"
 						sx={{ width: "8rem" }}
-						onClick={() => setNewIssueOpen(false)}
+						onClick={() => setRenewOpen(false)}
 					>
 						No
 					</Button>
@@ -348,25 +393,22 @@ const IssuePage = ({ issueState, setIssueState }) => {
 			<Box p={3}>
 				<Section title={"New Issue"}>
 					<Flex mb={2}>
-						<TextField
-							size="small"
-							placeholder="Media ID"
-							sx={{ width: "22rem" }}
-							variant="outlined"
-							InputProps={{
-								sx: {
-									fontSize: "0.9rem",
-								},
-								endAdornment: (
-									<InputAdornment position="end">
-										<Search sx={{ fontSize: "1.3rem" }} />
-									</InputAdornment>
-								),
-							}}
+						<Autocomplete
+							options={names}
+							filterSelectedOptions
+							freeSolo={false}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									label="Media ID"
+									placeholder="Media ID"
+									size="small"
+									variant="outlined"
+								/>
+							)}
+							sx={{ width: "30%" }}
 						/>
-						<Button variant="contained" sx={{ mr: "auto" }}>
-							Submit
-						</Button>
+
 					</Flex>
 
 					<DataGrid columns={issue_columns} rows={[]} autoHeight />
@@ -408,7 +450,9 @@ const IssuePage = ({ issueState, setIssueState }) => {
 						Are you sure you want to proceed?
 					</Typography>
 					<Flex gap={2}>
-						<Button variant="contained" sx={{ width: "8rem" }}>
+						<Button variant="contained" sx={{ width: "8rem" }}
+							onClick={() => setNewIssueOpen(false)}
+						>
 							Yes
 						</Button>
 						<Button

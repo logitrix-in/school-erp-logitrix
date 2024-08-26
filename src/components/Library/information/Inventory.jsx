@@ -29,7 +29,7 @@ const Inventory = () => {
 			data: [1010, 970, 1050, 950, 810, 940, 1050],
 			type: "line",
 		},
-	];	
+	];
 
 	const options = {
 		chart: {
@@ -93,6 +93,7 @@ const Inventory = () => {
 					<Box p={2} gap={2} display={"flex"}>
 						<ReignsSelect
 							items={["Books", "Periodicals", "Research Papers"]}
+							defaultValues={["Books", "Periodicals", "Research Papers"]}
 							label="Media Type"
 							sx={{ width: "17rem" }}
 							multiple
@@ -105,6 +106,7 @@ const Inventory = () => {
 								"Last 6 month",
 								"Last 1 Year",
 							]}
+							defaultVal="Last 7 Days"
 							label="Time Frame"
 							sx={{ width: "17rem" }}
 						/>
