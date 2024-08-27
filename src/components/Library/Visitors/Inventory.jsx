@@ -9,6 +9,7 @@ import {
 	Badge,
 	Chip,
 	AppBar,
+	Autocomplete,
 	Dialog,
 	InputAdornment,
 	TextField,
@@ -81,6 +82,7 @@ const issue_columns = [
 	{ field: "mediaId", headerName: "Notes", flex: 3 },
 ];
 const rows = [];
+const names = [];
 
 const Inventory = () => {
 	const { days } = useClasses();
@@ -100,14 +102,19 @@ const Inventory = () => {
 		<Section title={"Issue Media (Visitors)"}>
 			<Stack p={2} gap={2}>
 				<Box display={"flex"} gap={1}>
-					<SearchBox />
-					<Button
-						variant="contained"
-						size="small"
-						sx={{ px: 2, ml: 2 }}
-					>
-						Submit
-					</Button>
+					<Autocomplete
+						options={names}
+						filterSelectedOptions
+						freeSolo={false}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								label="Library Card"
+								placeholder="Enter Library Card #"
+							/>
+						)}
+						sx={{ width: "30%" }}
+					/>
 				</Box>
 				<Box sx={{ width: "100%" }}>
 					<DataGrid
@@ -116,7 +123,9 @@ const Inventory = () => {
 						columns={columns}
 						columnGroupingModel={[
 							{
-								groupId: "Current Borrowing(Same Day)",
+								groupId: "Current Borrowing (Same Day)",
+								headerName: 'Current Borrowing (Same Day)',
+								headerAlign: 'center',
 								children: [
 									{ field: "mediaName" },
 									{ field: "mediaID" },
@@ -127,7 +136,7 @@ const Inventory = () => {
 						experimentalFeatures={{
 							columnGrouping: true,
 						}}
-						// disableRowSelectionOnClick
+					// disableRowSelectionOnClick
 					/>
 				</Box>
 
@@ -154,7 +163,7 @@ const Inventory = () => {
 				title={"Scan"}
 				maxWidth="sm"
 				open={issueState == "scan"}
-				close={() => {}}
+				close={() => { }}
 			>
 				<Stack alignItems={"center"} gap={1} p={2}>
 					<Icon icon="bx:qr-scan" fontSize="3rem" />
@@ -170,23 +179,43 @@ const Inventory = () => {
 			>
 				{returnState == "scan-auto" && (
 					<>
-						<Flex justifyContent={"center"} height={"10rem"}>
-							<Typography>
-								Scan Media ID to Authenticate...
-							</Typography>
-						</Flex>
-						<Flex justifyContent={"flex-end"}>
-							<Typography
-								onClick={() => setReturnState("scan-manual")}
-								color={"primary"}
-								fontWeight={500}
-								sx={{
-									textDecoration: "underline",
-									cursor: "pointer",
-								}}
-							>
-								Manual Entry
-							</Typography>
+						<Flex justifyContent={"center"}>
+							<Box display={'flex'} flexDirection={'column'} alignItems={'center'} margin={'auto'}>
+								<Stack alignItems={"center"} gap={1} p={2}>
+									<Icon icon="bx:qr-scan" fontSize="8rem" />
+									<Typography>Scan media ID to Authenticate...</Typography>
+								</Stack>
+
+								<Box my={2} display="flex" alignItems="center" width="100%">
+									<Divider sx={{ flex: 1 }} />
+									<Typography
+										variant="body2"
+										color="text.secondary"
+										mx={2}
+										sx={{
+											display: 'flex',
+											alignItems: 'center',
+											'&::before, &::after': {
+												content: '""',
+												flex: '1',
+												borderBottom: '1px solid',
+												borderColor: 'text.secondary',
+												marginX: 1,
+											},
+										}}
+									>
+										OR
+									</Typography>
+									<Divider sx={{ flex: 1 }} />
+								</Box>
+
+								<Button
+									variant="outlined"
+									onClick={() => setReturnState("scan-manual")}
+								>
+									Manual Entry
+								</Button>
+							</Box>
 						</Flex>
 					</>
 				)}
@@ -209,19 +238,34 @@ const Inventory = () => {
 								Submit
 							</Button>
 						</Stack>
-						<Flex justifyContent={"flex-end"}>
+
+						<Box my={2} display="flex" alignItems="center" width="100%">
+							<Divider sx={{ flex: 1 }} />
 							<Typography
-								onClick={() => setReturnState("scan-auto")}
-								color={"primary"}
-								fontWeight={500}
+								variant="body2"
+								color="text.secondary"
+								mx={2}
 								sx={{
-									textDecoration: "underline",
-									cursor: "pointer",
+									display: 'flex',
+									alignItems: 'center',
+									'&::before, &::after': {
+										content: '""',
+										flex: '1',
+										borderBottom: '1px solid',
+										borderColor: 'text.secondary',
+										marginX: 1,
+									},
 								}}
 							>
-								Scan Media ID
+								OR
 							</Typography>
-						</Flex>
+							<Divider sx={{ flex: 1 }} />
+						</Box>
+
+						<Stack alignItems={"center"} gap={1} p={2}>
+							<Icon icon="bx:qr-scan" fontSize="8rem" />
+							<Typography>Scan media ID to Authenticate...</Typography>
+						</Stack>
 					</>
 				)}
 				{returnState == "auth-success" && (
@@ -284,7 +328,14 @@ const Inventory = () => {
 								textAlign={"center"}
 							>
 								Return is delayed by 20 days( Due date : Mar 07,
-								2024). Do you want to take any action?
+								2024).
+							</Typography>
+							<Typography
+								fontSize={"0.9rem"}
+								fontWeight={400}
+								textAlign={"center"}
+							>
+								Do you want to take any action?
 							</Typography>
 							<Flex gap={2} mt={2}>
 								<Button
@@ -318,24 +369,6 @@ const Inventory = () => {
 			<IssuePage issueState={issueState} setIssueState={setIssueState} />
 			<Renew setRenewOpen={setRenewOpen} renewOpen={renewOpen} />
 		</Section>
-	);
-};
-const SearchBox = () => {
-	return (
-		<Box
-			sx={{
-				border: "1px solid #28282836",
-				p: 0.7,
-				px: 3,
-				borderRadius: 1,
-				width: "30rem",
-				display: "flex",
-				alignItems: "center",
-			}}
-		>
-			<InputBase fullWidth placeholder="Enter Library Card #" />
-			<Icon icon={"tabler:search"} fontSize={"1.2rem"} />
-		</Box>
 	);
 };
 

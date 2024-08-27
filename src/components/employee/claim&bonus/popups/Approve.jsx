@@ -101,7 +101,7 @@ const Approve = ({ open, close }) => {
                         rows={4}
                     />
 
-                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to approve the claim(s)?</Typography>
+                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to approve the claim?</Typography>
 
                     <Box marginY={2} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="primary" fullWidth onClick={() => {

@@ -172,7 +172,7 @@ const ClaimID = ({ open, close }) => {
                                         </Box>
                                         <Box display="flex" flexDirection="column" justifyContent="space-between">
                                             <Typography fontWeight="medium" ml={1} mb={2}>: CLM090902</Typography>
-                                            <Typography fontWeight="medium" ml={1} mb={2}>: Priya Naskar ( AGC0909)</Typography>
+                                            <Typography fontWeight="medium" ml={1} mb={2}>: Priya Naskar (AGC0909)</Typography>
                                             <Typography fontWeight="medium" ml={1} mb={2}>: Travel Expense</Typography>
                                         </Box>
                                     </Box>

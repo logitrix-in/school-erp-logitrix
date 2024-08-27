@@ -102,7 +102,7 @@ const Reject = ({ open, close }) => {
 
                     />
 
-                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to reject the claim(s)?</Typography>
+                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to reject the claim?</Typography>
 
                     <Box marginY={2} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="secondary" fullWidth onClick={() => {

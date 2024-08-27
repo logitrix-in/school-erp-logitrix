@@ -12,6 +12,8 @@ import {
 	IconButton,
 	Menu,
 	MenuItem,
+	Autocomplete,
+	TextField,
 	Avatar,
 } from "@mui/material";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
@@ -35,21 +37,23 @@ const rows = [
 		"Media Type": "Video",
 		"Media Name": "Video 1",
 		Author: "John",
-		Purpose: "Creative Exploration",
 		Status: "open",
 		actions: "Delete",
 	},
 ];
 
+const names = [];
+
 const Recommendation = () => {
-	const { acYear } = useClasses();
-	const [selected, setSelected] = useState("Mark as Open");
+	const { acYear, curYear } = useClasses();
+	const [selected, setSelected] = useState("Marked as Open");
+	const [academicYear, setAcademicYear] = useState(curYear);
 
 	const columns = [
 		{
 			field: "id",
 			headerName: "Req ID",
-			flex: 1,
+			flex: 0.6,
 		},
 		{
 			field: "employeeName",
@@ -73,7 +77,7 @@ const Recommendation = () => {
 					</Stack>
 				</Flex>
 			),
-			flex: 2,
+			flex: 1.5,
 		},
 		{
 			field: "Reqdate",
@@ -88,7 +92,19 @@ const Recommendation = () => {
 		{
 			field: "Media Type",
 			headerName: "Media Type",
-			flex: 1,
+			flex: 0.8,
+			renderCell: (params) => (
+				<Flex
+					sx={{
+						width: '100%',
+						height: '100%',
+						justifyContent: 'center',
+						alignItems: 'center'
+					}}
+				>
+					<Icon icon={"emojione:books"} height={"70%"} />
+				</Flex>
+			),
 		},
 		{
 			field: "Media Name",
@@ -101,15 +117,10 @@ const Recommendation = () => {
 			flex: 1,
 		},
 		{
-			field: "Purpose",
-			headerName: "Purpose",
-			flex: 2,
-		},
-		{
 			field: "Status",
 			headerName: "Status",
 			flex: 1,
-			renderCell: (parmas) => (
+			renderCell: (params) => (
 				<Flex bgcolor={"#C6F6D5"} p={0.5} px={1.5} borderRadius={1}>
 					<Flex>{selected}</Flex>
 				</Flex>
@@ -132,6 +143,23 @@ const Recommendation = () => {
 					setAnchorEl(null);
 				};
 
+
+				const options = [
+					"Mark as Open",
+					"In Review",
+					"Accept",
+					"Reject",
+					"Fulfill"
+				];
+
+				const statusMap = {
+					"Mark as Open": "Marked as Open",
+					"In Review": "In Review",
+					"Accept": "Accepted",
+					"Reject": "Rejected",
+					"Fulfill": "Fulfilled"
+				};
+
 				return (
 					<>
 						<IconButton size="small" onClick={handleClick}>
@@ -151,23 +179,23 @@ const Recommendation = () => {
 									horizontal: "right",
 								}}
 							>
-								{[
-									"Mark as Open",
-									"In Review",
-									"Accept",
-									"Reject",
-									"Fullfill",
-								].map((opt, idx) => (
-									<MenuItem
-										onClick={() => {
-											setSelected(opt);
-											handleClose();
-										}}
-										sx={{ width: "10rem" }}
-									>
-										{opt}
-									</MenuItem>
-								))}
+								{options.map((opt, idx) => {
+									if (selected !== statusMap[opt]) {
+										return (
+											<MenuItem
+												key={idx}
+												onClick={() => {
+													setSelected(statusMap[opt]);
+													handleClose();
+												}}
+												sx={{ width: "10rem" }}
+											>
+												{opt}
+											</MenuItem>
+										);
+									}
+									return null;
+								})}
 							</Menu>
 						</Box>
 					</>
@@ -180,15 +208,26 @@ const Recommendation = () => {
 		<Section title={"Recommendation"}>
 			<Stack p={2} gap={2}>
 				<Box display={"flex"} gap={1} alignItems={"center"}>
-					<SearchBox />
-					<Button variant="contained" sx={{ px: 2, ml: 2 }}>
-						Search
-					</Button>
+					<Autocomplete
+						options={names}
+						filterSelectedOptions
+						freeSolo={false}
+						renderInput={(params) => (
+							<TextField
+								{...params}
+								label="Library Card"
+								placeholder="Select Employee(s)"
+
+							/>
+						)}
+						sx={{ width: "30%" }}
+					/>
 					<ReignsSelect
 						items={acYear}
-						// onChange={(e) =>
-						// 	setAcademicYear(e?.target.value ?? academicYear)
-						// }
+						onChange={(e) =>
+							setAcademicYear(e?.target.value ?? academicYear)
+						}
+						value={academicYear}
 						label="Academic Year"
 						sx={{
 							width: "15rem",
@@ -208,6 +247,7 @@ const Recommendation = () => {
 							{
 								groupId: "Media Requirement",
 								headerName: "Media Requirement",
+								headerAlign: 'center',
 								children: [
 									{ field: "Media Type" },
 									{ field: "Media Name" },
@@ -220,9 +260,6 @@ const Recommendation = () => {
 				</Box>
 
 				<Flex justifyContent={"flex-end"}>
-					<Button variant="contained" color="primary">
-						Proceed
-					</Button>
 					<Button variant="outlined" color="secondary">
 						Download
 					</Button>
@@ -231,22 +268,5 @@ const Recommendation = () => {
 		</Section>
 	);
 };
-const SearchBox = () => {
-	return (
-		<Box
-			sx={{
-				border: "1px solid #28282836",
-				p: 0.7,
-				px: 3,
-				borderRadius: 1,
-				width: "20rem",
-				display: "flex",
-				alignItems: "center",
-			}}
-		>
-			<InputBase fullWidth placeholder="Enter Library Card #" />
-			<Icon icon={"tabler:search"} fontSize={"1.2rem"} />
-		</Box>
-	);
-};
+
 export default Recommendation;
