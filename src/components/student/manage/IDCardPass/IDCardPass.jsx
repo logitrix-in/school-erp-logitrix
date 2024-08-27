@@ -95,6 +95,22 @@ const IDCardPass = () => {
               backgroundColor: "transparent",
               border: "none",
               color: "black",
+              cursor: "pointer",
+              borderRadius: "6px",
+              padding: "7px 10px 7px 10px",
+              fontSize: "16px",
+              fontWeight: 400,
+            }}
+            onClick={() => navigate("/student/manage/promotion/")}
+          >
+            Promotion
+          </button>
+
+          <button
+            style={{
+              backgroundColor: "transparent",
+              border: "none",
+              color: "black",
               marginRight: "10px",
               cursor: "pointer",
               borderRadius: "6px",
@@ -105,22 +121,6 @@ const IDCardPass = () => {
             onClick={() => navigate("/student/manage/section-allotment/")}
           >
             Section Allotment
-          </button>
-
-          <button
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              color: "black",
-              cursor: "pointer",
-              borderRadius: "6px",
-              padding: "7px 10px 7px 10px",
-              fontSize: "16px",
-              fontWeight: 400,
-            }}
-            onClick={() => navigate("/student/manage/promotion/")}
-          >
-            Promotion
           </button>
         </div>
       </div>

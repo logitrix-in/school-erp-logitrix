@@ -19,6 +19,7 @@ import {
   OutlinedInput,
   ListItemIcon,
   Radio,
+  Link
 } from "@mui/material";
 import RevealCard from "../../AnimationComponents/RevealCard";
 import Bbox from "../../UiComponents/Bbox";
@@ -31,7 +32,6 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
-
 
 const StudentAccountCompliance = () => {
   // breakpoints
@@ -69,27 +69,20 @@ const StudentAccountCompliance = () => {
 
   // table columns
   const columns = [
+    { field: "space", headerName: "", width: isLarge ? 80 : 50 },
     {
-      field: "radioButtons",
-      headerName: "",
-      width: isLaptop ? 50 : isLarge ? 70 : isSmall ? 40 : isTablet ? 50 : 70,
+      field: "id",
+      headerName: "Student ID",
+      flex: 1,
       renderCell: (params) => (
-        <Radio
-          checked={params.row.id === selectedRow}
+        <Link
+          underline="hover"
           color="primary"
-          sx={{
-            transform: "scale(0.6)",
-          }}
-          inputProps={{ "aria-label": params.row.id }}
-          onChange={() => {
-            setSelectedRow(params.row.id);
-            setIsEditButtonActive(true);
-          }}
-        />
+        >
+          {params.value}
+        </Link>
       ),
     },
-    { field: "space", headerName: "", width: isLarge ? 80 : 50 },
-    { field: "id", headerName: "Student ID", flex: 1 },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "class", headerName: "Class", flex: 1 },
     { field: "section", headerName: "Section", flex: 1 },
@@ -313,7 +306,7 @@ const StudentAccountCompliance = () => {
             </Grid>
           </Grid>
 
-         <Box my={2} mb={2} height={"100%"} width={"100%"}>
+          <Box my={2} mb={2} height={"100%"} width={"100%"}>
             <DataGrid
               rows={rows}
               columns={columns}
@@ -326,7 +319,6 @@ const StudentAccountCompliance = () => {
               // checkboxSelection
             />
           </Box>
-            
 
           {/* Grid section */}
           <Box display="flex" gap={2} pt={4} pb={2}>

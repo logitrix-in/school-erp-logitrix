@@ -20,14 +20,16 @@ import useClasses from "../../../../hooks/useClasses";
 import { useMediaQuery } from "@material-ui/core";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import IDCard from "../../../../assets/cards/IDCard.png";
-import IDCardBack from "../../../../assets/cards/IDCardBack.png";
-import GuardianCard from "../../../../assets/cards/GuardianCard.png";
-import GuardianCardBack from "../../../../assets/cards/GuardianCardBack.png";
-import GuestPass from "../../../../assets/cards/GuestPass.png";
-import EventPass from "../../../../assets/cards/EventPass.png";
-import LibraryCard from "../../../../assets/cards/LibraryCard.png";
-import LibraryCardBack from "../../../../assets/cards/LibraryCardBack.png";
+import IDCard from "../../../../assets/cards/id-6.png";
+import IDCardBack from "../../../../assets/cards/idb-6.png";
+import GuardianCard from "../../../../assets/cards/g-6.png";
+import GuardianCardBack from "../../../../assets/cards/gb-6.png";
+import LocalGuardianCard from "../../../../assets/cards/lg-6.png";
+import LocalGuardianCardBack from "../../../../assets/cards/lgb-6.png";
+import GuestPass from "../../../../assets/cards/gp-6.png";
+import EventPass from "../../../../assets/cards/e-6.png";
+import LibraryCard from "../../../../assets/cards/l-6.png";
+import LibraryCardBack from "../../../../assets/cards/lb-6.png";
 import { DataGrid } from "@mui/x-data-grid";
 
 const IDbulk = () => {
@@ -649,8 +651,8 @@ const IDbulk = () => {
           >
             {!flip ? (
               <img
-                src={GuardianCard}
-                alt="Guardian Card"
+                src={LocalGuardianCard}
+                alt="Local Guardian Card"
                 style={{
                   width: "420px",
                   height: "220px",
@@ -660,8 +662,8 @@ const IDbulk = () => {
               />
             ) : (
               <img
-                src={GuardianCardBack}
-                alt="Guardian Card Back"
+                src={LocalGuardianCardBack}
+                alt="Local Guardian Card Back"
                 style={{
                   width: "420px",
                   height: "220px",

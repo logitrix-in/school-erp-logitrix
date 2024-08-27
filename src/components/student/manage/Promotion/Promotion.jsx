@@ -26,6 +26,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import useClasses from "../../../../hooks/useClasses";
 import { Icon } from "@iconify/react";
 import axios from "axios";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Promotion = () => {
   const navigate = useNavigate();
@@ -60,6 +61,7 @@ const Promotion = () => {
   const [mathematicsValue, setMathematicsValue] = useState("");
   const [physicsValue, setPhysicsValue] = useState("");
   const [sportsValue, setSportsValue] = useState("");
+  const [allocateSeats, setAllocateSeats] = useState(false);
 
   const { classes } = useClasses();
 
@@ -320,6 +322,22 @@ const Promotion = () => {
 
           <button
             style={{
+              backgroundColor: "white",
+              border: "none",
+              color: "black",
+              cursor: "pointer",
+              borderRadius: "6px",
+              padding: "7px 10px 7px 10px",
+              fontSize: "16px",
+              fontWeight: 400,
+            }}
+            onClick={() => navigate("/student/manage/promotion/")}
+          >
+            Promotion
+          </button>
+
+          <button
+            style={{
               backgroundColor: "transparent",
               border: "none",
               color: "black",
@@ -333,22 +351,6 @@ const Promotion = () => {
             onClick={() => navigate("/student/manage/section-allotment/")}
           >
             Section Allotment
-          </button>
-
-          <button
-            style={{
-              backgroundColor: "white",
-              border: "none",
-              color: "black",
-              cursor: "pointer",
-              borderRadius: "6px",
-              padding: "7px 10px 7px 10px",
-              fontSize: "16px",
-              fontWeight: 400,
-            }}
-            onClick={() => navigate("/student/manage/promotion/")}
-          >
-            Promotion
           </button>
         </div>
       </div>
@@ -381,8 +383,11 @@ const Promotion = () => {
           {/* buttons */}
           <Box mt={4} display="flex" flexDirection="row">
             {/* Allocate Seat for External Admission button */}
-            <Button variant="contained">
-              Allocate Seat for External Admission
+            <Button
+              variant="contained"
+              onClick={() => setAllocateSeats(!allocateSeats)}
+            >
+              Allocate Seats for External Admission
             </Button>
 
             {/* Set Promotion Criteria button */}
@@ -683,6 +688,211 @@ const Promotion = () => {
               </Box>
             </>
           )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={allocateSeats}
+        onClose={() => setAllocateSeats(!allocateSeats)}
+        maxWidth="lg"
+        maxLength="lg"
+      >
+        <DialogTitle
+          sx={{
+            height: "50px",
+            backgroundColor: "#a14e2c",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "900px",
+          }}
+        >
+          <Typography
+            sx={{ color: "white", fontWeight: "600", fontSize: "20px" }}
+          >
+            Seat Allocation for External Admission - Science
+          </Typography>
+
+          <IconButton
+            onClick={() => setAllocateSeats(!allocateSeats)}
+            sx={{ position: "absolute", right: "10px", color: "white" }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+
+        <DialogContent>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexDSirection: "row",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                height: "300px",
+                backgroundColor: "#f4f4f4",
+                margin: "20px",
+                borderRadius: "10px",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  border: "0.5px solid black",
+                  borderTopLeftRadius: "10px",
+                  borderBottomLeftRadius: "10px",
+                  padding: "20px",
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                }}
+              >
+                <Typography
+                  sx={{ fontSize: "40px", fontWeight: "600", color: "#00494e" }}
+                >
+                  100
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "#9aa0a5",
+                    }}
+                  >
+                    Total Number of Seats
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "#9aa0a5",
+                    }}
+                  >
+                    (Science)
+                  </Typography>
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  border: "0.25px solid black",
+                  borderTopRightRadius: "10px",
+                  borderBottomRightRadius: "10px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    paddingBottom: "20px",
+                    padding: "40px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "30px",
+                      fontWeight: "600",
+                      color: "#00494e",
+                    }}
+                  >
+                    12
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "#9aa0a5",
+                    }}
+                  >
+                    Seats Currently Allocated for External Admission
+                  </Typography>
+                </Box>
+                <Divider sx={{ border: "0.25px solid black", width: "100%" }} />
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: "40px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "30px",
+                      fontWeight: "600",
+                      color: "#00494e",
+                    }}
+                  >
+                    50
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "#9aa0a5",
+                    }}
+                  >
+                    Seats Currently Reserved for Existing Admission
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography sx={{ fontSize: "16px", fontWeight: "600" }}>
+              Number of seats to be allocated for external admission
+            </Typography>
+            <TextField
+              label="Number of Seats"
+              variant="outlined"
+              size="small"
+              style={{ marginLeft: "20px", width: "150px" }}
+              inputProps={{
+                maxLength: 3,
+                pattern: "[0-9]*",
+                inputMode: "numeric",
+              }}
+            />
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: "600", paddingX: "10px" }}
+            >
+              (Max 38)
+            </Typography>
+          </Box>
+          <Box
+            sx={{ display: "flex", justifyContent: "center", padding: "20px" }}
+          >
+            <Button
+              sx={{
+                backgroundColor: "#a14e2c",
+                width: "200px",
+                color: "white",
+              }}
+            >
+              Submit
+            </Button>
+          </Box>
         </DialogContent>
       </Dialog>
     </RevealCard>

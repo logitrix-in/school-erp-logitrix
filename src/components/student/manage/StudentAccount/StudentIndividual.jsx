@@ -21,6 +21,7 @@ import {
   Checkbox,
   Chip,
   TextField,
+  Link
 } from "@mui/material";
 import { useMediaQuery } from "@material-ui/core";
 import Stack from "@mui/material/Stack";
@@ -124,6 +125,11 @@ const StudentIndividual = () => {
         : isSmall
         ? 110
         : 170,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
     },
     {
       field: "name",
@@ -486,7 +492,7 @@ const StudentIndividual = () => {
               onClick={handleAssignRoleClick}
               disabled={!isAnyCheckboxSelected}
             >
-              Assign Role
+              Assign Role (s)
             </Button>
           </Stack>
         </Box>
@@ -543,7 +549,7 @@ const StudentIndividual = () => {
                     color="primary"
                     onDelete={handleDelete}
                     style={{ marginRight: "8px" }}
-                    sx={{marginBottom: "5px", backgroundColor: "#ccccc", color: "black"}}
+                    sx={{marginBottom: "5px", backgroundColor: "#e8e2ea", color: "black"}}
                   />
                 ))}
               </Box>
