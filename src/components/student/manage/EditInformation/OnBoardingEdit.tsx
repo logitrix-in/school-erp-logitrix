@@ -1,95 +1,146 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  Box,
+  Grid,
+  TextField,
   Button,
   FormControl,
-  FormControlLabel,
-  Grid,
-  IconButton,
-  InputBase,
   InputLabel,
   MenuItem,
-  OutlinedInput,
-  Radio,
-  RadioGroup,
   Select,
-  Stack,
-  TextField,
-  Tooltip,
   Typography,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  FormLabel,
+  Divider,
+  Box,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
-import React, { useEffect, useState, ChangeEvent } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import api from "../../../../config/api";
-import { Controller, RegisterOptions, useForm } from "react-hook-form";
-// import { candidateType } from "../utils/candidateType";
-import dayjs from "dayjs";
-import ReignsSelect from "../../../UiComponents/ReignsSelect";
-import { Icon } from "@iconify/react";
-import { candidateType } from "../../../../utils/candidateType";
-import { Info } from "@material-ui/icons";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 
-const OnboardingEdit = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [candidate, setCandidate] = useState<candidateType | null>(null);
-  const [image, setImage] = useState<string | null>(null);
+const OnBoardingEdit = () => {
+  const navigate = useNavigate();
 
-  // api call
-  useEffect(() => {
-    api
-      .get("/admission/application/search-by-id/", {
-        params: {
-          id: searchParams.get("appid"),
-        },
-      })
-      .then((res) => {
-        setCandidate(res.data);
-        console.log(res.data);
-      })
-      .catch((err) => console.log(err.response.data));
-  }, []);
+  const [formValues, setFormValues] = React.useState({
+    // Existing form fields
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    contactNumber: "",
+    email: "",
+    nationality: "",
+    religion: "",
+    dateOfBirth: null,
+    category: "",
+    gender: "",
+    bloodGroup: "",
+    criticalMedicalAilments: "",
+    categoryCertificate: null,
+    transferCertificate: null,
+    migrationCertificate: null,
 
-  // handle image change
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImage(URL.createObjectURL(file));
-    }
-  };
+    // Father details
+    fatherName: "",
+    fatherOccupation: "",
+    fatherIncome: "",
+    fatherContactNumber: "",
+    fatherEmail: "",
+    fatherIDProof: null,
 
-  // Form Handling using react-hook-form
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    control,
-    watch,
-    setValue,
-  } = useForm({
-    defaultValues: {
-      blood_group: "",
-      physician_number: "",
-      migration_certificate: "",
-      activity: "",
-      payment_type: "Challan No",
+    // Mother details
+    motherName: "",
+    motherOccupation: "",
+    motherIncome: "",
+    motherContactNumber: "",
+    motherEmail: "",
+    motherIDProof: null,
+
+    // Guardian details
+    guardianName: "",
+    guardianOccupation: "",
+    guardianIncome: "",
+    guardianContactNumber: "",
+    guardianEmail: "",
+    guardianIDProof: null,
+
+    // Extracurricular activities
+    activities: "",
+    highestLevel: "",
+    enrolledInNCC: "",
+    nccDocument: null,
+    hobbies: "",
+
+    // applying for
+    applyingForArea: "",
+    currentClass: "",
+    admissionYear: "",
+    marksheets: null,
+    schoolName: "",
+    schoolAddress: "",
+    boardName: "",
+    medium: "",
+
+    // Address details
+    addressLine1: "",
+    country1: "",
+    state1: "",
+    city1: "",
+    district1: "",
+    pinCode1: "",
+    addressLine2: "",
+    country2: "",
+    state2: "",
+    city2: "",
+    district2: "",
+    pinCode2: "",
+
+    // Relatives in school
+    hasRelativesStudied: "",
+    relativesStudiedDetails: {
+      name: "",
+      passingYear: "",
+      relation: "",
+    },
+    hasRelativesWorking: "",
+    relativesWorkingDetails: {
+      name: "",
+      passingYear: "",
+      relation: "",
     },
   });
 
-  const err = (name) => {
-    return {
-      error: !!errors[name],
-      helperText: errors[name]?.message,
-    };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
   };
 
-  const submit = (e) => {
-    console.log(e);
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setFormValues({
+      ...formValues,
+      [name]: files[0],
+    });
   };
 
-  const navigate = useNavigate();
+  const handleDateChange = (date, name) => {
+    setFormValues({
+      ...formValues,
+      [name]: date,
+    });
+  };
+
+  const handleSubmit = () => {
+    navigate("/student/manage/OnBoardingDetails")
+  }
 
   return (
-    <Box>
-      {/* Top text and close icon */}
+    <form>
       <Box
         bgcolor={"primary.main"}
         p={2}
@@ -100,1199 +151,1187 @@ const OnboardingEdit = () => {
       >
         {/* Edit Information text */}
         <Typography fontSize={"1.2rem"} color={"white"}>
-          Edit Information
+          Student Information
         </Typography>
+      </Box>
 
-        {/* {searchParams.get("admin") == "true" && ( */}
-
-        {/* close icon */}
+      <Box sx={{ display: "flex", flexDirection: "row" }}>
         <Box
-          onClick={() => navigate(-1)}
           sx={{
-            cursor: "pointer",
-            color: "white",
-            ":hover": {
-              color: "#2b2b2b !important",
-            },
+            display: "flex",
+            flexDirection: "column",
+            width: "50%",
+            paddingX: "10px",
           }}
         >
-          <Icon icon="fa:close" fontSize={"1.2rem"} color="inherit" />
-        </Box>
-      </Box>
-
-      <Box p={2}>
-        <form onSubmit={handleSubmit(submit)}>
-          <Stack alignItems={"center"} p={3} position="relative">
-            {/* profile image */}
-            <img
-              src={image || candidate?.candidate_details.profile_photo}
-              height={"130px"}
-              style={{
-                objectFit: "cover",
-              }}
-            />
-
-            {/* profile edit icon */}
-            <IconButton
-              sx={{
-                position: "absolute",
-                marginLeft: "9rem",
-                marginTop: "6.5rem",
-                color: "primary.main",
-              }}
-              component="label"
+          <Box>
+            <Typography
+              width={"100%"}
+              p={1}
+              px={2}
+              bgcolor={"#E3E0E0"}
+              fontWeight={600}
+              fontSize={"1rem"}
+              borderRadius={"5px"}
             >
-              <Icon icon="akar-icons:edit" />
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-              />
-            </IconButton>
-
-            {/* student id */}
-            <Typography mt={2} fontWeight={600} fontSize={"1rem"}>
-              Student ID. {candidate?.application_id}
+              Personal Details
             </Typography>
-          </Stack>
-          <Stack direction={"row"} spacing={2}>
-            <Stack flex={1} spacing={2}>
-              <PersonalDetails
-                candidate={candidate}
-                register={register}
-                err={err}
-                control={control}
-                watch={watch}
-              />
-              <ExtraCurricularActivities
-                watch={watch}
-                candidate={candidate}
-                register={register}
-                err={err}
-                control={control}
-              />
-              <ApplicationDetails
-                candidate={candidate}
-                register={register}
-                err={err}
-              />
-              <AdditionalDetails
-                candidate={candidate}
-                register={register}
-                err={err}
-              />
-            </Stack>
-            <Stack flex={1} spacing={2}>
-              <ParentGuardianDetails
-                candidate={candidate}
-                register={register}
-                err={err}
-              />
-              <AddressDetails
-                candidate={candidate}
-                register={register}
-                err={err}
-              />
-            </Stack>
-          </Stack>
-          <Button fullWidth type="submit" variant="contained" sx={{ mt: 2 }}>
-            Submit
-          </Button>
-        </form>
-      </Box>
-    </Box>
-  );
-};
 
-const show = (label, value, size = "0", cap = true) => {
-  return (
-    <Stack direction={"row"} spacing={1}>
-      <Typography minWidth={size + "px"}>{label} :</Typography>
-      <Typography
-        textTransform={cap ? "capitalize" : "initial"}
-        flex={1}
-        sx={{
-          wordBreak: "break-all",
-        }}
-        fontWeight={600}
-      >
-        {value}
-      </Typography>
-    </Stack>
-  );
-};
-
-// Left side forms
-
-const PersonalDetails = ({ candidate, register, err, control, watch }) => {
-  const c: candidateType = candidate;
-  const p = c?.candidate_details;
-
-  const elem = watch("blood_group");
-
-  return (
-    <Box>
-      <Typography
-        width={"100%"}
-        p={1}
-        px={2}
-        bgcolor={"#E3E0E0"}
-        fontWeight={600}
-        fontSize={"1rem"}
-      >
-        Personal Details
-      </Typography>
-
-      <Grid
-        container
-        rowSpacing={3}
-        columnSpacing={2}
-        mt={1}
-        alignItems={"center"}
-      >
-        <Grid item xs={12}>
-          {show(
-            "Candidate's Name",
-            `${p?.first_name} ${p?.middle_name ?? ""} ${p?.last_name}`
-          )}
-        </Grid>
-        <Grid item sm={12} lg={6}>
-          {show("Contact Number", p?.contact_number)}
-        </Grid>
-        <Grid item sm={12} lg={6}>
-          {show("Email ID", p?.email, undefined, false)}
-        </Grid>
-        <Grid item sm={12} lg={6}>
-          {show("Nationility", p?.nationality)}
-        </Grid>
-
-        <Grid item sm={12} lg={6}>
-          {show("Religion", p?.religion)}
-        </Grid>
-
-        <Grid item sm={12} lg={6}>
-          {show("Date of Birth", dayjs(p?.dob).format("DD MMM YYYY"))}
-        </Grid>
-
-        <Grid
-          item
-          sm={12}
-          lg={6}
-          display={"flex"}
-          gap={2}
-          alignItems={"center"}
-        >
-          {show("Category", p?.category)}
-          {p?.category != "Unreserved" && (
-            <Stack direction="row" spacing={1} alignItems="center">
-              {/* Upload Category Certificate button */}
-              <Button variant="contained" size="small" component="label">
-                Upload Category Certificate
-                <input
-                  type="file"
-                  multiple={false}
-                  hidden
-                  {...register("category_certificate", {
-                    required:
-                      p?.category == "Unreserved"
-                        ? false
-                        : "Category Certificate is required",
-                  })}
-                />
-              </Button>
-              <Typography color={"error"} variant="caption" mt={0.3}>
-                {err("category_certificate")?.helperText}
-              </Typography>
-
-              {/* download icon */}
-              <IconButton>
-                <Icon icon={"ic:round-download"} fontSize={"1.4rem"} />
-              </IconButton>
-            </Stack>
-          )}
-        </Grid>
-
-        <Grid item sm={12} lg={6}>
-          {show("Gender", p?.gender)}
-        </Grid>
-        <Grid item sm={12} lg={6} component={Stack} gap={1.5}>
-          <Controller
-            control={control}
-            name="blood_group"
-            rules={{
-              required: "Blood Group is required",
-            }}
-            render={({ field }) => (
-              <TextField
-                select
-                fullWidth
-                label="Blood Group"
-                {...err("blood_group")}
-                {...field}
+            <Box sx={{ paddingY: "10px" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "10px",
+                }}
               >
-                {[
-                  "A+",
-                  "A-",
-                  "B+",
-                  "B-",
-                  "AB+",
-                  "AB-",
-                  "O+",
-                  "O-",
-                  "Other",
-                ].map((name, idx) => (
-                  <MenuItem key={idx} value={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </TextField>
-            )}
-          />
-          {elem == "Other" && (
-            <TextField
-              {...register("other_blood_group", {
-                required: "blood group is required!",
-              })}
-              {...err("other_blood_group")}
-              label="Mention Blood Group"
-              fullWidth
-            />
-          )}
-        </Grid>
-
-        <Grid item sm={12} lg={6}>
-          {show(
-            "Critical Medical Ailment(s)",
-            p?.is_critical_ailment ? p?.critical_ailment : "No"
-          )}
-        </Grid>
-
-        {p?.is_critical_ailment && (
-          <Grid item sm={12} lg={6}>
-            <TextField
-              label="Physician's Contact Number"
-              fullWidth
-              type="number"
-              {...err("physician_number")}
-              {...register("physician_number", {
-                maxLength: {
-                  value: 10,
-                  message: "Phone number must be 10 digits",
-                },
-                minLength: {
-                  value: 10,
-                  message: "Phone number must be 10 digits",
-                },
-              })}
-            />
-          </Grid>
-        )}
-
-        <Grid item xs={12}>
-          <Stack direction={"row"} spacing={2} alignItems={"flex-start"}>
-            <Typography>Transfer / Migration Documents : </Typography>
-            <Stack direction={"row"} spacing={1}>
-              <Button variant="contained" size="small" component="label">
-                Upload Transfer Certificate
-                <input
-                  type="file"
-                  multiple={false}
-                  hidden
-                  {...register("transfer_certificate", {})}
-                />
-              </Button>
-              <Typography color={"error"} variant="caption" mt={0.3}>
-                {err("transfer_certificate")?.helperText}
-              </Typography>
-
-              {/* download icon */}
-              {/* <IconButton>
-                <Icon icon={"ic:round-download"} fontSize={"1.4rem"} style={{position: "absolute"}}/>
-              </IconButton> */}
-            </Stack>
-
-            <Button variant="contained" size="small" component="label">
-              Upload Migration Certificate
-              <input
-                type="file"
-                multiple={false}
-                hidden
-                {...register("migration_certificate", {})}
-              />
-            </Button>
-
-            {/* download icon */}
-            <IconButton>
-              <Icon icon={"ic:round-download"} fontSize={"1.4rem"} />
-            </IconButton>
-          </Stack>
-        </Grid>
-      </Grid>
-    </Box>
-  );
-};
-const ExtraCurricularActivities = ({
-  candidate,
-  register,
-  err,
-  control,
-  watch,
-}) => {
-  const ncc = watch("ncc");
-
-  return (
-    <Box>
-      <Typography
-        width={"100%"}
-        p={1}
-        px={2}
-        bgcolor={"#E3E0E0"}
-        fontWeight={600}
-        fontSize={"1rem"}
-      >
-        Extra Curricular Activities
-      </Typography>
-
-      <Grid
-        container
-        rowSpacing={3}
-        columnSpacing={2}
-        mt={1}
-        alignItems={"center"}
-      >
-        <Grid item sm={12} lg={6} component={Stack} gap={1.5}>
-          <Controller
-            control={control}
-            name="activity"
-            rules={{}}
-            render={({ field }) => (
-              <ReignsSelect
-                items={["a", "b"]}
-                label="Activities / Sports"
-                onChange={field.onChange}
-                full
-                {...err("activity")}
-              />
-            )}
-          />
-        </Grid>
-
-        <Grid item sm={12} lg={6} component={Stack} gap={1.5}>
-          <Controller
-            control={control}
-            name="highest_label"
-            rules={{}}
-            render={({ field }) => (
-              <ReignsSelect
-                items={["a", "b"]}
-                label="Highest Level"
-                onChange={field.onChange}
-                full
-                {...err("activity")}
-              />
-            )}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography>Are you enrolled in National Cadet Corps(NCC)</Typography>
-          <Stack direction={"row"} sx={{ mt: 2 }} alignItems={"center"}>
-            <Controller
-              rules={{ required: "This field is required" }}
-              control={control}
-              name="ncc"
-              render={({ field }) => (
-                <RadioGroup row {...field}>
-                  <FormControlLabel
-                    value="yes"
-                    control={<Radio />}
-                    label="Yes"
-                  />
-                  <FormControlLabel value="no" control={<Radio />} label="No" />
-                </RadioGroup>
-              )}
-            />
-            <Typography color={"error"} variant="caption" mt={0.3}>
-              {err("ncc")?.helperText}
-            </Typography>
-            {ncc == "yes" && (
-              <Stack direction={"row"} spacing={1}>
-                <Button variant="contained" size="small" component="label">
-                  Upload relevant Certificate(s)
-                  <input
-                    type="file"
-                    multiple={false}
-                    hidden
-                    {...register("ncc_certificate", {
-                      required: "NCC certificate is required!",
-                    })}
-                  />
-                </Button>
-                <Typography color={"error"} variant="caption" mt={0.3}>
-                  {err("ncc_certificate")?.helperText}
+                <Typography sx={{ fontWeight: "600" }}>
+                  Candidate's Name:
                 </Typography>
 
-                {/* download icon */}
-                <IconButton>
-                  <Icon icon={"ic:round-download"} fontSize={"1.4rem"} />
-                </IconButton>
-              </Stack>
-            )}
-          </Stack>
-        </Grid>
-
-        <Grid item sm={12} lg={6} component={Stack} gap={1.5}>
-          <TextField label="Hobbies / Interests" fullWidth />
-        </Grid>
-      </Grid>
-    </Box>
-  );
-};
-
-interface sectionProp {
-  candidate: candidateType | null;
-  register: any;
-  err: (a: string) => {
-    error: boolean;
-    helperText: string;
-  };
-  control?: any;
-  watch?: any;
-}
-
-const ApplicationDetails = ({ candidate, register, err }: sectionProp) => {
-  return (
-    <Box>
-      <Typography
-        width={"100%"}
-        p={1}
-        px={2}
-        bgcolor={"#E3E0E0"}
-        fontWeight={600}
-        fontSize={"1rem"}
-      >
-        Application Details
-      </Typography>
-
-      <Grid
-        container
-        rowSpacing={3}
-        columnSpacing={2}
-        mt={1}
-        alignItems={"flex-start"}
-      >
-        <Grid item xs={4}>
-          {show("Applying For", candidate?.application_details.applying_for)}
-        </Grid>
-        <Grid item xs={4}>
-          {show("Current Class", candidate?.application_details.current_class)}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Admission Year",
-            candidate?.application_details.admission_year
-          )}
-        </Grid>
-        <Grid item xs={12}>
-          <Stack direction={"row"} spacing={2} alignItems={"center"}>
-            {show(
-              "Marks secured in the final examination of previous class (%)",
-              candidate?.application_details?.percentage_secured + "%"
-            )}
-
-            <Stack>
-              {/* upload marksheet button */}
-              <Button
-                variant="contained"
-                size="small"
-                component="label"
-                fullWidth
-              >
-                Upload Marksheets
-                <input
-                  type="file"
-                  multiple={false}
-                  hidden
-                  {...register("marks_sheet", {})}
+                <TextField
+                  label="First Name"
+                  name="firstName"
+                  value={formValues.firstName}
+                  onChange={handleInputChange}
                 />
-              </Button>
-              <Typography color={"error"} variant="caption" mt={0.3}>
-                {err("marks_sheet")?.helperText}
-              </Typography>
-            </Stack>
 
-            {/* download icon */}
-            <IconButton>
-              <Icon
-                icon={"ic:round-download"}
-                fontSize={"1.4rem"}
-                style={{ position: "absolute", marginTop: "2px" }}
-              />
-            </IconButton>
-
-            {/* info icon */}
-            <Tooltip title="Upload all the marksheets / report cards / progress reports of the previous class in a single file">
-              <IconButton>
-                <Info />
-              </IconButton>
-            </Tooltip>
-          </Stack>
-        </Grid>
-
-        <Grid item sm={12} lg={6} component={Stack} gap={1.5}>
-          <TextField
-            label="School Name"
-            {...register("school_name", {
-              required: "School name is required!",
-            })}
-            {...err("school_name")}
-            fullWidth
-          />
-        </Grid>
-
-        <Grid item sm={12} lg={6} component={Stack} gap={1.5}>
-          <TextField
-            label="School Address"
-            {...register("school_address", {
-              required: "School address is required!",
-            })}
-            {...err("school_address")}
-            fullWidth
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          {show(
-            "Board Name",
-            candidate?.application_details.board == "Other"
-              ? candidate?.application_details.other_board
-              : candidate?.application_details.board
-          )}
-        </Grid>
-
-        <Grid item xs={12}>
-          {show("Medium", candidate?.application_details.medium)}
-        </Grid>
-      </Grid>
-    </Box>
-  );
-};
-
-const AdditionalDetails = ({ candidate, register, err }: sectionProp) => {
-  return (
-    <Box>
-      <Typography
-        width={"100%"}
-        p={1}
-        px={2}
-        bgcolor={"#E3E0E0"}
-        fontWeight={600}
-        fontSize={"1rem"}
-      >
-        Additional Details
-      </Typography>
-      <Grid
-        container
-        rowSpacing={3}
-        columnSpacing={2}
-        mt={1}
-        alignItems={"flex-start"}
-      >
-        <Grid item xs={12}>
-          {show(
-            "Has any of your relative(s) studied/ currently been studying in Demo School?",
-            candidate?.additional_details.q1_name == "" ? "No" : "Yes"
-          )}
-        </Grid>
-        {candidate?.additional_details.q1_name != "" && (
-          <>
-            <Grid item xs={4}>
-              {show("Relative's Name", candidate?.additional_details.q1_name)}
-            </Grid>
-            <Grid item xs={4}>
-              {show("Passing Year", candidate?.additional_details.q1_year)}
-            </Grid>
-            <Grid item xs={4}>
-              {show(
-                "Relationship Type",
-                candidate?.additional_details.q1_relationship
-              )}
-            </Grid>
-          </>
-        )}
-        <Grid item xs={12}>
-          {show(
-            "Has any of your relative(s) worked / currently been working in Demo School?",
-            candidate?.additional_details.q2_name == "" ? "No" : "Yes"
-          )}
-        </Grid>
-
-        {candidate?.additional_details.q2_name != "" && (
-          <>
-            <Grid item xs={4}>
-              {show("Relative's Name", candidate?.additional_details.q2_name)}
-            </Grid>
-            <Grid item xs={4}>
-              {show("Department", candidate?.additional_details.q2_department)}
-            </Grid>
-            <Grid item xs={4}>
-              {show(
-                "Relationship Type",
-                candidate?.additional_details.q2_relationship
-              )}
-            </Grid>
-          </>
-        )}
-      </Grid>
-    </Box>
-  );
-};
-
-// Right side forms
-
-const ParentGuardianDetails = ({ candidate, register, err }: sectionProp) => {
-  return (
-    <Box>
-      <Typography
-        width={"100%"}
-        p={1}
-        px={2}
-        bgcolor={"#E3E0E0"}
-        fontWeight={600}
-        fontSize={"1rem"}
-      >
-        Parent/Guardian Details
-      </Typography>
-
-      <Stack mt={2} direction={"row"} alignItems={"center"} gap={2}>
-        <Box
-          p={1}
-          bgcolor={"primary.light"}
-          width={"14rem"}
-          fontWeight={600}
-          sx={{
-            clipPath: "polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%)",
-          }}
-        >
-          Father's Details
-        </Box>
-        {candidate?.primary_contact == "Father" && (
-          <Box
-            borderRadius={0.4}
-            bgcolor={"red"}
-            px={0.8}
-            color={"white"}
-            fontSize={"0.8rem"}
-          >
-            Primary Contact
-          </Box>
-        )}
-      </Stack>
-      <Grid
-        container
-        rowSpacing={3}
-        columnSpacing={2}
-        mt={1}
-        alignItems={"flex-start"}
-      >
-        <Grid item xs={4}>
-          {show("Father's Name", candidate?.parent_details.father_name)}
-        </Grid>
-        <Grid item xs={4}>
-          {show("Occupation", candidate?.parent_details.father_occupation)}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Annual Income",
-            candidate?.parent_details.father_annual_income
-          )}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Contact Number",
-            candidate?.parent_details.father_contact_number
-          )}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Email ID",
-            candidate?.parent_details.father_email,
-            undefined,
-            false
-          )}
-        </Grid>
-
-        <Grid item xs={12}>
-          <Stack direction={"row"} spacing={2} alignItems={"center"}>
-            <Typography>ID Proof : </Typography>
-
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Button
-                variant="contained"
-                size="small"
-                component="label"
-                fullWidth
-              >
-                Upload any Government ID Proof
-                <input
-                  type="file"
-                  multiple={false}
-                  hidden
-                  {...register("father_id_proof", {
-                    required: "Father's id proof is required",
-                  })}
+                <TextField
+                  label="Middle Name"
+                  name="middleName"
+                  value={formValues.middleName}
+                  onChange={handleInputChange}
                 />
-              </Button>
-              <Typography color={"error"} variant="caption" mt={0.3}>
-                {err("father_id_proof")?.helperText}
-              </Typography>
 
-              {/* download icon */}
-              <IconButton>
-                <Icon icon={"ic:round-download"} fontSize={"1.4rem"} />
-              </IconButton>
-            </Stack>
-          </Stack>
-        </Grid>
-      </Grid>
-
-      <Stack mt={4} direction={"row"} alignItems={"center"} gap={2}>
-        <Box
-          p={1}
-          bgcolor={"primary.light"}
-          width={"14rem"}
-          fontWeight={600}
-          sx={{
-            clipPath: "polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%)",
-          }}
-        >
-          Mother's Details
-        </Box>
-        {candidate?.primary_contact == "Mother" && (
-          <Box
-            borderRadius={0.4}
-            bgcolor={"red"}
-            px={0.8}
-            color={"white"}
-            fontSize={"0.8rem"}
-          >
-            Primary Contact
-          </Box>
-        )}
-      </Stack>
-      <Grid
-        container
-        rowSpacing={3}
-        columnSpacing={2}
-        mt={1}
-        alignItems={"flex-start"}
-      >
-        <Grid item xs={4}>
-          {show("Father's Name", candidate?.parent_details.mother_name)}
-        </Grid>
-        <Grid item xs={4}>
-          {show("Occupation", candidate?.parent_details.mother_occupation)}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Annual Income",
-            candidate?.parent_details.mother_annual_income
-          )}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Contact Number",
-            candidate?.parent_details.mother_contact_number
-          )}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Email ID",
-            candidate?.parent_details.mother_email,
-            undefined,
-            false
-          )}
-        </Grid>
-
-        <Grid item xs={12}>
-          <Stack direction={"row"} spacing={2} alignItems={"center"}>
-            <Typography>ID Proof : </Typography>
-
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Button
-                variant="contained"
-                size="small"
-                component="label"
-                fullWidth
-              >
-                Upload any Government ID Proof
-                <input
-                  type="file"
-                  multiple={false}
-                  hidden
-                  {...register("mother_id_proof", {
-                    required: "Mother's ID proof is required",
-                  })}
+                <TextField
+                  label="Last Name"
+                  name="lastName"
+                  value={formValues.lastName}
+                  onChange={handleInputChange}
                 />
-              </Button>
-              <Typography color={"error"} variant="caption" mt={0.3}>
-                {err("mother_id_proof")?.helperText}
-              </Typography>
+              </Box>
 
-              {/* download icon */}
-              <IconButton>
-                <Icon icon={"ic:round-download"} fontSize={"1.4rem"} />
-              </IconButton>
-            </Stack>
-          </Stack>
-        </Grid>
-      </Grid>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Contact Number:{" "}
+                </Typography>
+                <TextField
+                  label="Contact Number"
+                  name="contactNumber"
+                  value={formValues.contactNumber}
+                  onChange={handleInputChange}
+                />
 
-      <Stack mt={4} direction={"row"} alignItems={"center"} gap={2}>
-        <Box
-          p={1}
-          bgcolor={"primary.light"}
-          width={"14rem"}
-          fontWeight={600}
-          sx={{
-            clipPath: "polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%)",
-          }}
-        >
-          Guardian's Details
-        </Box>
-        {candidate?.primary_contact == "Guardian" && (
-          <Box
-            borderRadius={0.4}
-            bgcolor={"red"}
-            px={0.8}
-            color={"white"}
-            fontSize={"0.8rem"}
-          >
-            Primary Contact
-          </Box>
-        )}
-      </Stack>
-      <Grid
-        container
-        rowSpacing={3}
-        columnSpacing={2}
-        mt={1}
-        alignItems={"flex-start"}
-      >
-        <Grid item xs={4}>
-          {show(
-            "Guardian's Name",
-            candidate?.parent_details.guardian_name ?? "N / A"
-          )}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Occupation",
-            candidate?.parent_details.guardian_occupation ?? "N / A"
-          )}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Annual Income",
-            candidate?.parent_details.guardian_annual_income ?? "N / A"
-          )}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Contact Number",
-            candidate?.parent_details.guardian_contact_number ?? "N / A"
-          )}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Email ID",
-            candidate?.parent_details.guardian_email ?? "N / A",
-            undefined,
-            false
-          )}
-        </Grid>
-        <Grid item xs={4}>
-          {show(
-            "Relationship Type",
-            candidate?.parent_details.guardian_relation ?? "N / A"
-          )}
-        </Grid>
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Email ID:{" "}
+                </Typography>
+                <TextField
+                  label="Email ID"
+                  name="email"
+                  value={formValues.email}
+                  onChange={handleInputChange}
+                />
+              </Box>
 
-        <Grid item xs={12}>
-          <Stack direction={"row"} spacing={2} alignItems={"center"}>
-            <Typography>ID Proof : </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Nationality:
+                </Typography>
+                <FormControl sx={{ width: "200px" }}>
+                  <InputLabel>Nationality</InputLabel>
+                  <Select
+                    name="nationality"
+                    value={formValues.nationality}
+                    onChange={handleInputChange}
+                  >
+                    <MenuItem value="Indian">Indian</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
 
-            <Tooltip
-              placement="right"
-              title={
-                candidate?.parent_details.guardian_relation == "N / A"
-                  ? "No supporting document(s) required."
-                  : null
-              }
-            >
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Button
-                  variant="contained"
-                  size="small"
-                  component="label"
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Religion:
+                </Typography>
+
+                <FormControl sx={{ width: "200px" }}>
+                  <InputLabel>Religion</InputLabel>
+                  <Select
+                    name="religion"
+                    value={formValues.religion}
+                    onChange={handleInputChange}
+                  >
+                    <MenuItem value="Hindu">Hindu</MenuItem>
+                    <MenuItem value="Muslim">Muslim</MenuItem>
+                    <MenuItem value="Christian">Christian</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Date of Birth:
+                </Typography>
+                <Box sx={{ width: "200px" }}>
+                  <DatePicker
+                    label="Date of Birth"
+                    value={formValues.dateOfBirth}
+                    onChange={handleDateChange}
+                  />
+                </Box>
+
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Category:
+                </Typography>
+                <FormControl sx={{ width: "125px" }}>
+                  <InputLabel>Category</InputLabel>
+                  <Select
+                    name="category"
+                    value={formValues.category}
+                    onChange={handleInputChange}
+                  >
+                    <MenuItem value="General">General</MenuItem>
+                    <MenuItem value="OBC">OBC</MenuItem>
+                    <MenuItem value="SC">SC</MenuItem>
+                    <MenuItem value="ST">ST</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <Tooltip title="Upload Category Certificate">
+                  <IconButton component="label">
+                    <UploadFileIcon />
+                    <input
+                      type="file"
+                      name="categoryCertificate"
+                      onChange={handleFileChange}
+                      hidden
+                    />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Gender:
+                </Typography>
+                <FormControl sx={{ width: "200px" }}>
+                  <InputLabel>Gender</InputLabel>
+                  <Select
+                    name="gender"
+                    value={formValues.gender}
+                    onChange={handleInputChange}
+                  >
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Blood Group:
+                </Typography>
+                <FormControl sx={{ width: "200px" }}>
+                  <InputLabel>Blood Group</InputLabel>
+                  <Select
+                    name="bloodGroup"
+                    value={formValues.bloodGroup}
+                    onChange={handleInputChange}
+                  >
+                    <MenuItem value="A+">A+</MenuItem>
+                    <MenuItem value="A-">A-</MenuItem>
+                    <MenuItem value="B+">B+</MenuItem>
+                    <MenuItem value="B-">B-</MenuItem>
+                    <MenuItem value="AB+">AB+</MenuItem>
+                    <MenuItem value="AB-">AB-</MenuItem>
+                    <MenuItem value="O+">O+</MenuItem>
+                    <MenuItem value="O-">O-</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600", width: "250px" }}>
+                  Critical Medical Ailment (s):
+                </Typography>
+                <TextField
+                  label="Critical Medical Ailments"
+                  name="criticalMedicalAilments"
+                  value={formValues.criticalMedicalAilments}
+                  onChange={handleInputChange}
+                  rows={4}
                   fullWidth
-                  disabled={
-                    candidate?.parent_details.guardian_relation == "N / A"
-                  }
-                >
-                  Upload any Government ID Proof
-                  <input
-                    type="file"
-                    multiple={false}
-                    hidden
-                    {...register("guardian_id_proof", {
-                      required:
-                        candidate?.parent_details.guardian_relation == "N / A"
-                          ? false
-                          : "Guardian's ID proof is required",
-                    })}
-                  />
-                </Button>
-                <Typography color={"error"} variant="caption" mt={0.3}>
-                  {err("guardian_id_proof")?.helperText}
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600", width: "250px" }}>
+                  Transfer / Migration Document (s):
                 </Typography>
+                <Typography>Transfer Certificate</Typography>
+                <Tooltip title="Upload Transfer Certificate">
+                  <IconButton component="label">
+                    <UploadFileIcon />
+                    <input
+                      type="file"
+                      name="categoryCertificate"
+                      onChange={handleFileChange}
+                      hidden
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Typography>Migration Certificate</Typography>
+                <Tooltip title="Upload Migration Certificate">
+                  <IconButton component="label">
+                    <UploadFileIcon />
+                    <input
+                      type="file"
+                      name="categoryCertificate"
+                      onChange={handleFileChange}
+                      hidden
+                    />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Box>
+          </Box>
 
-                {/* download icon */}
-                <IconButton>
-                  <Icon icon={"ic:round-download"} fontSize={"1.4rem"} />
-                </IconButton>
-              </Stack>
-            </Tooltip>
-          </Stack>
-        </Grid>
-      </Grid>
-    </Box>
+          <Box>
+            <Typography
+              width={"100%"}
+              p={1}
+              px={2}
+              bgcolor={"#E3E0E0"}
+              fontWeight={600}
+              fontSize={"1rem"}
+              borderRadius={"5px"}
+            >
+              Extra Curricular Activities
+            </Typography>
+
+            <Box sx={{ paddingY: "10px" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  padding: "10px",
+                }}
+              >
+                <FormControl sx={{ width: "300px" }}>
+                  <InputLabel>Activities or Sports</InputLabel>
+                  <Select
+                    name="activities"
+                    value={formValues.activities}
+                    onChange={handleInputChange}
+                  >
+                    <MenuItem value="Sports">Sports</MenuItem>
+                    <MenuItem value="Music">Music</MenuItem>
+                    <MenuItem value="Dance">Dance</MenuItem>
+                    <MenuItem value="Art">Art</MenuItem>
+                    {/* Add more options as needed */}
+                  </Select>
+                </FormControl>
+
+                <FormControl sx={{ width: "300px" }}>
+                  <InputLabel>Highest Level</InputLabel>
+                  <Select
+                    name="highestLevel"
+                    value={formValues.highestLevel}
+                    onChange={handleInputChange}
+                  >
+                    <MenuItem value="District">District</MenuItem>
+                    <MenuItem value="State">State</MenuItem>
+                    <MenuItem value="National">National</MenuItem>
+                    {/* Add more options as needed */}
+                  </Select>
+                </FormControl>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  padding: "10px",
+                }}
+              >
+                <FormControl component="fieldset">
+                  <Typography sx={{ fontWeight: "600" }}>
+                    Enrolled in NCC
+                  </Typography>
+                  <RadioGroup
+                    row
+                    name="enrolledInNCC"
+                    value={formValues.enrolledInNCC}
+                    onChange={handleInputChange}
+                  >
+                    <FormControlLabel
+                      value="Yes"
+                      control={<Radio />}
+                      label="Yes"
+                    />
+                    <FormControlLabel
+                      value="No"
+                      control={<Radio />}
+                      label="No"
+                    />
+                  </RadioGroup>
+                </FormControl>
+
+                {formValues.enrolledInNCC === "Yes" && (
+                  <Grid item xs={12}>
+                    <Button variant="contained" component="label">
+                      Upload NCC Document
+                      <input
+                        type="file"
+                        name="nccDocument"
+                        onChange={handleFileChange}
+                        hidden
+                      />
+                    </Button>
+                  </Grid>
+                )}
+              </Box>
+
+              <Box sx={{ padding: "10px" }}>
+                <TextField
+                  label="Hobbies / Interests"
+                  name="hobbies"
+                  value={formValues.hobbies}
+                  onChange={handleInputChange}
+                  rows={4}
+                  fullWidth
+                />
+              </Box>
+            </Box>
+          </Box>
+
+          <Box>
+            <Typography
+              width={"100%"}
+              p={1}
+              px={2}
+              bgcolor={"#E3E0E0"}
+              fontWeight={600}
+              fontSize={"1rem"}
+              borderRadius={"5px"}
+            >
+              Application Details
+            </Typography>
+            <Box sx={{ paddingY: "10px" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600" }}>
+                  Applying For:{" "}
+                </Typography>
+                <TextField
+                  label="Applying For"
+                  name="applyingForArea"
+                  value={formValues.applyingForArea}
+                  onChange={handleInputChange}
+                />
+
+                <Typography sx={{ fontWeight: "600" }}>
+                  Current Class:{" "}
+                </Typography>
+                <TextField
+                  label="Current Class"
+                  name="currentClass"
+                  value={formValues.currentClass}
+                  onChange={handleInputChange}
+                />
+
+                <Typography sx={{ fontWeight: "600" }}>
+                  Admission Year:{" "}
+                </Typography>
+                <TextField
+                  label="Admission Year"
+                  name="admissionYear"
+                  value={formValues.admissionYear}
+                  onChange={handleInputChange}
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  gap: "10px",
+                  padding: "10px",
+                  alignItems: "center",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600" }}>
+                  Marks secured in the final examination of previous class(%)
+                </Typography>
+                <Tooltip title="Upload Marksheets">
+                  <IconButton component="label">
+                    <UploadFileIcon />
+                    <input
+                      type="file"
+                      name="marksheets"
+                      onChange={handleFileChange}
+                      hidden
+                    />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+
+              <Box
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  gap: "10px",
+                }}
+              >
+                <TextField
+                  label="School Name"
+                  name="schoolName"
+                  value={formValues.schoolName}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+
+                <TextField
+                  label="School Address"
+                  name="schoolAddress"
+                  value={formValues.schoolAddress}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  gap: "10px",
+                  alignItems: "center",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600" }}>Board Name:</Typography>
+                <TextField
+                  label="Board Name"
+                  name="boardName"
+                  value={formValues.boardName}
+                  onChange={handleInputChange}
+                />
+                <Typography sx={{ fontWeight: "600" }}>Medium:</Typography>
+                <TextField
+                  label="Medium"
+                  name="medium"
+                  value={formValues.medium}
+                  onChange={handleInputChange}
+                />
+              </Box>
+            </Box>
+          </Box>
+
+          <Box>
+            <Typography
+              width={"100%"}
+              p={1}
+              px={2}
+              bgcolor={"#E3E0E0"}
+              fontWeight={600}
+              fontSize={"1rem"}
+              borderRadius={"5px"}
+            >
+              Additional Details
+            </Typography>
+            <Box sx={{ paddingY: "10px" }}>
+              <Box sx={{ padding: "10px" }}>
+                <FormControl component="fieldset">
+                  <Typography sx={{ fontWeight: "600" }}>
+                    Has any relative studied in this school?
+                  </Typography>
+                  <RadioGroup
+                    row
+                    name="hasRelativesStudied"
+                    value={formValues.hasRelativesStudied}
+                    onChange={handleInputChange}
+                  >
+                    <FormControlLabel
+                      value="Yes"
+                      control={<Radio />}
+                      label="Yes"
+                    />
+                    <FormControlLabel
+                      value="No"
+                      control={<Radio />}
+                      label="No"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Box>
+
+              {formValues.hasRelativesStudied === "Yes" && (
+                <>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: "10px",
+                      padding: "10px",
+                    }}
+                  >
+                    <TextField
+                      label="Relative's Name"
+                      name="relativesStudiedDetails.name"
+                      value={formValues.relativesStudiedDetails.name}
+                      onChange={handleInputChange}
+                      fullWidth
+                    />
+                    <TextField
+                      label="Passing Year"
+                      name="relativesStudiedDetails.passingYear"
+                      value={formValues.relativesStudiedDetails.passingYear}
+                      onChange={handleInputChange}
+                      fullWidth
+                    />
+                    <TextField
+                      label="Relation"
+                      name="relativesStudiedDetails.relation"
+                      value={formValues.relativesStudiedDetails.relation}
+                      onChange={handleInputChange}
+                      fullWidth
+                    />
+                  </Box>
+                </>
+              )}
+
+              <Box sx={{ padding: "10px" }}>
+                <FormControl component="fieldset">
+                  <Typography sx={{ fontWeight: "600" }}>
+                    Has any relative worked / is working in this school?
+                  </Typography>
+                  <RadioGroup
+                    row
+                    name="hasRelativesWorking"
+                    value={formValues.hasRelativesWorking}
+                    onChange={handleInputChange}
+                  >
+                    <FormControlLabel
+                      value="Yes"
+                      control={<Radio />}
+                      label="Yes"
+                    />
+                    <FormControlLabel
+                      value="No"
+                      control={<Radio />}
+                      label="No"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Box>
+
+              {formValues.hasRelativesWorking === "Yes" && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "10px",
+                    padding: "10px",
+                  }}
+                >
+                  <TextField
+                    label="Relative's Name"
+                    name="relativesWorkingDetails.name"
+                    value={formValues.relativesWorkingDetails.name}
+                    onChange={handleInputChange}
+                    fullWidth
+                  />
+                  <TextField
+                    label="Passing Year"
+                    name="relativesWorkingDetails.passingYear"
+                    value={formValues.relativesWorkingDetails.passingYear}
+                    onChange={handleInputChange}
+                    fullWidth
+                  />
+                  <TextField
+                    label="Relation"
+                    name="relativesWorkingDetails.relation"
+                    value={formValues.relativesWorkingDetails.relation}
+                    onChange={handleInputChange}
+                    fullWidth
+                  />
+                </Box>
+              )}
+            </Box>
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "50%",
+            paddingX: "10px",
+          }}
+        >
+          <Box>
+            <Typography
+              width={"100%"}
+              p={1}
+              px={2}
+              bgcolor={"#E3E0E0"}
+              fontWeight={600}
+              fontSize={"1rem"}
+              borderRadius={"5px"}
+            >
+              Parent / Guardian Details
+            </Typography>
+
+            <Box sx={{ paddingY: "10px" }}>
+              <Box
+                sx={{
+                  paddingY: "5px",
+                  paddingX: "10px",
+                  backgroundColor: "#BBE9FF",
+                  width: "200px",
+                  borderRadius: "5px",
+                  margin: "10px",
+                }}
+              >
+                <Typography>Father's Details</Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "10px",
+                }}
+              >
+                <TextField
+                  label="Father's Name"
+                  name="fatherName"
+                  value={formValues.fatherName}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+
+                <TextField
+                  label="Occupation"
+                  name="fatherOccupation"
+                  value={formValues.fatherOccupation}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+
+                <TextField
+                  label="Annual Income"
+                  name="fatherIncome"
+                  value={formValues.fatherIncome}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "10px",
+                }}
+              >
+                <TextField
+                  label="Contact Number"
+                  name="fatherContactNumber"
+                  value={formValues.fatherContactNumber}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+
+                <TextField
+                  label="Email ID"
+                  name="fatherEmail"
+                  value={formValues.fatherEmail}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "20px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600" }}>ID Proof: </Typography>
+                <Tooltip title="Update Father's Valid ID Proof">
+                  <IconButton component="label">
+                    <UploadFileIcon />
+                    <input
+                      type="file"
+                      name="fatherIDProof"
+                      onChange={handleFileChange}
+                      hidden
+                    />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Box>
+
+            <Box sx={{ paddingY: "10px" }}>
+              <Box
+                sx={{
+                  paddingY: "5px",
+                  paddingX: "10px",
+                  backgroundColor: "#BBE9FF",
+                  width: "200px",
+                  borderRadius: "5px",
+                  margin: "10px",
+                }}
+              >
+                <Typography>Mother's Details</Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "10px",
+                }}
+              >
+                <TextField
+                  label="Mother's Name"
+                  name="motherName"
+                  value={formValues.motherName}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+
+                <TextField
+                  label="Occupation"
+                  name="motherOccupation"
+                  value={formValues.motherOccupation}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+
+                <TextField
+                  label="Annual Income"
+                  name="motherIncome"
+                  value={formValues.motherIncome}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "10px",
+                }}
+              >
+                <TextField
+                  label="Contact Number"
+                  name="motherContactNumber"
+                  value={formValues.motherContactNumber}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+
+                <TextField
+                  label="Email ID"
+                  name="motherEmail"
+                  value={formValues.motherEmail}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "20px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600" }}>ID Proof: </Typography>
+                <Tooltip title="Update Mother's Valid ID Proof">
+                  <IconButton component="label">
+                    <UploadFileIcon />
+                    <input
+                      type="file"
+                      name="motherIDProof"
+                      onChange={handleFileChange}
+                      hidden
+                    />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Box>
+
+            <Box sx={{ paddingY: "10px" }}>
+              <Box
+                sx={{
+                  paddingY: "5px",
+                  paddingX: "10px",
+                  backgroundColor: "#BBE9FF",
+                  width: "200px",
+                  borderRadius: "5px",
+                  margin: "10px",
+                }}
+              >
+                <Typography>Guardian's Details</Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "10px",
+                }}
+              >
+                <TextField
+                  label="Guardian's Name"
+                  name="guardianName"
+                  value={formValues.guardianName}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+
+                <TextField
+                  label="Occupation"
+                  name="guardianOccupation"
+                  value={formValues.guardianOccupation}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+
+                <TextField
+                  label="Annual Income"
+                  name="guardianIncome"
+                  value={formValues.guardianIncome}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "10px",
+                }}
+              >
+                <TextField
+                  label="Contact Number"
+                  name="guardianContactNumber"
+                  value={formValues.guardianContactNumber}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+
+                <TextField
+                  label="Email ID"
+                  name="guardianEmail"
+                  value={formValues.guardianEmail}
+                  onChange={handleInputChange}
+                  fullWidth
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "20px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600" }}>ID Proof: </Typography>
+                <Tooltip title="Update Guardian's Valid ID Proof">
+                  <IconButton component="label">
+                    <UploadFileIcon />
+                    <input
+                      type="file"
+                      name="guardianIDProof"
+                      onChange={handleFileChange}
+                      hidden
+                    />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Box>
+          </Box>
+
+          <Box>
+            <Typography
+              width={"100%"}
+              p={1}
+              px={2}
+              bgcolor={"#E3E0E0"}
+              fontWeight={600}
+              fontSize={"1rem"}
+              borderRadius={"5px"}
+            >
+              Address Details
+            </Typography>
+
+            <Box
+              sx={{
+                paddingY: "5px",
+                paddingX: "10px",
+                backgroundColor: "#BBE9FF",
+                width: "200px",
+                borderRadius: "5px",
+                marginY: "10px",
+              }}
+            >
+              <Typography>Permanent Address</Typography>
+            </Box>
+
+            <Typography sx={{ fontWeight: "600" }}>Address Line 1:</Typography>
+
+            <TextField
+              label="Address Line 1"
+              name="addressLine1"
+              value={formValues.addressLine1}
+              onChange={handleInputChange}
+              fullWidth
+            />
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "10px",
+              }}
+            >
+              <Typography sx={{ fontWeight: "600" }}>Country:</Typography>
+              <TextField
+                label="Country"
+                name="country1"
+                value={formValues.country1}
+                onChange={handleInputChange}
+              />
+
+              <Typography sx={{ fontWeight: "600" }}>State:</Typography>
+
+              <TextField
+                label="State"
+                name="state1"
+                value={formValues.state1}
+                onChange={handleInputChange}
+              />
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "10px",
+                gap: "10px",
+              }}
+            >
+              <Typography sx={{ fontWeight: "600" }}>City:</Typography>
+
+              <TextField
+                label="City"
+                name="city1"
+                value={formValues.city1}
+                onChange={handleInputChange}
+              />
+              <Typography sx={{ fontWeight: "600" }}>District:</Typography>
+
+              <TextField
+                label="District"
+                name="district1"
+                value={formValues.district1}
+                onChange={handleInputChange}
+              />
+              <Typography sx={{ fontWeight: "600" }}>Pin Code:</Typography>
+
+              <TextField
+                label="Pin Code"
+                name="pinCode1"
+                value={formValues.pinCode1}
+                onChange={handleInputChange}
+              />
+            </Box>
+
+            <Box
+              sx={{
+                paddingY: "5px",
+                paddingX: "10px",
+                backgroundColor: "#BBE9FF",
+                width: "200px",
+                borderRadius: "5px",
+                marginY: "10px",
+              }}
+            >
+              <Typography>Current Address</Typography>
+            </Box>
+
+            <Typography sx={{ fontWeight: "600" }}>Address Line 2:</Typography>
+
+            <TextField
+              label="Address Line 2"
+              name="addressLine2"
+              value={formValues.addressLine2}
+              onChange={handleInputChange}
+              fullWidth
+            />
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "10px",
+              }}
+            >
+              <Typography sx={{ fontWeight: "600" }}>Country:</Typography>
+              <TextField
+                label="Country"
+                name="country2"
+                value={formValues.country2}
+                onChange={handleInputChange}
+              />
+
+              <Typography sx={{ fontWeight: "600" }}>State:</Typography>
+
+              <TextField
+                label="State"
+                name="state2"
+                value={formValues.state2}
+                onChange={handleInputChange}
+              />
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "10px",
+                gap: "10px",
+              }}
+            >
+              <Typography sx={{ fontWeight: "600" }}>City:</Typography>
+
+              <TextField
+                label="City"
+                name="city2"
+                value={formValues.city2}
+                onChange={handleInputChange}
+              />
+              <Typography sx={{ fontWeight: "600" }}>District:</Typography>
+
+              <TextField
+                label="District"
+                name="district2"
+                value={formValues.district2}
+                onChange={handleInputChange}
+              />
+              <Typography sx={{ fontWeight: "600" }}>Pin Code:</Typography>
+
+              <TextField
+                label="Pin Code"
+                name="pinCode2"
+                value={formValues.pinCode2}
+                onChange={handleInputChange}
+              />
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+      <Box sx={{ display: "flex", justifyContent: "center", padding: "10px" }}>
+        <Button variant="contained" color="primary" type="submit" sx={{width: "500px"}} onClick={handleSubmit}>
+          Submit
+        </Button>
+        </Box>
+    </form>
   );
 };
-const AddressDetails = ({ candidate, register, err }: sectionProp) => {
-  return (
-    <Box>
-      <Typography
-        width={"100%"}
-        p={1}
-        px={2}
-        bgcolor={"#E3E0E0"}
-        fontWeight={600}
-        fontSize={"1rem"}
-      >
-        Address Details
-      </Typography>
 
-      <Box
-        p={1}
-        mt={2}
-        bgcolor={"primary.light"}
-        width={"14rem"}
-        fontWeight={600}
-        sx={{
-          clipPath: "polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%)",
-        }}
-      >
-        Permanent Address
-      </Box>
-
-      <Grid
-        container
-        mt={2}
-        rowSpacing={3}
-        columnSpacing={2}
-        alignItems={"flex-start"}
-      >
-        <Grid item xs={12}>
-          {show(
-            "Address line 1",
-            candidate?.address_details.permanent_address.permanent_address
-          )}
-        </Grid>
-        <Grid item xs={12} md={6}>
-          {show(
-            "Country",
-            candidate?.address_details.permanent_address.country
-          )}
-        </Grid>
-        <Grid item xs={12} md={6}>
-          {show("State", candidate?.address_details.permanent_address.states)}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          {show("City", candidate?.address_details.permanent_address.cities)}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          {show(
-            "District",
-            candidate?.address_details.permanent_address.district
-          )}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          {show(
-            "Pin Code",
-            candidate?.address_details.permanent_address.pin_code
-          )}
-        </Grid>
-      </Grid>
-      <Box
-        p={1}
-        mt={2}
-        bgcolor={"primary.light"}
-        width={"14rem"}
-        fontWeight={600}
-        sx={{
-          clipPath: "polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%)",
-        }}
-      >
-        Current Address
-      </Box>
-      <Grid
-        container
-        mt={2}
-        rowSpacing={3}
-        columnSpacing={2}
-        alignItems={"flex-start"}
-      >
-        <Grid item xs={12}>
-          {show(
-            "Address line 1",
-            candidate?.address_details.current_address.current_address
-          )}
-        </Grid>
-        <Grid item xs={12} md={6}>
-          {show("Country", candidate?.address_details.current_address.country)}
-        </Grid>
-        <Grid item xs={12} md={6}>
-          {show("State", candidate?.address_details.current_address.states)}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          {show("City", candidate?.address_details.current_address.cities)}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          {show(
-            "District",
-            candidate?.address_details.current_address.district
-          )}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          {show(
-            "Pin Code",
-            candidate?.address_details.current_address.pin_code
-          )}
-        </Grid>
-      </Grid>
-    </Box>
-  );
-};
-// const FeeDetails = ({
-//   candidate,
-//   register,
-//   err,
-//   control,
-//   watch,
-// }: sectionProp) => {
-//   const type = watch("payment_type");
-
-//   useEffect(() => {
-//     console.log(type);
-//   }, [type]);
-//   return (
-//     <Box>
-//       <Typography
-//         width={"100%"}
-//         p={1}
-//         px={2}
-//         bgcolor={"#E3E0E0"}
-//         fontWeight={600}
-//         fontSize={"1rem"}
-//       >
-//         Fee Payment Details
-//       </Typography>
-
-//       <Grid
-//         container
-//         mt={1}
-//         rowSpacing={2}
-//         columnSpacing={2}
-//         alignItems={"flex-start"}
-//       >
-//         <Grid item xs={12}>
-//           {show("Amount to be paid", "20,000")}
-//         </Grid>
-
-//         <Grid item xs={4}>
-//           <Controller
-//             control={control}
-//             name="payment_mode"
-//             rules={{
-//               required: "payment mode is required!",
-//             }}
-//             render={({ field }) => (
-//               <ReignsSelect
-//                 items={["Online", "Offline"]}
-//                 label="Payment Mode"
-//                 onChange={field.onChange}
-//                 full
-//                 {...err("payment_mode")}
-//               />
-//             )}
-//           />
-//         </Grid>
-//         <Grid item xs={4}>
-//           <Controller
-//             control={control}
-//             name="payment_type"
-//             rules={{
-//               required: "Payment Type is required",
-//             }}
-//             render={({ field }) => (
-//               <TextField
-//                 select
-//                 fullWidth
-//                 label="Payment Type"
-//                 {...err("payment_type")}
-//                 {...field}
-//               >
-//                 {["Challan No", "Reciept No", "Cheque No", "Demand Draft"].map(
-//                   (name, idx) => (
-//                     <MenuItem key={idx} value={name}>
-//                       {name}
-//                     </MenuItem>
-//                   )
-//                 )}
-//               </TextField>
-//             )}
-//           />
-//         </Grid>
-//         <Grid item xs={4}>
-//           <TextField label={type ?? "Challan No"} />
-//         </Grid>
-
-//         <Grid item xs={12}>
-//           <Stack direction={"row"} spacing={2} alignItems={"center"}>
-//             <Typography>Payment Proof</Typography>
-//             <Stack>
-//               <Button variant="contained" size="small" component="label">
-//                 Upload Payment Proof
-//                 <input
-//                   type="file"
-//                   multiple={false}
-//                   hidden
-//                   {...register("payment_proof", {
-//                     required: "Payment Proof is required",
-//                   })}
-//                 />
-//               </Button>
-//               <Typography color={"error"} variant="caption" mt={0.3}>
-//                 {err("payment_proof")?.helperText}
-//               </Typography>
-//             </Stack>
-//           </Stack>
-//         </Grid>
-//       </Grid>
-//     </Box>
-//   );
-// };
-
-export default OnboardingEdit;
+export default OnBoardingEdit;

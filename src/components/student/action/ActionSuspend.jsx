@@ -28,7 +28,7 @@ import ReignsSelect from "../../UiComponents/ReignsSelect";
 import useClasses from "../../../hooks/useClasses";
 
 const ActionSuspend = () => {
-  const [multiple, setMultiple] = useState(true);
+  const [multiple, setMultiple] = useState(false);
   const [extendedView, setExtendedView] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [progress, setProgress] = useState(1);
