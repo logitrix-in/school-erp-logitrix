@@ -8,6 +8,7 @@ import {
     MenuItem,
     Divider,
     TextField,
+    Autocomplete,
     FormControl,
     IconButton,
     Tab,
@@ -22,10 +23,25 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 
 const AddNewBonus = ({ open, close }) => {
     const [value, setValue] = React.useState(0);
+    const [amount, setAmount] = React.useState("");
+    const rating = ["1", "2", "3", "4", "5"];
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const months = ['July, 2024', 'Aug, 2024', 'Sep, 2024', 'Oct, 2024', 'Nov, 2024', 'Dec, 2024'];
+
+    function handleAmountChange(e) {
+        const inputValue = e.target.value;
+        const numericValue = inputValue.replace(/[^0-9]/g, '');
+
+        if (numericValue === '') {
+            setAmount('');
+        } else {
+            setAmount(`₹ ${parseInt(numericValue).toLocaleString('en-IN')}`);
+        }
+    }
 
     return (
         <Dialog
@@ -78,15 +94,20 @@ const AddNewBonus = ({ open, close }) => {
                     <Box display="flex" flexDirection="row" gap={2}>
                         <TextField placeholder="Bonus Head Name" />
 
-                        <FormControl sx={{ width: "30%" }}>
-                            <InputLabel id="payroll-months">Payroll Month(s)</InputLabel>
-
-                            <Select placeholder="Payroll Month(s)" id="payroll-months" label="Payroll Month(s)" >
-                                <MenuItem value="aug-2024">Aug, 2024</MenuItem>
-                                <MenuItem value="sep-2024">Sep, 2024</MenuItem>
-                                <MenuItem value="oct-2024">Oct, 2024</MenuItem>
-                            </Select>
-                        </FormControl>
+                        <Autocomplete
+                            options={months}
+                            multiple
+                            filterSelectedOptions
+                            freeSolo={false}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Payroll Month(s)"
+                                    placeholder="Payroll Month(s)"
+                                />
+                            )}
+                            sx={{ width: "70%" }}
+                        />
                     </Box>
 
                     <Typography textAlign={"left"} marginY={1}>Bonus Amount - Grade wise Distribution</Typography>
@@ -103,7 +124,20 @@ const AddNewBonus = ({ open, close }) => {
                             </FormControl>
 
                             <Box width="50%">
-                                <TextField placeholder="Enter Amount" label="Amount" fullWidth />
+                                <TextField
+                                    id="comments"
+                                    label="Amount"
+                                    type="text"
+                                    placeholder="Enter Amount in ₹"
+                                    value={amount}
+                                    onChange={handleAmountChange}
+                                    variant="outlined"
+                                    fullWidth
+                                    inputProps={{
+                                        inputMode: 'numeric',
+                                        pattern: '[0-9]*'
+                                    }}
+                                />
                             </Box>
                             <DeleteOutlineOutlinedIcon color="error" cursor="pointer" />
                         </Box>
@@ -119,7 +153,20 @@ const AddNewBonus = ({ open, close }) => {
                             </FormControl>
 
                             <Box width="50%">
-                                <TextField placeholder="Enter Amount" label="Amount" fullWidth />
+                                <TextField
+                                    id="comments"
+                                    label="Amount"
+                                    type="text"
+                                    placeholder="Enter Amount in ₹"
+                                    value={amount}
+                                    onChange={handleAmountChange}
+                                    variant="outlined"
+                                    fullWidth
+                                    inputProps={{
+                                        inputMode: 'numeric',
+                                        pattern: '[0-9]*'
+                                    }}
+                                />
                             </Box>
                             <DeleteOutlineOutlinedIcon color="error" cursor="pointer" />
                         </Box>
@@ -135,26 +182,23 @@ const AddNewBonus = ({ open, close }) => {
                             </FormControl>
 
                             <Box width="50%">
-                                <TextField placeholder="Enter Amount" label="Amount" fullWidth />
+                                <TextField
+                                    id="comments"
+                                    label="Amount"
+                                    type="text"
+                                    placeholder="Enter Amount in ₹"
+                                    value={amount}
+                                    onChange={handleAmountChange}
+                                    variant="outlined"
+                                    fullWidth
+                                    inputProps={{
+                                        inputMode: 'numeric',
+                                        pattern: '[0-9]*'
+                                    }}
+                                />
                             </Box>
                             <DeleteOutlineOutlinedIcon color="error" cursor="pointer" />
 
-                        </Box>
-                        <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
-                            <FormControl sx={{ width: "50%" }}>
-                                <InputLabel id="grade">Grade</InputLabel>
-
-                                <Select placeholder="Select Grade" id="grade" label="Select Grade" >
-                                    <MenuItem value="1">1</MenuItem>
-                                    <MenuItem value="2">2</MenuItem>
-                                    <MenuItem value="3">3</MenuItem>
-                                </Select>
-                            </FormControl>
-
-                            <Box width="50%">
-                                <TextField placeholder="Enter Amount" label="Amount" fullWidth />
-                            </Box>
-                            <DeleteOutlineOutlinedIcon color="error" cursor="pointer" />
                         </Box>
                     </Box>
 
@@ -172,36 +216,46 @@ const AddNewBonus = ({ open, close }) => {
                     </FormControl>
 
                     <Typography textAlign={"left"} marginY={1}>Eligibility Criteria</Typography>
-                    <Box display="flex" flexDirection="row" justifyContent={"space-between"} gap={2} fullWidth >
-                        <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
+
+                    <Box display="flex" flexDirection="row" justifyContent={"space-between"} gap={2} pr={4} fullWidth >
+                        <Box display="flex" flexDirection="row" alignItems="center" gap={1}>
                             <InputLabel>Employee Status :</InputLabel>
                             <Select value={"active"}>
                                 <MenuItem value="active">Active</MenuItem>
                                 <MenuItem value="inactive">Inactive</MenuItem>
                             </Select>
                         </Box>
-                        <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
+                        <Box display="flex" flexDirection="row" alignItems="center" gap={1}>
                             <InputLabel>Leave Without Pay :</InputLabel>
                             <Select value={"yes"}>
                                 <MenuItem value="yes">Yes</MenuItem>
                                 <MenuItem value="no">No</MenuItem>
                             </Select>
                         </Box>
-                        <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
+                        <Box display="flex" flexDirection="row" alignItems="center" gap={1}>
                             <InputLabel>Open Incident(s) :</InputLabel>
                             <Select value={"yes"}>
                                 <MenuItem value="yes">Yes</MenuItem>
                                 <MenuItem value="no">No</MenuItem>
                             </Select>
                         </Box>
-                        <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
-                            <InputLabel>Appraisal Rating :</InputLabel>
-                            <Select value={"1"}>
-                                <MenuItem value="1">1</MenuItem>
-                                <MenuItem value="2">2</MenuItem>
-                                <MenuItem value="3">3</MenuItem>
-                            </Select>
-                        </Box>
+                    </Box>
+                    <Box display="flex" flexDirection="row" alignItems="center" gap={1}>
+                        <InputLabel>Appraisal Rating :</InputLabel>
+                        <Autocomplete
+                            options={rating}
+                            multiple
+                            filterSelectedOptions
+                            freeSolo={false}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                />
+                            )}
+                            placeholder="Appraisal Rating"
+                            label="Appraisal Rating"
+                            sx={{ width: "50%" }}
+                        />
                     </Box>
 
 

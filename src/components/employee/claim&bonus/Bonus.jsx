@@ -20,10 +20,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useMediaQuery } from "@material-ui/core";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import AddNewBonus from "./AddNewBonus";
+import useClasses from "../../../hooks/useClasses";
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function Bonus() {
-    const [acYear, setAcYear] = useState("");
+    const { acYear, curYear } = useClasses();
+    const [academicYear, setAcademicYear] = useState(curYear);
     const [addNewBonusPopup, setAddNewBonusPopup] = useState(false);
 
     // breakpoints
@@ -118,9 +120,12 @@ export default function Bonus() {
                         <FormControl sx={{ width: "30%" }}>
                             <InputLabel>Academic Year</InputLabel>
                             <Select
+                                items={acYear}
                                 label="Academic Year"
-                                value={acYear}
-                                onChange={(e) => setAcYear(e.target.value)}
+                                onChange={(e) =>
+                                    setAcademicYear(e?.target.value ?? academicYear)
+                                }
+                                value={academicYear}
                             >
                                 <MenuItem value={"2021-22"}>2021-22</MenuItem>
                                 <MenuItem value={"2023-24"}>2023-24</MenuItem>
