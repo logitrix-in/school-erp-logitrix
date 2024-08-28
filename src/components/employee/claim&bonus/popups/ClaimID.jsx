@@ -33,27 +33,16 @@ const ClaimID = ({ open, close }) => {
 
     const columns = [
         {
-            field: "activity_date", headerName: "Activity Date",
-            width: isLaptop ? 100 : isLarge ? 140 : isTablet ? 140 : isSmall ? 100 : 120,
+            field: "activity_date", headerName: "Activity Date", flex: 1
         },
         {
-            field: "activity_type", headerName: "Activity Type",
-            width: isLaptop ? 170
-                : isLarge ? 200
-                    : isTablet ? 200
-                        : isSmall ? 160
-                            : 180,
+            field: "activity_type", headerName: "Activity Type", flex: 2
         },
         {
-            field: "actioned_by", headerName: "Actioned By",
-            width: isLaptop ? 170
-                : isLarge ? 200
-                    : isTablet ? 200
-                        : isSmall ? 160
-                            : 180,
+            field: "actioned_by", headerName: "Actioned By", flex: 2
         },
         {
-            field: "notes", headerName: "Notes/Comments", flex: 1,
+            field: "notes", headerName: "Notes/Comments", flex: 3,
         }];
 
     // table rows
@@ -106,7 +95,7 @@ const ClaimID = ({ open, close }) => {
                 >
                     <Box />
                     <Typography fontSize={"1.1rem"} textAlign={"center"}>
-                        Claim ID
+                        Claim Details
                     </Typography>
                     <IconButton
                         edge="start"
@@ -172,7 +161,7 @@ const ClaimID = ({ open, close }) => {
                                         </Box>
                                         <Box display="flex" flexDirection="column" justifyContent="space-between">
                                             <Typography fontWeight="medium" ml={1} mb={2}>: CLM090902</Typography>
-                                            <Typography fontWeight="medium" ml={1} mb={2}>: Priya Naskar ( AGC0909)</Typography>
+                                            <Typography fontWeight="medium" ml={1} mb={2}>: Priya Naskar (AGC0909)</Typography>
                                             <Typography fontWeight="medium" ml={1} mb={2}>: Travel Expense</Typography>
                                         </Box>
                                     </Box>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Box,
     Button,
@@ -18,12 +18,24 @@ import { ToastContainer, toast } from "react-toastify";
 const Raise = ({ open, close }) => {
     const [value, setValue] = React.useState(0);
     const [file, setFile] = React.useState("");
+    const [amount, setAmount] = useState('')
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
     const names = ["Amartya Ghosh (EMP1234)", "Rajesh Kumar (EMP1235)", "Shubham Sharma (EMP1236)", "Rajesh Kumar (EMP1235)", "Shubham Sharma (EMP1236)"];
+
+    function handleAmountChange(e) {
+        const inputValue = e.target.value;
+        const numericValue = inputValue.replace(/[^0-9]/g, '');
+
+        if (numericValue === '') {
+            setAmount('');
+        } else {
+            setAmount(`₹ ${parseInt(numericValue).toLocaleString('en-IN')}`);
+        }
+    }
 
     return (
         <Dialog
@@ -100,12 +112,17 @@ const Raise = ({ open, close }) => {
                         <TextField
                             id="comments"
                             label="Claim Amount"
+                            type="text"
                             placeholder="Enter Claim Amount in ₹"
-                            // value={comments}
-                            // onChange={(e) => setComments(e.target.value)}
+                            value={amount}
+                            onChange={handleAmountChange}
                             variant="outlined"
                             fullWidth
                             sx={{ width: "48%" }}
+                            inputProps={{
+                                inputMode: 'numeric',
+                                pattern: '[0-9]*'
+                            }}
                         />
 
                         <Box sx={{ width: "48%" }}>
@@ -143,7 +160,7 @@ const Raise = ({ open, close }) => {
 
                     <Box marginY={4} width={"100%"}>
                         <Button variant="contained" color="primary" fullWidth onClick={() => {
-                            toast.success("Updated Successfully");
+                            toast.success("Request ID 258 Raised Successfully");
                             close();
                         }}>Submit</Button>
                     </Box>

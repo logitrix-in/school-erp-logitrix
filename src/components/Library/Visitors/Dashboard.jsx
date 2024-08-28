@@ -43,6 +43,7 @@ const Dashboard = () => {
 							setAcademicYear(e?.target.value ?? academicYear)
 						}
 						label="Academic Year"
+						value={academicYear}
 					/>
 					<ReignsSelect items={classes} multiple label="Class" />
 					<ReignsSelect items={sections} multiple label="Section" />
@@ -55,26 +56,22 @@ const Dashboard = () => {
 						multiple
 						label="Employee Type"
 					/>
-					<ReignsSelect items={days} multiple label="Days" />
+					<ReignsSelect items={days} label="Days" />
 				</Bbox>
 				<Grid container flex={2} spacing={1}>
 					<DisplayCard
 						bgColor={"#D9EBF4"}
 						color={"#3B98C4"}
 						header="Footfalls"
-						value="3100/39000"
+						value="55"
 						data={[
 							{
-								title: "Books",
-								val: 2700,
+								title: "Students",
+								val: 4,
 							},
 							{
-								title: "Periodicals",
-								val: 200,
-							},
-							{
-								title: "Research Papers",
-								val: 200,
+								title: "Employees",
+								val: 51,
 							},
 						]}
 					/>
@@ -82,31 +79,11 @@ const Dashboard = () => {
 						bgColor={"#FAD2C0"}
 						color={"#B34A19"}
 						header="Media Inventory"
-						value="32/2900"
-						data={[
-							{
-								title: "Books",
-								val: 2700,
-							},
-							{
-								title: "Periodicals",
-								val: 200,
-							},
-							{
-								title: "Research Papers",
-								val: 200,
-							},
-						]}
-					/>
-					<DisplayCard
-						bgColor={"#FAD2C0"}
-						color={"#B34A19"}
-						header="Media Issued (Visitors)"
 						value="39000"
 						data={[
 							{
 								title: "Books",
-								val: 27000,
+								val: 2700,
 							},
 							{
 								title: "Periodicals",
@@ -119,18 +96,38 @@ const Dashboard = () => {
 						]}
 					/>
 					<DisplayCard
-						bgColor={"#D9EBF4"}
-						color={"#3B98C4"}
-						header="Current Defaulters (Visitors)"
-						value="2900"
+						bgColor={"#FAD2C0"}
+						color={"#B34A19"}
+						header="Media Issued (Visitors)"
+						value="788"
 						data={[
 							{
-								title: "Students",
+								title: "Books",
+								val: 541,
+							},
+							{
+								title: "Periodicals",
 								val: 8,
 							},
 							{
+								title: "Research Papers",
+								val: 15,
+							},
+						]}
+					/>
+					<DisplayCard
+						bgColor={"#D9EBF4"}
+						color={"#3B98C4"}
+						header="Current Defaulters (Visitors)"
+						value="24"
+						data={[
+							{
+								title: "Students",
+								val: 13,
+							},
+							{
 								title: "Employees",
-								val: 24,
+								val: 11,
 							},
 						]}
 					/>
