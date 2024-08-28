@@ -17,15 +17,26 @@ import {
   Box,
   Tooltip,
   IconButton,
+  Avatar,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
+import CloseIcon from "@mui/icons-material/Close";
+import { ToastContainer, toast } from "react-toastify";
 
 const OnBoardingEdit = () => {
   const navigate = useNavigate();
 
+  const [confirmation, setConfirmation] = React.useState(false);
+
   const [formValues, setFormValues] = React.useState({
-    // Existing form fields
+    profileImage: null,
+
     firstName: "",
     middleName: "",
     lastName: "",
@@ -136,8 +147,24 @@ const OnBoardingEdit = () => {
   };
 
   const handleSubmit = () => {
-    navigate("/student/manage/OnBoardingDetails")
-  }
+    setConfirmation(false);
+    toast.success("Submitted Successfully", {
+      autoClose: 2000,
+    });
+    setTimeout(() => {
+      navigate("/student/manage/OnBoardingDetails");
+    }, 2000);
+  };
+
+  const handleClose = () => {
+    setConfirmation(false);
+    toast.error("Edit Details Cancelled", {
+      autoClose: 2000,
+    });
+    setTimeout(() => {
+      navigate("/student/manage/OnBoardingDetails");
+    }, 2000);
+  };
 
   return (
     <form>
@@ -153,6 +180,36 @@ const OnBoardingEdit = () => {
         <Typography fontSize={"1.2rem"} color={"white"}>
           Student Information
         </Typography>
+
+        <IconButton onClick={() => handleClose()}>
+          <CloseIcon sx={{ color: "white" }} />
+        </IconButton>
+      </Box>
+
+      <ToastContainer />
+
+      <Box sx={{ display: "flex", justifyContent: "center", marginY: "20px" }}>
+        <Tooltip title="Upload Profile Image" arrow>
+          <IconButton component="label">
+            <input
+              hidden
+              accept="image/*"
+              type="file"
+              name="profileImage"
+              onChange={handleFileChange}
+            />
+            {formValues.profileImage ? (
+              <Avatar
+                src={URL.createObjectURL(formValues.profileImage)}
+                sx={{ width: 100, height: 100 }}
+              />
+            ) : (
+              <Avatar sx={{ width: 150, height: 150 }}>
+                <UploadFileIcon fontSize="large" />
+              </Avatar>
+            )}
+          </IconButton>
+        </Tooltip>
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -230,7 +287,19 @@ const OnBoardingEdit = () => {
                   label="Contact Number"
                   name="contactNumber"
                   value={formValues.contactNumber}
-                  onChange={handleInputChange}
+                  onChange={(event) => {
+                    const newContactNumber = event.target.value.replace(
+                      /[^0-9]/g,
+                      ""
+                    ); // Remove non-numeric characters
+                    if (newContactNumber.length <= 10) {
+                      setFormValues({
+                        ...formValues,
+                        contactNumber: newContactNumber,
+                      });
+                    }
+                  }}
+                  inputProps={{ maxLength: 10 }}
                 />
 
                 <Typography sx={{ fontWeight: "600", width: "120px" }}>
@@ -851,16 +920,18 @@ const OnBoardingEdit = () => {
 
             <Box sx={{ paddingY: "10px" }}>
               <Box
+                p={1}
+                mt={2}
+                bgcolor={"primary.light"}
+                width={"14rem"}
+                fontWeight={600}
                 sx={{
-                  paddingY: "5px",
-                  paddingX: "10px",
-                  backgroundColor: "#BBE9FF",
-                  width: "200px",
-                  borderRadius: "5px",
-                  margin: "10px",
+                  clipPath:
+                    "polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%)",
                 }}
+                marginY={"10px"}
               >
-                <Typography>Father's Details</Typography>
+                Father's Details
               </Box>
 
               <Box
@@ -908,8 +979,20 @@ const OnBoardingEdit = () => {
                   label="Contact Number"
                   name="fatherContactNumber"
                   value={formValues.fatherContactNumber}
-                  onChange={handleInputChange}
+                  onChange={(event) => {
+                    const newContactNumber = event.target.value.replace(
+                      /[^0-9]/g,
+                      ""
+                    ); // Remove non-numeric characters
+                    if (newContactNumber.length <= 10) {
+                      setFormValues({
+                        ...formValues,
+                        fatherContactNumber: newContactNumber,
+                      });
+                    }
+                  }}
                   fullWidth
+                  inputProps={{ maxLength: 10 }}
                 />
 
                 <TextField
@@ -947,16 +1030,18 @@ const OnBoardingEdit = () => {
 
             <Box sx={{ paddingY: "10px" }}>
               <Box
+                p={1}
+                mt={2}
+                bgcolor={"primary.light"}
+                width={"14rem"}
+                fontWeight={600}
                 sx={{
-                  paddingY: "5px",
-                  paddingX: "10px",
-                  backgroundColor: "#BBE9FF",
-                  width: "200px",
-                  borderRadius: "5px",
-                  margin: "10px",
+                  clipPath:
+                    "polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%)",
                 }}
+                marginY={"10px"}
               >
-                <Typography>Mother's Details</Typography>
+                Mother's Details
               </Box>
 
               <Box
@@ -1004,8 +1089,20 @@ const OnBoardingEdit = () => {
                   label="Contact Number"
                   name="motherContactNumber"
                   value={formValues.motherContactNumber}
-                  onChange={handleInputChange}
+                  onChange={(event) => {
+                    const newContactNumber = event.target.value.replace(
+                      /[^0-9]/g,
+                      ""
+                    ); // Remove non-numeric characters
+                    if (newContactNumber.length <= 10) {
+                      setFormValues({
+                        ...formValues,
+                        motherContactNumber: newContactNumber,
+                      });
+                    }
+                  }}
                   fullWidth
+                  inputProps={{ maxLength: 10 }}
                 />
 
                 <TextField
@@ -1043,16 +1140,18 @@ const OnBoardingEdit = () => {
 
             <Box sx={{ paddingY: "10px" }}>
               <Box
+                p={1}
+                mt={2}
+                bgcolor={"primary.light"}
+                width={"14rem"}
+                fontWeight={600}
                 sx={{
-                  paddingY: "5px",
-                  paddingX: "10px",
-                  backgroundColor: "#BBE9FF",
-                  width: "200px",
-                  borderRadius: "5px",
-                  margin: "10px",
+                  clipPath:
+                    "polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%)",
                 }}
+                marginY={"10px"}
               >
-                <Typography>Guardian's Details</Typography>
+                Guardian's Details
               </Box>
 
               <Box
@@ -1100,8 +1199,20 @@ const OnBoardingEdit = () => {
                   label="Contact Number"
                   name="guardianContactNumber"
                   value={formValues.guardianContactNumber}
-                  onChange={handleInputChange}
+                  onChange={(event) => {
+                    const newContactNumber = event.target.value.replace(
+                      /[^0-9]/g,
+                      ""
+                    ); // Remove non-numeric characters
+                    if (newContactNumber.length <= 10) {
+                      setFormValues({
+                        ...formValues,
+                        guardianContactNumber: newContactNumber,
+                      });
+                    }
+                  }}
                   fullWidth
+                  inputProps={{ maxLength: 10 }}
                 />
 
                 <TextField
@@ -1152,16 +1263,17 @@ const OnBoardingEdit = () => {
             </Typography>
 
             <Box
+              p={1}
+              mt={2}
+              bgcolor={"primary.light"}
+              width={"14rem"}
+              fontWeight={600}
               sx={{
-                paddingY: "5px",
-                paddingX: "10px",
-                backgroundColor: "#BBE9FF",
-                width: "200px",
-                borderRadius: "5px",
-                marginY: "10px",
+                clipPath: "polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%)",
               }}
+              marginY={"10px"}
             >
-              <Typography>Permanent Address</Typography>
+              Permanent Address
             </Box>
 
             <Typography sx={{ fontWeight: "600" }}>Address Line 1:</Typography>
@@ -1233,21 +1345,27 @@ const OnBoardingEdit = () => {
                 label="Pin Code"
                 name="pinCode1"
                 value={formValues.pinCode1}
-                onChange={handleInputChange}
+                onChange={(event) => {
+                  const newPinCode = event.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+                  if (newPinCode.length <= 6) {
+                    setFormValues({ ...formValues, pinCode1: newPinCode });
+                  }
+                }}
               />
             </Box>
 
             <Box
+              p={1}
+              mt={2}
+              bgcolor={"primary.light"}
+              width={"14rem"}
+              fontWeight={600}
               sx={{
-                paddingY: "5px",
-                paddingX: "10px",
-                backgroundColor: "#BBE9FF",
-                width: "200px",
-                borderRadius: "5px",
-                marginY: "10px",
+                clipPath: "polygon(0% 0%, 90% 0, 100% 50%, 90% 100%, 0% 100%)",
               }}
+              marginY={"10px"}
             >
-              <Typography>Current Address</Typography>
+              Current Address
             </Box>
 
             <Typography sx={{ fontWeight: "600" }}>Address Line 2:</Typography>
@@ -1319,17 +1437,56 @@ const OnBoardingEdit = () => {
                 label="Pin Code"
                 name="pinCode2"
                 value={formValues.pinCode2}
-                onChange={handleInputChange}
+                onChange={(event) => {
+                  const newPinCode = event.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+                  if (newPinCode.length <= 6) {
+                    setFormValues({ ...formValues, pinCode2: newPinCode });
+                  }
+                }}
               />
             </Box>
           </Box>
         </Box>
       </Box>
+
       <Box sx={{ display: "flex", justifyContent: "center", padding: "10px" }}>
-        <Button variant="contained" color="primary" type="submit" sx={{width: "500px"}} onClick={handleSubmit}>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          sx={{ width: "500px" }}
+          onClick={handleSubmit}
+        >
           Submit
         </Button>
-        </Box>
+      </Box>
+
+      <Dialog open={confirmation} onClose={() => setConfirmation(false)}>
+        <DialogTitle>
+          <Typography variant="h6">Confirmation</Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to discard the changes?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setConfirmation(false)}
+            color="primary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleSubmit();
+            }}
+            color="primary"
+            variant="contained"
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </form>
   );
 };

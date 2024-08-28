@@ -388,10 +388,6 @@ const IDindividual = () => {
               }}
             />
 
-            {/* search button */}
-            <Button variant="contained" style={{ marginLeft: "20px" }}>
-              Search
-            </Button>
           </Box>
 
           {/* Table */}

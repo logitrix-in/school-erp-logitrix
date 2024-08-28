@@ -62,6 +62,7 @@ const Promotion = () => {
   const [physicsValue, setPhysicsValue] = useState("");
   const [sportsValue, setSportsValue] = useState("");
   const [allocateSeats, setAllocateSeats] = useState(false);
+  const [rowData, setRowData] = useState(null);
 
   const { classes } = useClasses();
 
@@ -167,8 +168,6 @@ const Promotion = () => {
     setOpenDialog(false);
   };
 
-  const [promotionstatus, setPromotionStatus] = useState("");
-
   // table 2 columns
   const columns2 = [
     {
@@ -185,6 +184,7 @@ const Promotion = () => {
           inputProps={{ "aria-label": params.row.id }}
           onChange={() => {
             setSelectedRow(params.row.id);
+            setRowData(params.row);
           }}
         />
       ),
@@ -509,11 +509,6 @@ const Promotion = () => {
               ),
             }}
           />
-
-          {/* search button */}
-          <Button variant="contained" style={{ marginLeft: "30px" }}>
-            Search
-          </Button>
         </Box>
 
         {/* table 2 */}
@@ -537,8 +532,7 @@ const Promotion = () => {
             style={{ width: "550px" }}
             disabled={selectedRow === null}
           >
-            {/* {promotionstatus === 'Promoted' ? 'Cancel Promotion' : 'Promote'} */}
-            Promote / Cancel Promotion
+            {rowData?.status === 'Promoted' ? 'Cancel Promotion' : 'Promote'}            
           </Button>
         </Box>
       </Bbox>

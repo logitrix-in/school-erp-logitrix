@@ -172,10 +172,7 @@ const Individual = () => {
               }}
             />
 
-            {/* Search button */}
-            <Button variant="contained" style={{ marginLeft: "15px" }}>
-              Search
-            </Button>
+       
           </Box>
 
           {/* Spacer */}
