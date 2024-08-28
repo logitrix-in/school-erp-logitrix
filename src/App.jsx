@@ -75,6 +75,7 @@ import ClassView from "./components/student/Attendance/ClassView";
 import StudentView from "./components/student/Attendance/StudentView";
 import LongLeaveRequest from "./components/student/Attendance/LongLeaveRequest";
 import LibraryInformation from "./pages/Library/LibraryInformation";
+import LibraryAction from "./pages/Library/LibraryAction";
 import OnBoardingDetails from "./components/student/manage/EditInformation/OnBoardingDetails";
 import ActionSuspend from "./components/student/action/ActionSuspend";
 import ClaimsBonuses from "./pages/employee/Claims&Bonuses";
@@ -369,6 +370,11 @@ function App() {
 					<Route
 						path={"library/manage/"}
 						element={<LibraryManage />}
+					/>
+
+					<Route
+						path={"library/action/"}
+						element={<LibraryAction />}
 					/>
 
 					<Route
