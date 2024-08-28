@@ -25,6 +25,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
+import Frame from "../../../assets/icons/frame.png";
 
 const RaiseIncident = () => {
   // breakpoints
@@ -65,7 +66,6 @@ const RaiseIncident = () => {
   };
 
   const columns1 = [
-    { field: "space", headerName: "", width: 50 },
     {
       field: "id",
       headerName: "Student ID",
@@ -265,7 +265,6 @@ const RaiseIncident = () => {
   };
 
   const columns2 = [
-    { field: "space", headerName: "", width: 50 },
     {
       field: "id",
       headerName: "Student ID",
@@ -298,7 +297,7 @@ const RaiseIncident = () => {
       headerName: "Class",
       width: isLaptop ? 50 : isLarge ? 90 : isTablet ? 110 : isSmall ? 60 : 70,
     },
-    {field: "space", headerName: "", width: 50},
+    { field: "space", headerName: "", width: 50 },
     {
       field: "section",
       headerName: "Section",
@@ -312,14 +311,14 @@ const RaiseIncident = () => {
         ? 70
         : 100,
     },
-    {field: "space", headerName: "", width: 50},
+    { field: "space", headerName: "", width: 50 },
 
     {
       field: "roll",
       headerName: "Roll #",
       width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 110 : isSmall ? 70 : 90,
     },
-    {field: "space", headerName: "", width: 50},
+    { field: "space", headerName: "", width: 50 },
     {
       field: "status",
       headerName: "Status",
@@ -367,12 +366,12 @@ const RaiseIncident = () => {
     },
 
     {
-      field: 'suspend',
+      field: "suspend",
       headerName: (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Checkbox
             checked={Object.values(checkboxState).every((row) => row?.suspend)}
-            onChange={(e) => handleSelectAll('suspend', e.target.checked)}
+            onChange={(e) => handleSelectAll("suspend", e.target.checked)}
           />
           Suspend
         </div>
@@ -381,17 +380,17 @@ const RaiseIncident = () => {
       renderCell: (params) => (
         <Checkbox
           checked={checkboxState[params.row.id]?.suspend || false}
-          onChange={() => handleCheckboxChange(params.row.id, 'suspend')}
+          onChange={() => handleCheckboxChange(params.row.id, "suspend")}
         />
       ),
     },
     {
-      field: 'penalty',
+      field: "penalty",
       headerName: (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Checkbox
             checked={Object.values(checkboxState).every((row) => row?.penalty)}
-            onChange={(e) => handleSelectAll('penalty', e.target.checked)}
+            onChange={(e) => handleSelectAll("penalty", e.target.checked)}
           />
           Impose Penalty
         </div>
@@ -400,7 +399,7 @@ const RaiseIncident = () => {
       renderCell: (params) => (
         <Checkbox
           checked={checkboxState[params.row.id]?.penalty || false}
-          onChange={() => handleCheckboxChange(params.row.id, 'penalty')}
+          onChange={() => handleCheckboxChange(params.row.id, "penalty")}
         />
       ),
     },
@@ -636,10 +635,6 @@ const RaiseIncident = () => {
                   ),
                 }}
               />
-
-              <Button variant="contained" sx={{ marginLeft: "20px" }}>
-                Search
-              </Button>
             </Box>
           ) : (
             <Box display={"flex"}>
@@ -689,8 +684,8 @@ const RaiseIncident = () => {
           )}
         </Box>
 
-        <Box mt={2} mb={5} style={{ height: "100%" }}>
-          {modeSwitch ? (
+        {modeSwitch ? (
+          <Box mt={2} mb={5} style={{ height: "100%" }}>
             <DataGrid
               rows={rows1}
               columns={columns1}
@@ -701,7 +696,9 @@ const RaiseIncident = () => {
               }}
               pageSizeOptions={[5, 10]}
             />
-          ) : (
+          </Box>
+        ) : (
+          <Box mt={2} mb={5} style={{ height: "100%" }}>
             <DataGrid
               rows={rows3}
               columns={columns3}
@@ -713,8 +710,8 @@ const RaiseIncident = () => {
               pageSizeOptions={[5, 10]}
               checkboxSelection
             />
-          )}
-        </Box>
+          </Box>
+        )}
 
         <Box display={"flex"} justifyContent={"center"}>
           <Box flex={1} />
@@ -722,7 +719,25 @@ const RaiseIncident = () => {
           <Button variant="contained">Add to Incident Bucket</Button>
         </Box>
 
-        <Button variant="contained">Incident#: #112233</Button>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <img src={Frame} alt="frame" style={{ width: "25%" }} />
+          <Typography
+            sx={{
+              fontWeight: "600",
+              position: "absolute",
+              paddingLeft: "20px",
+              color: "white",
+            }}
+          >
+            Incident#: #112233
+          </Typography>
+        </Box>
 
         <Box mt={4} display={"flex"}>
           <FormControl style={{ width: "20rem", marginRight: "2rem" }}>
@@ -777,29 +792,29 @@ const RaiseIncident = () => {
         </Box>
 
         <Box style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Box
-          mt={2}
-          mr={2}
-          style={{
-            backgroundColor: "#E1EEFB",
-            border: "1px solid #3381A5",
-            borderRadius: "16px",
-            width: 107,
-            height: 25,
-            padding: "3.7px 14px",
-          }}
-        >
-          <Typography
+          <Box
+            mt={2}
+            mr={2}
             style={{
-              fontSize: "10px",
-              fontWeight: "400",
-              color: "#3381A5",
+              backgroundColor: "#E1EEFB",
+              border: "1px solid #3381A5",
+              borderRadius: "16px",
+              width: 107,
+              height: 25,
+              padding: "3.7px 14px",
             }}
           >
-            {rows2.length} Results found
-          </Typography>
+            <Typography
+              style={{
+                fontSize: "10px",
+                fontWeight: "400",
+                color: "#3381A5",
+              }}
+            >
+              {rows2.length} Results found
+            </Typography>
+          </Box>
         </Box>
-      </Box>
 
         <Box mt={2} mb={5} style={{ height: "100%" }}>
           <DataGrid

@@ -430,15 +430,6 @@ const StudentIndividual = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-
-          {/* search button */}
-          <Button
-            variant="contained"
-            style={{ marginLeft: "15px" }}
-            onClick={handleSearch}
-          >
-            Search
-          </Button>
         </Box>
 
         {/* Table */}
@@ -492,7 +483,7 @@ const StudentIndividual = () => {
               onClick={handleAssignRoleClick}
               disabled={!isAnyCheckboxSelected}
             >
-              Assign Role (s)
+              Assign Role
             </Button>
           </Stack>
         </Box>
