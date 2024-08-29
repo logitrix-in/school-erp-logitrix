@@ -484,7 +484,7 @@ const ManageStreamRequest = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  border: "0.5px solid black",
+                  border: "0.5px solid #e0dcdc",
                   borderTopLeftRadius: "10px",
                   borderBottomLeftRadius: "10px",
                   padding: "20px",
@@ -528,7 +528,7 @@ const ManageStreamRequest = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  border: "0.25px solid black",
+                  border: "0.25px solid #e0dcdc",
                   borderTopRightRadius: "10px",
                   borderBottomRightRadius: "10px",
                   justifyContent: "center",
@@ -562,7 +562,7 @@ const ManageStreamRequest = () => {
                     Seats Currently Allocated for External Admission
                   </Typography>
                 </Box>
-                <Divider sx={{ border: "0.25px solid black", width: "100%" }} />
+                <Divider sx={{ border: "0.25px solid #e0dcdc", width: "100%" }} />
                 <Box
                   sx={{
                     display: "flex",

@@ -32,6 +32,7 @@ import Profile from "../../../assets/icons/photo.png";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import { ToastContainer, toast } from "react-toastify";
 import Frame from "../../../assets/icons/frame.png";
+import Rectangle1 from "../../../assets/icons/rectangle1.png";
 
 const ActionSuspend = () => {
   const [multiple, setMultiple] = useState(true);
@@ -176,15 +177,15 @@ const ActionSuspend = () => {
             progress === 1
               ? multiple
                 ? extendedView
-                  ? "1100px"
-                  : "780px"
-                : "780px"
+                  ? "1150px"
+                  : "830px"
+                : "830px"
               : progress === 2
               ? multiple
                 ? extendedView
-                  ? "1300px"
-                  : "1000px"
-                : "1000px"
+                  ? "1350px"
+                  : "1050px"
+                : "1050px"
               : "0px",
           borderRadius: 2,
           overflow: "hidden",
@@ -331,13 +332,10 @@ const ActionSuspend = () => {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
+                marginBottom: "20px",
               }}
             >
-              <img
-                src={Frame}
-                alt="frame"
-                style={{ width: "25%" }}
-              />
+              <img src={Frame} alt="frame" style={{ width: "25%" }} />
               <Typography
                 sx={{
                   fontWeight: "600",
@@ -512,29 +510,48 @@ const ActionSuspend = () => {
                   padding: "10px",
                   marginTop: "20px",
                   borderRadius: "6px",
+                  height: "200px",
                 }}
               >
+                <img
+                  src={Rectangle1}
+                  alt="rectangle"
+                  style={{
+                    position: "absolute",
+                    marginTop: "-10px",
+                    marginLeft: "-10px",
+                    height: "186px",
+                    borderRadius: "6px",
+                  }}
+                />
+
                 <Box
                   sx={{
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
+                    backgroundColor: "transparent",
+                    alignItems: "center",
+                    paddingLeft: "20px",
                   }}
                 >
                   <Box sx={{ display: "flex", flexDirection: "row" }}>
                     <Box
                       sx={{
-                        height: "10rem",
-                        width: "10rem",
+                        height: "9rem",
+                        width: "9rem",
                         backgroundColor: "#ECEDED",
                         borderRadius: "6px",
+                        zIndex: "1",
                       }}
                     >
-                      <img
-                        src={Profile}
-                        alt="profile pic"
-                        style={{ width: "100%", height: "100%" }}
-                      />
+                      <Box>
+                        <img
+                          src={Profile}
+                          alt="profile pic"
+                          style={{ width: "100%", height: "100%" }}
+                        />
+                      </Box>
                     </Box>
 
                     <Box
@@ -914,19 +931,29 @@ const ActionCard = ({
       sx={{
         display: "flex",
         flexDirection: "row",
-        height: "100px",
+        height: "90px",
         width: "280px",
         alignItems: "center",
         padding: "10px",
         borderRadius: "6px",
       }}
     >
+      <img
+        src={Rectangle1}
+        alt="rectangle"
+        style={{
+          position: "absolute",
+          borderRadius: "6px",
+          height: "90px",
+          marginLeft: "-10px",
+        }}
+      />
       <Avatar
         alt="profile"
-        src="../../../assets/icons/photo.png"
-        sx={{ marginRight: "10px" }}
+        src={Profile}
+        sx={{ marginRight: "10px", width: "50px", height: "50px" }}
       />
-      <Box sx={{ width: "110px" }}>
+      <Box sx={{ width: "80px" }}>
         <Typography sx={{ fontWeight: "700", fontSize: "12px" }}>
           {name}
         </Typography>
@@ -954,13 +981,15 @@ const ActionCard = ({
           marginLeft: "10px",
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Box
+          sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+        >
           <Box flex={1}></Box>
           <Box
             sx={{
               backgroundColor: "#C6F6D5",
               borderRadius: "6px",
-              width: "50px",
+              width: "60px",
               height: "20px",
               display: "flex",
               justifyContent: "center",
@@ -968,29 +997,28 @@ const ActionCard = ({
           >
             <Typography sx={{ fontWeight: "700" }}>Active</Typography>
           </Box>
-          <button
-            style={{
-              padding: "0",
-              margin: "0",
-              backgroundColor: "#fff",
-              border: "none",
-              cursor: "pointer",
+          <IconButton size="small">
+            <MoreVertIcon />
+          </IconButton>
+        </Box>
+        <Box
+          sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+        >
+          <Typography
+            sx={{
+              color: "#c4673b",
+              fontWeight: "700",
+              fontSize: "14px",
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            <MoreVertIcon />
-          </button>
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-          <Box sx={{ display: "flex", flexDirection: "column-reverse" }}>
-            <Typography
-              sx={{ color: "#c4673b", fontWeight: "700", fontSize: "16px" }}
-            >
-              {balance}
-            </Typography>
-          </Box>
-          <Typography sx={{ fontSize: "13px", paddingLeft: "10px" }}>
-            Caution{" "}
-            <Typography sx={{ fontSize: "9px" }}>Money Balance </Typography>
+            <CurrencyRupeeIcon fontSize="small"/> {balance}
+          </Typography>
+          <Typography
+            sx={{ fontSize: "10px", paddingLeft: "10px"  }}
+          >
+            Caution Money Balance
           </Typography>
         </Box>
       </Box>

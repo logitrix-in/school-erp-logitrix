@@ -15,6 +15,7 @@ import {
   Checkbox,
   ListItemText,
   IconButton,
+  Link,
 } from "@mui/material";
 import { CheckBox, Search } from "@mui/icons-material";
 import { useMediaQuery } from "@material-ui/core";
@@ -78,6 +79,11 @@ const RaiseIncident = () => {
         : isSmall
         ? 90
         : 120,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
     },
     { field: "space", headerName: "", width: 50 },
     {
@@ -277,6 +283,11 @@ const RaiseIncident = () => {
         : isSmall
         ? 90
         : 120,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
     },
     { field: "space", headerName: "", width: 50 },
     {
@@ -724,6 +735,7 @@ const RaiseIncident = () => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
+            marginBottom: "20px",
           }}
         >
           <img src={Frame} alt="frame" style={{ width: "25%" }} />
@@ -782,13 +794,6 @@ const RaiseIncident = () => {
           <FormControl style={{ width: "20rem", marginLeft: "2rem" }}>
             <DatePicker label="Date of incident" />
           </FormControl>
-
-          <Box flex={1} />
-
-          <Button variant="outlined" sx={{ height: "40px", width: "120px" }}>
-            {" "}
-            Clear All{" "}
-          </Button>
         </Box>
 
         <Box style={{ display: "flex", justifyContent: "flex-end" }}>
