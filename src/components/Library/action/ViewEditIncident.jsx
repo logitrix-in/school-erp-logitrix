@@ -14,6 +14,7 @@ import RevealCard from "@/components/AnimationComponents/RevealCard";
 import { Search } from "@mui/icons-material";
 import { useMediaQuery } from "@material-ui/core";
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
+import { DataGrid } from "@mui/x-data-grid";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
@@ -21,7 +22,13 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
 import RequestPageOutlinedIcon from '@mui/icons-material/RequestPageOutlined';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import SVG from './SVG';
+import ListOfStudents from "./ListStudents";
+import DisplayCardSingle from "./DisplayCardSingle";
 
 const ViewEditIncident = () => {
   const isSmall = useMediaQuery("(max-width: 1364px)");
@@ -42,6 +49,111 @@ const ViewEditIncident = () => {
   };
 
   const components = [1, 2, 3];
+  const [showList, setShowList] = useState(false);
+
+  const columns1 = [
+    {
+      field: "space", headerName: "", flex: 0.2,
+    },
+    {
+      field: "id",
+      headerName: "Library Card #", flex: 1
+    },
+    {
+      field: "name",
+      headerName: "Name", flex: 1.5
+    },
+    {
+      field: "class",
+      headerName: "Class", flex: 0.8
+    },
+    {
+      field: "section",
+      headerName: "Section", flex: 0.8
+    },
+    {
+      field: "roll",
+      headerName: "Roll #", flex: 0.8
+    },
+    {
+      field: "status",
+      headerName: "Library Card Status", flex: 1.5,
+      renderCell: (params) => (
+        <Box
+          style={{
+            backgroundColor:
+              params.value === "Active"
+                ? "#C6F6D5"
+                : params.value === "Suspended"
+                  ? "#FFCCCC"
+                  : "transparent",
+            borderRadius: "6px",
+            display: "inline-block",
+            width:
+              params.value === "Active" || params.value === "Suspended"
+                ? "auto"
+                : "auto",
+            paddingLeft:
+              params.value === "Active"
+                ? "7px"
+                : params.value === "Suspended"
+                  ? "7px"
+                  : "0px",
+            paddingRight:
+              params.value === "Active"
+                ? "7px"
+                : params.value === "Suspended"
+                  ? "7px"
+                  : "0px",
+          }}
+        >
+          {params.value}
+        </Box>
+      ),
+    },
+    {
+      field: "period",
+      headerName: "Last Suspension Period", flex: 1.8
+    },
+    {
+      field: "amount",
+      headerName: "Penalty Due Amount", flex: 1.5
+    },
+    {
+      field: "incidentid",
+      flex: 1.5,
+      headerName: "Open Incidents",
+      renderCell: (params) => (
+        <Box
+          style={{
+            backgroundColor: "#e8def8",
+            borderRadius: "6px",
+            display: "inline-block",
+            width: "auto",
+            paddingLeft: "7px",
+            paddingRight: "7px",
+          }}
+        >
+          {params.value}
+        </Box>
+      ),
+    },
+  ];
+
+  const rows1 = [
+    {
+      id: "AG240001",
+      class: "VI",
+      name: "Saunav Ray",
+      section: "A",
+      roll: 23,
+      status: "Active",
+      period: "N/A",
+      amount: "Nil",
+      incidentid: "#112233",
+
+    }
+  ];
 
   return (
     <RevealCard>
@@ -70,11 +182,111 @@ const ViewEditIncident = () => {
             )}
           />
         </Box>
+
+
+        <Box>
+          <DataGrid
+            rows={rows1}
+            columns={columns1}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+          />
+        </Box>
+
+        <Box mt={4}>
+          <Accordion sx={{ marginY: '16px' }}>
+            <AccordionSummary
+              expandIcon={<ArrowDropDownIcon />}
+              sx={{
+                bgcolor: '#ECEDED',
+                borderRadius: '8px',
+                '&.Mui-expanded': {
+                  minHeight: '48px', // Adjust this value as needed
+                  margin: '0',
+                },
+                '& .MuiAccordionSummary-expandIconWrapper': {
+                  order: -1, // This moves the icon to the left
+                  marginRight: '8px', // Add some space between the icon and the text
+                  transform: 'rotate(-90deg)', // Rotate the icon to point right when not expanded
+                },
+                '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                  transform: 'rotate(0deg)', // Reset the rotation when expanded
+                },
+              }}
+            >
+              <Typography>2024-25</Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ margin: 0, padding: 0, paddingTop: '16px' }}>
+              <DisplayCardSingle setShowList={setShowList} />
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion sx={{ marginY: '16px' }}>
+            <AccordionSummary
+              expandIcon={<ArrowDropDownIcon />}
+              sx={{
+                bgcolor: '#ECEDED',
+                borderRadius: '8px',
+                '&.Mui-expanded': {
+                  minHeight: '48px', // Adjust this value as needed
+                  margin: '0',
+                },
+                '& .MuiAccordionSummary-expandIconWrapper': {
+                  order: -1, // This moves the icon to the left
+                  marginRight: '8px', // Add some space between the icon and the text
+                  transform: 'rotate(-90deg)', // Rotate the icon to point right when not expanded
+                },
+                '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                  transform: 'rotate(0deg)', // Reset the rotation when expanded
+                },
+              }}
+            >
+              <Typography>2023-24</Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ margin: 0, padding: 0, paddingTop: '16px' }}>
+              <DisplayCardSingle setShowList={setShowList} />
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion sx={{ marginY: '16px' }}>
+            <AccordionSummary
+              expandIcon={<ArrowDropDownIcon />}
+              sx={{
+                bgcolor: '#ECEDED',
+                borderRadius: '8px',
+                '&.Mui-expanded': {
+                  minHeight: '48px', // Adjust this value as needed
+                  margin: '0',
+                },
+                '& .MuiAccordionSummary-expandIconWrapper': {
+                  order: -1, // This moves the icon to the left
+                  marginRight: '8px', // Add some space between the icon and the text
+                  transform: 'rotate(-90deg)', // Rotate the icon to point right when not expanded
+                },
+                '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+                  transform: 'rotate(0deg)', // Reset the rotation when expanded
+                },
+              }}
+            >
+              <Typography>2022-23</Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ margin: 0, padding: 0, paddingTop: '16px' }}>
+              <DisplayCardSingle setShowList={setShowList} />
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+
+
         <Box
           display="flex"
           flexDirection="row"
           width={"100%"}
           alignItems={"end"}
+          marginTop={4}
         >
           <Typography
             sx={{ fontSize: "18px", fontWeight: "700", paddingLeft: "10px" }}
@@ -103,9 +315,13 @@ const ViewEditIncident = () => {
               id={id}
               isOpen={openId === id}
               onToggle={handleToggle}
+              setShowList={setShowList}
             />
           ))}
         </Box>
+
+        {showList && <ListOfStudents open={showList} close={() => setShowList(false)} />}
+
         <Box
           sx={{
             display: "flex",
@@ -127,7 +343,7 @@ const ViewEditIncident = () => {
   );
 };
 
-const DisplayCard = ({ id, isOpen, onToggle }) => {
+const DisplayCard = ({ id, isOpen, onToggle, setShowList }) => {
   return (
     <Box
       sx={{
@@ -378,7 +594,9 @@ const DisplayCard = ({ id, isOpen, onToggle }) => {
                     height: 30,
                     fontSize: '0.75rem', // Smaller font size for the +2
                   },
+                  cursor: "pointer"
                 }}
+                onClick={() => setShowList(true)}
               >
                 <Avatar
                   alt="Remy Sharp"
