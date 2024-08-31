@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Link
 } from "@mui/material";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
 import { Search } from "@mui/icons-material";
@@ -50,6 +51,11 @@ const ViewEditIncident = () => {
       field: "id",
       headerName: "Student ID",
       width: isLaptop ? 120 : isLarge ? 160 : 140,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      )
     },
     {
       field: "name",

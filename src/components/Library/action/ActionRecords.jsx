@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { Box, TextField, Button, Typography, Link } from "@mui/material";
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 import useClasses from "../../../hooks/useClasses";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -26,6 +26,11 @@ const ActionRecords = () => {
       field: "id",
       headerName: "Student ID",
       width: isLaptop ? 120 : isLarge ? 160 : 140,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      )
     },
     {
       field: "name",

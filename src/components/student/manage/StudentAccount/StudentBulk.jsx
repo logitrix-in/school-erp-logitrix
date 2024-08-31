@@ -14,6 +14,7 @@ import {
   ListItemText,
   OutlinedInput,
   ListItemIcon,
+  Link,
 } from "@mui/material";
 import useClasses from "../../../../hooks/useClasses";
 import { useMediaQuery } from "@material-ui/core";
@@ -171,6 +172,11 @@ const StudentBulk = () => {
         : isSmall
         ? 110
         : 170,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
     },
     {
       field: "name",
@@ -496,7 +502,7 @@ const StudentBulk = () => {
             </Box>
 
             {/* table */}
-            <Box m={2} style={{ height: "100%"}}>
+            <Box m={2} style={{ height: "100%" }}>
               <DataGrid
                 rows={rows}
                 columns={columns}

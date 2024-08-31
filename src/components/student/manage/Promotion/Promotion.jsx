@@ -17,6 +17,7 @@ import {
   DialogTitle,
   DialogContent,
   IconButton,
+  Link
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { Search } from "@mui/icons-material";
@@ -190,7 +191,16 @@ const Promotion = () => {
       ),
     },
     { field: "space", headerName: "", width: isLarge ? 80 : 50 },
-    { field: "id", headerName: "Student ID", flex: 1 },
+    {
+      field: "id",
+      headerName: "Student ID",
+      flex: 1,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
+    },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "class", headerName: "Class", flex: 1 },
     { field: "section", headerName: "Section", flex: 1 },
@@ -532,7 +542,7 @@ const Promotion = () => {
             style={{ width: "550px" }}
             disabled={selectedRow === null}
           >
-            {rowData?.status === 'Promoted' ? 'Cancel Promotion' : 'Promote'}            
+            {rowData?.status === "Promoted" ? "Cancel Promotion" : "Promote"}
           </Button>
         </Box>
       </Bbox>
@@ -815,7 +825,9 @@ const Promotion = () => {
                     Seats Currently Allocated for External Admission
                   </Typography>
                 </Box>
-                <Divider sx={{ border: "0.25px solid #e0dcdc", width: "100%" }} />
+                <Divider
+                  sx={{ border: "0.25px solid #e0dcdc", width: "100%" }}
+                />
                 <Box
                   sx={{
                     display: "flex",

@@ -503,7 +503,11 @@ const RaiseIncident = () => {
   ];
 
   const columns3 = [
-    { field: "id", headerName: "Student ID", flex: 1 },
+    { field: "id", headerName: "Student ID", flex: 1, renderCell: (params) => (
+      <Link underline="hover" color="primary">
+        {params.value}
+      </Link>
+    ), },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "class", headerName: "Class", flex: 1 },
     { field: "section", headerName: "Section", flex: 1 },

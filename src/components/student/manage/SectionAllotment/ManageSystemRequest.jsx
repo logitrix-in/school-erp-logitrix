@@ -18,6 +18,7 @@ import {
   Select,
   ToggleButton,
   ToggleButtonGroup,
+  Link,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 import IconButton from "@mui/material/IconButton";
@@ -98,6 +99,11 @@ const ManageSystemRequest = () => {
       field: "id",
       headerName: "Student ID",
       width: isLaptop ? 200 : isLarge ? 300 : isTablet ? 150 : 250,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      )
     },
     {
       field: "name",
