@@ -82,6 +82,7 @@ import LibraryActionSuspend from "./components/Library/action/ActionSuspend";
 
 import ClaimsBonuses from "./pages/employee/Claims&Bonuses";
 import Appraisal from "./pages/employee/Appraisal";
+import EmployeeAction from "./pages/employee/EmployeeAction";
 
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
 const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
@@ -414,7 +415,7 @@ function App() {
 					/>
 					<Route
 						path={"employee/action/"}
-						element={<LibraryRecommandation />}
+						element={<EmployeeAction />}
 					/>
 					<Route
 						path={"employee/appraisal/"}

@@ -508,6 +508,7 @@ const RaiseIncident = () => {
             Add to Incident Bucket
           </Button>
         </Box>
+
         <SVGIncident />
 
         <Box mt={4} display={"flex"}>
