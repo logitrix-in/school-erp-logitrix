@@ -147,9 +147,9 @@ const IssueAdmitCard = () => {
     setPlayload((prev) => ({ ...prev, [name]: value }));
   };
 
-  useEffect(() => {}, [playload]);
+  useEffect(() => { }, [playload]);
 
-  useEffect(() => {}, [selected]);
+  useEffect(() => { }, [selected]);
 
   const deleteItem = (id) => {
     const updatedItems = selected.filter((item) => item.id !== id);
@@ -321,12 +321,12 @@ const IssueAdmitCard = () => {
                       onClick={() =>
                         !selected.some((s) => s.id == viewCandidate.id)
                           ? setSelected((prev) => [
-                              ...prev,
-                              {
-                                id: viewCandidate.id,
-                                name: viewCandidate.name,
-                              },
-                            ])
+                            ...prev,
+                            {
+                              id: viewCandidate.id,
+                              name: viewCandidate.name,
+                            },
+                          ])
                           : deleteItem(viewCandidate.id)
                       }
                     >

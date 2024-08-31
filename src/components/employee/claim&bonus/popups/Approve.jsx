@@ -92,7 +92,7 @@ const Approve = ({ open, close }) => {
                     <TextField
                         id="comments"
                         label="Enter Reason / Comments"
-                        placeholder="Use this field to record any additional information which could be considered for the subsequent steps."
+                        placeholder="Enter Reason / Comments"
                         // value={comments}
                         // onChange={(e) => setComments(e.target.value)}
                         variant="outlined"
@@ -101,7 +101,7 @@ const Approve = ({ open, close }) => {
                         rows={4}
                     />
 
-                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to approve the claim?</Typography>
+                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to approve the claim request?</Typography>
 
                     <Box marginY={2} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="primary" fullWidth onClick={() => {

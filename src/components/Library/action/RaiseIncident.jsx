@@ -23,6 +23,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import SVGIncident from './SVGIncident';
 
 const RaiseIncident = () => {
   // breakpoints
@@ -43,10 +44,6 @@ const RaiseIncident = () => {
 
   const [compliance, setCompliance] = useState([]);
   const [modeSwitch, setModeSwitch] = useState(true);
-
-  const handleProceed = () => {
-    return <ActionSuspend />;
-  };
 
   const handleComplianceChange = (e) => {
     const {
@@ -500,13 +497,7 @@ const RaiseIncident = () => {
           )}
         </Box>
 
-        <Box display={"flex"} justifyContent={"center"}>
-          <Box flex={1} />
-
-          <Button variant="contained">Add to Incident Bucket</Button>
-        </Box>
-
-        <Button variant="contained">Incident#: #112233</Button>
+        <SVGIncident />
 
         <Box mt={4} display={"flex"}>
           <FormControl style={{ width: "20rem", marginRight: "2rem" }}>
@@ -582,7 +573,7 @@ const RaiseIncident = () => {
         <Box mt={4} mb={7} display="flex" justifyContent="flex-end">
           <Button
             variant="contained"
-            onClick={() => navigate("/student/action/deliver/")}
+            onClick={() => navigate("/library/action/deliver/")}
             sx={{ marginRight: "10px", width: "120px" }}
           >
             Proceed

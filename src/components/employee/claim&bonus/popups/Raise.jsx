@@ -88,7 +88,7 @@ const Raise = ({ open, close }) => {
                             // value={'age'}
                             // onChange={handleChange}
                             >
-                                <MenuItem value={"internet"}>Internet reimbursement</MenuItem>
+                                <MenuItem value={"internet"}>Internet Reimbursement</MenuItem>
                                 <MenuItem value={"travel"}>Travel Expenses</MenuItem>
                             </Select>
                         </FormControl>
@@ -147,8 +147,8 @@ const Raise = ({ open, close }) => {
 
                     <TextField
                         id="comments"
-                        label="Notes/Comments"
-                        placeholder="Use this field to record any additional information which could be considered for the subsequent steps."
+                        label="Enter Notes/Comments"
+                        placeholder="Enter Notes/Comments"
                         // value={comments}
                         // onChange={(e) => setComments(e.target.value)}
                         variant="outlined"

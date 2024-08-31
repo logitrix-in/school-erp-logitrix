@@ -78,6 +78,8 @@ import LibraryInformation from "./pages/Library/LibraryInformation";
 import LibraryAction from "./pages/Library/LibraryAction";
 import OnBoardingDetails from "./components/student/manage/EditInformation/OnBoardingDetails";
 import ActionSuspend from "./components/student/action/ActionSuspend";
+import LibraryActionSuspend from "./components/Library/action/ActionSuspend";
+
 import ClaimsBonuses from "./pages/employee/Claims&Bonuses";
 import Appraisal from "./pages/employee/Appraisal";
 
@@ -336,7 +338,6 @@ function App() {
 
 					<Route path={"/student/action/deliver/"} element={<ActionSuspend />} />
 
-
 					{/* student-attendance */}
 					<Route
 						path={"student/attendance/"}
@@ -376,6 +377,9 @@ function App() {
 						path={"library/action/"}
 						element={<LibraryAction />}
 					/>
+
+					<Route path={"/library/action/deliver/"} element={<LibraryActionSuspend />} />
+
 
 					<Route
 						path={"library/visitors/"}

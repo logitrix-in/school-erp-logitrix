@@ -13,8 +13,10 @@ import {
 	Dialog,
 	InputAdornment,
 	TextField,
+	IconButton,
 	Toolbar,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { DataGrid } from "@mui/x-data-grid";
 import useClasses from "../../../hooks/useClasses";
 import Section from "../../Section";
@@ -423,36 +425,36 @@ const IssuePage = ({ issueState, setIssueState }) => {
 					<Typography flex={1} fontSize={"1.2rem"}>
 						Manage Issue
 					</Typography>
-					<Button
+					<IconButton
+						edge="start"
 						color="inherit"
 						onClick={() => setIssueState("close")}
+						aria-label="close"
 					>
-						close
-					</Button>
+						<CloseIcon
+						/>
+					</IconButton>
 				</Toolbar>
 			</AppBar>
 			<Box p={3}>
 				<Section title={"New Issue"}>
 					<Flex mb={2}>
-						<TextField
+						<Autocomplete
+							options={[]}
 							size="small"
-							placeholder="Media ID"
-							sx={{ width: "22rem" }}
-							variant="outlined"
-							InputProps={{
-								sx: {
-									fontSize: "0.9rem",
-								},
-								endAdornment: (
-									<InputAdornment position="end">
-										<Search sx={{ fontSize: "1.3rem" }} />
-									</InputAdornment>
-								),
-							}}
+							multiple
+							filterSelectedOptions
+							freeSolo={false}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									label="Media ID"
+									variant="outlined"
+									placeholder="Media ID"
+								/>
+							)}
+							sx={{ width: "30%" }}
 						/>
-						<Button variant="contained" sx={{ mr: "auto" }}>
-							Submit
-						</Button>
 					</Flex>
 
 					<DataGrid columns={issue_columns} rows={[]} autoHeight />
@@ -494,7 +496,9 @@ const IssuePage = ({ issueState, setIssueState }) => {
 						Are you sure you want to proceed?
 					</Typography>
 					<Flex gap={2}>
-						<Button variant="contained" sx={{ width: "8rem" }}>
+						<Button variant="contained" sx={{ width: "8rem" }}
+							onClick={() => setNewIssueOpen(false)}
+						>
 							Yes
 						</Button>
 						<Button

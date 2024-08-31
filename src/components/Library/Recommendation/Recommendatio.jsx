@@ -16,12 +16,18 @@ import {
 	TextField,
 	Avatar,
 } from "@mui/material";
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import Tooltip from '@mui/material/Tooltip';
 import ReignsSelect from "../../UiComponents/ReignsSelect";
 import { DataGrid } from "@mui/x-data-grid";
 import useClasses from "../../../hooks/useClasses";
 import Section from "../../Section";
 import { Icon } from "@iconify/react";
 import Flex from "../../UiComponents/Flex";
+import AcceptPopup from './popup/Accept';
+import RejectPopup from './popup/Reject';
+import FulfillPopup from './popup/Fulfill';
+import RequestDetails from './popup/RequestDetails';
 import { useState } from "react";
 
 const rows = [
@@ -35,7 +41,7 @@ const rows = [
 		Reqdate: "2020-01-01",
 		Department: "Finance",
 		"Media Type": "Video",
-		"Media Name": "Video 1",
+		"Media Name": "Book 1",
 		Author: "John",
 		Status: "open",
 		actions: "Delete",
@@ -46,14 +52,23 @@ const names = [];
 
 const Recommendation = () => {
 	const { acYear, curYear } = useClasses();
-	const [selected, setSelected] = useState("Marked as Open");
+	const [selected, setSelected] = useState("Open");
 	const [academicYear, setAcademicYear] = useState(curYear);
+	const [acceptPopup, setAcceptPopup] = useState(false);
+	const [rejectPopup, setRejectPopup] = useState(false);
+	const [fulfillPopup, setFulfillPopup] = useState(false);
+	const [requestDetailsPopup, setRequestDetailsPopup] = useState(false);
 
 	const columns = [
 		{
 			field: "id",
 			headerName: "Req ID",
 			flex: 0.6,
+			renderCell: (params) => (
+				<Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setRequestDetailsPopup(true)}>
+					{params.value}
+				</Typography>
+			),
 		},
 		{
 			field: "employeeName",
@@ -90,26 +105,23 @@ const Recommendation = () => {
 			flex: 1,
 		},
 		{
-			field: "Media Type",
-			headerName: "Media Type",
-			flex: 0.8,
+			field: "Media Name",
+			headerName: "Media Name",
+			flex: 1,
 			renderCell: (params) => (
 				<Flex
 					sx={{
 						width: '100%',
 						height: '100%',
-						justifyContent: 'center',
-						alignItems: 'center'
 					}}
 				>
-					<Icon icon={"emojione:books"} height={"70%"} />
+					{/* <Icon icon={"emojione:books"} height={"70%"} />  */}
+					<Tooltip title="Book">
+						<MenuBookOutlinedIcon />
+					</Tooltip>
+					{params.value}
 				</Flex>
 			),
-		},
-		{
-			field: "Media Name",
-			headerName: "Media Name",
-			flex: 1,
 		},
 		{
 			field: "Author",
@@ -121,7 +133,32 @@ const Recommendation = () => {
 			headerName: "Status",
 			flex: 1,
 			renderCell: (params) => (
-				<Flex bgcolor={"#C6F6D5"} p={0.5} px={1.5} borderRadius={1}>
+				<Flex bgcolor={
+					selected === "In Review"
+						? "#FEEBCB"
+						: selected === "Accepted"
+							? "#C6F6D5"
+							: selected === "Rejected"
+								? "#FED7D7"
+								: selected === "Fulfilled"
+									? "#BEE3F8"
+									: selected === "Open"
+										? "#E2E8F0"
+										: "transparent"
+				}
+					color={
+						selected === "In Review"
+							? "#822727"
+							: selected === "Accepted"
+								? "#22543D"
+								: selected === "Rejected"
+									? "#822727"
+									: selected === "Fulfilled"
+										? "#2B6CB0"
+										: selected === "Open"
+											? "#4A5568"
+											: "inherit"
+					} p={0.4} px={1.2} borderRadius={1}>
 					<Flex>{selected}</Flex>
 				</Flex>
 			),
@@ -145,7 +182,7 @@ const Recommendation = () => {
 
 
 				const options = [
-					"Mark as Open",
+					// "Mark as Open",
 					"In Review",
 					"Accept",
 					"Reject",
@@ -153,7 +190,7 @@ const Recommendation = () => {
 				];
 
 				const statusMap = {
-					"Mark as Open": "Marked as Open",
+					// "Mark as Open": "Open",
 					"In Review": "In Review",
 					"Accept": "Accepted",
 					"Reject": "Rejected",
@@ -162,6 +199,7 @@ const Recommendation = () => {
 
 				return (
 					<>
+
 						<IconButton size="small" onClick={handleClick}>
 							<Icon icon="tabler:dots-vertical" />
 						</IconButton>
@@ -185,7 +223,15 @@ const Recommendation = () => {
 											<MenuItem
 												key={idx}
 												onClick={() => {
-													setSelected(statusMap[opt]);
+
+													if (opt === "Accept") {
+														setAcceptPopup(true);
+													} else if (opt === "Reject") {
+														setRejectPopup(true);
+													} else if (opt === "Fulfill") {
+														setFulfillPopup(true);
+													}
+
 													handleClose();
 												}}
 												sx={{ width: "10rem" }}
@@ -198,6 +244,12 @@ const Recommendation = () => {
 								})}
 							</Menu>
 						</Box>
+
+
+						<AcceptPopup open={acceptPopup} close={() => setAcceptPopup(false)} setSelected={setSelected} />
+						<RejectPopup open={rejectPopup} close={() => setRejectPopup(false)} setSelected={setSelected} />
+						<FulfillPopup open={fulfillPopup} close={() => setFulfillPopup(false)} setSelected={setSelected} />
+						<RequestDetails open={requestDetailsPopup} close={() => setRequestDetailsPopup(false)} />
 					</>
 				);
 			},

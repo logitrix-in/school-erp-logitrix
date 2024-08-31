@@ -24,8 +24,11 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { Icon } from "@iconify/react";
+import photo from "../../../assets/icons/photo.png";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
 import useClasses from "../../../hooks/useClasses";
+import { ToastContainer, toast } from "react-toastify";
+import SVGIncident from './SVGIncident';
 
 const ActionSuspend = () => {
   const [multiple, setMultiple] = useState(true);
@@ -113,47 +116,12 @@ const ActionSuspend = () => {
       studentid: "12345",
       balance: 1000,
       status: "Active",
-    },
-    {
-      name: "John Doe",
-      classname: "5",
-      section: "A",
-      roll: 1,
-      studentid: "12345",
-      balance: 1000,
-      status: "Active",
-    },
-    {
-      name: "John Doe",
-      classname: "5",
-      section: "A",
-      roll: 1,
-      studentid: "12345",
-      balance: 1000,
-      status: "Active",
-    },
-    {
-      name: "John Doe",
-      classname: "5",
-      section: "A",
-      roll: 1,
-      studentid: "12345",
-      balance: 1000,
-      status: "Active",
-    },
-    {
-      name: "John Doe",
-      classname: "5",
-      section: "A",
-      roll: 1,
-      studentid: "12345",
-      balance: 1000,
-      status: "Active",
-    },
+    }
   ];
 
   return (
     <RevealCard>
+      <ToastContainer />
       <Bbox
         sx={{
           marginTop: "2",
@@ -161,8 +129,10 @@ const ActionSuspend = () => {
           height: extendedView ? "1200px" : "1000px",
           borderRadius: 2,
           overflow: "hidden",
+          position: "relative",
         }}
       >
+
         {progress === 1 ? (
           <Box
             display="flex"
@@ -170,6 +140,11 @@ const ActionSuspend = () => {
             justifyContent={"center"}
             paddingTop={"20px"}
           >
+
+            <Box sx={{ position: 'absolute', left: 0 }}>
+              <SVGIncident />
+            </Box>
+
             <Box>
               <Box display="flex" alignItems="center">
                 <Box
@@ -232,6 +207,11 @@ const ActionSuspend = () => {
             justifyContent={"center"}
             paddingTop={"20px"}
           >
+
+            <Box sx={{ position: 'absolute', left: 0 }}>
+              <SVGIncident />
+            </Box>
+
             <Box>
               <Box display="flex" alignItems="center">
                 <Box
@@ -395,38 +375,17 @@ const ActionSuspend = () => {
                       sx={{
                         display: "flex",
                         flexDirection: "row-reverse",
-                        paddingTop: "20px",
-                        paddingRight: "20px",
+                        zIndex: 1,
+                        marginTop: '24px',
+                        gap: "10px", // This adds space between the IconButtons
                       }}
                     >
-                      <button
-                        style={{
-                          height: "30px",
-                          width: "30px",
-                          padding: "0",
-                          margin: "0",
-                          backgroundColor: "#fff",
-                          cursor: "pointer",
-                          borderRadius: "50%",
-                          border: "1px solid #000",
-                        }}
-                      >
+                      <IconButton sx={{ border: "0.5px solid black" }}>
                         <ArrowRightIcon />
-                      </button>
-                      <button
-                        style={{
-                          height: "30px",
-                          width: "30px",
-                          padding: "0",
-                          margin: "0",
-                          backgroundColor: "#fff",
-                          cursor: "pointer",
-                          borderRadius: "50%",
-                          border: "1px solid #000",
-                        }}
-                      >
+                      </IconButton>
+                      <IconButton sx={{ border: "0.5px solid black" }}>
                         <ArrowLeftIcon />
-                      </button>
+                      </IconButton>
                     </Box>
                   </Box>
                 ) : (
@@ -476,148 +435,105 @@ const ActionSuspend = () => {
                 )}
               </Box>
             ) : (
-              <Bbox
-                sx={{
-                  width: "100%",
-                  padding: "10px",
-                  marginTop: "20px",
-                  borderRadius: "6px",
-                }}
-              >
-                <Box
+              <Box>
+                <Bbox
                   sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    width: "100%",
+                    marginTop: "20px",
+                    borderRadius: "6px",
+                    position: "relative",
+                    overflow: "hidden"
                   }}
                 >
-                  <Box sx={{ display: "flex", flexDirection: "row" }}>
-                    <Box
-                      sx={{
-                        height: "10rem",
-                        width: "10rem",
-                        backgroundColor: "#ECEDED",
-                        borderRadius: "6px",
-                      }}
-                    >
-                      //Image
-                    </Box>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        padding: "20px",
-                        width: "250px",
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          display: "flex",
-                          padding: "3px",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        Student Name:{" "}
-                        <Typography sx={{ fontWeight: "700" }}>
-                          Jay Shaw
-                        </Typography>
-                      </Typography>
-
-                      <Typography
-                        sx={{
-                          display: "flex",
-                          padding: "3px",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        Student ID:{" "}
-                        <Typography sx={{ fontWeight: "700" }}>
-                          STU2201
-                        </Typography>
-                      </Typography>
-
-                      <Typography
-                        sx={{
-                          display: "flex",
-                          padding: "3px",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        Status:{" "}
-                        <Box
-                          sx={{
-                            backgroundColor: "#C6F6D5",
-                            padding: "2px 4px",
-                            borderRadius: "6px",
-                          }}
-                        >
-                          <Typography sx={{ fontWeight: "700" }}>
-                            Active
-                          </Typography>
-                        </Box>
-                      </Typography>
-                    </Box>
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        padding: "20px",
-                        width: "150px",
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          display: "flex",
-                          padding: "3px",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        Class:{" "}
-                        <Typography sx={{ fontWeight: "700" }}>V</Typography>
-                      </Typography>
-
-                      <Typography
-                        sx={{
-                          display: "flex",
-                          padding: "3px",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        Section:{" "}
-                        <Typography sx={{ fontWeight: "700" }}>B</Typography>
-                      </Typography>
-
-                      <Typography
-                        sx={{
-                          display: "flex",
-                          padding: "3px",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        Roll #:{" "}
-                        <Typography sx={{ fontWeight: "700" }}>22</Typography>
-                      </Typography>
-                    </Box>
+                  <Box
+                    position={"absolute"}
+                    top={0}
+                    left={0}
+                    width="150px"
+                    height="100%"
+                    sx={{
+                      backgroundColor: 'primary.main',
+                      clipPath: 'polygon(0 0, 80% 0, 40% 100%, 0 100%)',
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "white",
+                      zIndex: 1,
+                    }}
+                  >
+                  </Box>
+                  <Box
+                    position={"absolute"}
+                    top={0}
+                    left={0}
+                    width="150px"
+                    height="100%"
+                    display={"flex"}
+                    flexDirection={"column"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                  >
+                    <img src={photo} alt="icon" style={{ width: '120px', marginBottom: '10px', zIndex: 2, borderRadius: '16px' }} />
                   </Box>
 
                   <Box
-                    sx={{
-                      padding: "20px",
-                      display: "flex",
-                      flexDirection: "column",
-                      marginTop: "60px",
-                    }}
+                    position={"absolute"}
+                    bottom={0}
+                    right={0}
+                    padding={2}
+                    borderRadius={"8px"}
+                    display={"flex"}
+                    flexDirection={"column"}
+                    alignItems={"flex-start"}
+                    justifyContent={"center"}
                   >
-                    <Typography sx={{ fontWeight: "700", fontSize: "30px" }}>
+                    <Typography fontSize={32} fontWeight={600} color={"#545353"}>
                       9900
                     </Typography>
-
-                    <Typography>Caution Money Balance</Typography>
+                    <Typography fontSize={20} fontWeight={400} color={"#535353"}>
+                      Caution Money Balance
+                    </Typography>
                   </Box>
-                </Box>
-              </Bbox>
+
+                  <Box
+                    bgcolor={"white"}
+                    py={5}
+                    px={3}
+                    borderRadius={2}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                  >
+                    <Box display="flex" justifyContent="flex-start" width="100%" alignItems="center">
+                      <Box display="flex" gap={2} width="25%" justifyContent="center" borderRight="2px solid #E0E0E0" marginLeft={16}>
+                        <Box display="flex" flexDirection="column" justifyContent="space-between">
+                          <Typography mb={2}>Student Name</Typography>
+                          <Typography mb={2}>Student ID</Typography>
+                          <Typography mb={2}>Status</Typography>
+                        </Box>
+                        <Box display="flex" flexDirection="column" justifyContent="space-between">
+                          <Typography fontWeight="medium" ml={1} mb={2}>: Jay Shaw</Typography>
+                          <Typography fontWeight="medium" ml={1} mb={2}>: STU2201</Typography>
+                          <Typography fontWeight="medium" ml={1} mb={2} >: <span style={{ color: "#22543D", backgroundColor: "#C6F6D5", padding: "0.25rem 0.5rem", borderRadius: "0.5rem" }}>Active</span></Typography>
+                        </Box>
+                      </Box>
+                      <Box display="flex" gap={2} width="15%" justifyContent="center">
+                        <Box display="flex" flexDirection="column" justifyContent="space-between">
+                          <Typography mb={2}>Class</Typography>
+                          <Typography mb={2}>Section</Typography>
+                          <Typography mb={2}>Roll #</Typography>
+                        </Box>
+                        <Box display="flex" flexDirection="column" justifyContent="space-between">
+                          <Typography fontWeight="medium" ml={1} mb={2}>: V</Typography>
+                          <Typography fontWeight="medium" ml={1} mb={2}>: B</Typography>
+                          <Typography fontWeight="medium" ml={1} mb={2} display="flex" alignItems="center" gap={1} >: 22</Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Bbox>
+              </Box>
             )}
 
             <Box
@@ -651,18 +567,16 @@ const ActionSuspend = () => {
               {progress === 1 ? (
                 <Box sx={{ paddingTop: "30px" }}>
                   <Typography
-                    ml={3}
                     sx={{
                       display: "flex",
                       flexDirection: "row",
                       fontWeight: "600",
                       paddingBottom: "10px",
-                      fontSize: "px",
                     }}
                   >
                     Suspension Period
                   </Typography>
-                  <Box display={"flex"} gap={2} width="400px" ml={3}>
+                  <Box display={"flex"} gap={2} width="400px">
                     <DatePicker
                       label="Start Date"
                       format="DD MMM YYYY"
@@ -675,7 +589,7 @@ const ActionSuspend = () => {
                       onChange={(e) => setEndDate(e)}
                     />
                   </Box>
-                  <Box ml={3} marginTop={3}>
+                  <Box marginTop={3}>
                     <ReignsSelect
                       items={suspend}
                       multiple
@@ -699,7 +613,7 @@ const ActionSuspend = () => {
               ) : (
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   <FormControl style={{ width: "500px", marginTop: "40px" }}>
-                    <DatePicker label="Date of incident" />
+                    <DatePicker label="Penalty Due Date" />
                   </FormControl>
 
                   <FormControl style={{ width: "500px", marginTop: "40px" }}>
@@ -804,7 +718,7 @@ const ActionSuspend = () => {
               variant="outlined"
               color="error"
               sx={{ width: "200px", marginRight: "10px" }}
-              onClick={handleCloseDialog}
+              onClick={() => { handleCloseDialog(); toast.success("Penalty added successfully") }}
             >
               Yes
             </Button>
@@ -818,7 +732,7 @@ const ActionSuspend = () => {
           </Box>
         </DialogContent>
       </Dialog>
-    </RevealCard>
+    </RevealCard >
   );
 };
 
@@ -833,22 +747,51 @@ const ActionCard = ({
 }) => {
   return (
     <Bbox
+      position={"relative"}
+      overflow={"hidden"}
       sx={{
         display: "flex",
         flexDirection: "row",
-        height: "100px",
-        width: "280px",
         alignItems: "center",
+        justifyContent: "center",
         padding: "10px",
-        borderRadius: "6px",
+        borderRadius: "12px",
       }}
     >
-      <Avatar
-        alt="profile"
-        src="../../../assets/icons/photo.png"
-        sx={{ marginRight: "10px" }}
-      />
-      <Box sx={{ width: "110px" }}>
+
+      <Box
+        position={"absolute"}
+        top={0}
+        left={0}
+        width="100px"
+        height="100%"
+        sx={{
+          backgroundColor: 'primary.main',
+          clipPath: 'polygon(0 0, 50% 0, 25% 100%, 0 100%)',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "white",
+          zIndex: 1,
+        }}
+      >
+      </Box>
+      <Box
+        position={"absolute"}
+        top={0}
+        left={0}
+        width="75px"
+        height="100%"
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <img src={photo} alt="icon" style={{ width: '60px', zIndex: 2, borderRadius: '50%' }} />
+      </Box>
+
+      <Box sx={{ marginLeft: '64px', width: '50%' }}>
         <Typography sx={{ fontWeight: "700", fontSize: "12px" }}>
           {name}
         </Typography>
@@ -857,7 +800,7 @@ const ActionCard = ({
             {classname}
           </Typography>
           <Typography sx={{ fontWeight: "200", fontSize: "10px" }}>
-            {section}
+            {`(`}{section}{`)`}
           </Typography>
           <Typography sx={{ fontWeight: "200", fontSize: "10px" }}>
             {roll}
@@ -872,8 +815,8 @@ const ActionCard = ({
         sx={{
           display: "flex",
           flexDirection: "column",
-          width: "150px",
-          marginLeft: "10px",
+          // marginLeft: "24px",
+          width: '100%',
         }}
       >
         <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -883,12 +826,12 @@ const ActionCard = ({
               backgroundColor: "#C6F6D5",
               borderRadius: "6px",
               width: "50px",
-              height: "20px",
+              height: "18px",
               display: "flex",
               justifyContent: "center",
             }}
           >
-            <Typography sx={{ fontWeight: "700" }}>Active</Typography>
+            <Typography sx={{ fontWeight: "600", fontSize: '11px' }}>Active</Typography>
           </Box>
           <button
             style={{
@@ -907,10 +850,10 @@ const ActionCard = ({
             <Typography
               sx={{ color: "#c4673b", fontWeight: "700", fontSize: "16px" }}
             >
-              {balance}
+              ₹{balance}
             </Typography>
           </Box>
-          <Typography sx={{ fontSize: "13px", paddingLeft: "10px" }}>
+          <Typography sx={{ fontSize: "12px", paddingLeft: "8px" }}>
             Caution{" "}
             <Typography sx={{ fontSize: "9px" }}>Money Balance </Typography>
           </Typography>

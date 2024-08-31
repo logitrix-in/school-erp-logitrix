@@ -92,7 +92,7 @@ const Reject = ({ open, close }) => {
                     <TextField
                         id="comments"
                         label="Enter Reason for Rejection"
-                        placeholder="Use this field to record any additional information which could be considered for the subsequent steps."
+                        placeholder="Enter Reason for Rejection"
                         // value={comments}
                         // onChange={(e) => setComments(e.target.value)}
                         variant="outlined"
@@ -102,7 +102,7 @@ const Reject = ({ open, close }) => {
 
                     />
 
-                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to reject the claim?</Typography>
+                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to reject the claim request?</Typography>
 
                     <Box marginY={2} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="secondary" fullWidth onClick={() => {

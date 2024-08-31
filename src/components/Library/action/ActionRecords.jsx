@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { Box, TextField, Button, Typography, InputLabel, FormControl, Select, MenuItem } from "@mui/material";
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 import useClasses from "../../../hooks/useClasses";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -20,37 +20,37 @@ const ActionRecords = () => {
   const { classes, acYear, curYear, sections, nonCompliance } = useClasses();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [academicYear, setAcademicYear] = useState(curYear);
 
   const columns = [
     {
       field: "id",
-      headerName: "Student ID",
-      width: isLaptop ? 120 : isLarge ? 160 : 140,
+      headerName: "Library Card #",
+      flex: 1,
     },
     {
       field: "name",
       headerName: "Name",
-      width: isLaptop ? 120 : isLarge ? 160 : 120,
+      flex: 1.4,
     },
     {
       field: "class",
       headerName: "Class",
-      width: isLaptop ? 80 : isLarge ? 120 : 110,
+      flex: 0.6,
     },
     {
       field: "section",
       headerName: "Section",
-      width: isLaptop ? 100 : isLarge ? 140 : 120,
+      flex: 0.6,
     },
     {
       field: "roll",
       headerName: "Roll #",
-      width: isLaptop ? 90 : isLarge ? 130 : 110,
+      flex: 0.6,
     },
     {
       field: "status",
       headerName: "Status",
-      width: isLaptop ? 110 : isLarge ? 150 : 110,
       renderCell: (params) => (
         <Box
           style={{
@@ -58,41 +58,39 @@ const ActionRecords = () => {
               params.value === "Active"
                 ? "#C6F6D5"
                 : params.value === "Inactive"
-                ? "#FFCCCC"
-                : "transparent",
-            borderRadius: "6px",
-            display: "inline-block",
-            width:
-              params.value === "Active" || params.value === "Inactive"
-                ? "60px"
-                : "auto",
-            paddingLeft:
-              params.value === "Active"
-                ? "11px"
-                : params.value === "Inactive"
-                ? "7px"
-                : "0px",
+                  ? "#FFCCCC"
+                  : "transparent",
+            flex: 1,
+            borderRadius: "4px",
+            width: "auto",
+            paddingRight: "2px",
+            paddingLeft: "2px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          {params.value}
-        </Box>
+          <Typography
+          >
+            {params.value}
+          </Typography>
+        </Box >
       ),
     },
     {
       field: "period",
-      headerName: "Suspension Period",
-      width: isLaptop ? 100 : isLarge ? 140 : 110,
+      headerName: "Last Suspension Period",
+      flex: 1.7,
     },
     {
-      field: "date",
-      headerName: "Date",
-      width: isLaptop ? 130 : isLarge ? 170 : 130,
+      field: "amount",
+      headerName: "Penalty Due Amount",
+      flex: 1.5,
     },
-    { field: "amount", headerName: "Amount", width: isLaptop ? 100 : 120 },
     {
       field: "incidents",
-      headerName: "Incidents",
-      width: 300,
+      headerName: "Open Incidents",
+      flex: 2,
       renderCell: (params) => (
         <Box sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}>
           {params.row.incidents.map((incident, index) => (
@@ -100,9 +98,11 @@ const ActionRecords = () => {
               key={index}
               variant="body2"
               sx={{
-                backgroundColor: "#C4673B",
-                color: "#FFFFFF",
-                padding: "2px 4px",
+                backgroundColor: "#e8def8",
+                width: "auto",
+                paddingLeft: "7px",
+                paddingRight: "7px",
+                color: "#000000",
                 borderRadius: "4px",
               }}
             >
@@ -123,7 +123,7 @@ const ActionRecords = () => {
       roll: "19",
       status: "Active",
       period: "N/A",
-      date: "20-Sep-2023",
+      amount: "₹5000",
       incidents: ["#223344"],
     },
     {
@@ -134,8 +134,8 @@ const ActionRecords = () => {
       roll: "19",
       status: "Active",
       period: "N/A",
-      date: "20-Sep-2023",
-      incidents: ["#223344"],
+      amount: "₹5000",
+      incidents: ["#223344", "#112244"],
     },
     {
       id: "AG240003",
@@ -145,7 +145,7 @@ const ActionRecords = () => {
       roll: "19",
       status: "Inactive",
       period: "N/A",
-      date: "20-Sep-2023",
+      amount: "₹5000",
       incidents: ["#223344"],
     },
     {
@@ -156,64 +156,9 @@ const ActionRecords = () => {
       roll: "19",
       status: "Active",
       period: "N/A",
-      date: "20-Sep-2023",
+      amount: "₹5000",
       incidents: ["#223344"],
-    },
-    {
-      id: "AG240005",
-      name: "Saunav Ray",
-      class: "VI",
-      section: "A",
-      roll: "19",
-      status: "Active",
-      period: "N/A",
-      date: "20-Sep-2023",
-      incidents: ["#223344", "#223344"],
-    },
-    {
-      id: "AG240006",
-      name: "Saunav Ray",
-      class: "VI",
-      section: "A",
-      roll: "19",
-      status: "Inactive",
-      period: "N/A",
-      date: "20-Sep-2023",
-      incidents: ["#223344", "#223344"],
-    },
-    {
-      id: "AG240007",
-      name: "Saunav Ray",
-      class: "VI",
-      section: "A",
-      roll: "19",
-      status: "Active",
-      period: "N/A",
-      date: "20-Sep-2023",
-      incidents: ["#223344"],
-    },
-    {
-      id: "AG240008",
-      name: "Saunav Ray",
-      class: "VI",
-      section: "A",
-      roll: "19",
-      status: "Active",
-      period: "N/A",
-      date: "20-Sep-2023",
-      incidents: ["#223344", "#223344", "#223344"],
-    },
-    {
-      id: "AG240009",
-      name: "Saunav Ray",
-      class: "VI",
-      section: "A",
-      roll: "19",
-      status: "Active",
-      period: "N/A",
-      date: "20-Sep-2023",
-      incidents: ["#223344"],
-    },
+    }
   ];
 
   return (
@@ -228,7 +173,8 @@ const ActionRecords = () => {
               width: "400px",
             }}
           >
-            <ReignsSelect items={acYear} multiple label="Academic Year" />
+
+            <ReignsSelect items={acYear} multiple defaultValues={[curYear]} label="Academic Year" />
             <ReignsSelect items={classes} multiple label="Class" />
             <ReignsSelect items={sections} multiple label="Section" />
           </Box>
@@ -280,40 +226,41 @@ const ActionRecords = () => {
               backgroundColor: "#E1EEFB",
               border: "1px solid #3381A5",
               borderRadius: "16px",
-              width: 107,
-              height: 25,
-              padding: "3.7px 14px",
+              width: 120,
+              height: 28,
+              marginBottom: 12,
+              padding: "4px 14px",
             }}
           >
             <Typography
               style={{
-                fontSize: "10px",
+                fontSize: "12px",
                 fontWeight: "400",
                 color: "#3381A5",
               }}
             >
-             {rows.length} Results found
+              {rows.length} Results found
             </Typography>
           </Box>
         </Box>
 
         <Box style={{ height: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          checkboxSelection
-        />
-      </Box>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            checkboxSelection
+          />
+        </Box>
 
-      <Box display="flex" justifyContent="flex-end" mr={3} mt={3}>
-        <Button variant="outlined">Download Student List</Button>
-      </Box>
+        <Box display="flex" justifyContent="flex-end" mr={3} mt={3}>
+          <Button variant="outlined">Download Student List</Button>
+        </Box>
       </Box>
     </RevealCard>
   );
