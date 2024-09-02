@@ -9,6 +9,8 @@ import {
     InputLabel,
     Grid,
     ListItemIcon,
+    TextField,
+    Autocomplete,
     ListItemText,
     MenuItem,
     OutlinedInput,
@@ -19,7 +21,9 @@ import Chart from "react-apexcharts";
 import Bbox from "../../UiComponents/Bbox";
 import RevealCard from "../../AnimationComponents/RevealCard";
 import { useMediaQuery } from "@material-ui/core";
+import ReignsSelect from "../../UiComponents/ReignsSelect";
 import Analyze from "./popup/Analyze";
+import useClasses from "@/hooks/useClasses";
 
 export default function Dashboard() {
     const isSmall = useMediaQuery("(max-width: 1364px)");
@@ -33,6 +37,11 @@ export default function Dashboard() {
 
     const [appraisalCycle, setAppraisalCycle] = useState("");
     const [analyzePopup, setAnalyzePopup] = useState(false);
+    const [year, setYear] = useState([]);
+    const { curYear } = useClasses();
+
+    const years = ["2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
+    const values = ["A", "B", "C", "D"];
 
     const openAnalyzePopup = () => {
         setAnalyzePopup(true);
@@ -67,61 +76,56 @@ export default function Dashboard() {
                             <RevealCard>
                                 <Bbox borderRadius={2}>
                                     <Box px={3} py={4} mb={2}>
-                                        <FormControl fullWidth sx={{ mb: 2 }}>
-                                            <InputLabel>Appraisal Cycle</InputLabel>
-                                            <Select
-                                                label="Appraisal Cycle"
-                                                value={appraisalCycle}
-                                                onChange={(e) => setAppraisalCycle(e.target.value)}
-                                            >
-                                                <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                                                <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                                                <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                                                <MenuItem value={"2025-26"}>2025-26</MenuItem>
-                                            </Select>
-                                        </FormControl>
+                                        <ReignsSelect
+                                            multiple
+                                            defaultValues={[curYear]}
+                                            items={years}
+                                            // onChange={(val) => {
+                                            //     console.log(val);
+                                            //     setYear(val);
+                                            // }}
+                                            // value={curYear}
+                                            label="Appraisal Cycle"
+                                            sx={{ mb: 2 }}
+                                        />
 
-                                        <FormControl fullWidth sx={{ mb: 2 }}>
-                                            <InputLabel>Department</InputLabel>
-                                            <Select
-                                                label="Department"
-                                                value={appraisalCycle}
-                                                onChange={(e) => setAppraisalCycle(e.target.value)}
-                                            >
-                                                <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                                                <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                                                <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                                                <MenuItem value={"2025-26"}>2025-26</MenuItem>
-                                            </Select>
-                                        </FormControl>
+                                        <ReignsSelect
+                                            multiple
+                                            items={years}
+                                            // onChange={(val) => {
+                                            //     console.log(val);
+                                            //     setYear(val);
+                                            // }}
+                                            // value={curYear}
+                                            label="Department"
+                                            sx={{ mb: 2 }}
+                                        />
 
-                                        <FormControl fullWidth sx={{ mb: 2 }}>
-                                            <InputLabel>Grade</InputLabel>
-                                            <Select
-                                                label="Grade"
-                                                value={appraisalCycle}
-                                                onChange={(e) => setAppraisalCycle(e.target.value)}
-                                            >
-                                                <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                                                <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                                                <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                                                <MenuItem value={"2025-26"}>2025-26</MenuItem>
-                                            </Select>
-                                        </FormControl>
 
-                                        <FormControl fullWidth>
-                                            <InputLabel>Status</InputLabel>
-                                            <Select
-                                                label="Status"
-                                                value={appraisalCycle}
-                                                onChange={(e) => setAppraisalCycle(e.target.value)}
-                                            >
-                                                <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                                                <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                                                <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                                                <MenuItem value={"2025-26"}>2025-26</MenuItem>
-                                            </Select>
-                                        </FormControl>
+                                        <ReignsSelect
+                                            multiple
+                                            items={values}
+                                            // onChange={(val) => {
+                                            //     console.log(val);
+                                            //     setYear(val);
+                                            // }}
+                                            // value={curYear}
+                                            label="Grade"
+                                            sx={{ mb: 2 }}
+                                        />
+
+                                        <ReignsSelect
+                                            multiple
+                                            items={values}
+                                            // onChange={(val) => {
+                                            //     console.log(val);
+                                            //     setYear(val);
+                                            // }}
+                                            // value={curYear}
+                                            label="Status"
+                                            sx={{ mb: 2 }}
+                                        />
+
                                     </Box>
                                 </Bbox>
                             </RevealCard>
@@ -144,15 +148,16 @@ export default function Dashboard() {
                                                             },
                                                         },
                                                         dataLabels: {
-                                                            enabled: false,
+                                                            enabled: true,
+                                                            style: {
+                                                                fontSize: '10px',
+                                                                fontWeight: '400' // Adjust the font size of the percentage labels
+                                                            },
                                                         },
                                                         plotOptions: {
                                                             pie: {
                                                                 donut: {
                                                                     size: "70rem", // chart thickness
-                                                                    labels: {
-                                                                        show: false,
-                                                                    },
                                                                 },
                                                             },
                                                         },
@@ -177,8 +182,12 @@ export default function Dashboard() {
                                                             "Appeal",
                                                             "Completed",
                                                         ],
+                                                        tooltip: {
+                                                            enabled: false, // Disable the on-hover tooltip
+                                                        },
                                                     }}
                                                     series={[44, 25, 10, 9, 5, 3, 4]}
+
                                                     type="donut"
                                                     width="100%"
                                                     height="300"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Box,
     Button,
@@ -17,7 +17,9 @@ import {
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import CloseIcon from "@mui/icons-material/Close";
 import { ToastContainer, toast } from "react-toastify";
-
+import Navigator from "../Navigator";
+import { IssueLetter } from './IssueLetter'
+import { SetTemplate } from './SetTemplate'
 
 const AnnualCompensationLetter = ({ open, close }) => {
     const [value, setValue] = React.useState(0);
@@ -25,6 +27,18 @@ const AnnualCompensationLetter = ({ open, close }) => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const [active, setActive] = useState(0);
+
+    const navs = [
+        {
+            name: "Issue Letter",
+        },
+        {
+            name: "Set Template",
+        }
+    ];
+
 
     return (
         <Dialog
@@ -34,12 +48,20 @@ const AnnualCompensationLetter = ({ open, close }) => {
                     maxHeight: "100%",
                 },
             }}
-            maxWidth="lg"
+            maxWidth={active === 0 ? "md" : active === 1 ? "lg" : "md"}
             open={open}
             onClose={() => close()}
             disableEnforceFocus={true}
         >
-            <Box overflow={"hidden"}>
+            <Box sx={{
+                overflowY: "auto",
+                '&::-webkit-scrollbar': {
+                    display: 'none',
+                },
+                scrollbarWidth: 'none',
+                '-ms-overflow-style': 'none',
+            }}
+                border={"1px solid"}>
                 <Box
                     p={1}
                     py={1}
@@ -51,7 +73,7 @@ const AnnualCompensationLetter = ({ open, close }) => {
                 >
                     <Box />
                     <Typography fontSize={"1.1rem"} textAlign={"center"}>
-                        Stage Clearance
+                        Annual Compensation Letter
                     </Typography>
                     <IconButton
                         edge="start"
@@ -63,45 +85,20 @@ const AnnualCompensationLetter = ({ open, close }) => {
                     </IconButton>
                 </Box>
 
-                <Box display="flex" flexDirection="column" p={2} justifyContent="space-between" width={"75%"} margin="auto" >
-
-                    <FormControl fullWidth>
-                        <InputLabel>Department</InputLabel>
-                        <Select
-                            label="Department"
-                        // value={appraisalCycle}
-                        // onChange={(e) => setAppraisalCycle(e.target.value)}
-                        >
-                            <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                            <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                            <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                            <MenuItem value={"2025-26"}>2025-26</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Move all pending appraisal forms to :</Typography>
-
-                    <FormControl fullWidth>
-                        <InputLabel>Stage</InputLabel>
-                        <Select
-                            label="Stage"
-                        // value={appraisalCycle}
-                        // onChange={(e) => setAppraisalCycle(e.target.value)}
-                        >
-                            <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                            <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                            <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                            <MenuItem value={"2025-26"}>2025-26</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <Box marginY={4} width={"100%"}>
-                        <Button variant="contained" color="primary" fullWidth onClick={() => {
-                            toast.success("Updated Successfully");
-                            close();
-                        }}>Submit</Button>
+                <Box display="flex" flexDirection="column" p={2} justifyContent="space-between" width={"100%"} margin="auto"
+                >
+                    <Box top={0} left={2}>
+                        <Navigator navs={navs} onChange={setActive} />
                     </Box>
                 </Box>
+
+                <Box display="flex" flexDirection="column" p={2} justifyContent="space-between" width={"75%"} margin="auto">
+                    <Box mb={2} />
+                    {active == 0 && <IssueLetter close={close} />}
+                    {active == 1 && <SetTemplate close={close} />}
+
+                </Box>
+
             </Box>
         </Dialog >
     );
