@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
-<<<<<<< HEAD
-import { Box, TextField, Button, Typography, Link } from "@mui/material";
-=======
 import { Box, TextField, Button, Typography, InputLabel, FormControl, Select, MenuItem } from "@mui/material";
->>>>>>> 0efd6039f0b1a351f1082f6cc740cc6314dcd41b
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 import useClasses from "../../../hooks/useClasses";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -29,18 +25,8 @@ const ActionRecords = () => {
   const columns = [
     {
       field: "id",
-<<<<<<< HEAD
-      headerName: "Student ID",
-      width: isLaptop ? 120 : isLarge ? 160 : 140,
-      renderCell: (params) => (
-        <Link underline="hover" color="primary">
-          {params.value}
-        </Link>
-      )
-=======
       headerName: "Library Card #",
       flex: 1,
->>>>>>> 0efd6039f0b1a351f1082f6cc740cc6314dcd41b
     },
     {
       field: "name",

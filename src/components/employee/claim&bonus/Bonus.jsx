@@ -57,7 +57,6 @@ export default function Bonus() {
                         {Object.entries(params.value).map(([key, value]) => (
                             <Box key={key} display={"flex"} alignItems={"center"} justifyContent={"space-between"} borderRadius={10} bgcolor={"#E5E5E5"} sx={{ paddingLeft: "12px", paddingRight: "8px", paddingY: "4px" }}>
                                 <Typography fontSize={"0.8rem"}>{key}: {value}</Typography>
-                                <CloseIcon sx={{ backgroundColor: "#BBB0B0", color: "white", borderRadius: "50%", padding: "2px", marginLeft: "4px" }} cursor={"pointer"} />
                             </Box>
                         ))}
                     </Box>
@@ -68,7 +67,7 @@ export default function Bonus() {
             field: "tds_applicable", headerName: "TDS Applicable", flex: 1,
         },
         {
-            field: "elligiblity_criteria", headerName: "Elligibility Criteria", flex: 1.5, renderCell: (params) => {
+            field: "elligiblity_criteria", headerName: "Eligibility Criteria", flex: 1.5, renderCell: (params) => {
                 return (
                     <Box>
                         {Object.entries(params.value).map(([key, value]) => (

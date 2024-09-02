@@ -104,16 +104,12 @@ const Dashboard = () => {
 						value="32/2900"
 						data={[
 							{
-								title: "Books",
-								val: 2700,
+								title: "Students",
+								val: 8,
 							},
 							{
-								title: "Periodicals",
-								val: 200,
-							},
-							{
-								title: "Research Papers",
-								val: 200,
+								title: "Employees",
+								val: 24,
 							},
 						]}
 					/>

@@ -41,7 +41,7 @@ const QuickSearch = () => {
 	const [showPopup, setShowPopup] = useState(false);
 
 	return (
-		<Section title={"Record Attendance - Manually"}>
+		<Section title={"Record Attendance"}>
 			<Stack p={2} gap={2}>
 				<Box display={"flex"} gap={1}>
 					<Autocomplete

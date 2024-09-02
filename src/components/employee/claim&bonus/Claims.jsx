@@ -8,6 +8,8 @@ import {
     InputLabel,
     MenuItem,
     Select,
+    Autocomplete,
+    TextField,
     Typography,
 } from "@mui/material";
 import Bbox from "../../UiComponents/Bbox";
@@ -252,19 +254,20 @@ export default function Claims() {
                         </FormControl>
 
                         <FormControl fullWidth style={{ width: "21%", marginRight: "30px" }}>
-                            <InputLabel>Claim Status</InputLabel>
-                            <Select
-                                label="Claim Status"
-                                value={type}
-                                onChange={(e) => {
-                                    setType(e.target.value);
-                                }}
-                            >
-                                <MenuItem value={"pending"}>Pending</MenuItem>
-                                <MenuItem value={"approved"}>Approved</MenuItem>
-                                <MenuItem value={"rejected"}>Rejected</MenuItem>
-                                <MenuItem value={"all"}>All</MenuItem>
-                            </Select>
+                            <Autocomplete
+                                options={['Pending', 'Approved', 'Rejected', 'All']}
+                                multiple
+                                filterSelectedOptions
+                                freeSolo={false}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Claim Status"
+                                        placeholder="Claim Status"
+                                    />
+                                )}
+                                sx={{ width: "70%" }}
+                            />
                         </FormControl>
 
                         {/* Spacer */}
@@ -323,6 +326,6 @@ export default function Claims() {
                     </Button>
                 </Box>
             </Bbox>
-        </RevealCard>
+        </RevealCard >
     )
 }
