@@ -78,8 +78,11 @@ import LibraryInformation from "./pages/Library/LibraryInformation";
 import LibraryAction from "./pages/Library/LibraryAction";
 import OnBoardingDetails from "./components/student/manage/EditInformation/OnBoardingDetails";
 import ActionSuspend from "./components/student/action/ActionSuspend";
+import LibraryActionSuspend from "./components/Library/action/ActionSuspend";
+
 import ClaimsBonuses from "./pages/employee/Claims&Bonuses";
 import Appraisal from "./pages/employee/Appraisal";
+import EmployeeAction from "./pages/employee/EmployeeAction";
 
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
 const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
@@ -336,7 +339,6 @@ function App() {
 
 					<Route path={"/student/action/deliver/"} element={<ActionSuspend />} />
 
-
 					{/* student-attendance */}
 					<Route
 						path={"student/attendance/"}
@@ -377,6 +379,9 @@ function App() {
 						element={<LibraryAction />}
 					/>
 
+					<Route path={"/library/action/deliver/"} element={<LibraryActionSuspend />} />
+
+
 					<Route
 						path={"library/visitors/"}
 						element={<LibraryVisitors />}
@@ -410,7 +415,7 @@ function App() {
 					/>
 					<Route
 						path={"employee/action/"}
-						element={<LibraryRecommandation />}
+						element={<EmployeeAction />}
 					/>
 					<Route
 						path={"employee/appraisal/"}

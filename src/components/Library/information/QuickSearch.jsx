@@ -80,7 +80,7 @@ const QuickSearch = () => {
 		{
 			field: "name",
 			headerName: "Name",
-			width: 150,
+			flex: 1,
 		},
 		{
 			field: "category",
@@ -140,6 +140,8 @@ const QuickSearch = () => {
 
 	const [modalVisible, setModalVisible] = useState(false);
 	const [activeLibId, setActiveLibId] = useState(null);
+	const [inputValue, setInputValue] = useState('');
+	const options = ["lib123", "lib124", "lib125", "med123", "med124", "med125"];
 
 	const handleLibIdClick = (libId) => {
 		setActiveLibId(libId);
@@ -158,10 +160,14 @@ const QuickSearch = () => {
 			<Stack p={2} gap={2}>
 				<Box display={"flex"} gap={1}>
 					<Autocomplete
-						options={["Library Card #", "Media ID"]}
+						options={inputValue.length > 0 ? options : []}
 						filterSelectedOptions
 						sx={{ width: "30%" }}
 						freeSolo={false}
+						inputValue={inputValue}
+						onInputChange={(event, newInputValue) => {
+							setInputValue(newInputValue);
+						}}
 						renderInput={(params) => (
 							<TextField
 								{...params}
@@ -170,7 +176,6 @@ const QuickSearch = () => {
 							/>
 						)}
 						placeholder="Search by Library Card # / Media ID"
-
 					/>
 				</Box>
 				<Box sx={{ width: "100%" }}>

@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Section from "../../../Section";
 import {
 	AppBar,
 	Button,
 	Dialog,
-	InputAdornment,
 	TextField,
 	Toolbar,
 	Divider,
+	IconButton,
 	Autocomplete,
 	Typography,
 } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
 import Flex from "../../../UiComponents/Flex";
 import { DataGrid } from "@mui/x-data-grid";
 import Popup from "../../../UiComponents/Popup";
 import { Box, Stack } from "@mui/system";
 import { Icon } from "@iconify/react";
-import { DateField, DatePicker } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers";
 
 const columns = [
 	{ field: "id", headerName: "Library Card #", flex: 1 },
@@ -382,12 +382,14 @@ const IssuePage = ({ issueState, setIssueState }) => {
 					<Typography flex={1} fontSize={"1.2rem"}>
 						Manage Issue
 					</Typography>
-					<Button
+					<IconButton
+						edge="start"
 						color="inherit"
+						aria-label="close"
 						onClick={() => setIssueState("close")}
 					>
-						close
-					</Button>
+						<CloseIcon />
+					</IconButton>
 				</Toolbar>
 			</AppBar>
 			<Box p={3}>

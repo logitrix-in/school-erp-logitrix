@@ -35,7 +35,7 @@ const ReignsSelect: React.FC<ReignsSelectProps> = ({
   label,
   sx = {},
   defaultVal,
-  defaultValues = [],
+  defaultValues = items,
   onChange = () => {},
   multiple,
   full = true,
@@ -47,11 +47,15 @@ const ReignsSelect: React.FC<ReignsSelectProps> = ({
   ...rest
 }) => {
   // handle multiselect
-  const [selected, setSelected] = useState<string[]>(defaultValues);
+  const [selected, setSelected] = useState<string[]>(
+    [defaultVal] || defaultValues
+  );
 
   useEffect(() => {
     if (multiple) {
       setSelected(defaultValues);
+    } else {
+      setSelected([defaultVal]);
     }
   }, [multiple, defaultValues]);
 
