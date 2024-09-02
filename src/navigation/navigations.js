@@ -45,12 +45,12 @@ export const navigations = [
 		subMenu: [
 			{
 				name: "Information",
-				path: "student/information/",
+				path: "student/information",
 				icon: "mdi:information",
 			},
 			{
 				name: "Manage",
-				path: "student/manage/",
+				path: "student/manage/edit-information",
 				icon: "mdi:folder-edit",
 			},
 			{

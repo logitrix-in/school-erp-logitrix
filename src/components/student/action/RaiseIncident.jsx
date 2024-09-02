@@ -14,6 +14,7 @@ import {
   ListItemIcon,
   Checkbox,
   ListItemText,
+  IconButton,
 } from "@mui/material";
 import { CheckBox, Search } from "@mui/icons-material";
 import { useMediaQuery } from "@material-ui/core";
@@ -24,6 +25,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
+import Frame from "../../../assets/icons/frame.png";
 
 const RaiseIncident = () => {
   // breakpoints
@@ -46,11 +48,7 @@ const RaiseIncident = () => {
   const [isChecked, setIsChecked] = useState(true);
   const [modeSwitch, setModeSwitch] = useState(true);
 
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-  };
-
-  const handleProceed = () => {    
+  const handleProceed = () => {
     return <ActionSuspend />;
   };
 
@@ -68,7 +66,6 @@ const RaiseIncident = () => {
   };
 
   const columns1 = [
-    { field: "space", headerName: "", width: 50 },
     {
       field: "id",
       headerName: "Student ID",
@@ -247,8 +244,27 @@ const RaiseIncident = () => {
     },
   ];
 
+  const [checkboxState, setCheckboxState] = useState({});
+
+  const handleCheckboxChange = (id, field) => {
+    setCheckboxState((prevState) => ({
+      ...prevState,
+      [id]: {
+        ...prevState[id],
+        [field]: !prevState[id]?.[field],
+      },
+    }));
+  };
+
+  const handleSelectAll = (field, checked) => {
+    const newState = {};
+    rows2.forEach((row) => {
+      newState[row.id] = { ...checkboxState[row.id], [field]: checked };
+    });
+    setCheckboxState(newState);
+  };
+
   const columns2 = [
-    { field: "space", headerName: "", width: 50 },
     {
       field: "id",
       headerName: "Student ID",
@@ -276,7 +292,6 @@ const RaiseIncident = () => {
         ? 100
         : 140,
     },
-    { field: "space", headerName: "", width: 50 },
     {
       field: "class",
       headerName: "Class",
@@ -297,6 +312,7 @@ const RaiseIncident = () => {
         : 100,
     },
     { field: "space", headerName: "", width: 50 },
+
     {
       field: "roll",
       headerName: "Roll #",
@@ -353,29 +369,50 @@ const RaiseIncident = () => {
       field: "suspend",
       headerName: (
         <div style={{ display: "flex", alignItems: "center" }}>
-          <CheckBox checked={isChecked} onChange={handleCheckboxChange} />
+          <Checkbox
+            checked={Object.values(checkboxState).every((row) => row?.suspend)}
+            onChange={(e) => handleSelectAll("suspend", e.target.checked)}
+          />
           Suspend
         </div>
       ),
-      renderCell: (params) => <CheckBox />,
+      width: 150,
+      renderCell: (params) => (
+        <Checkbox
+          checked={checkboxState[params.row.id]?.suspend || false}
+          onChange={() => handleCheckboxChange(params.row.id, "suspend")}
+        />
+      ),
     },
     {
       field: "penalty",
       headerName: (
         <div style={{ display: "flex", alignItems: "center" }}>
-          <CheckBox checked={isChecked} onChange={handleCheckboxChange} />
+          <Checkbox
+            checked={Object.values(checkboxState).every((row) => row?.penalty)}
+            onChange={(e) => handleSelectAll("penalty", e.target.checked)}
+          />
           Impose Penalty
         </div>
       ),
-      width: 130,
-      renderCell: (params) => <CheckBox />,
+      width: 150,
+      renderCell: (params) => (
+        <Checkbox
+          checked={checkboxState[params.row.id]?.penalty || false}
+          onChange={() => handleCheckboxChange(params.row.id, "penalty")}
+        />
+      ),
     },
     { field: "space", headerName: "", width: 50 },
     {
       field: "delete",
       headerName: "",
       width: 100,
-      renderCell: (params) => <DeleteIcon />,
+      renderCell: (params) => (
+        <IconButton>
+          <DeleteIcon />
+        </IconButton>
+      ),
     },
   ];
 
@@ -598,21 +635,32 @@ const RaiseIncident = () => {
                   ),
                 }}
               />
-
-              <Button variant="contained" sx={{ marginLeft: "20px" }}>
-                Search
-              </Button>
             </Box>
           ) : (
             <Box display={"flex"}>
-              <ReignsSelect items={classes} multiple label="Class" sx={{width: "15rem", marginRight: "2rem"}}/>
-              <ReignsSelect items={sections} multiple label="Section" sx={{width: "15rem", marginRight: "2rem"}}/>
-              <ReignsSelect items={roll} multiple label="Roll#" sx={{width: "15rem", marginRight: "2rem"}}/>
+              <ReignsSelect
+                items={classes}
+                multiple
+                label="Class"
+                sx={{ width: "15rem", marginRight: "2rem" }}
+              />
+              <ReignsSelect
+                items={sections}
+                multiple
+                label="Section"
+                sx={{ width: "15rem", marginRight: "2rem" }}
+              />
+              <ReignsSelect
+                items={roll}
+                multiple
+                label="Roll#"
+                sx={{ width: "15rem", marginRight: "2rem" }}
+              />
             </Box>
           )}
 
           <Box flex={1} />
-          
+
           {modeSwitch ? (
             <Button
               variant="contained"
@@ -636,8 +684,8 @@ const RaiseIncident = () => {
           )}
         </Box>
 
-        <Box mt={2} mb={5} style={{ height: "100%" }}>
-          {modeSwitch ? (
+        {modeSwitch ? (
+          <Box mt={2} mb={5} style={{ height: "100%" }}>
             <DataGrid
               rows={rows1}
               columns={columns1}
@@ -648,7 +696,9 @@ const RaiseIncident = () => {
               }}
               pageSizeOptions={[5, 10]}
             />
-          ) : (
+          </Box>
+        ) : (
+          <Box mt={2} mb={5} style={{ height: "100%" }}>
             <DataGrid
               rows={rows3}
               columns={columns3}
@@ -660,8 +710,8 @@ const RaiseIncident = () => {
               pageSizeOptions={[5, 10]}
               checkboxSelection
             />
-          )}
-        </Box>
+          </Box>
+        )}
 
         <Box display={"flex"} justifyContent={"center"}>
           <Box flex={1} />
@@ -669,7 +719,25 @@ const RaiseIncident = () => {
           <Button variant="contained">Add to Incident Bucket</Button>
         </Box>
 
-        <Button variant="contained">Incident#: #112233</Button>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <img src={Frame} alt="frame" style={{ width: "25%" }} />
+          <Typography
+            sx={{
+              fontWeight: "600",
+              position: "absolute",
+              paddingLeft: "20px",
+              color: "white",
+            }}
+          >
+            Incident#: #112233
+          </Typography>
+        </Box>
 
         <Box mt={4} display={"flex"}>
           <FormControl style={{ width: "20rem", marginRight: "2rem" }}>
@@ -723,6 +791,31 @@ const RaiseIncident = () => {
           </Button>
         </Box>
 
+        <Box style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Box
+            mt={2}
+            mr={2}
+            style={{
+              backgroundColor: "#E1EEFB",
+              border: "1px solid #3381A5",
+              borderRadius: "16px",
+              width: 107,
+              height: 25,
+              padding: "3.7px 14px",
+            }}
+          >
+            <Typography
+              style={{
+                fontSize: "10px",
+                fontWeight: "400",
+                color: "#3381A5",
+              }}
+            >
+              {rows2.length} Results found
+            </Typography>
+          </Box>
+        </Box>
+
         <Box mt={2} mb={5} style={{ height: "100%" }}>
           <DataGrid
             rows={rows2}
@@ -739,7 +832,7 @@ const RaiseIncident = () => {
         <Box mt={4} mb={7} display="flex" justifyContent="flex-end">
           <Button
             variant="contained"
-            onClick={()=>navigate("/student/action/deliver/")}
+            onClick={() => navigate("/student/action/deliver/")}
             sx={{ marginRight: "10px", width: "120px" }}
           >
             Proceed

@@ -5,17 +5,19 @@ import ReactFlipCard from "reactjs-flip-card";
 import LeftIcon from "@mui/icons-material/ChevronLeft";
 import RightIcon from "@mui/icons-material/ChevronRight";
 
-import LibraryCard1Front from "@/assets/cards/lib cards/Card-1.jpg";
-import LibraryCard2Front from "@/assets/cards/lib cards/Library Card-2.jpg";
-import LibraryCard3Front from "@/assets/cards/lib cards/Library Card-3.jpg";
-import LibraryCard4Front from "@/assets/cards/lib cards/Library Card-4.jpg";
-import LibraryCard5Front from "@/assets/cards/lib cards/Library Card-5.jpg";
+import LibraryCard1Front from "../../../../assets/cards/l-1.jpg";
+import LibraryCard2Front from "../../../../assets/cards/l-2.jpg";
+import LibraryCard3Front from "../../../../assets/cards/l-3.jpg";
+import LibraryCard4Front from "../../../../assets/cards/l-4.jpg";
+import LibraryCard5Front from "../../../../assets/cards/l-5.png";
+import LibraryCard6Front from "../../../../assets/cards/l-6.png";
 
-import LibraryCard1Back from "@/assets/cards/lib cards/Back-1.jpg";
-import LibraryCard2Back from "@/assets/cards/lib cards/Back-2.jpg";
-import LibraryCard3Back from "@/assets/cards/lib cards/Back-3.jpg";
-import LibraryCard4Back from "@/assets/cards/lib cards/Back-4.jpg";
-import LibraryCard5Back from "@/assets/cards/lib cards/Back-5.jpg";
+import LibraryCard1Back from "../../../../assets/cards/lb-1.jpg";
+import LibraryCard2Back from "../../../../assets/cards/lb-2.jpg";
+import LibraryCard3Back from "../../../../assets/cards/lb-3.jpg";
+import LibraryCard4Back from "../../../../assets/cards/lb-4.jpg";
+import LibraryCard5Back from "../../../../assets/cards/lb-5.png";
+import LibraryCard6Back from "../../../../assets/cards/lb-6.png";
 
 const formats = [
 	{
@@ -75,18 +77,11 @@ const LibraryDesign = () => {
 				))}
 			</Flex>
 
-			<Stack
-				alignItems={"center"}
-				justifyContent={"center"}
-				mt={2}
-				gap={2}
-			>
+			<Stack alignItems={"center"} justifyContent={"center"} mt={2} gap={2}>
 				<Flex width={"30rem"} gap={8}>
 					<Flex flex={1} justifyContent={"flex-end"}>
 						{selected != 0 && (
-							<IconButton
-								onClick={() => setSelected((p) => p - 1)}
-							>
+							<IconButton onClick={() => setSelected((p) => p - 1)}>
 								<LeftIcon />
 							</IconButton>
 						)}
@@ -101,23 +96,15 @@ const LibraryDesign = () => {
 							width: "15.2rem",
 						}}
 						frontComponent={
-							<img
-								src={formats[selected].front}
-								alt="selected-img"
-							/>
+							<img src={formats[selected].front} alt="selected-img" />
 						}
 						backComponent={
-							<img
-								src={formats[selected].back}
-								alt="selected-img"
-							/>
+							<img src={formats[selected].back} alt="selected-img" />
 						}
 					/>
 					<Box flex={1}>
 						{selected < formats.length - 1 && (
-							<IconButton
-								onClick={() => setSelected((p) => p + 1)}
-							>
+							<IconButton onClick={() => setSelected((p) => p + 1)}>
 								<RightIcon />
 							</IconButton>
 						)}

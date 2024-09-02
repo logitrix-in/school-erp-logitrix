@@ -20,6 +20,8 @@ import {
   ListItemText,
   Checkbox,
   Chip,
+  TextField,
+  Link
 } from "@mui/material";
 import { useMediaQuery } from "@material-ui/core";
 import Stack from "@mui/material/Stack";
@@ -59,6 +61,8 @@ const StudentIndividual = () => {
   const [type, setType] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState(null);
+
+  const [resetPassword, setResetPassword] = useState(false);
 
   const { role } = useClasses();
 
@@ -121,6 +125,11 @@ const StudentIndividual = () => {
         : isSmall
         ? 110
         : 170,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
     },
     {
       field: "name",
@@ -298,6 +307,9 @@ const StudentIndividual = () => {
   };
 
   const handleSubmit = () => {
+    const newRoles = curRole.filter((r) => !role.includes(r));
+    setRole((prevRole) => [...prevRole, ...newRoles]);
+
     setConfirmationMessage("Are you sure you want to change the role?");
     setShowConfirmationDialog(true);
   };
@@ -312,10 +324,16 @@ const StudentIndividual = () => {
 
   const handleClose = () => {
     setResetDialog(false);
+    setResetPassword(false);
   };
 
   const handleResetConfirm = () => {
     setResetDialog(false);
+    setResetPassword(true);
+  };
+
+  const handleResetPassword = () => {
+    setResetPassword(false);
     toast.success("Successfully password reset.", { autoClose: 3000 });
   };
 
@@ -349,6 +367,16 @@ const StudentIndividual = () => {
     color: "white",
     "&:hover": { backgroundColor: "#A14E2C" },
     width: "140px",
+  };
+
+ const roles = [
+    "House Coordinator",
+    "High School Coordinator",
+    "Dance Club Supervisor",
+  ];
+
+  const handleDelete = () => {
+    console.info("You clicked the delete icon.");
   };
 
   return (
@@ -402,15 +430,6 @@ const StudentIndividual = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-
-          {/* search button */}
-          <Button
-            variant="contained"
-            style={{ marginLeft: "15px" }}
-            onClick={handleSearch}
-          >
-            Search
-          </Button>
         </Box>
 
         {/* Table */}
@@ -514,12 +533,17 @@ const StudentIndividual = () => {
               >
                 Currently assigned role -&nbsp;
               </Typography>
-              <Chip
-                label="Dance Club Secretary"
-                variant="outlined"
-                color="primary"
-                style={{ marginRight: "8px" }}
-              />
+              <Box sx={{ width: "auto" }}>
+                {roles.map((role) => (
+                  <Chip
+                    label={role}
+                    color="primary"
+                    onDelete={handleDelete}
+                    style={{ marginRight: "8px" }}
+                    sx={{marginBottom: "5px", backgroundColor: "#e8e2ea", color: "black"}}
+                  />
+                ))}
+              </Box>
             </Box>
 
             {/* assign role dropdown */}
@@ -609,10 +633,19 @@ const StudentIndividual = () => {
           <div
             style={{
               backgroundColor: "#3B98C4",
-              height: "15px",
+              height: "50px",
               width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "600",
+              color: "white",
+              fontSize: "20px",
             }}
-          />
+          >
+            {" "}
+            Reset Password
+          </div>
 
           <Box p={2}>
             <Typography variant="body1">
@@ -641,6 +674,52 @@ const StudentIndividual = () => {
                 Yes
               </Button>
             </Box>
+          </Box>
+        </Dialog>
+
+        <Dialog open={resetPassword} onClose={handleClose}>
+          <div
+            style={{
+              backgroundColor: "#3B98C4",
+              height: "50px",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "600",
+              color: "white",
+              fontSize: "20px",
+            }}
+          >
+            {" "}
+            Reset Password
+          </div>
+
+          <Box
+            p={2}
+            width={"600px"}
+            height={"300px"}
+            display={"flex"}
+            flexDirection={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <TextField
+              label="Set new password for login"
+              variant="outlined"
+              fullWidth
+              type="password"
+              style={{ marginBottom: "20px" }}
+              sx={{ width: "400px" }}
+            />
+
+            <Button
+              variant="contained"
+              sx={{ width: "400px" }}
+              onClick={handleResetPassword}
+            >
+              Submit
+            </Button>
           </Box>
         </Dialog>
 

@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  InputAdornment,
+} from "@mui/material";
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 import useClasses from "../../../hooks/useClasses";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useMediaQuery } from "@material-ui/core";
 import { DataGrid } from "@mui/x-data-grid";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 
 const ActionRecords = () => {
   const isSmall = useMediaQuery("(max-width: 1395px)");
@@ -16,6 +23,8 @@ const ActionRecords = () => {
   );
   const isLarge = useMediaQuery("(min-width: 1920px)");
   const isXlarge = useMediaQuery("(min-width: 2560px)");
+
+  const [value, setValue] = useState("");
 
   const { classes, acYear, curYear, sections, nonCompliance } = useClasses();
   const [startDate, setStartDate] = useState("");
@@ -100,8 +109,8 @@ const ActionRecords = () => {
               key={index}
               variant="body2"
               sx={{
-                backgroundColor: "#C4673B",
-                color: "#FFFFFF",
+                backgroundColor: "#e8def8",
+                color: "black",
                 padding: "2px 4px",
                 borderRadius: "4px",
               }}
@@ -257,7 +266,23 @@ const ActionRecords = () => {
               />
             </Box>
 
-            <TextField label="Penalty Due Amount" fullWidth />
+            <TextField
+              label="Penalty Due Amount"
+              value={value}
+              fullWidth
+              onChange={(event) => {
+                const newValue = event.target.value.replace(/[^0-9]/g, "");
+                setValue(newValue);
+              }}
+              InputProps={{
+                maxLength: 10,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <CurrencyRupeeIcon sx={{ fontSize: "1.3rem" }} />
+                  </InputAdornment>
+                ),
+              }}
+            />
 
             <ReignsSelect
               items={nonCompliance}
@@ -292,28 +317,28 @@ const ActionRecords = () => {
                 color: "#3381A5",
               }}
             >
-             {rows.length} Results found
+              {rows.length} Results found
             </Typography>
           </Box>
         </Box>
 
         <Box style={{ height: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          checkboxSelection
-        />
-      </Box>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            checkboxSelection
+          />
+        </Box>
 
-      <Box display="flex" justifyContent="flex-end" mr={3} mt={3}>
-        <Button variant="outlined">Download Student List</Button>
-      </Box>
+        <Box display="flex" justifyContent="flex-end" mr={3} mt={3}>
+          <Button variant="outlined">Download Student List</Button>
+        </Box>
       </Box>
     </RevealCard>
   );

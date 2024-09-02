@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import Bbox from "../../../UiComponents/Bbox";
 import {
@@ -10,12 +10,22 @@ import {
   Dialog,
   DialogActions,
   DialogTitle,
+  DialogContent,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 import IconButton from "@mui/material/IconButton";
 import { useMediaQuery } from "@material-ui/core";
 import * as XLSX from "xlsx";
 import { DataGrid } from "@mui/x-data-grid";
+import { Editor } from "@tinymce/tinymce-react";
+import CloseIcon from "@mui/icons-material/Close";
 
 const ManageSystemRequest = () => {
   // breakpoints
@@ -34,6 +44,7 @@ const ManageSystemRequest = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
+  const [sendEmail, setSendEmail] = useState(false);
 
   const handleOpenConfirmationDialog = () => {
     setOpenConfirmationDialog(true);
@@ -41,6 +52,7 @@ const ManageSystemRequest = () => {
 
   const handleCloseConfirmationDialog = () => {
     setOpenConfirmationDialog(false);
+    setSendEmail(true);
   };
 
   // Function to filter selected students and generate Excel file
@@ -175,6 +187,10 @@ const ManageSystemRequest = () => {
       confirmation: "Not Confirmed",
     },
   ];
+
+  const [recipentTo, setRecipentTo] = useState("all");
+
+  const editorRef = useRef(null);
 
   return (
     <RevealCard>
@@ -411,7 +427,7 @@ const ManageSystemRequest = () => {
           <Box mt={4} ml={3}>
             {/* Eligibility Criteria */}
             <Typography fontSize={"14px"} fontWeight={"400"} ml={1}>
-              Eligibility Criteria : % Marks secured &gt;=80%
+              Eligibility Criteria &gt;= 80%
             </Typography>
 
             {/* checkbox and text */}
@@ -434,6 +450,29 @@ const ManageSystemRequest = () => {
               {/* text */}
               <Typography fontSize={"14px"} fontWeight={"400"}>
                 Only select students who have not confirmed their seats
+              </Typography>
+            </Box>
+
+            <Box
+              mt={2}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              {/* checkbox */}
+              <Checkbox
+                checked={isChecked}
+                onChange={(event) => setIsChecked(event.target.checked)}
+                color="primary"
+                style={{ fontSize: 16 }}
+              />
+
+              {/* text */}
+              <Typography fontSize={"14px"} fontWeight={"400"}>
+                Only select students who have not received their selection
+                letter yet.
               </Typography>
             </Box>
 
@@ -498,7 +537,7 @@ const ManageSystemRequest = () => {
 
         {/* Total number of results found */}
         <Box
-          mt={8}
+          mt={-2}
           mr={3}
           style={{
             backgroundColor: "#E1EEFB",
@@ -602,6 +641,119 @@ const ManageSystemRequest = () => {
               Yes
             </Button>
           </DialogActions>
+        </Dialog>
+
+        <Dialog
+          open={sendEmail}
+          onClose={() => setSendEmail(false)}
+          maxWidth="xl"
+        >
+          <DialogTitle
+            sx={{
+              color: "white",
+              fontWeight: "600",
+              backgroundColor: "#3b98c4",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            Selection Letter
+          </DialogTitle>
+          <Box sx={{ position: "absolute", right: "10px", top: "10px" }}>
+            <IconButton
+              sx={{ color: "white" }}
+              onClick={() => setSendEmail(false)}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <DialogContent>
+            <Box>
+              <Box display={"flex"} gap={2} mt={3}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    gap: "10px",
+                  }}
+                >
+                  <FormControl size="small">
+                    <InputLabel>CC</InputLabel>
+                    <Select label="CC" onChange={() => {}} defaultValue={20}>
+                      <MenuItem value={10}>Nil</MenuItem>
+                      <MenuItem value={20}>parent</MenuItem>
+                      <MenuItem value={30}>Candidates</MenuItem>
+                    </Select>
+                  </FormControl>
+
+                  <FormControl size="small">
+                    <InputLabel>BCC</InputLabel>
+                    <Select label="BCC" onChange={() => {}} defaultValue={10}>
+                      <MenuItem value={10}>Nil</MenuItem>
+                      <MenuItem value={20}>parent</MenuItem>
+                      <MenuItem value={30}>Candidates</MenuItem>
+                    </Select>
+                  </FormControl>
+
+                  <Box flexGrow={1} width={"550px"} />
+
+                  <Button variant="contained" color="primary">
+                    Send
+                  </Button>
+                </Box>
+              </Box>
+              <Box height={20} />
+              <TextField
+                placeholder="Subject"
+                fullWidth
+                size="small"
+                sx={{ mb: 2 }}
+              />
+              <Box>
+                <Editor
+                  apiKey="qpa9e8xcdk75avj9zmz7eawi5rzrhhdllb4kjwr4u4pgpr8f"
+                  onInit={(evt, editor) => (editorRef.current = editor)}
+                  initialValue="Welcome!"
+                  init={{
+                    branding: false,
+                    height: 450,
+                    menubar: false,
+                    plugins: [
+                      "lists",
+                      "advlist",
+                      "link",
+                      "image",
+                      "fullscreen",
+                    ],
+                    images_upload_handler: (blobInfo, progress) => {
+                      const formData = new FormData();
+                      formData.append("image", blobInfo.blob());
+                      return new Promise((resolve, reject) => {
+                        axios
+                          .post("https://cdn.sociolinq.com/upload/", formData)
+                          .then((res) => {
+                            resolve(res.data.link);
+                          })
+                          .catch(() => {
+                            reject(
+                              "Some error occured. Please contact Rownak Mazumder."
+                            );
+                          });
+                      });
+                    },
+                    toolbar:
+                      "undo redo | formatselect | " +
+                      "bold italic backcolor | alignleft aligncenter " +
+                      "alignright alignjustify | bullist numlist outdent indent | " +
+                      "removeformat | image link | fullscreen |",
+                    content_style:
+                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px, overflow:scroll}",
+                  }}
+                />
+              </Box>
+            </Box>
+          </DialogContent>
         </Dialog>
       </Bbox>
     </RevealCard>

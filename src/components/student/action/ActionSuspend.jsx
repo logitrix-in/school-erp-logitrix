@@ -14,6 +14,8 @@ import {
   DialogTitle,
   DialogContent,
   IconButton,
+  Divider,
+  InputAdornment,
 } from "@mui/material";
 import RevealCard from "../../AnimationComponents/RevealCard";
 import Bbox from "../../UiComponents/Bbox";
@@ -26,6 +28,10 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { Icon } from "@iconify/react";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
 import useClasses from "../../../hooks/useClasses";
+import Profile from "../../../assets/icons/photo.png";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import { ToastContainer, toast } from "react-toastify";
+import Frame from "../../../assets/icons/frame.png";
 
 const ActionSuspend = () => {
   const [multiple, setMultiple] = useState(true);
@@ -35,10 +41,17 @@ const ActionSuspend = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
+  const [value, setValue] = useState("");
+
   const { suspend } = useClasses();
 
   const handleCloseDialog = () => {
-    setOpenDialog(false);
+    toast.success("Action submitted successfully", {
+      autoClose: 3000,
+    });
+    setTimeout(() => {
+      setOpenDialog(false);
+    }, 2000);
   };
 
   const cardData = [
@@ -154,11 +167,25 @@ const ActionSuspend = () => {
 
   return (
     <RevealCard>
+      <ToastContainer />
       <Bbox
         sx={{
           marginTop: "2",
           width: "100%",
-          height: extendedView ? "1200px" : "1000px",
+          height:
+            progress === 1
+              ? multiple
+                ? extendedView
+                  ? "1100px"
+                  : "780px"
+                : "780px"
+              : progress === 2
+              ? multiple
+                ? extendedView
+                  ? "1300px"
+                  : "1000px"
+                : "1000px"
+              : "0px",
           borderRadius: 2,
           overflow: "hidden",
         }}
@@ -301,6 +328,30 @@ const ActionSuspend = () => {
           >
             <Box
               sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                src={Frame}
+                alt="frame"
+                style={{ width: "25%" }}
+              />
+              <Typography
+                sx={{
+                  fontWeight: "600",
+                  position: "absolute",
+                  paddingLeft: "20px",
+                  color: "white",
+                }}
+              >
+                Incident#: #112233
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
                 width: "100%",
                 height: "100%",
                 backgroundColor: "#ECEDED",
@@ -397,36 +448,15 @@ const ActionSuspend = () => {
                         flexDirection: "row-reverse",
                         paddingTop: "20px",
                         paddingRight: "20px",
+                        gap: "20px",
                       }}
                     >
-                      <button
-                        style={{
-                          height: "30px",
-                          width: "30px",
-                          padding: "0",
-                          margin: "0",
-                          backgroundColor: "#fff",
-                          cursor: "pointer",
-                          borderRadius: "50%",
-                          border: "1px solid #000",
-                        }}
-                      >
+                      <IconButton sx={{ border: "0.25px solid black" }}>
                         <ArrowRightIcon />
-                      </button>
-                      <button
-                        style={{
-                          height: "30px",
-                          width: "30px",
-                          padding: "0",
-                          margin: "0",
-                          backgroundColor: "#fff",
-                          cursor: "pointer",
-                          borderRadius: "50%",
-                          border: "1px solid #000",
-                        }}
-                      >
+                      </IconButton>
+                      <IconButton sx={{ border: "0.25px solid black" }}>
                         <ArrowLeftIcon />
-                      </button>
+                      </IconButton>
                     </Box>
                   </Box>
                 ) : (
@@ -500,7 +530,11 @@ const ActionSuspend = () => {
                         borderRadius: "6px",
                       }}
                     >
-                      //Image
+                      <img
+                        src={Profile}
+                        alt="profile pic"
+                        style={{ width: "100%", height: "100%" }}
+                      />
                     </Box>
 
                     <Box
@@ -509,96 +543,123 @@ const ActionSuspend = () => {
                         flexDirection: "column",
                         padding: "20px",
                         width: "250px",
+                        justifyContent: "space-between",
                       }}
                     >
-                      <Typography
+                      <Box
                         sx={{
                           display: "flex",
                           padding: "3px",
                           justifyContent: "space-between",
                         }}
                       >
-                        Student Name:{" "}
-                        <Typography sx={{ fontWeight: "700" }}>
+                        <Typography sx={{ width: "100px" }}>
+                          Student Name
+                        </Typography>
+                        <Typography sx={{ fontWeight: "700" }}>:</Typography>
+                        <Typography sx={{ fontWeight: "700", width: "70px" }}>
                           Jay Shaw
                         </Typography>
-                      </Typography>
+                      </Box>
 
-                      <Typography
+                      <Box
                         sx={{
                           display: "flex",
                           padding: "3px",
                           justifyContent: "space-between",
                         }}
                       >
-                        Student ID:{" "}
-                        <Typography sx={{ fontWeight: "700" }}>
+                        <Typography sx={{ width: "100px" }}>
+                          Student ID
+                        </Typography>
+                        <Typography sx={{ fontWeight: "700" }}>:</Typography>
+                        <Typography sx={{ fontWeight: "700", width: "70px" }}>
                           STU2201
                         </Typography>
-                      </Typography>
+                      </Box>
 
-                      <Typography
+                      <Box
                         sx={{
                           display: "flex",
                           padding: "3px",
                           justifyContent: "space-between",
                         }}
                       >
-                        Status:{" "}
+                        <Typography sx={{ width: "100px" }}>Status</Typography>
+                        <Typography sx={{ fontWeight: "700" }}>:</Typography>
                         <Box
                           sx={{
                             backgroundColor: "#C6F6D5",
                             padding: "2px 4px",
                             borderRadius: "6px",
+                            width: "70px",
+                            display: "flex",
+                            justifyContent: "center",
                           }}
                         >
                           <Typography sx={{ fontWeight: "700" }}>
                             Active
                           </Typography>
                         </Box>
-                      </Typography>
+                      </Box>
                     </Box>
+
+                    <Divider
+                      orientation="vertical"
+                      flexItem
+                      sx={{ border: "0.01px solid #c2c2c2" }}
+                    />
 
                     <Box
                       sx={{
                         display: "flex",
                         flexDirection: "column",
                         padding: "20px",
-                        width: "150px",
+                        width: "200px",
+                        justifyContent: "space-between",
                       }}
                     >
-                      <Typography
+                      <Box
                         sx={{
                           display: "flex",
                           padding: "3px",
                           justifyContent: "space-between",
                         }}
                       >
-                        Class:{" "}
-                        <Typography sx={{ fontWeight: "700" }}>V</Typography>
-                      </Typography>
+                        <Typography sx={{ width: "70px" }}>Class</Typography>
+                        <Typography sx={{ fontWeight: "700" }}>:</Typography>
+                        <Typography sx={{ fontWeight: "700", width: "40px" }}>
+                          V
+                        </Typography>
+                      </Box>
 
-                      <Typography
+                      <Box
                         sx={{
                           display: "flex",
                           padding: "3px",
                           justifyContent: "space-between",
                         }}
                       >
-                        Section:{" "}
-                        <Typography sx={{ fontWeight: "700" }}>B</Typography>
-                      </Typography>
+                        <Typography sx={{ width: "70px" }}>Section</Typography>
+                        <Typography sx={{ fontWeight: "700" }}>:</Typography>
+                        <Typography sx={{ fontWeight: "700", width: "40px" }}>
+                          B
+                        </Typography>
+                      </Box>
 
-                      <Typography
+                      <Box
                         sx={{
                           display: "flex",
                           padding: "3px",
                           justifyContent: "space-between",
                         }}
                       >
-                        Roll #:{" "}
-                        <Typography sx={{ fontWeight: "700" }}>22</Typography>
-                      </Typography>
+                        <Typography sx={{ width: "70px" }}>Roll #</Typography>
+                        <Typography sx={{ fontWeight: "700" }}>:</Typography>
+                        <Typography sx={{ fontWeight: "700", width: "40px" }}>
+                          22
+                        </Typography>
+                      </Box>
                     </Box>
                   </Box>
 
@@ -611,7 +672,7 @@ const ActionSuspend = () => {
                     }}
                   >
                     <Typography sx={{ fontWeight: "700", fontSize: "30px" }}>
-                      9900
+                      <CurrencyRupeeIcon /> 9900
                     </Typography>
 
                     <Typography>Caution Money Balance</Typography>
@@ -678,7 +739,6 @@ const ActionSuspend = () => {
                   <Box ml={3} marginTop={3}>
                     <ReignsSelect
                       items={suspend}
-                      multiple
                       label="Suspend"
                       sx={{ width: "25rem", marginRight: "2rem" }}
                     />
@@ -703,7 +763,25 @@ const ActionSuspend = () => {
                   </FormControl>
 
                   <FormControl style={{ width: "500px", marginTop: "40px" }}>
-                    <TextField label="Penalty Due Amount" />
+                    <TextField
+                      label="Penalty Due Amount"
+                      value={value}
+                      onChange={(event) => {
+                        const newValue = event.target.value.replace(
+                          /[^0-9]/g,
+                          ""
+                        );
+                        setValue(newValue);
+                      }}
+                      InputProps={{
+                        maxLength: 10,
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <CurrencyRupeeIcon sx={{ fontSize: "1.3rem" }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
                   </FormControl>
 
                   <FormControl sx={{ marginTop: "40px" }}>
@@ -720,7 +798,7 @@ const ActionSuspend = () => {
                       <FormControlLabel
                         value="adjust"
                         control={<Radio />}
-                        label="Adjust from next payment"
+                        label="Adjust from next fee cycle"
                       />
                       <FormControlLabel
                         value="online"
@@ -770,7 +848,7 @@ const ActionSuspend = () => {
             width: "600px",
           }}
         >
-          <div style={{ flexGrow: 1 }}>Set Promotion Criteria</div>
+          <div style={{ flexGrow: 1 }}>Finalise Action</div>
 
           <IconButton
             aria-label="close"
@@ -852,12 +930,12 @@ const ActionCard = ({
         <Typography sx={{ fontWeight: "700", fontSize: "12px" }}>
           {name}
         </Typography>
-        <Box sx={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: "5px" }}>
           <Typography sx={{ fontWeight: "200", fontSize: "10px" }}>
             {classname}
           </Typography>
           <Typography sx={{ fontWeight: "200", fontSize: "10px" }}>
-            {section}
+            ({section})
           </Typography>
           <Typography sx={{ fontWeight: "200", fontSize: "10px" }}>
             {roll}
