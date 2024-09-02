@@ -2,23 +2,118 @@ import React, { useState } from "react";
 import {
     Box,
     Button,
-    Checkbox,
-    Radio,
     Divider,
     FormControl,
     InputLabel,
-    ListItemIcon,
-    ListItemText,
     MenuItem,
-    OutlinedInput,
+    Autocomplete,
+    TextField,
     Select,
     Typography,
 } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import Bbox from "../../UiComponents/Bbox";
 import RevealCard from "../../AnimationComponents/RevealCard";
 
 export default function AppraisalDetails() {
     const [appraisalCycle, setAppraisalCycle] = useState("");
+
+    const columns = [
+        {
+            field: "id",
+            headerName: "Employee ID",
+            flex: 1,
+            renderCell: (params) => (
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }}>
+                    {params.value}
+                </Typography>
+            ),
+        },
+        {
+            field: "emp_name",
+            headerName: "Employee Name",
+            flex: 1.5,
+        },
+        {
+            field: "grade",
+            headerName: "Grade",
+            flex: 1,
+        },
+        {
+            field: "status",
+            headerName: "Status",
+            flex: 1,
+        },
+        {
+            field: "department",
+            headerName: "Department",
+            flex: 1,
+        },
+        {
+            field: "cycle",
+            headerName: "Current Appraisal Cycle Stage",
+            flex: 1.5,
+        },
+        {
+            field: "pending",
+            headerName: "Pending With",
+            flex: 1,
+        },
+        {
+            field: "2024",
+            headerName: "2024",
+            flex: 0.6,
+        },
+        {
+            field: "2023",
+            headerName: "2023",
+            flex: 0.6,
+        },
+        {
+            field: "2022",
+            headerName: "2022",
+            flex: 0.6,
+        }
+    ];
+
+    const rows = [
+        {
+            id: 'E001',
+            emp_name: 'John Doe',
+            grade: 'A2',
+            status: 'Active',
+            department: 'English',
+            cycle: 'Supervisor Review',
+            pending: 'Geography',
+            2024: 2,
+            2023: 1,
+            2022: 2,
+        },
+        {
+            id: 'E002',
+            emp_name: 'Jane Smith',
+            grade: 'A2',
+            status: 'Active',
+            department: 'English',
+            cycle: 'Supervisor Review',
+            pending: 'Geography',
+            2024: 2,
+            2023: 1,
+            2022: 2,
+        },
+        {
+            id: 'E003',
+            emp_name: 'Alice Johnson',
+            grade: 'A2',
+            status: 'Active',
+            department: 'English',
+            cycle: 'Supervisor Review',
+            pending: 'Geography',
+            2024: 2,
+            2023: 1,
+            2022: 2,
+        }
+    ];
 
     return (
         <RevealCard>
@@ -96,8 +191,51 @@ export default function AppraisalDetails() {
                         </Select>
                     </FormControl>
 
-                    <Button variant="contained" color="primary">Apply</Button>
+                    <Box display={'flex'} justifyContent={'flex-start'} alignItems={'center'}>
+                        <Button variant="contained" color="primary">Apply</Button>
+                    </Box>
                 </Box>
+
+                <Box px={3}>
+                    <Autocomplete
+                        options={["Student 1", "Student 2"]}
+                        filterSelectedOptions
+                        freeSolo={false}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder="Employee name or Employee ID"
+                                label="Search by Employee name or Employee ID"
+                            />
+                        )}
+                        sx={{ width: "30%" }}
+                    />
+                </Box>
+
+                <Box px={3} py={4}>
+                    <DataGrid
+                        autoHeight
+                        experimentalFeatures={{
+                            columnGrouping: true,
+                        }}
+                        rows={rows}
+                        columns={columns}
+                        columnGroupingModel={[
+                            {
+                                groupId: "last_3_years",
+                                headerName: "Last 3 Year's Ratings",
+                                headerAlign: 'center',
+                                children: [
+                                    { field: "2024" },
+                                    { field: "2023" },
+                                    { field: "2022" },
+                                ],
+                            },
+                        ]}
+                        disableRowSelectionOnClick
+                    />
+                </Box>
+
             </Bbox>
         </RevealCard>
     )

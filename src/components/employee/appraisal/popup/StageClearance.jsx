@@ -34,7 +34,7 @@ const StageClearance = ({ open, close }) => {
                     maxHeight: "100%",
                 },
             }}
-            maxWidth="lg"
+            // maxWidth="lg"
             open={open}
             onClose={() => close()}
             disableEnforceFocus={true}
@@ -72,10 +72,10 @@ const StageClearance = ({ open, close }) => {
                         // value={appraisalCycle}
                         // onChange={(e) => setAppraisalCycle(e.target.value)}
                         >
-                            <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                            <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                            <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                            <MenuItem value={"2025-26"}>2025-26</MenuItem>
+                            <MenuItem value={"2021-22"}>A</MenuItem>
+                            <MenuItem value={"2023-24"}>B</MenuItem>
+                            <MenuItem value={"2024-25"}>c</MenuItem>
+                            <MenuItem value={"2025-26"}>D</MenuItem>
                         </Select>
                     </FormControl>
 
@@ -88,10 +88,9 @@ const StageClearance = ({ open, close }) => {
                         // value={appraisalCycle}
                         // onChange={(e) => setAppraisalCycle(e.target.value)}
                         >
-                            <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                            <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                            <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                            <MenuItem value={"2025-26"}>2025-26</MenuItem>
+                            <MenuItem value={"2021-22"}>X</MenuItem>
+                            <MenuItem value={"2023-24"}>Y</MenuItem>
+                            <MenuItem value={"2024-25"}>Z</MenuItem>
                         </Select>
                     </FormControl>
 
