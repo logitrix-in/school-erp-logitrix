@@ -11,7 +11,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { ToastContainer, toast } from "react-toastify";
 import { DatePicker } from "@mui/x-date-pickers";
 import ReactFlipCard from "reactjs-flip-card";
-import LibraryCard1Front from "@/assets/cards/lib cards/Library Card-1.jpg";
+import LibraryCard1Front from "@/assets/cards/lib cards/Card-1.jpg";
 import LibraryCard1Back from "@/assets/cards/lib cards/Back-1.jpg";
 
 const Preview = ({ open, close }) => {

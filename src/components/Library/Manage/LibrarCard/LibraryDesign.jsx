@@ -5,7 +5,7 @@ import ReactFlipCard from "reactjs-flip-card";
 import LeftIcon from "@mui/icons-material/ChevronLeft";
 import RightIcon from "@mui/icons-material/ChevronRight";
 
-import LibraryCard1Front from "@/assets/cards/lib cards/Library Card-1.jpg";
+import LibraryCard1Front from "@/assets/cards/lib cards/Card-1.jpg";
 import LibraryCard2Front from "@/assets/cards/lib cards/Library Card-2.jpg";
 import LibraryCard3Front from "@/assets/cards/lib cards/Library Card-3.jpg";
 import LibraryCard4Front from "@/assets/cards/lib cards/Library Card-4.jpg";
