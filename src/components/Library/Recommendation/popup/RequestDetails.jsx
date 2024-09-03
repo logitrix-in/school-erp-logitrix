@@ -184,7 +184,7 @@ const RequestDetails = ({ open, close }) => {
                                     </Box>
                                     <Box display="flex" gap={2} width="30%" justifyContent="center" borderRight="2px solid #E0E0E0">
                                         <Box display="flex" flexDirection="column" justifyContent="space-between" >
-                                            <Typography mb={2}>Category</Typography>
+                                            <Typography mb={2}>Employee Type</Typography>
                                             <Typography mb={2}>Department</Typography>
                                             <Typography mb={2}>Current Borrowing</Typography>
                                         </Box>

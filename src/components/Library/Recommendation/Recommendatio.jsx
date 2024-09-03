@@ -92,24 +92,25 @@ const Recommendation = () => {
 					</Stack>
 				</Flex>
 			),
-			flex: 1.5,
+			flex: 1.2,
 		},
 		{
 			field: "Reqdate",
 			headerName: "Req date",
-			flex: 1,
+			flex: 0.7,
 		},
 		{
 			field: "Department",
 			headerName: "Department",
-			flex: 1,
+			flex: 0.7,
 		},
 		{
 			field: "Media Name",
 			headerName: "Media Name",
-			flex: 1,
+			flex: 2,
 			renderCell: (params) => (
-				<Flex
+				<Box
+					display={'flex'}
 					sx={{
 						width: '100%',
 						height: '100%',
@@ -119,19 +120,20 @@ const Recommendation = () => {
 					<Tooltip title="Book">
 						<MenuBookOutlinedIcon />
 					</Tooltip>
-					{params.value}
-				</Flex>
+					<Box display={'flex'} flexDirection={'column'} marginX={1}><Typography>Harry Potter and the Goblet ...</Typography><Typography color={'gray'}>D. S. C. Publication</Typography></Box>
+					<Box ><Typography bgcolor={'#E2E8F0'} borderRadius={0.8} px={0.6} pY={0.3}>IV</Typography></Box>
+				</Box>
 			),
 		},
 		{
 			field: "Author",
 			headerName: "Author",
-			flex: 1,
+			flex: 0.7,
 		},
 		{
 			field: "Status",
 			headerName: "Status",
-			flex: 1,
+			flex: 0.7,
 			renderCell: (params) => (
 				<Flex bgcolor={
 					selected === "In Review"
@@ -230,6 +232,8 @@ const Recommendation = () => {
 														setRejectPopup(true);
 													} else if (opt === "Fulfill") {
 														setFulfillPopup(true);
+													} else if (opt === "In Review") {
+														setSelected("In Review");
 													}
 
 													handleClose();
@@ -267,8 +271,8 @@ const Recommendation = () => {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								label="Library Card"
-								placeholder="Select Employee(s)"
+								label="Search by Library Card #"
+								placeholder="Search by Library Card #"
 
 							/>
 						)}
@@ -312,7 +316,7 @@ const Recommendation = () => {
 				</Box>
 
 				<Flex justifyContent={"flex-end"}>
-					<Button variant="outlined" color="secondary">
+					<Button variant="outlined" color="primary">
 						Download
 					</Button>
 				</Flex>
