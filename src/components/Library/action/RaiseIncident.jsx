@@ -377,6 +377,8 @@ const RaiseIncident = () => {
       section: "A",
       roll: 23,
       status: "Inactive",
+      suspension: "N/A",
+      penalty: "Nil",
     },
     {
       id: "AG240003",
@@ -385,6 +387,8 @@ const RaiseIncident = () => {
       section: "A",
       roll: 23,
       status: "Active",
+      suspension: "N/A",
+      penalty: "Nil",
     },
     {
       id: "AG240004",
@@ -393,6 +397,8 @@ const RaiseIncident = () => {
       section: "A",
       roll: 23,
       status: "Active",
+      suspension: "N/A",
+      penalty: "Nil",
     }
   ];
 
@@ -564,7 +570,7 @@ const RaiseIncident = () => {
 
         <Box display="flex" justifyContent="flex-end" mt={2}>
           <Button variant="outlined" sx={{ borderRadius: 16 }}>
-            80 results found
+            80 users added
           </Button>
         </Box>
 
@@ -593,7 +599,6 @@ const RaiseIncident = () => {
           <Button
             variant="outlined"
             color="error"
-            onClick={() => navigate("/student/action/deliver")}
             sx={{ marginLeft: "10px", width: "120px" }}
           >
             Cancel

@@ -51,8 +51,8 @@ const QuickSearch = () => {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								label="Library Card"
-								placeholder="Enter Library Card #"
+								label="Search by Library Card #"
+								placeholder="Search by Library Card #"
 							/>
 						)}
 						sx={{ width: "30%" }}
@@ -91,7 +91,7 @@ const QuickSearch = () => {
 								fontWeight={500}
 								textAlign={"center"}
 							>
-								Are you sure you want to check in?
+								Are you sure you want to record attendance for the selected visitor(s)?
 							</Typography>
 							<Box display={'flex'} width={'50%'} justifyContent={'space-around'} mt={2}>
 								<Button

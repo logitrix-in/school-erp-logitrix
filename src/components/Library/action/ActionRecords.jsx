@@ -21,8 +21,22 @@ const ActionRecords = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [academicYear, setAcademicYear] = useState(curYear);
+  const [amount, setAmount] = useState('')
+
+
+  function handleAmountChange(e) {
+    const inputValue = e.target.value;
+    const numericValue = inputValue.replace(/[^0-9]/g, '');
+
+    if (numericValue === '') {
+      setAmount('');
+    } else {
+      setAmount(`₹ ${parseInt(numericValue).toLocaleString('en-IN')}`);
+    }
+  }
 
   const columns = [
+    { field: "space", headerName: "", flex: 0.2 },
     {
       field: "id",
       headerName: "Library Card #",
@@ -163,8 +177,13 @@ const ActionRecords = () => {
 
   return (
     <RevealCard>
-      <Box sx={{ padding: "50px", display: "flex", flexDirection: "column" }}>
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
+      <Box sx={{ paddingY: "50px", paddingX: "24px", display: "flex", flexDirection: "column" }}>
+        <Box display="flex" justifyContent="flex-end" mb={4}>
+          <Button variant="outlined" sx={{ height: "40px", width: "120px" }}>
+            Clear All
+          </Button>
+        </Box>
+        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: 'space-between' }}>
           <Box
             sx={{
               display: "flex",
@@ -188,22 +207,35 @@ const ActionRecords = () => {
               marginLeft: "50px",
             }}
           >
-            <Box display={"flex"} gap={2}>
+            <Box display={"flex"} justifyContent={'space-between'}>
               <DatePicker
-                label="Start Date"
+                label="Suspension Start Date"
                 onChange={(e) => setStartDate(e)}
                 // minDate={dayjs()}
                 format="DD MMM YYYY"
               />
               <DatePicker
                 format="DD MMM YYYY"
-                label="End Date"
+                label="Suspension End Date"
                 minDate={startDate}
                 onChange={(e) => setEndDate(e)}
               />
             </Box>
 
-            <TextField label="Penalty Due Amount" fullWidth />
+            <TextField
+              id="comments"
+              label="Penalty Due Amount >="
+              type="text"
+              placeholder="Enter Penalty Due Amount >="
+              value={amount}
+              onChange={handleAmountChange}
+              variant="outlined"
+              fullWidth
+              inputProps={{
+                inputMode: 'numeric',
+                pattern: '[0-9]*'
+              }}
+            />
 
             <ReignsSelect
               items={nonCompliance}
@@ -254,7 +286,6 @@ const ActionRecords = () => {
               },
             }}
             pageSizeOptions={[5, 10]}
-            checkboxSelection
           />
         </Box>
 

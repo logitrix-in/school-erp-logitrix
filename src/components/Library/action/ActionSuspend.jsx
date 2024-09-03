@@ -29,6 +29,9 @@ import ReignsSelect from "../../UiComponents/ReignsSelect";
 import useClasses from "../../../hooks/useClasses";
 import { ToastContainer, toast } from "react-toastify";
 import SVGIncident from './SVGIncident';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DoneIcon from '@mui/icons-material/Done';
+
 
 const ActionSuspend = () => {
   const [multiple, setMultiple] = useState(true);
@@ -37,6 +40,7 @@ const ActionSuspend = () => {
   const [progress, setProgress] = useState(1);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [amount, setAmount] = useState('')
 
   const { suspend } = useClasses();
 
@@ -44,10 +48,21 @@ const ActionSuspend = () => {
     setOpenDialog(false);
   };
 
+  function handleAmountChange(e) {
+    const inputValue = e.target.value;
+    const numericValue = inputValue.replace(/[^0-9]/g, '');
+
+    if (numericValue === '') {
+      setAmount('');
+    } else {
+      setAmount(`₹ ${parseInt(numericValue).toLocaleString('en-IN')}`);
+    }
+  }
+
   const cardData = [
     {
       name: "John Doe",
-      classname: "5",
+      classname: "V",
       section: "A",
       roll: 1,
       studentid: "12345",
@@ -56,7 +71,7 @@ const ActionSuspend = () => {
     },
     {
       name: "John Doe",
-      classname: "5",
+      classname: "V",
       section: "A",
       roll: 1,
       studentid: "12345",
@@ -65,7 +80,7 @@ const ActionSuspend = () => {
     },
     {
       name: "John Doe",
-      classname: "5",
+      classname: "V",
       section: "A",
       roll: 1,
       studentid: "12345",
@@ -74,7 +89,7 @@ const ActionSuspend = () => {
     },
     {
       name: "John Doe",
-      classname: "5",
+      classname: "V",
       section: "A",
       roll: 1,
       studentid: "12345",
@@ -83,7 +98,7 @@ const ActionSuspend = () => {
     },
     {
       name: "John Doe",
-      classname: "5",
+      classname: "V",
       section: "A",
       roll: 1,
       studentid: "12345",
@@ -92,25 +107,7 @@ const ActionSuspend = () => {
     },
     {
       name: "John Doe",
-      classname: "5",
-      section: "A",
-      roll: 1,
-      studentid: "12345",
-      balance: 1000,
-      status: "Active",
-    },
-    {
-      name: "John Doe",
-      classname: "5",
-      section: "A",
-      roll: 1,
-      studentid: "12345",
-      balance: 1000,
-      status: "Active",
-    },
-    {
-      name: "John Doe",
-      classname: "5",
+      classname: "V",
       section: "A",
       roll: 1,
       studentid: "12345",
@@ -226,13 +223,15 @@ const ActionSuspend = () => {
                   fontWeight={700}
                   color="white"
                 >
-                  1
+                  <DoneIcon />
                 </Box>
 
                 <Box height={8} width={25} bgcolor="#2F7DA1" />
               </Box>
 
-              <Typography fontSize={14} fontWeight={500} color={"#2F7DA1"}>
+              <Typography fontSize={14} fontWeight={500} color={"#2F7DA1"} sx={{ cursor: 'pointer' }} onClick={() => {
+                setProgress(1);
+              }}>
                 Suspend
               </Typography>
             </Box>
@@ -298,7 +297,7 @@ const ActionSuspend = () => {
                   marginTop: "9px",
                 }}
               >
-                Suspend
+                {progress === 1 ? "Suspend" : "Penalty"}
               </Typography>
             </Box>
 
@@ -365,7 +364,7 @@ const ActionSuspend = () => {
 
                     <Grid container spacing={1} sx={{ paddingTop: "10px" }}>
                       {cardData.map((cardData, index) => (
-                        <Grid item xs={3} key={index}>
+                        <Grid item xs={4} key={index}>
                           <ActionCard {...cardData} />
                         </Grid>
                       ))}
@@ -617,7 +616,20 @@ const ActionSuspend = () => {
                   </FormControl>
 
                   <FormControl style={{ width: "500px", marginTop: "40px" }}>
-                    <TextField label="Penalty Due Amount" />
+                    <TextField
+                      id="comments"
+                      label="Claim Amount"
+                      type="text"
+                      placeholder="Enter Claim Amount in ₹"
+                      value={amount}
+                      onChange={handleAmountChange}
+                      variant="outlined"
+                      fullWidth
+                      inputProps={{
+                        inputMode: 'numeric',
+                        pattern: '[0-9]*'
+                      }}
+                    />
                   </FormControl>
 
                   <FormControl sx={{ marginTop: "40px" }}>
@@ -718,7 +730,7 @@ const ActionSuspend = () => {
               variant="outlined"
               color="error"
               sx={{ width: "200px", marginRight: "10px" }}
-              onClick={() => { handleCloseDialog(); toast.success("Penalty added successfully") }}
+              onClick={() => { handleCloseDialog(); toast.success("New incident #xxx registered successfully") }}
             >
               Yes
             </Button>
@@ -753,10 +765,11 @@ const ActionCard = ({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-between",
         padding: "10px",
         borderRadius: "12px",
       }}
+      border={"1px solid #ff0000"}
     >
 
       <Box
@@ -795,7 +808,7 @@ const ActionCard = ({
         <Typography sx={{ fontWeight: "700", fontSize: "12px" }}>
           {name}
         </Typography>
-        <Box sx={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: "6px" }}>
           <Typography sx={{ fontWeight: "200", fontSize: "10px" }}>
             {classname}
           </Typography>
@@ -815,23 +828,22 @@ const ActionCard = ({
         sx={{
           display: "flex",
           flexDirection: "column",
-          // marginLeft: "24px",
           width: '100%',
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-          <Box flex={1}></Box>
+        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", }}>
           <Box
             sx={{
               backgroundColor: "#C6F6D5",
               borderRadius: "6px",
               width: "50px",
-              height: "18px",
+              height: "20px",
+              marginRight: '4px',
               display: "flex",
               justifyContent: "center",
             }}
           >
-            <Typography sx={{ fontWeight: "600", fontSize: '11px' }}>Active</Typography>
+            <Typography sx={{ fontWeight: "600", fontSize: '12px' }}>Active</Typography>
           </Box>
           <button
             style={{
@@ -842,20 +854,20 @@ const ActionCard = ({
               cursor: "pointer",
             }}
           >
-            <MoreVertIcon />
+            <EditOutlinedIcon />
           </button>
         </Box>
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-          <Box sx={{ display: "flex", flexDirection: "column-reverse" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", }}>
+          <Box sx={{ display: "flex", flexDirection: "column-reverse", alignItems: "flex-end", }} >
             <Typography
-              sx={{ color: "#c4673b", fontWeight: "700", fontSize: "16px" }}
+              sx={{ color: "#c4673b", fontWeight: "700", fontSize: "16px", }}
             >
               ₹{balance}
             </Typography>
           </Box>
-          <Typography sx={{ fontSize: "12px", paddingLeft: "8px" }}>
+          <Typography sx={{ fontSize: "14px", paddingLeft: "8px", }}>
             Caution{" "}
-            <Typography sx={{ fontSize: "9px" }}>Money Balance </Typography>
+            <Typography sx={{ fontSize: "12px" }}>Money Balance </Typography>
           </Typography>
         </Box>
       </Box>

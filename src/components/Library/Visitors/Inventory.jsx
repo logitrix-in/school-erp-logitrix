@@ -111,8 +111,8 @@ const Inventory = () => {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								label="Library Card"
-								placeholder="Enter Library Card #"
+								label="Search by Library Card #"
+								placeholder="Search by Library Card #"
 							/>
 						)}
 						sx={{ width: "30%" }}
