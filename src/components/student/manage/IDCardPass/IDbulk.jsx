@@ -15,6 +15,7 @@ import {
   Dialog,
   DialogActions,
   DialogTitle,
+  Link
 } from "@mui/material";
 import useClasses from "../../../../hooks/useClasses";
 import { useMediaQuery } from "@material-ui/core";
@@ -156,7 +157,11 @@ const IDbulk = () => {
   // table columns
   const columns = [
     { field: "space", headerName: "", width: isLarge ? 80 : 50 },
-    { field: "id", headerName: "Student ID", flex: 1 },
+    { field: "id", headerName: "Student ID", flex: 1, renderCell: (params) => (
+      <Link underline="hover" color="primary">
+        {params.value}
+      </Link>
+    ), },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "class", headerName: "Class", flex: 1 },
     { field: "section", headerName: "Section", flex: 1 },

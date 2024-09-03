@@ -17,6 +17,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Link
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMediaQuery } from "@material-ui/core";
@@ -182,6 +183,11 @@ const ActionBulk = () => {
       field: "id",
       headerName: "Student ID",
       width: isLaptop ? 120 : isLarge ? 160 : 140,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      )
     },
     {
       field: "name",

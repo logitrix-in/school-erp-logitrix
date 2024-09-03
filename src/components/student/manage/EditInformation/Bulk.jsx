@@ -14,6 +14,7 @@ import {
   ListItemText,
   OutlinedInput,
   ListItemIcon,
+  Link
 } from "@mui/material";
 import { useMediaQuery } from "@material-ui/core";
 import useclasses from "../../../../hooks/useClasses";
@@ -142,7 +143,11 @@ const Bulk = () => {
       headerName: "",
       width: isLaptop ? 70 : isLarge ? 100 : isSmall ? 60 : 70,
     },
-    { field: "id", headerName: "Student ID", flex: 1 },
+    { field: "id", headerName: "Student ID", flex: 1, renderCell: (params) => (
+      <Link underline="hover" color="primary">
+        {params.value}
+      </Link>
+    ), },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "class", headerName: "Class", flex: 1 },
     { field: "section", headerName: "Section", flex: 1 },
