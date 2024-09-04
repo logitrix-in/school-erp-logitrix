@@ -35,7 +35,7 @@ const Reject = ({ open, close, setSelected }) => {
                 <Box
                     p={1}
                     py={1}
-                    bgcolor={"primary.main"}
+                    bgcolor={"secondary.main"}
                     color={"white"}
                     display={"flex"}
                     justifyContent={"space-between"}
@@ -73,12 +73,12 @@ const Reject = ({ open, close, setSelected }) => {
                     <Typography fontWeight={"medium"} textAlign={"left"} marginY={1}>Are you sure you want to reject?</Typography>
 
                     <Box marginY={1} width={"100%"} display="flex" gap={2}>
-                        <Button variant="contained" color="primary" fullWidth onClick={() => {
+                        <Button variant="contained" color="secondary" fullWidth onClick={() => {
                             toast.success("Updated Successfully");
                             setSelected("Rejected");
                             close();
                         }}>Yes</Button>
-                        <Button variant="outlined" color="primary" fullWidth onClick={() => {
+                        <Button variant="outlined" color="secondary" fullWidth onClick={() => {
                             close();
                         }}>No</Button>
                     </Box>

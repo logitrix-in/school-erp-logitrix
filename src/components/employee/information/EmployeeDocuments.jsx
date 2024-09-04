@@ -22,7 +22,7 @@ import Section from "../../Section";
 import Flex from "../../UiComponents/Flex";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
 
-const QuickSearch = () => {
+const EmployeeDocuments = () => {
 	const activityColumn = [
 		{
 			field: "activityDate",
@@ -152,7 +152,7 @@ const QuickSearch = () => {
 		<Bbox borderRadius={2} overflow={"hidden"}>
 			<Box bgcolor={"white"} py={1.3} px={2} borderRadius={2}>
 				<Typography fontWeight={"700"} fontSize={"1.1rem"}>
-					Quick Search - User / Media Details
+					Employee Documents
 				</Typography>
 			</Box>
 
@@ -171,11 +171,10 @@ const QuickSearch = () => {
 						renderInput={(params) => (
 							<TextField
 								{...params}
-								label="Search by Library# or Media#"
-								placeholder="Search by Library# or Media#"
+								label="Search by Employee Name or Employee ID"
+								placeholder="Search by Employee Name or Employee ID"
 							/>
 						)}
-						placeholder="Search by Library Card # / Media ID"
 					/>
 				</Box>
 				<Box sx={{ width: "100%" }}>
@@ -497,4 +496,4 @@ const SearchBox = () => {
 	);
 };
 
-export default QuickSearch;
+export default EmployeeDocuments;

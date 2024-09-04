@@ -18,6 +18,7 @@ import Popup from "../../../UiComponents/Popup";
 import { Box, Stack } from "@mui/system";
 import { Icon } from "@iconify/react";
 import { DatePicker } from "@mui/x-date-pickers";
+import { ToastContainer, toast } from "react-toastify";
 
 const columns = [
 	{ field: "id", headerName: "Library Card #", flex: 1 },
@@ -46,6 +47,7 @@ const MediaCirculation = () => {
 	const [returnState, setReturnState] = useState(false);
 	const [issueState, setIssueState] = useState(false);
 	const [renewOpen, setRenewOpen] = useState(false);
+	const [showRule, setShowRule] = useState(false);
 
 	useEffect(() => {
 		if (issueState == "scan") {
@@ -72,7 +74,7 @@ const MediaCirculation = () => {
 					sx={{ width: "30%" }}
 				/>
 
-				<Button variant="contained">Set Rule</Button>
+				<Button variant="contained" onClick={() => setShowRule(true)}>Set Rule</Button>
 			</Flex>
 
 			<DataGrid
@@ -324,6 +326,7 @@ const MediaCirculation = () => {
 
 			<IssuePage issueState={issueState} setIssueState={setIssueState} />
 			<Renew setRenewOpen={setRenewOpen} renewOpen={renewOpen} />
+			<SetRule open={showRule} close={() => setShowRule(false)} />
 		</Section>
 	);
 };
@@ -468,6 +471,74 @@ const IssuePage = ({ issueState, setIssueState }) => {
 				</Stack>
 			</Popup>
 		</Dialog>
+	);
+};
+
+const SetRule = ({ open, close }) => {
+
+	return (
+		<Dialog
+			fullWidth={false}
+			PaperProps={{
+				sx: {
+					maxHeight: "90%",
+					width: "50%",
+				},
+			}}
+			maxWidth="lg"
+			open={open}
+			onClose={() => close()}
+			disableEnforceFocus={true}
+		>
+			<Box overflow={"hidden"}>
+				<Box
+					p={1}
+					py={1}
+					bgcolor={"primary.main"}
+					color={"white"}
+					display={"flex"}
+					justifyContent={"space-between"}
+					alignItems={"center"}
+				>
+					<Box />
+					<Typography fontSize={"1.1rem"} textAlign={"center"}>
+						Set Rule
+					</Typography>
+					<IconButton
+						edge="start"
+						color="inherit"
+						onClick={close}
+						aria-label="close"
+					>
+						<CloseIcon />
+					</IconButton>
+				</Box>
+
+				<Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"90%"} margin="auto" alignItems="center">
+
+
+					<Box display={'flex'} justifyContent={'flex-start'} alignItems={'center'} sx={{ width: "100%" }}>
+						<Typography fontWeight={"medium"} fullWidth textAlign={"left"} marginY={1} marginRight={4}>Enter the media circulation period</Typography>
+
+						<TextField
+							label="No. of days"
+							placeholder="No. of days"
+							// value={comments}
+							// onChange={(e) => setComments(e.target.value)}
+							variant="outlined"
+							sx={{ flexGrow: 1 }}
+						/>
+					</Box>
+
+					<Box marginY={1} width={"100%"} display="flex" gap={2}>
+						<Button variant="contained" color="primary" fullWidth onClick={() => {
+							toast.success("Updated Successfully");
+							close();
+						}}>Submit</Button>
+					</Box>
+				</Box>
+			</Box>
+		</Dialog >
 	);
 };
 

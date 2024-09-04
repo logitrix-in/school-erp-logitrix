@@ -4,6 +4,7 @@ import Flex from "../../../UiComponents/Flex";
 import ReactFlipCard from "reactjs-flip-card";
 import LeftIcon from "@mui/icons-material/ChevronLeft";
 import RightIcon from "@mui/icons-material/ChevronRight";
+import { ToastContainer, toast } from "react-toastify";
 
 import LibraryCard1Front from "../../../../assets/cards/l-1.jpg";
 import LibraryCard2Front from "../../../../assets/cards/l-2.jpg";
@@ -11,6 +12,7 @@ import LibraryCard3Front from "../../../../assets/cards/l-3.jpg";
 import LibraryCard4Front from "../../../../assets/cards/l-4.jpg";
 import LibraryCard5Front from "../../../../assets/cards/l-5.png";
 import LibraryCard6Front from "../../../../assets/cards/l-6.png";
+import LibraryCard7Front from "../../../../assets/cards/lc.png";
 
 import LibraryCard1Back from "../../../../assets/cards/lb-1.jpg";
 import LibraryCard2Back from "../../../../assets/cards/lb-2.jpg";
@@ -18,12 +20,13 @@ import LibraryCard3Back from "../../../../assets/cards/lb-3.jpg";
 import LibraryCard4Back from "../../../../assets/cards/lb-4.jpg";
 import LibraryCard5Back from "../../../../assets/cards/lb-5.png";
 import LibraryCard6Back from "../../../../assets/cards/lb-6.png";
+import LibraryCard7Back from "../../../../assets/cards/lcb.png";
 
 const formats = [
 	{
 		id: 1,
-		front: LibraryCard5Front,
-		back: LibraryCard5Back,
+		front: LibraryCard7Front,
+		back: LibraryCard7Back,
 	},
 	{
 		id: 2,
@@ -56,6 +59,7 @@ const LibraryDesign = () => {
 					<Box
 						key={idx}
 						height={"5rem"}
+						position="relative" // Make sure the Box is relatively positioned
 						sx={{
 							aspectRatio: "406/641",
 							cursor: "pointer",
@@ -68,6 +72,25 @@ const LibraryDesign = () => {
 						}}
 						onClick={() => setSelected(idx)}
 					>
+						{selected == idx && (
+							<Box
+								position="absolute"
+								top={-10}
+								right={15}
+								width="1.5rem"
+								height="1.5rem"
+								bgcolor="green"
+								display="flex"
+								alignItems="center"
+								justifyContent="center"
+								borderRadius="50%" // Make it a circle
+								color="white"
+								fontSize="1rem"
+								fontWeight="bold"
+							>
+								✓
+							</Box>
+						)}
 						<img
 							src={img.front}
 							alt={`img-${img.id}`}
@@ -75,6 +98,7 @@ const LibraryDesign = () => {
 						/>
 					</Box>
 				))}
+
 			</Flex>
 
 			<Stack alignItems={"center"} justifyContent={"center"} mt={2} gap={2}>
@@ -127,7 +151,7 @@ const LibraryDesign = () => {
 				</Flex>
 			</Stack>
 			<Flex justifyContent={"center"} mt={2}>
-				<Button variant="contained" sx={{ width: "10rem" }}>
+				<Button variant="contained" sx={{ width: "10rem" }} onClick={() => toast.success("Card Applied Successfully")}>
 					Apply
 				</Button>
 			</Flex>
