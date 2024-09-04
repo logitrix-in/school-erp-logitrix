@@ -87,15 +87,19 @@ const Preview = ({ open, close }) => {
                     </Box>
 
 
+                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={1}>Are you sure you want to issue the library card?</Typography>
+
                     <Box marginY={1} width={"100%"} display="flex" gap={2}>
-                        <Button variant="contained" color="secondary" fullWidth onClick={() => {
-                            toast.success("Updated Successfully");
+                        <Button variant="contained" color="primary" fullWidth onClick={() => {
+                            toast.success("Card Issued Successfully");
                             close();
-                        }}>Issue ID Card</Button>
-                        <Button variant="contained" color="secondary" fullWidth onClick={() => {
+                        }}>Yes</Button>
+                        <Button variant="outlined" color="primary" fullWidth onClick={() => {
                             close();
-                        }}>Print</Button>
+                        }}>No</Button>
                     </Box>
+
+
                 </Box>
             </Box>
         </Dialog >

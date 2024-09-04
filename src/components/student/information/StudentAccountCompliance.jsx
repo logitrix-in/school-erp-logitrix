@@ -98,8 +98,8 @@ const StudentAccountCompliance = () => {
               params.value === "Active"
                 ? "#C6F6D5"
                 : params.value === "Inactive"
-                ? "#FFCCCC"
-                : "transparent",
+                  ? "#FFCCCC"
+                  : "transparent",
             borderRadius: "6px",
             display: "inline-block",
             width:
@@ -110,8 +110,8 @@ const StudentAccountCompliance = () => {
               params.value === "Active"
                 ? "11px"
                 : params.value === "Inactive"
-                ? "7px"
-                : "0px",
+                  ? "7px"
+                  : "0px",
           }}
         >
           {params.value}
@@ -316,7 +316,7 @@ const StudentAccountCompliance = () => {
                 },
               }}
               pageSizeOptions={[5, 10]}
-              // checkboxSelection
+            // checkboxSelection
             />
           </Box>
 
@@ -341,12 +341,12 @@ const StudentAccountCompliance = () => {
                   width: isLaptop
                     ? "20rem"
                     : isTablet
-                    ? "15rem"
-                    : isSmall
-                    ? "14rem"
-                    : isLarge
-                    ? "25rem"
-                    : "22rem",
+                      ? "15rem"
+                      : isSmall
+                        ? "14rem"
+                        : isLarge
+                          ? "25rem"
+                          : "22rem",
                 }}
               >
                 <InputLabel>Class</InputLabel>
@@ -402,12 +402,12 @@ const StudentAccountCompliance = () => {
                   width: isLaptop
                     ? "20rem"
                     : isTablet
-                    ? "15rem"
-                    : isSmall
-                    ? "14rem"
-                    : isLarge
-                    ? "25rem"
-                    : "22rem",
+                      ? "15rem"
+                      : isSmall
+                        ? "14rem"
+                        : isLarge
+                          ? "25rem"
+                          : "22rem",
                 }}
               >
                 <InputLabel>Section</InputLabel>
@@ -462,12 +462,12 @@ const StudentAccountCompliance = () => {
                   width: isLaptop
                     ? "20rem"
                     : isTablet
-                    ? "15rem"
-                    : isSmall
-                    ? "14rem"
-                    : isLarge
-                    ? "25rem"
-                    : "22rem",
+                      ? "15rem"
+                      : isSmall
+                        ? "14rem"
+                        : isLarge
+                          ? "25rem"
+                          : "22rem",
                 }}
               >
                 <InputLabel>Days</InputLabel>
@@ -523,15 +523,15 @@ const StudentAccountCompliance = () => {
                     // ["Inactive Users", 20],
                     // ["Active Users", 30],
                     apiData &&
-                      apiData.inactive_users && [
-                        "Inactive Users",
-                        apiData.inactive_users,
-                      ],
+                    apiData.inactive_users && [
+                      "Inactive Users",
+                      apiData.inactive_users,
+                    ],
                     apiData &&
-                      apiData.active_users && [
-                        "Active Users",
-                        apiData.active_users,
-                      ],
+                    apiData.active_users && [
+                      "Active Users",
+                      apiData.active_users,
+                    ],
                   ]}
                   options={{
                     chartArea: {
@@ -568,12 +568,12 @@ const StudentAccountCompliance = () => {
                     width: isLaptop
                       ? 340
                       : isDesktop
-                      ? 400
-                      : isTablet
-                      ? 250
-                      : isSmall
-                      ? 230
-                      : 400,
+                        ? 400
+                        : isTablet
+                          ? 250
+                          : isSmall
+                            ? 230
+                            : 400,
                     height: 40,
                     bgcolor: "#2F7DA1",
                     color: "white",
@@ -593,12 +593,12 @@ const StudentAccountCompliance = () => {
                     width: isLaptop
                       ? 340
                       : isDesktop
-                      ? 400
-                      : isTablet
-                      ? 250
-                      : isSmall
-                      ? 230
-                      : 400,
+                        ? 400
+                        : isTablet
+                          ? 250
+                          : isSmall
+                            ? 230
+                            : 400,
                     height: 40,
                   }}
                   onClick={handleOpenPrompt}
