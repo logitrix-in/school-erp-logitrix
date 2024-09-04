@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Typography, IconButton, Autocomplete, TextField, Button } from "@mui/material";
+import { Box, Divider, Grid, Typography, IconButton, Dialog, Autocomplete, TextField, Button } from "@mui/material";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import Bbox from "../../UiComponents/Bbox";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
@@ -8,13 +8,13 @@ import { Icon } from "@iconify/react";
 import { borderRadius, maxWidth, style } from "@mui/system";
 import Chart from "react-google-charts";
 import RevealCard from "../../AnimationComponents/RevealCard";
+import CloseIcon from "@mui/icons-material/Close";
+import { ToastContainer, toast } from "react-toastify";
 
 const EmployeeAccount = () => {
-	const ctx = useContext(AppContext);
-	const { classes, sections, acYear, curYear, status, days } = useClasses();
+	const { days } = useClasses();
 
-	const [academicYear, setAcademicYear] = useState(curYear);
-	console.log(classes);
+	const [notify, setNotify] = useState(false);
 
 	const items = ['A', 'B', 'C', 'D'];
 
@@ -153,21 +153,84 @@ const EmployeeAccount = () => {
 							Download
 						</Button>
 
-						{/* <ToastContainer /> */}
 
 						<Button
 							variant="outlined"
 							color="primary"
 							fullWidth
-						// onClick={handleOpenPrompt}
+							onClick={() => setNotify(true)}
 						>
 							Notify Inactive Users
 						</Button>
 					</Box>
-				</Box>
-			</Box>
-		</Bbox>
+				</Box >
+
+
+				<Notify open={notify} close={() => { setNotify(false) }} />
+			</Box >
+		</Bbox >
 	);
 };
 
 export default EmployeeAccount;
+
+const Notify = ({ open, close }) => {
+
+	return (
+		<Dialog
+			fullWidth={false}
+			PaperProps={{
+				sx: {
+					minHeight: "30%",
+					maxHeight: "90%",
+					width: "40%",
+				},
+			}}
+			maxWidth="lg"
+			open={open}
+			onClose={() => close()}
+			disableEnforceFocus={true}
+		>
+			<Box overflow={"hidden"}>
+				<Box
+					p={1}
+					py={1}
+					bgcolor={"primary.main"}
+					color={"white"}
+					display={"flex"}
+					justifyContent={"space-between"}
+					alignItems={"center"}
+				>
+					<Box />
+					<Typography fontSize={"1.1rem"} textAlign={"center"}>
+						Notify Inactive Users
+					</Typography>
+					<IconButton
+						edge="start"
+						color="inherit"
+						onClick={close}
+						aria-label="close"
+					>
+						<CloseIcon />
+					</IconButton>
+				</Box>
+
+				<Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"90%"} margin="auto" alignItems="center">
+
+
+					<Typography fontWeight={"medium"} textAlign={"left"} marginY={1}>Are you sure you want to send notification to inactive users?</Typography>
+
+					<Box marginY={1} width={"100%"} display="flex" gap={2}>
+						<Button variant="contained" color="primary" fullWidth onClick={() => {
+							toast.success("Notified Successfully");
+							close();
+						}}>Yes</Button>
+						<Button variant="outlined" color="primary" fullWidth onClick={() => {
+							close();
+						}}>No</Button>
+					</Box>
+				</Box>
+			</Box>
+		</Dialog >
+	);
+};
