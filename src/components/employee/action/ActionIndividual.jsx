@@ -33,6 +33,8 @@ const ActionIndividual = () => {
   const isXlarge = useMediaQuery("(min-width: 2560px)");
 
   const { nonCompliance } = useClasses();
+  console.log('hiiiiii')
+  console.log(nonCompliance);
   const navigateTo = useNavigate();
 
   // States

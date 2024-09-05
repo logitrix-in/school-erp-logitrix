@@ -42,6 +42,7 @@ const ActionBulk = () => {
   const [filter, setFilter] = useState({});
 
   const { classes, sections, roll, nonCompliance } = useClasses();
+  console.log(classes, sections, roll, nonCompliance);
 
   const curYear = new Date().getFullYear();
 
@@ -214,8 +215,8 @@ const ActionBulk = () => {
               params.value === "Active"
                 ? "#C6F6D5"
                 : params.value === "Inactive"
-                ? "#FFCCCC"
-                : "transparent",
+                  ? "#FFCCCC"
+                  : "transparent",
             borderRadius: "6px",
             display: "inline-block",
             width:
@@ -226,8 +227,8 @@ const ActionBulk = () => {
               params.value === "Active"
                 ? "11px"
                 : params.value === "Inactive"
-                ? "7px"
-                : "0px",
+                  ? "7px"
+                  : "0px",
           }}
         >
           {params.value}
@@ -868,7 +869,7 @@ const ActionBulk = () => {
                   },
                 }}
                 pageSizeOptions={[5, 10]}
-                // checkboxSelection
+              // checkboxSelection
               />
             </Box>
           </Typography>

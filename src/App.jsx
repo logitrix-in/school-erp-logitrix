@@ -380,7 +380,7 @@ function App() {
 						element={<LibraryAction />}
 					/>
 
-					<Route path={"/library/action/deliver/"} element={<LibraryActionSuspend />} />
+					<Route path={"/library/action/new incident/"} element={<LibraryActionSuspend />} />
 
 
 					<Route
