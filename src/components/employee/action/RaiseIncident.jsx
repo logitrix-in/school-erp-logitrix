@@ -585,7 +585,7 @@ const RaiseIncident = () => {
         <Box mt={4} mb={7} display="flex" justifyContent="flex-end">
           <Button
             variant="contained"
-            onClick={() => navigate("/library/action/deliver/")}
+            onClick={() => navigate("/library/action/new incident/")}
             sx={{ marginRight: "10px", width: "120px" }}
           >
             Proceed
@@ -594,7 +594,6 @@ const RaiseIncident = () => {
           <Button
             variant="outlined"
             color="error"
-            onClick={() => navigate("/student/action/deliver")}
             sx={{ marginLeft: "10px", width: "120px" }}
           >
             Cancel

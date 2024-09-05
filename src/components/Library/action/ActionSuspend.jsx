@@ -17,6 +17,8 @@ import {
 } from "@mui/material";
 import RevealCard from "../../AnimationComponents/RevealCard";
 import Bbox from "../../UiComponents/Bbox";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { fontWeight, width } from "@mui/system";
 import { DatePicker } from "@mui/x-date-pickers";
 import Vector from "../../../assets/icons/Vector.png";
@@ -31,6 +33,7 @@ import { ToastContainer, toast } from "react-toastify";
 import SVGIncident from './SVGIncident';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DoneIcon from '@mui/icons-material/Done';
+import { useNavigate } from "react-router-dom";
 
 
 const ActionSuspend = () => {
@@ -41,6 +44,7 @@ const ActionSuspend = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [amount, setAmount] = useState('')
+  const navigate = useNavigate();
 
   const { suspend } = useClasses();
 
@@ -222,6 +226,11 @@ const ActionSuspend = () => {
                   fontSize={36}
                   fontWeight={700}
                   color="white"
+                  border={"1px solid #2F7DA1"}
+                  sx={{ ":hover": { scale: '1.10' }, cursor: 'pointer' }}
+                  onClick={() => {
+                    setProgress(1);
+                  }}
                 >
                   <DoneIcon />
                 </Box>
@@ -665,10 +674,20 @@ const ActionSuspend = () => {
                     />
                   </FormControl>
 
-                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+                  <Box sx={{ display: "flex", justifyContent: "space-evenly", marginTop: "40px" }}>
+                    <Button
+                      sx={{ width: '30%' }}
+                      variant="outlined"
+                      onClick={() => {
+                        setProgress(1);
+                      }}
+                    >
+                      Back
+                    </Button>
+
                     <Button
                       variant="contained"
-                      sx={{ marginTop: "40px", width: "600px" }}
+                      sx={{ width: '30%' }}
                       onClick={() => {
                         setOpenDialog(true);
                       }}
@@ -730,7 +749,9 @@ const ActionSuspend = () => {
               variant="outlined"
               color="error"
               sx={{ width: "200px", marginRight: "10px" }}
-              onClick={() => { handleCloseDialog(); toast.success("New incident #xxx registered successfully") }}
+              onClick={() => {
+                handleCloseDialog(); toast.success("New incident #xxx registered successfully");
+              }}
             >
               Yes
             </Button>
@@ -854,7 +875,8 @@ const ActionCard = ({
               cursor: "pointer",
             }}
           >
-            <EditOutlinedIcon />
+
+            <DeleteOutlineOutlinedIcon color="error" />
           </button>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", }}>

@@ -26,9 +26,12 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SVG from './SVG';
 import ListOfStudents from "./ListStudents";
 import DisplayCardSingle from "./DisplayCardSingle";
+import EditAction from './EditAction';
+import GavelOutlinedIcon from '@mui/icons-material/GavelOutlined';
 
 const ViewEditIncident = () => {
   const isSmall = useMediaQuery("(max-width: 1364px)");
@@ -344,6 +347,8 @@ const ViewEditIncident = () => {
 };
 
 const DisplayCard = ({ id, isOpen, onToggle, setShowList }) => {
+  const [showEditAction, setShowEditAction] = useState(false);
+
   return (
     <Box
       sx={{
@@ -399,10 +404,12 @@ const DisplayCard = ({ id, isOpen, onToggle, setShowList }) => {
                 border: "none",
                 cursor: "pointer",
               }}
+              onClick={() => setShowEditAction(true)}
             >
-              <MoreVertIcon />
+              <EditOutlinedIcon />
             </button>
           </Box>
+          <EditAction open={showEditAction} close={() => setShowEditAction(false)} />
         </Box>
 
         <Box
@@ -426,7 +433,8 @@ const DisplayCard = ({ id, isOpen, onToggle, setShowList }) => {
           >
             <Box sx={{
               display: "flex", flexDirection: "row", alignItems: 'center',
-            }}>
+            }}
+            >
               <NotInterestedOutlinedIcon color="error" sx={{
                 width: '16px',
                 height: '16px',
@@ -445,9 +453,10 @@ const DisplayCard = ({ id, isOpen, onToggle, setShowList }) => {
 
             <Box sx={{
               display: "flex", flexDirection: "row", alignItems: 'center',
-            }}>
+            }}
+            >
 
-              <RequestPageOutlinedIcon color="error" sx={{
+              <GavelOutlinedIcon color="error" sx={{
                 width: '18px',
                 height: '18px',
                 marginRight: '4px'
@@ -459,12 +468,13 @@ const DisplayCard = ({ id, isOpen, onToggle, setShowList }) => {
               </Typography>
             </Box>
 
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Box sx={{ display: "flex", flexDirection: "row" }}
+            >
               <IconButton
                 onClick={() => {
                   onToggle(id);
                 }}
-                sx={{ marginLeft: "30px" }}
+              // sx={{ marginLeft: "20px" }}
               >
                 {isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
               </IconButton>

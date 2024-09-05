@@ -9,8 +9,13 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
 import RequestPageOutlinedIcon from '@mui/icons-material/RequestPageOutlined';
 import SVG from './SVG';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import EditAction from './EditAction';
+import { useState } from 'react';
 
 export default function DisplayCardSingle({ setShowList }) {
+    const [showEditAction, setShowEditAction] = useState(false);
+
     return (
         <Box
             sx={{
@@ -66,10 +71,13 @@ export default function DisplayCardSingle({ setShowList }) {
                                 border: "none",
                                 cursor: "pointer",
                             }}
+                            onClick={() => setShowEditAction(true)}
                         >
-                            <MoreVertIcon />
+                            <EditOutlinedIcon />
                         </button>
+
                     </Box>
+                    <EditAction open={showEditAction} close={() => setShowEditAction(false)} />
                 </Box>
 
                 <Box

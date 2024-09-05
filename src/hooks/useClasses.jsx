@@ -14,6 +14,8 @@ const useClasses = () => {
     role: context.role,
     nonCompliance: context.nonCompliance,
     suspend: context.suspend,
+    active: context.activeButton,
+    setActiveButton: context.setActiveButton,
   };
 };
 

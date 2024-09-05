@@ -38,7 +38,7 @@ const rows = [
 			id: "1234",
 			img: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?cs=srgb&dl=pexels-creationhill-1681010.jpg&fm=jpg",
 		},
-		Reqdate: "2020-01-01",
+		Reqdate: "10-10-2022",
 		Department: "Finance",
 		"Media Type": "Video",
 		"Media Name": "Book 1",
@@ -110,18 +110,44 @@ const Recommendation = () => {
 			flex: 2,
 			renderCell: (params) => (
 				<Box
-					display={'flex'}
+					display="flex"
+					alignItems="center"
 					sx={{
 						width: '100%',
 						height: '100%',
+						padding: '0px',
+						backgroundColor: '#f9f9f9',
+						borderRadius: '8px',
 					}}
 				>
-					{/* <Icon icon={"emojione:books"} height={"70%"} />  */}
 					<Tooltip title="Book">
-						<MenuBookOutlinedIcon />
+						<MenuBookOutlinedIcon sx={{ color: '#3b98c4' }} />
 					</Tooltip>
-					<Box display={'flex'} flexDirection={'column'} marginX={1}><Typography>Harry Potter and the Goblet ...</Typography><Typography color={'gray'}>D. S. C. Publication</Typography></Box>
-					<Box ><Typography bgcolor={'#E2E8F0'} borderRadius={0.8} px={0.6} pY={0.3}>IV</Typography></Box>
+					<Box display="flex" flexDirection="column" marginX={1}>
+						<Tooltip title="Harry Potter and the Goblet of Fire">
+							<Typography variant="subtitle1" fontWeight="semibold">
+								Harry Potter and the Goblet ...
+							</Typography>
+						</Tooltip>
+						<Tooltip title="D. S. C. Publication">
+							<Typography variant="body2" color="textSecondary">
+								D. S. C. Publication
+							</Typography>
+						</Tooltip>
+					</Box>
+					<Box
+						display="flex"
+						alignItems="center"
+						justifyContent="center"
+						bgcolor="#E2E8F0"
+						borderRadius={1}
+						px={1}
+						py={0.5}
+					>
+						<Typography variant="body2" fontWeight="bold">
+							IV
+						</Typography>
+					</Box>
 				</Box>
 			),
 		},

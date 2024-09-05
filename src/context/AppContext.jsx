@@ -14,6 +14,7 @@ const AppContextProvider = ({ children }) => {
   const [role, setRole] = useState([]);
   const [nonCompliance, setNonCompliance] = useState([]);
   const [suspend, setSuspend] = useState([]);
+  const [activeButton, setActiveButton] = useState("New Incident");
 
   // classes
   useEffect(() => {
@@ -152,6 +153,8 @@ const AppContextProvider = ({ children }) => {
     setNonCompliance,
     suspend,
     setSuspend,
+    activeButton,
+    setActiveButton,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

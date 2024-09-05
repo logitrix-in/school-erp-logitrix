@@ -31,7 +31,7 @@ const ActionRecords = () => {
     if (numericValue === '') {
       setAmount('');
     } else {
-      setAmount(`₹ ${parseInt(numericValue).toLocaleString('en-IN')}`);
+      setAmount(`Greater than ₹ ${parseInt(numericValue).toLocaleString('en-IN')}`);
     }
   }
 
@@ -183,13 +183,13 @@ const ActionRecords = () => {
             Clear All
           </Button>
         </Box>
-        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: 'space-between' }}>
+        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: 'space-between', gap: 4 }}>
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               gap: "20px",
-              width: "400px",
+              width: "50%"
             }}
           >
 
@@ -203,8 +203,7 @@ const ActionRecords = () => {
               display: "flex",
               flexDirection: "column",
               gap: "20px",
-              width: "500px",
-              marginLeft: "50px",
+              width: "50%"
             }}
           >
             <Box display={"flex"} justifyContent={'space-between'}>
@@ -240,7 +239,7 @@ const ActionRecords = () => {
             <ReignsSelect
               items={nonCompliance}
               multiple
-              label="Non Compliance"
+              label="Non Compliance Type"
             />
           </Box>
         </Box>
@@ -290,7 +289,7 @@ const ActionRecords = () => {
         </Box>
 
         <Box display="flex" justifyContent="flex-end" mr={3} mt={3}>
-          <Button variant="outlined">Download Student List</Button>
+          <Button variant="outlined">Download Report</Button>
         </Box>
       </Box>
     </RevealCard>

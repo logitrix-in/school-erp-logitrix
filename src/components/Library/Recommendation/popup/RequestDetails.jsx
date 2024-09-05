@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Box,
     Dialog,
@@ -15,6 +15,8 @@ import photo from "../../../../assets/icons/photo.png";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import DisplayCardSingle from "../../action/DisplayCardSingle"
+import ListOfStudents from "../../action/ListStudents"
 
 const RequestDetails = ({ open, close }) => {
 
@@ -80,7 +82,9 @@ const RequestDetails = ({ open, close }) => {
             onClose={() => close()}
             disableEnforceFocus={true}
         >
-            <Box overflow={"hidden"}>
+            <Box
+                overflow={"hidden"}
+            >
                 <Box
                     p={1}
                     py={1}
@@ -105,7 +109,9 @@ const RequestDetails = ({ open, close }) => {
                 </Box>
 
                 <RevealCard>
-                    <Bbox borderRadius={2} overflow={"hidden"} mx={2} my={4}>
+                    <Bbox borderRadius={2}
+                        // overflow={"hidden"}
+                        mx={2} my={4}>
                         <Box position={"relative"}>
                             <Box
                                 position={"absolute"}
@@ -201,7 +207,19 @@ const RequestDetails = ({ open, close }) => {
                                         </Box>
                                         <Box display="flex" flexDirection="column" justifyContent="space-between">
                                             <Typography fontWeight="medium" ml={1} mb={2}>: ₹ 2344</Typography>
-                                            <Typography fontWeight="medium" ml={1} mb={2} display="flex" alignItems="center" gap={1}>:  <span style={{ backgroundColor: '#E8DEF8', padding: '4px 8px', borderRadius: '8px' }}>#112334</span></Typography>
+
+                                            <Box display={"inline-flex"} gap={1}>
+                                                : <Incident
+                                                    incident={{
+                                                        title: "12343",
+                                                    }}
+                                                />
+                                                <Incident
+                                                    incident={{
+                                                        title: "877656",
+                                                    }}
+                                                />
+                                            </Box>
                                         </Box>
                                     </Box>
                                 </Box>
@@ -212,7 +230,9 @@ const RequestDetails = ({ open, close }) => {
 
 
                 <RevealCard>
-                    <Bbox borderRadius={2} overflow={"hidden"} mx={2} my={4}>
+                    <Bbox borderRadius={2}
+                        // overflow={"hidden"} 
+                        mx={2} my={4}>
                         <Box
                             bgcolor={"white"}
                             py={1.3}
@@ -247,5 +267,45 @@ const RequestDetails = ({ open, close }) => {
         </Dialog >
     );
 }
+
+const Incident = ({ incident }) => {
+    const [showList, setShowList] = useState(false);
+
+    return (
+        <Box
+            bgcolor={"#E8DEF8"}
+            p={0.8}
+            px={1.4}
+            fontSize={"0.8rem"}
+            borderRadius={1}
+            fontWeight={700}
+            position={"relative"}
+            sx={{
+                ":hover": {
+                    boxShadow: "0 0 10px -3px #00000039",
+                },
+                ":hover .hmenu": {
+                    visibility: "visible",
+                },
+            }}
+        >
+            # {incident.title}
+            <Box
+                right={0}
+                top={"120%"}
+                className={"hmenu"}
+                visibility={"hidden"}
+                position={"absolute"}
+                bgcolor={"white"}
+                zIndex={999}
+            >
+                <DisplayCardSingle setShowList={setShowList} />
+
+                {showList && <ListOfStudents open={showList} close={() => setShowList(false)} />}
+
+            </Box>
+        </Box>
+    );
+};
 
 export default RequestDetails;
