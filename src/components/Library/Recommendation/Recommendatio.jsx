@@ -1,14 +1,8 @@
 import {
 	Box,
 	Button,
-	Divider,
-	Grid,
 	Stack,
-	InputBase,
 	Typography,
-	Badge,
-	Chip,
-	Dialog,
 	IconButton,
 	Menu,
 	MenuItem,
@@ -28,7 +22,8 @@ import AcceptPopup from './popup/Accept';
 import RejectPopup from './popup/Reject';
 import FulfillPopup from './popup/Fulfill';
 import RequestDetails from './popup/RequestDetails';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import api from "../../../config/api";
 
 const rows = [
 	{
@@ -285,6 +280,17 @@ const Recommendation = () => {
 			},
 		},
 	];
+
+	async function getData() {
+		api
+			.get("/library/recommendation/")
+			.then((res) => { console.log(res.data); })
+			.catch()
+	}
+
+	useEffect(() => {
+		getData();
+	}, []);
 
 	return (
 		<Section title={"Recommendation"}>
