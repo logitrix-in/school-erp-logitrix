@@ -17,7 +17,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { ToastContainer, toast } from "react-toastify";
 import { DatePicker } from "@mui/x-date-pickers";
 
-const AddNewHoliday = ({ open, close, setSelected }) => {
+const Edit = ({ open, close, setSelected }) => {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -65,10 +65,7 @@ const AddNewHoliday = ({ open, close, setSelected }) => {
                 <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"90%"} margin="auto" alignItems="center">
 
 
-                    <Box display={'flex'} justifyContent={'flex-start'} alignItems={'flex-start'} textAlign={'left'}>
-                        <Typography marginY={1}>Academic Year:</Typography>
-                        <Typography fontWeight={"medium"} marginY={1} marginLeft={1}>2024-25</Typography>
-                    </Box>
+                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={1}>Academic Year: 2024-25</Typography>
 
                     <Box display={'flex'} justifyContent={'space-between'} sx={{ width: '100%' }}>
                         <TextField label="Enter Holiday Name" sx={{ width: '48%' }} />
@@ -108,4 +105,4 @@ const AddNewHoliday = ({ open, close, setSelected }) => {
     );
 };
 
-export default AddNewHoliday;
+export default Edit;

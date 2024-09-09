@@ -30,7 +30,7 @@ const LibraryBulk = () => {
 			</Flex>
 			<Flex justifyContent={"center"} mt={2}>
 				<Button sx={{ width: "30rem" }} variant="contained">
-					Submit
+					Apply
 				</Button>
 			</Flex>
 			<Box mt={3}>

@@ -49,14 +49,6 @@ const MediaCirculation = () => {
 	const [renewOpen, setRenewOpen] = useState(false);
 	const [showRule, setShowRule] = useState(false);
 
-	useEffect(() => {
-		if (issueState == "scan") {
-			setTimeout(() => {
-				setIssueState("open");
-			}, 1000);
-		}
-	}, [issueState]);
-
 	return (
 		<Section title={"Media Circulation - Scan / Manual"}>
 			<Flex mb={2} justifyContent={'space-between'}>
@@ -101,7 +93,7 @@ const MediaCirculation = () => {
 			<Flex justifyContent={"flex-end"} my={2}>
 				<Button
 					variant="contained"
-					onClick={() => setIssueState("scan")}
+					onClick={() => setIssueState("scan-auto")}
 				>
 					New Issue
 				</Button>
@@ -315,13 +307,100 @@ const MediaCirculation = () => {
 			<Popup
 				title={"Scan"}
 				maxWidth="sm"
-				open={issueState == "scan"}
-				close={() => { }}
+				open={issueState == "scan-auto"}
+				close={() => { setIssueState("close") }}
 			>
-				<Stack alignItems={"center"} gap={1} p={2}>
-					<Icon icon="bx:qr-scan" fontSize="3rem" />
-					<Typography>Scan media ID to proceed...</Typography>
-				</Stack>
+				{issueState == "scan-auto" && (
+					<>
+						<Flex justifyContent={"center"}>
+							<Box display={'flex'} flexDirection={'column'} alignItems={'center'} margin={'auto'}>
+								<Stack alignItems={"center"} gap={1} p={2}>
+									<Icon icon="bx:qr-scan" fontSize="8rem" />
+									<Typography>Scan media ID to Authenticate...</Typography>
+								</Stack>
+
+								<Box my={2} display="flex" alignItems="center" width="100%">
+									<Divider sx={{ flex: 1 }} />
+									<Typography
+										variant="body2"
+										color="text.secondary"
+										mx={2}
+										sx={{
+											display: 'flex',
+											alignItems: 'center',
+											'&::before, &::after': {
+												content: '""',
+												flex: '1',
+												borderBottom: '1px solid',
+												borderColor: 'text.secondary',
+												marginX: 1,
+											},
+										}}
+									>
+										OR
+									</Typography>
+									<Divider sx={{ flex: 1 }} />
+								</Box>
+
+								<Button
+									variant="outlined"
+									onClick={() => setIssueState("scan-manual")}
+								>
+									Manual Entry
+								</Button>
+							</Box>
+						</Flex>
+					</>
+				)}
+				{issueState == "scan-manual" && (
+					<>
+						<Stack
+							justifyContent={"center"}
+							gap={2}
+							height={"10rem"}
+							mx={10}
+						>
+							<TextField label={"Media ID"} />
+							<Button
+								variant={"contained"}
+								fullWidth
+								onClick={() => {
+									setIssueState(true);
+								}}
+							>
+								Submit
+							</Button>
+						</Stack>
+
+						<Box my={2} display="flex" alignItems="center" width="100%">
+							<Divider sx={{ flex: 1 }} />
+							<Typography
+								variant="body2"
+								color="text.secondary"
+								mx={2}
+								sx={{
+									display: 'flex',
+									alignItems: 'center',
+									'&::before, &::after': {
+										content: '""',
+										flex: '1',
+										borderBottom: '1px solid',
+										borderColor: 'text.secondary',
+										marginX: 1,
+									},
+								}}
+							>
+								OR
+							</Typography>
+							<Divider sx={{ flex: 1 }} />
+						</Box>
+
+						<Stack alignItems={"center"} gap={1} p={2}>
+							<Icon icon="bx:qr-scan" fontSize="8rem" />
+							<Typography>Scan media ID to Authenticate...</Typography>
+						</Stack>
+					</>
+				)}
 			</Popup>
 
 			<IssuePage issueState={issueState} setIssueState={setIssueState} />

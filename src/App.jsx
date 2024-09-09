@@ -85,6 +85,13 @@ import Appraisal from "./pages/employee/Appraisal";
 import EmployeeAction from "./pages/employee/EmployeeAction";
 import EmployeeInformation from "./pages/employee/EmployeeInformation";
 import EmployeeLeave from "./pages/employee/EmployeeLeave";
+import EmployeeManage from "./pages/employee/EmployeeManage";
+import OnBoardingEditEmployee from "./components/employee/manage/EditInformation/OnBoardingEdit";
+import OnBoardingDetailsEmployee from "./components/employee/manage/EditInformation/OnBoardingDetails";
+import ManageStreamRequestEmployee from "./components/employee/manage/SectionAllotment/ManageStreamRequest";
+import ManageSystemRequestEmployee from "./components/employee/manage/SectionAllotment/ManageSystemRequest";
+import ReviewPromotionEmployee from "./components/employee/manage/SectionAllotment/ReviewPromotion";
+
 
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
 const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
@@ -405,8 +412,44 @@ function App() {
 					/>
 					<Route
 						path={"employee/manage/"}
-						element={<LibraryRecommandation />}
+						element={<EmployeeManage />}
 					/>
+
+					<Route path={"/employee/manage/"} element={<Manage />} />
+					<Route
+						path="/employee/manage/student-account/"
+						element={StudentAccount}
+					/>
+					<Route
+						path="/employee/manage/id-card-pass/"
+						element={IDCardPass}
+					/>
+					<Route
+						path="/employee/manage/section-allotment/"
+						element={SectionAllotment}
+					/>
+					<Route
+						path="/employee/manage/promotion/"
+						element={Promotion}
+					/>
+
+					<Route
+						path={
+							"/employee/manage/section-allotment/manage-stream-request"
+						}
+						element={<ManageStreamRequestEmployee />}
+					/>
+					<Route
+						path={
+							"/employee/manage/section-allotment/manage-stream-request/rationalise"
+						}
+						element={<ManageSystemRequestEmployee />}
+					/>
+					<Route
+						path="/employee/manage/promotion/review"
+						element={<ReviewPromotionEmployee />}
+					/>
+
 					<Route
 						path={"employee/timetable/"}
 						element={<LibraryRecommandation />}
@@ -448,6 +491,15 @@ function App() {
 				<Route
 					path={"/student/manage/OnBoardingDetails"}
 					element={<OnBoardingDetails />}
+				/>
+
+				<Route
+					path={"/employee/manage/OnBoardingEdit"}
+					element={<OnBoardingEditEmployee />}
+				/>
+				<Route
+					path={"/employee/manage/OnBoardingDetails"}
+					element={<OnBoardingDetailsEmployee />}
 				/>
 			</Routes>
 		</>
