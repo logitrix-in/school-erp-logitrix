@@ -15,6 +15,9 @@ const AppContextProvider = ({ children }) => {
   const [nonCompliance, setNonCompliance] = useState([]);
   const [suspend, setSuspend] = useState([]);
   const [activeButton, setActiveButton] = useState("New Incident");
+  const [mediaTypes, setMediaTypes] = useState([]);
+  const [mediaCategory, setMediaCategory] = useState([]);
+  const [mediaLanguage, setMediaLanguage] = useState([]);
 
   // classes
   useEffect(() => {
@@ -27,6 +30,63 @@ const AppContextProvider = ({ children }) => {
         })
         .catch((err) => console.log(err));
   }, [user]);
+
+  useEffect(() => {
+    // Generate section values
+    setMediaTypes(generateMediaTypes());
+  }, []);
+
+  function generateMediaTypes() {
+    return ["Books", "Periodicals", "Research Papers"];
+  }
+
+  useEffect(() => {
+    // Generate section values
+    setMediaLanguage(generateMediaLanguage());
+  }, []);
+
+  function generateMediaLanguage() {
+    return [
+      "English",
+      "Bengali",
+      "Hindi",
+      "Sanskrit",
+      "Tamil",
+      "Telugu",
+      "Kannada",
+      "Malayalam",
+      "Others"
+    ];
+  }
+
+  useEffect(() => {
+    // Generate section values
+    setMediaCategory(generateMediaCategory());
+  }, []);
+
+  function generateMediaCategory() {
+    return [
+      "Bengali literature",
+      "Hindi literature",
+      "English literature",
+      "Mathematics",
+      "Physics",
+      "Chemistry",
+      "Biology",
+      "Computer Science",
+      "Statistics",
+      "History",
+      "Geography",
+      "Political Science",
+      "Psychology",
+      "Sociology",
+      "Economics",
+      "Accountancy",
+      "Business Studies",
+      "Fiction",
+      "Non-fiction"
+    ];
+  }
 
   // sections
   useEffect(() => {
@@ -155,6 +215,12 @@ const AppContextProvider = ({ children }) => {
     setSuspend,
     activeButton,
     setActiveButton,
+    mediaTypes,
+    setMediaTypes,
+    mediaCategory,
+    setMediaCategory,
+    mediaLanguage,
+    setMediaLanguage,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

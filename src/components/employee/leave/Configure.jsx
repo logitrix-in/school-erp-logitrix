@@ -20,6 +20,7 @@ import { useState } from 'react'
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddNewHoliday from './popups/AddNewHoliday';
+import Edit from './popups/Edit';
 
 export default function Configure() {
     const [addNewHolidayPopup, setAddNewHolidayPopup] = useState(false);
@@ -159,7 +160,7 @@ export default function Configure() {
                         <Button
                             color="primary"
                             variant="outlined"
-                            onClick={() => toast.success("Report Downloaded")}
+                            onClick={() => setEditPopup(true)}
                         >
                             Download
                         </Button>
@@ -221,7 +222,7 @@ export default function Configure() {
 
                     <AddNewHoliday open={addNewHolidayPopup} close={() => setAddNewHolidayPopup(false)} />
                     {/* <AddNewHoliday open={editHolidayPopup} close={() => setEditHolidayPopup(false)} /> */}
-                    {/* <AddNewHoliday open={editPopup} close={() => setEditPopup(false)} /> */}
+                    <AddNewHoliday open={editPopup} close={() => setEditPopup(false)} />
                 </Bbox>
             </RevealCard >
         </>

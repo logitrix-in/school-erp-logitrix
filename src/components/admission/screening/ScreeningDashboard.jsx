@@ -1,14 +1,11 @@
 import { Icon } from "@iconify/react";
 import {
   Box,
-  Checkbox,
   Divider,
   FormControl,
   IconButton,
   InputLabel,
-  ListItemText,
   MenuItem,
-  OutlinedInput,
   Select,
   Typography,
 } from "@mui/material";
@@ -49,7 +46,7 @@ const ScreeningDashboard = () => {
           screenedPending: data.screened_pending,
         });
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }
 
   useEffect(() => {
