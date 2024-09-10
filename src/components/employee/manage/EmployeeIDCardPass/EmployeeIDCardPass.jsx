@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import Bbox from "../../../UiComponents/Bbox";
 import { Box, Divider } from "@mui/material";
-import IDindividual from "./IDindividual";
-import IDbulk from "./IDbulk";
-import IDsetDesign from "./IDsetDesign";
+import EmployeeIDindividual from "./EmployeeIDindividual";
+import EmployeeIDbulk from "./EmployeeIDbulk";
+import EmployeeIDsetDesign from "./EmployeeIDsetDesign";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
-const IDCardPass = () => {
+const EmployeeIDCardPass = () => {
   const [activeButton, setActiveButton] = useState("Individual");
 
   const navigate = useNavigate();
@@ -16,11 +17,11 @@ const IDCardPass = () => {
   const renderComponent = () => {
     switch (activeButton) {
       case "Individual":
-        return <IDindividual />;
+        return <EmployeeIDindividual />;
       case "Bulk":
-        return <IDbulk />;
+        return <EmployeeIDbulk />;
       case "Set Design":
-        return <IDsetDesign />;
+        return <EmployeeIDsetDesign />;
       default:
         return null;
     }
@@ -29,12 +30,13 @@ const IDCardPass = () => {
   return (
     <RevealCard>
       {/* top navigation buttons */}
+      {/* top navigation buttons */}
       <div
         style={{
           backgroundColor: "#E5F3FB",
           display: "flex",
           padding: "10px",
-          maxWidth: "720px",
+          maxWidth: "730px",
           borderRadius: "10px",
         }}
       >
@@ -51,7 +53,7 @@ const IDCardPass = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/edit-information/")}
+            onClick={() => navigate("/employee/manage/")}
           >
             Edit Information
           </button>
@@ -68,9 +70,9 @@ const IDCardPass = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/student-account/")}
+            onClick={() => navigate("/employee/manage/employee-account/")}
           >
-            Student Account
+            Employee Account
           </button>
 
           <button
@@ -85,9 +87,9 @@ const IDCardPass = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/id-card-pass/")}
+            onClick={() => navigate("/employee/manage/id-card-pass/")}
           >
-            Card / Pass
+            ID Card
           </button>
 
           <button
@@ -101,7 +103,23 @@ const IDCardPass = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/promotion/")}
+            onClick={() => navigate("/employee/manage/promotion/")}
+          >
+            Department
+          </button>
+
+          <button
+            style={{
+              backgroundColor: "transparent",
+              border: "none",
+              color: "black",
+              cursor: "pointer",
+              borderRadius: "6px",
+              padding: "7px 10px 7px 10px",
+              fontSize: "16px",
+              fontWeight: 400,
+            }}
+            onClick={() => navigate("/employee/manage/promotion/")}
           >
             Promotion
           </button>
@@ -118,12 +136,14 @@ const IDCardPass = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/section-allotment/")}
+            onClick={() => navigate("/employee/manage/section-allotment/")}
           >
-            Section Allotment
+            Probation
           </button>
         </div>
       </div>
+
+      <ToastContainer />
 
       <Bbox
         mt={2}
@@ -207,4 +227,4 @@ const IDCardPass = () => {
   );
 };
 
-export default <IDCardPass />;
+export default <EmployeeIDCardPass />;

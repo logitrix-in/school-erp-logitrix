@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import RevealCard from "../../AnimationComponents/RevealCard";
 import EditInformation from "./EditInformation/EditInformation";
-import StudentAccount from "./StudentAccount/StudentAccount";
-import IDCardPass from "./IDCardPass/IDCardPass";
+import StudentAccount from "./EmployeeAccount/EmployeeAccount";
+import EmployeeIDCardPass from "./EmployeeIDCardPass/EmployeeIDCardPass";
 import SectionAllotment from "./SectionAllotment/SectionAllotment";
 import Promotion from "./Promotion/Promotion";
 import { Link, useParams } from "react-router-dom";
@@ -27,7 +27,7 @@ const TopNavigationBtn = () => {
       case "Student Account":
         return <StudentAccount />;
       case "ID Card / Pass":
-        return <IDCardPass />;
+        return <EmployeeIDCardPass />;
       case "Section Allotment":
         return <SectionAllotment />;
       case "Promotion":

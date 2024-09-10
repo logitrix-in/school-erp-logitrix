@@ -33,6 +33,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
+import Popup from "../../../UiComponents/Popup";
 
 const StudentIndividual = () => {
   // breakpoints
@@ -46,7 +47,7 @@ const StudentIndividual = () => {
   const isXlarge = useMediaQuery("(min-width: 2560px)");
 
   // States
-  const [selectedRow, setSelecetedRow] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [accessStatus, setAccessStatus] = useState("");
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
@@ -64,7 +65,7 @@ const StudentIndividual = () => {
 
   const [resetPassword, setResetPassword] = useState(false);
 
-  const { role } = useClasses();
+  const { employeeRole } = useClasses();
 
   const handleSearch = async () => {
     try {
@@ -92,12 +93,11 @@ const StudentIndividual = () => {
     setFilter(_filter);
   }, [curRole, type]);
 
-  // table columns
   const columns = [
     {
       field: "radioButtons",
       headerName: "",
-      width: 100,
+      flex: 0.2,
       renderCell: (params) => (
         <Radio
           checked={params.row.id === selectedRow}
@@ -107,94 +107,21 @@ const StudentIndividual = () => {
           }}
           inputProps={{ "aria-label": params.row.id }}
           onChange={() => {
-            setSelecetedRow(params.row.id);
+            setSelectedRow(params.row.id);
             setIsEditButtonActive(true);
           }}
         />
       ),
     },
-    {
-      field: "id",
-      headerName: "Student ID",
-      width: isLaptop
-        ? 150
-        : isLarge
-        ? 200
-        : isTablet
-        ? 140
-        : isSmall
-        ? 110
-        : 170,
-      renderCell: (params) => (
-        <Link underline="hover" color="primary">
-          {params.value}
-        </Link>
-      ),
-    },
-    {
-      field: "name",
-      headerName: "Name",
-      width: isLaptop
-        ? 150
-        : isLarge
-        ? 200
-        : isTablet
-        ? 120
-        : isSmall
-        ? 110
-        : 170,
-    },
-    {
-      field: "class",
-      headerName: "Class",
-      width: isLaptop
-        ? 150
-        : isLarge
-        ? 200
-        : isTablet
-        ? 110
-        : isSmall
-        ? 80
-        : 170,
-    },
-    {
-      field: "section",
-      headerName: "Section",
-      width: isLaptop
-        ? 150
-        : isLarge
-        ? 200
-        : isTablet
-        ? 120
-        : isSmall
-        ? 80
-        : 170,
-    },
-    {
-      field: "roll",
-      headerName: "Roll #",
-      width: isLaptop
-        ? 150
-        : isLarge
-        ? 200
-        : isTablet
-        ? 110
-        : isSmall
-        ? 80
-        : 170,
-    },
+    { field: "id", headerName: "Employee ID", flex: 1 },
+    { field: "name", headerName: "Name", flex: 1 },
+    { field: "emp_type", headerName: "Employee Type", flex: 1 },
+    { field: "department", headerName: "Department", flex: 1 },
+    { field: "grade", headerName: "Grade", flex: 0.8 },
     {
       field: "access",
       headerName: "Account Access",
-      width: isLaptop
-        ? 150
-        : isLarge
-        ? 200
-        : isTablet
-        ? 170
-        : isSmall
-        ? 140
-        : 170,
+      flex: 1,
       renderCell: (params) => (
         <Box
           style={{
@@ -202,8 +129,8 @@ const StudentIndividual = () => {
               params.value === "Enabled"
                 ? "#C6F6D5"
                 : params.value === "Disabled"
-                ? "#FFCCCC"
-                : "transparent",
+                  ? "#FFCCCC"
+                  : "transparent",
             borderRadius: "6px",
             display: "inline-block",
             width:
@@ -212,64 +139,73 @@ const StudentIndividual = () => {
                 : "auto",
             paddingLeft:
               params.value === "Enabled"
-                ? "10px"
+                ? "11px"
                 : params.value === "Disabled"
-                ? "8px"
-                : "0px",
+                  ? "7px"
+                  : "0px",
           }}
         >
           {params.value}
         </Box>
       ),
     },
-    { field: "role", headerName: "Assigned Role", width: 180 },
+    { field: "role", headerName: "Assigned Role", flex: 1 },
   ];
 
   // table rows
   const rows = [
     {
       id: "AG240001",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
       access: "Enabled",
-      role: "Dance Club Secretary",
+      role: "House Coordinator",
     },
     {
       id: "AG240002",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
       access: "Enabled",
-      role: "Dance Club Secretary",
+      role: "House Coordinator",
     },
     {
       id: "AG240003",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
       access: "Disabled",
-      role: "Dance Club Secretary",
+      role: "House Coordinator",
     },
+    {
+      id: "AG240004",
+      name: "Saunav Ray",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
+      access: "Enabled",
+      role: "House Coordinator",
+    }
   ];
 
-  useEffect(() => {
-    // Find the selected row based on selectedRow ID
-    const selectedRowData = rows.find((row) => row.id === selectedRow);
+  // useEffect(() => {
+  //   // Find the selected row based on selectedRow ID
+  //   const selectedRowData = rows.find((row) => row.id === selectedRow);
 
-    // If selectedRowData exists, update accessStatus
-    if (selectedRowData) {
-      setAccessStatus(
-        selectedRowData.access === "Enabled" ? "Enabled" : "Disabled"
-      );
-    } else {
-      // If no row is selected, reset accessStatus
-      setAccessStatus("Change Access");
-    }
-  }, [selectedRow, rows]);
+  //   // If selectedRowData exists, update accessStatus
+  //   if (selectedRowData) {
+  //     setAccessStatus(
+  //       selectedRowData.access === "Enabled" ? "Enabled" : "Disabled"
+  //     );
+  //   } else {
+  //     // If no row is selected, reset accessStatus
+  //     setAccessStatus("Change Access");
+  //   }
+  // }, [selectedRow, rows]);
 
   // handle notifying inactive users
   const handleAssignRoleSubmit = () => {
@@ -293,21 +229,22 @@ const StudentIndividual = () => {
     // Check if "all" is selected
     if (value.includes("all")) {
       // If "all" is selected and all rolles are already selected, deselect all
-      if (curRole.length === role.length) {
+      if (curRole.length === employeeRole.length) {
         setRole([]);
       } else {
         // If "all" is selected and not all rolles are selected, select all
-        setRole(role);
+        setRole(employeeRole);
       }
       return;
     }
 
+    console.log(curRole)
     // Set the selected rolles
     setRole(value);
   };
 
   const handleSubmit = () => {
-    const newRoles = curRole.filter((r) => !role.includes(r));
+    const newRoles = curRole.filter((r) => !employeeRole.includes(r));
     setRole((prevRole) => [...prevRole, ...newRoles]);
 
     setConfirmationMessage("Are you sure you want to change the role?");
@@ -327,13 +264,8 @@ const StudentIndividual = () => {
     setResetPassword(false);
   };
 
-  const handleResetConfirm = () => {
-    setResetDialog(false);
-    setResetPassword(true);
-  };
-
   const handleResetPassword = () => {
-    setResetPassword(false);
+    setResetDialog(false);
     toast.success("Successfully password reset.", { autoClose: 3000 });
   };
 
@@ -348,8 +280,7 @@ const StudentIndividual = () => {
   const handleConfirmDisable = () => {
     setDisableDialog(false);
     toast.success(
-      `Successfully ${
-        accessStatus === "Enabled" ? "Access Disabled" : "Access Enabled"
+      `Successfully ${accessStatus === "Enabled" ? "Access Disabled" : "Access Enabled"
       }.`,
       { autoClose: 3000 }
     );
@@ -360,24 +291,6 @@ const StudentIndividual = () => {
   const handleAssignRoleClick = () => setOpenDialog(true);
 
   const handleCloseDialog = () => setOpenDialog(false);
-
-  // Styles
-  const buttonStyle = {
-    backgroundColor: "#C4673B",
-    color: "white",
-    "&:hover": { backgroundColor: "#A14E2C" },
-    width: "140px",
-  };
-
- const roles = [
-    "House Coordinator",
-    "High School Coordinator",
-    "Dance Club Supervisor",
-  ];
-
-  const handleDelete = () => {
-    console.info("You clicked the delete icon.");
-  };
 
   return (
     <RevealCard>
@@ -419,7 +332,7 @@ const StudentIndividual = () => {
           {/* search input */}
           <input
             type="text"
-            placeholder="Search by Student ID or Student Name"
+            placeholder="Search by Employee ID or Employee Name"
             style={{
               width: isLaptop ? 420 : "50%",
               height: "100%",
@@ -443,7 +356,7 @@ const StudentIndividual = () => {
               },
             }}
             pageSizeOptions={[5, 10]}
-            // checkboxSelection
+          // checkboxSelection
           />
         </Box>
 
@@ -453,7 +366,7 @@ const StudentIndividual = () => {
             {/* reset password button */}
             <Button
               variant="contained"
-              sx={buttonStyle}
+              color="primary"
               onClick={handleResetPasswordClick}
               disabled={!isAnyCheckboxSelected}
             >
@@ -461,25 +374,24 @@ const StudentIndividual = () => {
             </Button>
 
             {/* disable/enable access button */}
-            <Button
-              variant="contained"
-              sx={buttonStyle}
-              onClick={handleAccessConfirmation}
-              disabled={!isAnyCheckboxSelected}
-            >
-              {accessStatus === "Enabled" ? "Disable Access" : "Enable Access"}
-            </Button>
+            {accessStatus === "Enabled" ?
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleAccessConfirmation}
+                disabled={!isAnyCheckboxSelected}
+              >Disable Access</Button> : <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAccessConfirmation}
+                disabled={!isAnyCheckboxSelected}
+              >Enable Access</Button>
+            }
 
             {/* assign role button */}
             <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "white",
-                color: "#C4673B",
-                border: "1px solid #C4673B",
-                "&:hover": { backgroundColor: "#A14E2C", color: "white" },
-                width: "140px",
-              }}
+              variant="outlined"
+              color="primary"
               onClick={handleAssignRoleClick}
               disabled={!isAnyCheckboxSelected}
             >
@@ -489,66 +401,49 @@ const StudentIndividual = () => {
         </Box>
 
         {/* Dialog box for Assigning Role */}
-        <Dialog
-          open={openDialog}
-          onClose={handleCloseDialog}
+        <Popup title={"Assign Role"} open={openDialog}
+          close={handleCloseDialog}
           fullWidth
-          maxWidth="sm"
-        >
-          <DialogTitle
-            sx={{
-              backgroundColor: "#2F7DA1",
-              textAlign: "center",
-              color: "white",
-              fontSize: "20px",
-              fontWeight: "600",
-            }}
-          >
-            Assign Role
-            <IconButton
-              aria-label="close"
-              onClick={handleCloseDialog}
-              sx={{
-                position: "absolute",
-                right: 8,
-                top: 8,
-                color: "white",
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </DialogTitle>
+          maxWidth="sm">
+          <Box p={5} component={"form"} height={"40vh"} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'align-items'}>
 
-          <DialogContent dividers>
-            {/* already selected roles */}
-            <Box display={"flex"} flexDirection={"row"}>
-              <Typography
-                variant="body1"
-                gutterBottom
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  marginBottom: "10%",
-                }}
-              >
-                Currently assigned role -&nbsp;
-              </Typography>
-              <Box sx={{ width: "auto" }}>
-                {roles.map((role) => (
-                  <Chip
-                    label={role}
-                    color="primary"
-                    onDelete={handleDelete}
-                    style={{ marginRight: "8px" }}
-                    sx={{marginBottom: "5px", backgroundColor: "#e8e2ea", color: "black"}}
-                  />
-                ))}
-              </Box>
+            <Box display={"flex"} flexDirection={"row"} sx={{ marginBottom: "2rem" }}>
+              {
+                curRole.length == 0 ? (
+                  <Typography textAlign={'center'} sx={{ width: '100%', margin: 'auto' }}>No role has been assigned currently</Typography>
+                ) : (
+                  <>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        marginRight: "1rem", fontSize: "16px",
+                        fontWeight: "400",
+                      }}
+                    >
+                      Currently assigned role:
+                    </Typography>
+                    <Box sx={{ width: "auto" }}>
+                      {
+                        curRole.map((role, idx) => (
+                          <Chip
+                            key={idx}
+                            label={role}
+                            color="primary"
+                            // onDelete={handleDelete}
+                            style={{ marginRight: "8px" }}
+                            sx={{ marginBottom: "5px", backgroundColor: "#e8e2ea", color: "black" }}
+                          />
+                        ))
+                      }
+                    </Box>
+                  </>
+                )
+              }
             </Box>
 
             {/* assign role dropdown */}
-            <FormControl style={{ width: "15rem", marginLeft: "10rem" }}>
-              <InputLabel>Assign Role</InputLabel>
+            <FormControl fullWidth>
+              <InputLabel>Select Role</InputLabel>
               <Select
                 placeholder="All"
                 multiple
@@ -561,25 +456,25 @@ const StudentIndividual = () => {
                     },
                   },
                 }}
-                input={<OutlinedInput label="Assign Role" />}
+                input={<OutlinedInput label="Select Role" />}
                 renderValue={(selected) =>
-                  selected.length === role.length ? "All" : selected.join(", ")
+                  selected.length === employeeRole.length ? "All" : selected.join(", ")
                 }
               >
                 {/* Select All option */}
                 <MenuItem value="all">
                   <ListItemIcon>
                     <Checkbox
-                      checked={curRole.length === role.length}
+                      checked={curRole.length === employeeRole.length}
                       indeterminate={
-                        curRole.length > 0 && curRole.length < role.length
+                        curRole.length > 0 && curRole.length < employeeRole.length
                       }
                     />
                   </ListItemIcon>
                   <ListItemText primary="Select All" />
                 </MenuItem>
                 {/* roll options */}
-                {role.map((roleOption) => (
+                {employeeRole.map((roleOption) => (
                   <MenuItem key={roleOption} value={roleOption}>
                     <Checkbox
                       size="small"
@@ -592,180 +487,95 @@ const StudentIndividual = () => {
             </FormControl>
 
             {/* submit button */}
-            <Box mt={10} textAlign="center">
+            <Box mt={4} textAlign="center" sx={{ width: '100%' }}>
               <Button
                 variant="contained"
                 color="primary"
                 onClick={handleSubmit}
+                fullWidth
               >
                 Submit
               </Button>
             </Box>
-          </DialogContent>
-        </Dialog>
+          </Box>
+        </Popup >
 
         {/* Confirmation Dialog for role change */}
-        <Dialog open={showConfirmationDialog}>
-          <Box style={{ height: "15px", backgroundColor: "#2F7DA1" }}></Box>
-          <DialogContent>
-            <Typography>{confirmationMessage}</Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={cancelRoleChange} color="secondary">
-              No
-            </Button>
-            <Button
-              color="primary"
-              sx={{
-                backgroundColor: "#2F7DA1",
-                color: "white",
-                "&:hover": { backgroundColor: "#1c536b" },
-              }}
-              onClick={handleAssignRoleSubmit}
-            >
-              Yes
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <Popup title={"Confirmation"} open={showConfirmationDialog} close={cancelRoleChange}>
+          <Box p={5} component={"form"} height={"20vh"} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+
+            <Typography variant="body1">
+              Are you sure you want to change the role?
+            </Typography>
+
+            <Box p={2} display={'flex'} gap={4} justifyContent={'center'} alignItems={'center'}>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={handleAssignRoleSubmit}
+              >
+                Yes
+              </Button>
+              <Button onClick={cancelRoleChange} color="primary" variant="outlined">
+                No
+              </Button>
+            </Box>
+          </Box>
+        </Popup >
 
         {/* Reset Password Dialog */}
-        <Dialog open={resetDialog} onClose={handleClose}>
-          <div
-            style={{
-              backgroundColor: "#3B98C4",
-              height: "50px",
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontWeight: "600",
-              color: "white",
-              fontSize: "20px",
-            }}
-          >
-            {" "}
-            Reset Password
-          </div>
-
-          <Box p={2}>
-            <Typography variant="body1">
-              Are you sure you want to reset the password?
-            </Typography>
-
-            <Box mt={2} gap={1} display="flex" justifyContent="flex-end">
+        <Popup title={"Reset Password"} open={resetDialog} close={handleClose}>
+          <Box p={5} component={"form"} height={"20vh"} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+            <TextField
+              name="critical_ailment"
+              fullWidth
+              placeholder="Set New Password to Login"
+            />
+            <Box mt={4} display="flex" sx={{ width: '100%' }}>
               <Button
-                onClick={handleClose}
-                sx={{
-                  color: "red",
-                  fontWeight: "400",
-                  "&:hover": {
-                    backgroundColor: "#FFECEB",
-                  },
-                }}
-              >
-                No
-              </Button>
-              <Button
+                fullWidth
                 variant="contained"
-                onClick={handleResetConfirm}
                 color="primary"
-                autoFocus
+                onClick={handleResetPassword}
               >
-                Yes
+                Submit
               </Button>
             </Box>
           </Box>
-        </Dialog>
-
-        <Dialog open={resetPassword} onClose={handleClose}>
-          <div
-            style={{
-              backgroundColor: "#3B98C4",
-              height: "50px",
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontWeight: "600",
-              color: "white",
-              fontSize: "20px",
-            }}
-          >
-            {" "}
-            Reset Password
-          </div>
-
-          <Box
-            p={2}
-            width={"600px"}
-            height={"300px"}
-            display={"flex"}
-            flexDirection={"column"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <TextField
-              label="Set new password for login"
-              variant="outlined"
-              fullWidth
-              type="password"
-              style={{ marginBottom: "20px" }}
-              sx={{ width: "400px" }}
-            />
-
-            <Button
-              variant="contained"
-              sx={{ width: "400px" }}
-              onClick={handleResetPassword}
-            >
-              Submit
-            </Button>
-          </Box>
-        </Dialog>
+        </Popup >
 
         {/* Disable/Enable Dialog */}
-        <Dialog open={disableDialog} onClose={handleCloseDisable}>
-          <div
-            style={{
-              backgroundColor: "#3B98C4",
-              height: "15px",
-              width: "100%",
-            }}
-          />
+        <Popup title={"Enable Access"} open={disableDialog} close={handleCloseDisable}>
+          <Box p={5} component={"form"} height={"20vh"} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
 
-          <Box p={2}>
-            <Typography variant="body1">
-              Are you sure you want to{" "}
-              {accessStatus === "Enabled" ? "Disable Access" : "Enable Access"}{" "}
-              the student's account?
-            </Typography>
+            <Box p={2} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+              <Typography variant="body1">
+                Are you sure you want to{" "}
+                {accessStatus === "Enabled" ? "Disable Access" : "Enable Access"}{" "}
+                the employee's account?
+              </Typography>
 
-            <Box mt={2} gap={1} display="flex" justifyContent="flex-end">
-              <Button
-                onClick={handleCloseDisable}
-                sx={{
-                  color: "red",
-                  fontWeight: "400",
-                  "&:hover": {
-                    backgroundColor: "#FFECEB",
-                  },
-                }}
-              >
-                No
-              </Button>
-              <Button
-                variant="contained"
-                onClick={handleConfirmDisable}
-                color="primary"
-                autoFocus
-              >
-                Yes
-              </Button>
+              <Box mt={2} gap={4} display="flex" >
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={handleConfirmDisable}
+                >
+                  Yes
+                </Button>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={handleCloseDisable}
+                >
+                  No
+                </Button>
+              </Box>
             </Box>
           </Box>
-        </Dialog>
+        </Popup >
       </Bbox>
-    </RevealCard>
+    </RevealCard >
   );
 };
 

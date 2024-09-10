@@ -86,12 +86,14 @@ import EmployeeAction from "./pages/employee/EmployeeAction";
 import EmployeeInformation from "./pages/employee/EmployeeInformation";
 import EmployeeLeave from "./pages/employee/EmployeeLeave";
 import EmployeeManage from "./pages/employee/EmployeeManage";
+
 import OnBoardingEditEmployee from "./components/employee/manage/EditInformation/OnBoardingEdit";
 import OnBoardingDetailsEmployee from "./components/employee/manage/EditInformation/OnBoardingDetails";
 import ManageStreamRequestEmployee from "./components/employee/manage/SectionAllotment/ManageStreamRequest";
 import ManageSystemRequestEmployee from "./components/employee/manage/SectionAllotment/ManageSystemRequest";
 import ReviewPromotionEmployee from "./components/employee/manage/SectionAllotment/ReviewPromotion";
-
+import EmployeeAccount from "./components/employee/manage/EmployeeAccount/EmployeeAccount";
+import EmployeeIDCardPass from "./components/employee/manage/EmployeeIDCardPass/EmployeeIDCardPass";
 
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
 const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
@@ -415,14 +417,13 @@ function App() {
 						element={<EmployeeManage />}
 					/>
 
-					<Route path={"/employee/manage/"} element={<Manage />} />
 					<Route
-						path="/employee/manage/student-account/"
-						element={StudentAccount}
+						path="/employee/manage/employee-account/"
+						element={EmployeeAccount}
 					/>
 					<Route
 						path="/employee/manage/id-card-pass/"
-						element={IDCardPass}
+						element={EmployeeIDCardPass}
 					/>
 					<Route
 						path="/employee/manage/section-allotment/"

@@ -9,6 +9,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Radio,
   Typography,
   Checkbox,
   ListItemText,
@@ -20,6 +21,7 @@ import { useMediaQuery } from "@material-ui/core";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
+import Popup from "../../../UiComponents/Popup";
 
 const StudentBulk = () => {
   // breakpoints
@@ -50,6 +52,8 @@ const StudentBulk = () => {
   const [showModal, setShowModal] = useState(false);
   const [templateDownloaded, setTemplateDownloaded] = useState(false);
   const [showUndoButton, setShowUndoButton] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [isEditButtonActive, setIsEditButtonActive] = useState(false);
 
   // drag & drop state
   const [showUploadArea, setShowUploadArea] = useState(false);
@@ -131,14 +135,15 @@ const StudentBulk = () => {
   };
 
   // Function to handle the confirmation of submission
-  const handleConfirmation = (confirm) => {
-    if (confirm) {
-      setShowModal(false);
-      setShowUploadArea(false);
-      setShowUndoButton(true);
-    } else {
-      setShowModal(false);
+  const handleConfirmation = () => {
+    try {
+      console.log("Submitted Successfully");
+      toast.success("Submitted Successfully");
+    } catch (error) {
+      console.error("Error while displaying toast:", error);
     }
+    setShowModal(false);
+    setShowUploadArea(false);
   };
 
   // Function to handle the undo action
@@ -152,90 +157,35 @@ const StudentBulk = () => {
     setTemplateDownloaded(true);
   };
 
-  // table columns
   const columns = [
     {
-      field: "space",
+      field: "radioButtons",
       headerName: "",
-      width: 50,
+      flex: 0.2,
+      renderCell: (params) => (
+        <Radio
+          checked={params.row.id === selectedRow}
+          color="primary"
+          sx={{
+            transform: "scale(0.6)",
+          }}
+          inputProps={{ "aria-label": params.row.id }}
+          onChange={() => {
+            setSelectedRow(params.row.id);
+            setIsEditButtonActive(true);
+          }}
+        />
+      ),
     },
-    {
-      field: "id",
-      headerName: "Student ID",
-      width: isLaptop
-        ? 150
-        : isLarge
-        ? 200
-        : isTablet
-        ? 140
-        : isSmall
-        ? 110
-        : 170,
-    },
-    {
-      field: "name",
-      headerName: "Name",
-      width: isLaptop
-        ? 150
-        : isLarge
-        ? 200
-        : isTablet
-        ? 130
-        : isSmall
-        ? 110
-        : 170,
-    },
-    {
-      field: "class",
-      headerName: "Class",
-      width: isLaptop
-        ? 150
-        : isLarge
-        ? 200
-        : isTablet
-        ? 120
-        : isSmall
-        ? 80
-        : 170,
-    },
-    {
-      field: "section",
-      headerName: "Section",
-      width: isLaptop
-        ? 150
-        : isLarge
-        ? 200
-        : isTablet
-        ? 120
-        : isSmall
-        ? 80
-        : 170,
-    },
-    {
-      field: "roll",
-      headerName: "Roll #",
-      width: isLaptop
-        ? 150
-        : isLarge
-        ? 200
-        : isTablet
-        ? 110
-        : isSmall
-        ? 80
-        : 170,
-    },
+    { field: "id", headerName: "Employee ID", flex: 1 },
+    { field: "name", headerName: "Name", flex: 1 },
+    { field: "emp_type", headerName: "Employee Type", flex: 1 },
+    { field: "department", headerName: "Department", flex: 1 },
+    { field: "grade", headerName: "Grade", flex: 0.8 },
     {
       field: "access",
       headerName: "Account Access",
-      width: isLaptop
-        ? 160
-        : isLarge
-        ? 220
-        : isTablet
-        ? 170
-        : isSmall
-        ? 140
-        : 190,
+      flex: 1,
       renderCell: (params) => (
         <Box
           style={{
@@ -243,8 +193,8 @@ const StudentBulk = () => {
               params.value === "Enabled"
                 ? "#C6F6D5"
                 : params.value === "Disabled"
-                ? "#FFCCCC"
-                : "transparent",
+                  ? "#FFCCCC"
+                  : "transparent",
             borderRadius: "6px",
             display: "inline-block",
             width:
@@ -253,48 +203,57 @@ const StudentBulk = () => {
                 : "auto",
             paddingLeft:
               params.value === "Enabled"
-                ? "10px"
+                ? "11px"
                 : params.value === "Disabled"
-                ? "8px"
-                : "0px",
+                  ? "7px"
+                  : "0px",
           }}
         >
           {params.value}
         </Box>
       ),
     },
-    { field: "role", headerName: "Assigned Role", width: 180 },
+    { field: "role", headerName: "Assigned Role", flex: 1 },
   ];
 
   // table rows
   const rows = [
     {
       id: "AG240001",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
       access: "Enabled",
-      role: "Dance Club Secretary",
+      role: "House Coordinator",
     },
     {
       id: "AG240002",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
       access: "Enabled",
-      role: "Dance Club Secretary",
+      role: "House Coordinator",
     },
     {
       id: "AG240003",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
       access: "Disabled",
-      role: "Dance Club Secretary",
+      role: "House Coordinator",
     },
+    {
+      id: "AG240004",
+      name: "Saunav Ray",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
+      access: "Enabled",
+      role: "House Coordinator",
+    }
   ];
 
   return (
@@ -496,7 +455,7 @@ const StudentBulk = () => {
             </Box>
 
             {/* table */}
-            <Box m={2} style={{ height: "100%"}}>
+            <Box m={2} style={{ height: "100%" }}>
               <DataGrid
                 rows={rows}
                 columns={columns}
@@ -506,7 +465,7 @@ const StudentBulk = () => {
                   },
                 }}
                 pageSizeOptions={[5, 10]}
-                // checkboxSelection
+              // checkboxSelection
               />
             </Box>
           </Box>
@@ -555,9 +514,7 @@ const StudentBulk = () => {
               </Button>
 
               {/* Modal for confirmation */}
-              {showModal && (
-                <ConfirmationModal onConfirmation={handleConfirmation} />
-              )}
+              <ConfirmationModal showModal={showModal} setShowModal={setShowModal} handleConfirmation={handleConfirmation} />
             </>
           )}
         </Box>
@@ -592,68 +549,43 @@ const UploadArea = ({ setShowUploadArea, onDrop, onDragOver }) => {
       >
         Click / Drag & Drop to upload Excel
       </Typography>
-      <Button onClick={() => setShowUploadArea(false)}>Cancel</Button>
+      <Box display={'flex'} justifyContent={'center'} mt={2} gap={4}>
+        <Button color="primary" variant="contained">Browse</Button>
+        <Button color="primary" variant="outlined" onClick={() => setShowUploadArea(false)}>Cancel</Button>
+      </Box>
     </Box>
   );
 };
 
-const ConfirmationModal = ({ onConfirmation }) => {
-  // handle success message
-  const handleNotifyInactiveUsers = () => {
-    try {
-      toast.success("Submitted Successfully.", {
-        autoClose: 3000,
-      });
-      // Call the onConfirmation function with true
-      onConfirmation(true);
-    } catch (error) {
-      console.error("Error while displaying toast:", error);
-    }
-  };
+const ConfirmationModal = ({ showModal, setShowModal, handleConfirmation }) => {
 
   return (
-    <Box
-      style={{
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        backgroundColor: "white",
-        padding: "20px",
-        border: "1px solid #000",
-        borderRadius: "7px",
-        zIndex: 9999,
-      }}
-    >
-      <Typography style={{ fontSize: "20px", fontWeight: "600" }}>
-        Are you sure you want to submit?
-      </Typography>
-      <Box
-        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
-      >
-        <Button
-          variant="outlined"
-          color="primary"
-          style={{
-            color: "#000",
-            border: "1px solid #B0AEAE",
-            marginRight: "10px",
-          }}
-          // onClick={() => onConfirmation(true)}
-          onClick={handleNotifyInactiveUsers}
+    <Popup title={"Confirmation"} open={showModal} close={() => setShowModal(false)}>
+      <Box p={5} component={"form"} height={"20vh"} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+        <Typography style={{ fontSize: "20px", fontWeight: "500" }}>
+          Are you sure you want to submit?
+        </Typography>
+
+        <Box
+          style={{ display: "flex", justifyContent: "center", marginTop: "20px", gap: 16 }}
         >
-          Yes
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          style={{ color: "#000", border: "1px solid #B0AEAE" }}
-          onClick={() => onConfirmation(false)}
-        >
-          No
-        </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleConfirmation()}
+          >
+            Yes
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setShowModal(false)}
+          >
+            No
+          </Button>
+        </Box>
       </Box>
-    </Box>
+    </Popup >
   );
 };
 

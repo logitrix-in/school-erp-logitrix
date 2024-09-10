@@ -1,6 +1,5 @@
-import React from "react";
-import StudentIndividual from "./StudentIndividual";
-import StudentBulk from "./StudentBulk";
+import EmployeeIndividual from "./EmployeeIndividual";
+import EmployeeBulk from "./EmployeeBulk";
 import { useNavigate } from "react-router-dom";
 
 const StudentAccount = () => {
@@ -14,7 +13,7 @@ const StudentAccount = () => {
           backgroundColor: "#E5F3FB",
           display: "flex",
           padding: "10px",
-          maxWidth: "720px",
+          maxWidth: "730px",
           borderRadius: "10px",
         }}
       >
@@ -31,7 +30,7 @@ const StudentAccount = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/edit-information/")}
+            onClick={() => navigate("/employee/manage/")}
           >
             Edit Information
           </button>
@@ -48,9 +47,9 @@ const StudentAccount = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/student-account/")}
+            onClick={() => navigate("/employee/manage/employee-account/")}
           >
-            Student Account
+            Employee Account
           </button>
 
           <button
@@ -65,9 +64,9 @@ const StudentAccount = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/id-card-pass/")}
+            onClick={() => navigate("/employee/manage/id-card-pass/")}
           >
-            Card / Pass
+            ID Card
           </button>
 
           <button
@@ -81,7 +80,23 @@ const StudentAccount = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/promotion/")}
+            onClick={() => navigate("/employee/manage/promotion/")}
+          >
+            Department
+          </button>
+
+          <button
+            style={{
+              backgroundColor: "transparent",
+              border: "none",
+              color: "black",
+              cursor: "pointer",
+              borderRadius: "6px",
+              padding: "7px 10px 7px 10px",
+              fontSize: "16px",
+              fontWeight: 400,
+            }}
+            onClick={() => navigate("/employee/manage/promotion/")}
           >
             Promotion
           </button>
@@ -98,18 +113,19 @@ const StudentAccount = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/student/manage/section-allotment/")}
+            onClick={() => navigate("/employee/manage/section-allotment/")}
           >
-            Section Allotment
+            Probation
           </button>
         </div>
       </div>
 
+
       {/* individual component */}
-      <StudentIndividual />
+      <EmployeeIndividual />
 
       {/* bulk component */}
-      <StudentBulk />
+      <EmployeeBulk />
     </>
   );
 };
