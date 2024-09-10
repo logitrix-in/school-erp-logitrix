@@ -30,7 +30,7 @@ import LocalGuardianCardBack from "../../../../assets/cards/lgcb.png";
 import { useMediaQuery } from "@material-ui/core";
 import { DataGrid } from "@mui/x-data-grid";
 
-const IDindividual = () => {
+const EmployeeIDindividual = () => {
   // breakpoints
   const isSmall = useMediaQuery("(max-width: 1364px)");
   const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
@@ -97,7 +97,7 @@ const IDindividual = () => {
     {
       field: "radioButtons",
       headerName: "",
-      width: 50,
+      flex: 0.2,
       renderCell: (params) => (
         <Radio
           checked={params.row.id === selectedRow}
@@ -112,46 +112,46 @@ const IDindividual = () => {
         />
       ),
     },
-    { field: "space", headerName: "", width: isLarge ? 80 : 50 },
-    { field: "id", headerName: "Student ID", flex: 1,
+    {
+      field: "id", headerName: "Employee ID", flex: 1,
       renderCell: (params) => (
         <Link underline="hover" color="primary">
           {params.value}
         </Link>
       ),
-     },
+    },
     { field: "name", headerName: "Name", flex: 1 },
-    { field: "class", headerName: "Class", flex: 1 },
-    { field: "section", headerName: "Section", flex: 1 },
-    { field: "roll", headerName: "Roll #", flex: 1 },
-    { field: "date", headerName: "Last Issue Date", flex: 1 },
+    { field: "emp_type", headerName: "Employee Type", flex: 1 },
+    { field: "department", headerName: "Department", flex: 1 },
+    { field: "grade", headerName: "Grade", flex: 1 },
+    { field: "last_issue_date", headerName: "Last Issue Date", flex: 1 },
   ];
 
   // table rows
   const rows = [
     {
       id: "AG240001",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: "B2",
+      last_issue_date: "20-Sep-2023",
     },
     {
       id: "AG240002",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: "B2",
+      last_issue_date: "20-Sep-2023",
     },
     {
       id: "AG240003",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: "B2",
+      last_issue_date: "20-Sep-2023",
     },
   ];
 
@@ -159,30 +159,6 @@ const IDindividual = () => {
 
   return (
     <RevealCard>
-      <ToastContainer />
-
-      {/* Dropdown */}
-      <Box width={"500px"} mt={3} ml={3}>
-        <Select
-          value={selectedValue}
-          onChange={handleChange}
-          variant="outlined"
-          fullWidth
-          displayEmpty
-        >
-          <MenuItem value="" disabled>
-            Card Selection
-          </MenuItem>
-          <MenuItem value={"ID Card"}>ID Card</MenuItem>
-          <MenuItem value={"Parent's Card"}>Parent's Card</MenuItem>
-          <MenuItem value={"Local Guardian's Card"}>
-            Local Guardian's Card
-          </MenuItem>
-          <MenuItem value={"Library Card"}>Library Card</MenuItem>
-          <MenuItem value={"Event Pass"}>Event Pass</MenuItem>
-          <MenuItem value={"Guest Pass"}>Guest Pass</MenuItem>
-        </Select>
-      </Box>
 
       {/* Render context based on selected dropdown value */}
       {selectedValue === "Guest Pass" ? (
@@ -285,20 +261,16 @@ const IDindividual = () => {
             justifyContent="flex-end"
             marginRight={1.6}
             marginBottom={5}
+            gap={2}
           >
+
             {/* Issue button */}
             <Button
+              color="primary"
               variant="contained"
-              sx={{
-                backgroundColor: "#C4673B",
-                "&:hover": {
-                  backgroundColor: "#A14E2C",
-                  color: "white",
-                },
-              }}
               onClick={handleOpenPrompt}
             >
-              Issue
+              Issue ID Card
             </Button>
 
             {/* Print button */}
@@ -376,7 +348,7 @@ const IDindividual = () => {
             {/* Search input area */}
             <TextField
               variant="outlined"
-              placeholder="Search by Student ID / Student Name"
+              placeholder="Search by Employee ID / Employee Name"
               size="small"
               sx={{ width: 400 }}
               InputProps={{
@@ -401,7 +373,7 @@ const IDindividual = () => {
                 },
               }}
               pageSizeOptions={[5, 10, 20, 50]}
-              // checkboxSelection
+            // checkboxSelection
             />
           </Box>
 
@@ -409,35 +381,23 @@ const IDindividual = () => {
           <Box
             display="flex"
             justifyContent="flex-end"
-            marginRight={1.6}
             marginBottom={5}
+            marginRight={2}
+            gap={2}
           >
             {/* Issue button */}
             <Button
+              color="primary"
               variant="contained"
-              sx={{
-                backgroundColor: "#C4673B",
-                "&:hover": {
-                  backgroundColor: "#A14E2C",
-                  color: "white",
-                },
-              }}
               onClick={handleOpenPrompt}
             >
-              Issue
+              Issue ID Card
             </Button>
 
             {/* Print button */}
             <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#C4673B",
-                "&:hover": {
-                  backgroundColor: "#A14E2C",
-                  color: "white",
-                },
-                marginLeft: "20px",
-              }}
+              color="primary"
+              variant="outlined"
             >
               Print
             </Button>
@@ -560,7 +520,7 @@ const IDindividual = () => {
                   onClick={() => {
                     setFlip(!flip);
                   }}
-                  sx={{height: "500px"}}
+                  sx={{ height: "500px" }}
                 >
                   {!flip ? (
                     <img
@@ -631,4 +591,4 @@ const IDindividual = () => {
   );
 };
 
-export default IDindividual;
+export default EmployeeIDindividual;

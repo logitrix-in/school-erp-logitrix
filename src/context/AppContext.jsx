@@ -12,6 +12,7 @@ const AppContextProvider = ({ children }) => {
   const [days, setDays] = useState([]);
   const [roll, setRoll] = useState([]);
   const [role, setRole] = useState([]);
+  const [employeeRole, setEmployeeRole] = useState([]);
   const [nonCompliance, setNonCompliance] = useState([]);
   const [suspend, setSuspend] = useState([]);
   const [activeButton, setActiveButton] = useState("New Incident");
@@ -116,6 +117,11 @@ const AppContextProvider = ({ children }) => {
     setRole(generateRoles());
   }, []);
 
+  // assign Employee role
+  useEffect(() => {
+    setEmployeeRole(generateEmployeeRoles());
+  }, []);
+
   // non-compliance
   useEffect(() => {
     setNonCompliance(generateNonCompliance());
@@ -162,6 +168,10 @@ const AppContextProvider = ({ children }) => {
   // function to generate roles values
   const generateRoles = () => {
     return ["House Captain", "House Prefect", "Sports Club Secretary", "No"];
+  };
+
+  const generateEmployeeRoles = () => {
+    return ["House Coordinator", "High School Coordinator", "Dance club supervisor", "No"];
   };
 
   // function to generate non-compliance values
@@ -221,6 +231,8 @@ const AppContextProvider = ({ children }) => {
     setMediaCategory,
     mediaLanguage,
     setMediaLanguage,
+    employeeRole,
+    setEmployeeRole
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

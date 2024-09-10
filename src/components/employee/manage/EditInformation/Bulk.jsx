@@ -20,6 +20,7 @@ import useclasses from "../../../../hooks/useClasses";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
+import Popup from "../../../UiComponents/Popup";
 
 const Bulk = () => {
   // breakpoints
@@ -119,9 +120,8 @@ const Bulk = () => {
   // Function to handle the confirmation of submission
   const handleConfirmation = () => {
     try {
-      toast.success("Submitted Successfully", {
-        autoClose: 3000,
-      });
+      console.log("Submitted Successfully");
+      toast.success("Submitted Successfully");
     } catch (error) {
       console.error("Error while displaying toast:", error);
     }
@@ -137,16 +137,11 @@ const Bulk = () => {
 
   // table columns
   const columns = [
-    {
-      field: "space",
-      headerName: "",
-      width: isLaptop ? 70 : isLarge ? 100 : isSmall ? 60 : 70,
-    },
-    { field: "id", headerName: "Student ID", flex: 1 },
+    { field: "id", headerName: "Employee ID", flex: 1 },
     { field: "name", headerName: "Name", flex: 1 },
-    { field: "class", headerName: "Class", flex: 1 },
-    { field: "section", headerName: "Section", flex: 1 },
-    { field: "roll", headerName: "Roll #", flex: 1 },
+    { field: "emp_type", headerName: "Employee Type", flex: 1 },
+    { field: "department", headerName: "Department", flex: 1 },
+    { field: "grade", headerName: "Grade", flex: 1 },
     {
       field: "status",
       headerName: "Status",
@@ -158,8 +153,8 @@ const Bulk = () => {
               params.value === "Active"
                 ? "#C6F6D5"
                 : params.value === "Inactive"
-                ? "#FFCCCC"
-                : "transparent",
+                  ? "#FFCCCC"
+                  : "transparent",
             borderRadius: "6px",
             display: "inline-block",
             width:
@@ -170,8 +165,8 @@ const Bulk = () => {
               params.value === "Active"
                 ? "11px"
                 : params.value === "Inactive"
-                ? "7px"
-                : "0px",
+                  ? "7px"
+                  : "0px",
           }}
         >
           {params.value}
@@ -184,76 +179,36 @@ const Bulk = () => {
   const rows = [
     {
       id: "AG240001",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
       status: "Active",
     },
     {
       id: "AG240002",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      status: "Inactive",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
+      status: "Active",
     },
     {
       id: "AG240003",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
       status: "Active",
     },
     {
       id: "AG240004",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
       status: "Active",
-    },
-    {
-      id: "AG240005",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      status: "Inactive",
-    },
-    {
-      id: "AG240006",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      status: "Active",
-    },
-    {
-      id: "AG240007",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      status: "Active",
-    },
-    {
-      id: "AG240008",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      status: "Inactive",
-    },
-    {
-      id: "AG240009",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      status: "Inactive",
-    },
+    }
   ];
 
   return (
@@ -297,7 +252,7 @@ const Bulk = () => {
             >
               {/* class dropdown */}
               <FormControl style={{ width: "21%", marginRight: "30px" }}>
-                <InputLabel>Class</InputLabel>
+                <InputLabel>Employee Type</InputLabel>
                 <Select
                   placeholder="All"
                   multiple
@@ -340,7 +295,7 @@ const Bulk = () => {
 
               {/* section dropdown */}
               <FormControl style={{ width: "21%", marginRight: "30px" }}>
-                <InputLabel>Section</InputLabel>
+                <InputLabel>Department</InputLabel>
                 <Select
                   placeholder="All"
                   multiple
@@ -380,7 +335,7 @@ const Bulk = () => {
 
               {/* roll no dropdown */}
               <FormControl style={{ width: "21%" }}>
-                <InputLabel>Roll #</InputLabel>
+                <InputLabel>Grade</InputLabel>
                 <Select
                   placeholder="All"
                   multiple
@@ -448,7 +403,6 @@ const Bulk = () => {
               </Box>
             </Box>
 
-            <ToastContainer />
 
             {/* table */}
             <Box m={2} height={"100%"}>
@@ -513,9 +467,7 @@ const Bulk = () => {
               </Button>
 
               {/* Modal for confirmation */}
-              {showModal && (
-                <ConfirmationModal onConfirmation={handleConfirmation} />
-              )}
+              <ConfirmationModal showModal={showModal} setShowModal={setShowModal} handleConfirmation={handleConfirmation} />
             </>
           )}
         </Box>
@@ -550,54 +502,42 @@ const UploadArea = ({ setShowUploadArea, onDrop, onDragOver }) => {
       >
         Click / Drag & Drop to upload Excel
       </Typography>
-      <Button onClick={() => setShowUploadArea(false)}>Cancel</Button>
+      <Box display={'flex'} justifyContent={'center'} mt={2} gap={4}>
+        <Button color="primary" variant="contained">Browse</Button>
+        <Button color="primary" variant="outlined" onClick={() => setShowUploadArea(false)}>Cancel</Button>
+      </Box>
     </Box>
   );
 };
 
-const ConfirmationModal = ({ onConfirmation }) => {
+const ConfirmationModal = ({ showModal, setShowModal, handleConfirmation }) => {
   return (
-    <Box
-      style={{
-        position: "fixed",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        backgroundColor: "white",
-        padding: "20px",
-        border: "1px solid #000",
-        borderRadius: "7px",
-        zIndex: 9999,
-      }}
-    >
-      <Typography style={{ fontSize: "20px", fontWeight: "600" }}>
-        Are you sure you want to submit?
-      </Typography>
-      <Box
-        style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
-      >
-        <Button
-          variant="outlined"
-          color="primary"
-          style={{
-            color: "#000",
-            border: "1px solid #B0AEAE",
-            marginRight: "10px",
-          }}
-          onClick={() => onConfirmation()}
+    <Popup title={"Confirmation"} open={showModal} close={() => setShowModal(false)}>
+      <Box p={5} component={"form"} height={"20vh"} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+        <Typography style={{ fontSize: "20px", fontWeight: "500" }}>
+          Are you sure you want to submit?
+        </Typography>
+
+        <Box
+          style={{ display: "flex", justifyContent: "center", marginTop: "20px", gap: 16 }}
         >
-          Yes
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          style={{ color: "#000", border: "1px solid #B0AEAE" }}
-          onClick={() => onConfirmation(false)}
-        >
-          No
-        </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleConfirmation()}
+          >
+            Yes
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setShowModal(false)}
+          >
+            No
+          </Button>
+        </Box>
       </Box>
-    </Box>
+    </Popup >
   );
 };
 

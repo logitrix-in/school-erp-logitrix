@@ -30,7 +30,7 @@ const Individual = () => {
     {
       field: "radioButtons",
       headerName: "",
-      width: isLaptop ? 50 : isLarge ? 70 : isSmall ? 40 : isTablet ? 50 : 70,
+      flex: 0.2,
       renderCell: (params) => (
         <Radio
           checked={params.row.id === selectedRow}
@@ -46,21 +46,11 @@ const Individual = () => {
         />
       ),
     },
-    { field: "space", headerName: "", width: isLarge ? 80 : 50 },
-    {
-      field: "id",
-      headerName: "Student ID",
-      flex: 1,
-      renderCell: (params) => (
-        <Link underline="hover" color="primary">
-          {params.value}
-        </Link>
-      ),
-    },
+    { field: "id", headerName: "Employee ID", flex: 1 },
     { field: "name", headerName: "Name", flex: 1 },
-    { field: "class", headerName: "Class", flex: 1 },
-    { field: "section", headerName: "Section", flex: 1 },
-    { field: "roll", headerName: "Roll #", flex: 1 },
+    { field: "emp_type", headerName: "Employee Type", flex: 1 },
+    { field: "department", headerName: "Department", flex: 1 },
+    { field: "grade", headerName: "Grade", flex: 1 },
     {
       field: "status",
       headerName: "Status",
@@ -98,28 +88,36 @@ const Individual = () => {
   const rows = [
     {
       id: "AG240001",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
       status: "Active",
     },
     {
       id: "AG240002",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      status: "Inactive",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
+      status: "Active",
     },
     {
       id: "AG240003",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
       status: "Active",
     },
+    {
+      id: "AG240004",
+      name: "Saunav Ray",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
+      status: "Active",
+    }
   ];
 
   return (

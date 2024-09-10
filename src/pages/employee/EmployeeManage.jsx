@@ -2,6 +2,7 @@ import React from "react";
 import Individual from "../../components/employee/manage/EditInformation/Individual";
 import Bulk from "../../components/employee/manage/EditInformation/Bulk";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 // edit information page
 const EmployeeManage = () => {
@@ -122,9 +123,10 @@ const EmployeeManage = () => {
                 </div>
             </div>
 
+            <ToastContainer />
+
             {/* individual component */}
             <Individual />
-
             {/* bulk component */}
             <Bulk />
         </>

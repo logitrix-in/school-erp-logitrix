@@ -12,6 +12,8 @@ import {
   OutlinedInput,
   ListItemIcon,
   ListItemText,
+  Radio,
+  Link,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -31,9 +33,11 @@ import EventPass from "../../../../assets/cards/e-6.png";
 import LibraryCard from "../../../../assets/cards/l-6.png";
 import LibraryCardBack from "../../../../assets/cards/lb-6.png";
 import { DataGrid } from "@mui/x-data-grid";
+import { width } from "@mui/system";
 
 const IDbulk = () => {
   // breakpoints
+
   const isSmall = useMediaQuery("(max-width: 1364px)");
   const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
   const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
@@ -59,6 +63,7 @@ const IDbulk = () => {
   const [showPrompt, setShowPrompt] = useState(false);
   const [type, setType] = useState("all");
   const [selectedValue, setSelectedValue] = useState("");
+  const [selectedRow, setSelecetedRow] = useState(null);
 
   // context useEffect
   useEffect(() => {
@@ -153,92 +158,50 @@ const IDbulk = () => {
     setSelectedValue(event.target.value);
   };
 
-  // table columns
   const columns = [
-    { field: "space", headerName: "", width: isLarge ? 80 : 50 },
-    { field: "id", headerName: "Student ID", flex: 1 },
+    {
+      field: "id", headerName: "Employee ID", flex: 1,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
+    },
     { field: "name", headerName: "Name", flex: 1 },
-    { field: "class", headerName: "Class", flex: 1 },
-    { field: "section", headerName: "Section", flex: 1 },
-    { field: "roll", headerName: "Roll #", flex: 1 },
-    { field: "date", headerName: "Last Issue Date", flex: 1 },
+    { field: "emp_type", headerName: "Employee Type", flex: 1 },
+    { field: "department", headerName: "Department", flex: 1 },
+    { field: "grade", headerName: "Grade", flex: 1 },
+    { field: "last_issue_date", headerName: "Last Issue Date", flex: 1 },
   ];
 
   // table rows
   const rows = [
     {
       id: "AG240001",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: "B2",
+      last_issue_date: "20-Sep-2023",
     },
     {
       id: "AG240002",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: "B2",
+      last_issue_date: "20-Sep-2023",
     },
     {
       id: "AG240003",
-      class: "VI",
       name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
-    },
-    {
-      id: "AG240004",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
-    },
-    {
-      id: "AG240005",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
-    },
-    {
-      id: "AG240006",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
-    },
-    {
-      id: "AG240007",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
-    },
-    {
-      id: "AG240008",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
-    },
-    {
-      id: "AG240009",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      date: "20-Sep-2023",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: "B2",
+      last_issue_date: "20-Sep-2023",
     },
   ];
+
 
   const [flip, setFlip] = useState(false);
 
@@ -247,7 +210,7 @@ const IDbulk = () => {
       <ToastContainer />
 
       {/* Dropdown */}
-      <Box width={"500px"} mt={3} ml={3}>
+      {/* <Box width={"500px"} mt={3} ml={3}>
         <Select
           value={selectedValue}
           onChange={handleChange}
@@ -267,7 +230,7 @@ const IDbulk = () => {
           <MenuItem value={"Event Pass"}>Event Pass</MenuItem>
           <MenuItem value={"Guest Pass"}>Guest Pass</MenuItem>
         </Select>
-      </Box>
+      </Box> */}
 
       {/* Left drop-down section */}
       <Box
@@ -278,26 +241,15 @@ const IDbulk = () => {
         py={4}
         display="flex"
         flexDirection="row"
-        gap="1.6rem"
+        justifyContent={"space-between"}
+        gap={2}
         bgcolor="white"
       >
         {/* academic year dropdown */}
-        <FormControl
-          style={{
-            width: isLaptop
-              ? "15rem"
-              : isTablet
-              ? "13rem"
-              : isLarge
-              ? "25rem"
-              : isSmall
-              ? "22rem"
-              : "22rem",
-          }}
-        >
-          <InputLabel>Academic Year</InputLabel>
+        <FormControl style={{ width: '30%' }}>
+          <InputLabel>Employee Type</InputLabel>
           <Select
-            label="Academic Year"
+            label="Employee Type"
             value={acYear}
             onChange={(e) => setAcYear(e.target.value)}
           >
@@ -309,22 +261,11 @@ const IDbulk = () => {
         </FormControl>
 
         {/* class dropdown */}
-        <FormControl
-          style={{
-            width: isLaptop
-              ? "15rem"
-              : isTablet
-              ? "13rem"
-              : isLarge
-              ? "25rem"
-              : isSmall
-              ? "22rem"
-              : "22rem",
-          }}
+        <FormControl style={{ width: '30%' }}
         >
-          <InputLabel>Class</InputLabel>
+          <InputLabel>Department</InputLabel>
           <Select
-            placeholder="All"
+            placeholder="Department"
             multiple
             value={curClass}
             onChange={handleClassChange}
@@ -335,7 +276,7 @@ const IDbulk = () => {
                 },
               },
             }}
-            input={<OutlinedInput label="class" />}
+            input={<OutlinedInput label="Department" />}
             renderValue={(selected) =>
               selected.length == classes.length ? "All" : selected.join(", ")
             }
@@ -363,22 +304,11 @@ const IDbulk = () => {
         </FormControl>
 
         {/* section dropdown */}
-        <FormControl
-          style={{
-            width: isLaptop
-              ? "15rem"
-              : isTablet
-              ? "13rem"
-              : isLarge
-              ? "25rem"
-              : isSmall
-              ? "22rem"
-              : "22rem",
-          }}
+        <FormControl style={{ width: '30%' }}
         >
-          <InputLabel>Section</InputLabel>
+          <InputLabel>Grade</InputLabel>
           <Select
-            placeholder="All"
+            placeholder="Grade"
             multiple
             value={curSection}
             onChange={handleSectionChange}
@@ -414,63 +344,6 @@ const IDbulk = () => {
                   checked={curSection.indexOf(section) > -1}
                 />
                 <ListItemText primary={section} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        {/* roll dropdown */}
-        <FormControl
-          style={{
-            width: isLaptop
-              ? "15rem"
-              : isTablet
-              ? "13rem"
-              : isLarge
-              ? "25rem"
-              : isSmall
-              ? "22rem"
-              : "22rem",
-          }}
-        >
-          <InputLabel>Roll #</InputLabel>
-          <Select
-            placeholder="All"
-            multiple
-            value={curRole}
-            onChange={handlerollChange}
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  maxHeight: 300,
-                },
-              },
-            }}
-            input={<OutlinedInput label="Roll #" />}
-            renderValue={(selected) =>
-              selected.length === roll.length ? "All" : selected.join(", ")
-            }
-          >
-            {/* Select All option */}
-            <MenuItem value="all">
-              <ListItemIcon>
-                <Checkbox
-                  checked={curRole.length === roll.length}
-                  indeterminate={
-                    curRole.length > 0 && curRole.length < roll.length
-                  }
-                />
-              </ListItemIcon>
-              <ListItemText primary="Select All" />
-            </MenuItem>
-            {/* roll options */}
-            {roll.map((rollOption) => (
-              <MenuItem key={rollOption} value={rollOption}>
-                <Checkbox
-                  size="small"
-                  checked={curRole.indexOf(rollOption) > -1}
-                />
-                <ListItemText primary={rollOption} />
               </MenuItem>
             ))}
           </Select>
@@ -531,33 +404,21 @@ const IDbulk = () => {
         justifyContent="flex-end"
         marginRight={3}
         marginBottom={5}
+        gap={2}
       >
         {/* Issue button */}
         <Button
+          color="primary"
           variant="contained"
-          sx={{
-            backgroundColor: "#C4673B",
-            "&:hover": {
-              backgroundColor: "#A14E2C",
-              color: "white",
-            },
-          }}
           onClick={handleOpenPrompt}
         >
-          Issue
+          Issue ID Card
         </Button>
 
         {/* Print button */}
         <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#C4673B",
-            "&:hover": {
-              backgroundColor: "#A14E2C",
-              color: "white",
-            },
-            marginLeft: "20px",
-          }}
+          variant="outlined"
+          color="primary"
         >
           Print
         </Button>
@@ -613,99 +474,99 @@ const IDbulk = () => {
           {/* parent's card */}
           {selectedValue === "Parent's Card" && (
             <Box
-            onClick={() => {
-              setFlip(!flip);
-            }}
-          >
-            {!flip ? (
-              <img
-                src={GuardianCard}
-                alt="Guardian Card"
-                style={{
-                  width: "420px",
-                  height: "220px",
-                  display: "block",
-                  margin: "3rem",
-                }}
-              />
-            ) : (
-              <img
-                src={GuardianCardBack}
-                alt="Guardian Card Back"
-                style={{
-                  width: "420px",
-                  height: "220px",
-                  display: "block",
-                  margin: "3rem",
-                }}
-              />
-            )}
-          </Box>
+              onClick={() => {
+                setFlip(!flip);
+              }}
+            >
+              {!flip ? (
+                <img
+                  src={GuardianCard}
+                  alt="Guardian Card"
+                  style={{
+                    width: "420px",
+                    height: "220px",
+                    display: "block",
+                    margin: "3rem",
+                  }}
+                />
+              ) : (
+                <img
+                  src={GuardianCardBack}
+                  alt="Guardian Card Back"
+                  style={{
+                    width: "420px",
+                    height: "220px",
+                    display: "block",
+                    margin: "3rem",
+                  }}
+                />
+              )}
+            </Box>
           )}
           {/* guardian's card */}
           {selectedValue === "Local Guardian's Card" && (
             <Box
-            onClick={() => {
-              setFlip(!flip);
-            }}
-          >
-            {!flip ? (
-              <img
-                src={LocalGuardianCard}
-                alt="Local Guardian Card"
-                style={{
-                  width: "420px",
-                  height: "220px",
-                  display: "block",
-                  margin: "3rem",
-                }}
-              />
-            ) : (
-              <img
-                src={LocalGuardianCardBack}
-                alt="Local Guardian Card Back"
-                style={{
-                  width: "420px",
-                  height: "220px",
-                  display: "block",
-                  margin: "3rem",
-                }}
-              />
-            )}
-          </Box>
+              onClick={() => {
+                setFlip(!flip);
+              }}
+            >
+              {!flip ? (
+                <img
+                  src={LocalGuardianCard}
+                  alt="Local Guardian Card"
+                  style={{
+                    width: "420px",
+                    height: "220px",
+                    display: "block",
+                    margin: "3rem",
+                  }}
+                />
+              ) : (
+                <img
+                  src={LocalGuardianCardBack}
+                  alt="Local Guardian Card Back"
+                  style={{
+                    width: "420px",
+                    height: "220px",
+                    display: "block",
+                    margin: "3rem",
+                  }}
+                />
+              )}
+            </Box>
           )}
           {/* library card */}
           {selectedValue === "Library Card" && (
-           <Box
-           onClick={() => {
-             setFlip(!flip);
-           }}
-           sx={{height: "500px"}}
-         >
-           {!flip ? (
-             <img
-               src={LibraryCard}
-               alt="Library Card"
-               style={{
-                 width: "400px",
-                 height: "450px",
-                 display: "block",
-                 margin: "3rem",
-               }}
-             />
-           ) : (
-             <img
-               src={LibraryCardBack}
-               alt="Library Card Back"
-               style={{
-                 width: "400px",
-                 height: "450px",
-                 display: "block",
-                 margin: "3rem",
-               }}
-             />
-           )}
-         </Box>
+            <Box
+              onClick={() => {
+                setFlip(!flip);
+              }}
+              sx={{ height: "500px" }}
+            >
+              {!flip ? (
+                <img
+                  src={LibraryCard}
+                  alt="Library Card"
+                  style={{
+                    width: "400px",
+                    height: "450px",
+                    display: "block",
+                    margin: "3rem",
+                  }}
+                />
+              ) : (
+                <img
+                  src={LibraryCardBack}
+                  alt="Library Card Back"
+                  style={{
+                    width: "400px",
+                    height: "450px",
+                    display: "block",
+                    margin: "3rem",
+                  }}
+                />
+              )}
+            </Box>
           )}
           {/* event pass */}
           {selectedValue === "Event Pass" && (
