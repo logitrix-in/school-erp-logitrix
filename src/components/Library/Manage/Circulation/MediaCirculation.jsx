@@ -10,6 +10,10 @@ import {
 	IconButton,
 	Autocomplete,
 	Typography,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Flex from "../../../UiComponents/Flex";
@@ -19,18 +23,9 @@ import { Box, Stack } from "@mui/system";
 import { Icon } from "@iconify/react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { ToastContainer, toast } from "react-toastify";
+import api from '../../../../config/api'
 
-const columns = [
-	{ field: "id", headerName: "Library Card #", flex: 1 },
-	{ field: "mediaType", headerName: "Student Id", flex: 1 },
-	{ field: "studentName", headerName: "Student Name", flex: 2 },
-	{ field: "author", headerName: "Class", flex: 1 },
-	{ field: "note", headerName: "Section", flex: 1 },
-	{ field: "mediaId", headerName: "media IISN / ISBN / ID", flex: 2 },
-	{ field: "mediaName", headerName: "media Name", flex: 1 },
-	{ field: "dueDate", headerName: "Due Date", flex: 1 },
-	{ field: "penalty", headerName: "Penalty Due", flex: 1 },
-];
+const names = [];
 
 const issue_columns = [
 	{ field: "id", headerName: "Media ID", flex: 1 },
@@ -41,30 +36,83 @@ const issue_columns = [
 	{ field: "mediaId", headerName: "Notes", flex: 3 },
 ];
 
-const names = [];
-
 const MediaCirculation = () => {
 	const [returnState, setReturnState] = useState(false);
 	const [issueState, setIssueState] = useState(false);
 	const [renewOpen, setRenewOpen] = useState(false);
 	const [showRule, setShowRule] = useState(false);
+	const [libraryCardNumbers, setLibraryCardNumbers] = useState([]);
+	const [selectedLibraryCard, setSelectedLibraryCard] = useState(null);
+	const [rows, setRows] = useState([]);
+
+	// const studentColumns = [
+	// 	{ field: "id", headerName: "Library Card #", flex: 1 },
+	// 	{ field: "student_id", headerName: "Student ID", flex: 1 },
+	// 	// { field: "student_name", headerName: "Student Name", flex: 2 }, return hona chahiye
+	// 	{ field: "class", headerName: "Class", flex: 1 },
+	// 	{ field: "section", headerName: "Section", flex: 1 },
+	// 	{ field: "media_id", headerName: "media IISN / ISBN / ID", flex: 2 },
+	// 	// { field: "media_name", headerName: "media Name", flex: 1 }, return hona chahiye
+	// 	{ field: "penalty_due_date", headerName: "Due Date", flex: 1 },
+	// 	{ field: "penalty_due", headerName: "Penalty Due", flex: 1 },
+	// ];
+
+	const employeeColumns = [
+		{ field: "id", headerName: "Library Card #", flex: 1 },
+		{ field: "employee_id", headerName: "Employee ID", flex: 1 },
+		// { field: "employee_name", headerName: "Employee Name", flex: 2 },
+		{ field: "employee_type", headerName: "Employee Type", flex: 1 },
+		{ field: "department", headerName: "Department", flex: 1 },
+		{ field: "media_id", headerName: "media IISN / ISBN / ID", flex: 2 },
+		{ field: "media_name", headerName: "media Name", flex: 1 },
+		{ field: "penalty_due_date", headerName: "Due Date", flex: 1 },
+		{ field: "penalty_due", headerName: "Penalty Due", flex: 1 },
+	];
+
+	useEffect(() => {
+		async function fetchData() {
+			const response = await api.get('/library/library-cards/');
+			console.log(response.data);
+
+			const cardNumbersArray = response.data.map(item => item.card_number);
+			setLibraryCardNumbers(cardNumbersArray);
+		}
+
+		fetchData();
+
+	}, []);
+
+	async function getLibraryCardDetail(e) {
+		try {
+			setSelectedLibraryCard(e.target.value);
+			const response = await api.get(`/library/library-cards/?card_number=${e.target.value}`);
+			console.log(response.data);
+			setRows(response.data);
+		} catch (error) {
+			console.log(error);
+		} finally {
+			console.log('done');
+		}
+	}
 
 	return (
 		<Section title={"Media Circulation - Scan / Manual"}>
 			<Flex mb={2} justifyContent={'space-between'}>
-				<Autocomplete
-					options={names}
-					filterSelectedOptions
-					freeSolo={false}
-					renderInput={(params) => (
-						<TextField
-							{...params}
-							label="Enter Library Card #"
-							placeholder="Library Card #"
-						/>
-					)}
-					sx={{ width: "30%" }}
-				/>
+
+				<FormControl sx={{ width: '30%' }}>
+					<InputLabel>Enter Library Card #</InputLabel>
+					<Select
+						label="Enter Library Card #"
+						value={selectedLibraryCard}
+						onChange={(e) => getLibraryCardDetail(e)}
+					>
+						{
+							libraryCardNumbers.map((item, index) => (
+								<MenuItem key={index} value={item}>{item}</MenuItem>
+							))
+						}
+					</Select>
+				</FormControl>
 
 				<Button variant="contained" onClick={() => setShowRule(true)}>Set Rule</Button>
 			</Flex>
@@ -81,13 +129,12 @@ const MediaCirculation = () => {
 						children: [
 							{ field: "mediaName" },
 							{ field: "mediaId" },
-							{ field: "dueDate" },
 						],
 					},
 				]}
 				autoHeight
-				rows={[]}
-				columns={columns}
+				rows={rows}
+				columns={employeeColumns}
 			/>
 
 			<Flex justifyContent={"flex-end"} my={2}>

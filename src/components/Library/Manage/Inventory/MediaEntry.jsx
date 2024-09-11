@@ -113,12 +113,21 @@ const MediaEntry = () => {
 
 	const sendData = async () => {
 		const response = await api.post("/library/bulk-media/", {
-			media_list: row
+			media_list: selectedRows
 		});
-
-		const { data } = response;
-		console.log(data);
+		console.log(response.data);
 	}
+
+	const [selectedRows, setSelectedRows] = useState([]);
+
+	const handleSelectionChange = (newSelectionModel) => {
+		const selectedIDs = new Set(newSelectionModel);
+		const selectedRowData = row.filter((row) =>
+			selectedIDs.has(row.id)
+		);
+		setSelectedRows(selectedRowData);
+		console.log('Selected rows:', selectedRowData);
+	};
 
 	return (
 		<Section title={"Media Entry"}>
@@ -137,6 +146,8 @@ const MediaEntry = () => {
 						sx={{ "--DataGrid-overlayHeight": "100px" }}
 						rows={row}
 						columns={columns}
+						checkboxSelection
+						onRowSelectionModelChange={handleSelectionChange}
 					/>
 				</Box>
 			)}
@@ -189,26 +200,24 @@ const MediaEntry = () => {
 
 
 				{addToTable && (
-					<Button
-						variant="outlined"
-						onClick={() => {
+					<>
+						<Button sx={{ ml: "auto" }} variant="outlined" onClick={() => {
 							setScanType("manual");
 							setDialogOpen(true);
-						}}
-					>
-						Add Manual
-					</Button>
-				)}
-
-				{addToTable && (
-					<Button sx={{ ml: "auto" }} variant="contained" onClick={() => { sendData() }}>
-						Submit
-					</Button>
-				)}
-				{addToTable && (
-					<Button variant="contained" color="secondary" onClick={() => { setRow([]); setAddToTable(false) }}>
-						Delete
-					</Button>
+						}}>
+							Add Manual
+						</Button>
+						<Button variant="contained" onClick={() => { sendData() }}>
+							Submit
+						</Button>
+						<Button
+							variant="contained"
+							color="secondary"
+							onClick={() => { setRow([]); setAddToTable(false) }}
+						>
+							Delete
+						</Button>
+					</>
 				)}
 			</Flex>
 

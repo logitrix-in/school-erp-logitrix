@@ -83,7 +83,7 @@ const EmployeeManage = () => {
                             fontSize: "16px",
                             fontWeight: 400,
                         }}
-                        onClick={() => navigate("/employee/manage/promotion/")}
+                        onClick={() => navigate("/employee/manage/department/")}
                     >
                         Department
                     </button>
@@ -116,7 +116,7 @@ const EmployeeManage = () => {
                             fontSize: "16px",
                             fontWeight: 400,
                         }}
-                        onClick={() => navigate("/employee/manage/section-allotment/")}
+                        onClick={() => navigate("/employee/manage/probation/")}
                     >
                         Probation
                     </button>

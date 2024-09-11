@@ -12,41 +12,15 @@ import {
   OutlinedInput,
   ListItemIcon,
   ListItemText,
-  Radio,
   Link,
-  Dialog,
-  DialogActions,
-  DialogTitle,
 } from "@mui/material";
 import useClasses from "../../../../hooks/useClasses";
-import { useMediaQuery } from "@material-ui/core";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import IDCard from "../../../../assets/cards/id-6.png";
-import IDCardBack from "../../../../assets/cards/idb-6.png";
-import GuardianCard from "../../../../assets/cards/g-6.png";
-import GuardianCardBack from "../../../../assets/cards/gb-6.png";
-import LocalGuardianCard from "../../../../assets/cards/lg-6.png";
-import LocalGuardianCardBack from "../../../../assets/cards/lgb-6.png";
-import GuestPass from "../../../../assets/cards/gp-6.png";
-import EventPass from "../../../../assets/cards/e-6.png";
-import LibraryCard from "../../../../assets/cards/l-6.png";
-import LibraryCardBack from "../../../../assets/cards/lb-6.png";
 import { DataGrid } from "@mui/x-data-grid";
-import { width } from "@mui/system";
+import Preview from "./Preview";
 
 const IDbulk = () => {
-  // breakpoints
-
-  const isSmall = useMediaQuery("(max-width: 1364px)");
-  const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
-  const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-  const isDesktop = useMediaQuery(
-    "(min-width: 1707px) and (max-width: 1919px)"
-  );
-  const isLarge = useMediaQuery("(min-width: 1920px)");
-  const isXlarge = useMediaQuery("(min-width: 2560px)");
-
   // dropdowns states and variables
   const [filter, setFilter] = useState({});
 
@@ -64,6 +38,7 @@ const IDbulk = () => {
   const [type, setType] = useState("all");
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedRow, setSelecetedRow] = useState(null);
+  const [previewPopup, setPreviewPopup] = useState(null);
 
   // context useEffect
   useEffect(() => {
@@ -130,32 +105,6 @@ const IDbulk = () => {
 
     // Set the selected rolles
     setRoll(value);
-  };
-
-  // handle opening the prompt dialog
-  const handleOpenPrompt = () => {
-    setShowPrompt(true);
-  };
-
-  // handle closing the prompt dialog
-  const handleClosePrompt = () => {
-    setShowPrompt(false);
-  };
-
-  // handle notifying inactive users
-  const handleNotifyInactiveUsers = () => {
-    try {
-      toast.success(`Successfully ${selectedValue.toLowerCase()} issued`, {
-        autoClose: 3000,
-      });
-    } catch (error) {
-      console.error("Error while displaying toast:", error);
-    }
-    setShowPrompt(false);
-  };
-
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
   };
 
   const columns = [
@@ -410,7 +359,7 @@ const IDbulk = () => {
         <Button
           color="primary"
           variant="contained"
-          onClick={handleOpenPrompt}
+          onClick={() => { setPreviewPopup(true) }}
         >
           Issue ID Card
         </Button>
@@ -424,188 +373,9 @@ const IDbulk = () => {
         </Button>
       </Box>
 
+
       {/* Prompt dialog */}
-      <Dialog open={showPrompt} onClose={handleClosePrompt}>
-        <div
-          style={{
-            backgroundColor: "#3B98C4",
-            height: "15px",
-            width: "100%",
-          }}
-        />
-        <DialogTitle style={{ fontSize: "18px", fontWeight: "500" }}>
-          Are you sure you want to issue {selectedValue.toLowerCase()}?
-        </DialogTitle>
-
-        {/* Conditional rendering of card previews */}
-        <Box>
-          {/* id card */}
-          {selectedValue === "ID Card" && (
-            <Box
-              onClick={() => {
-                setFlip(!flip);
-              }}
-            >
-              {!flip ? (
-                <img
-                  src={IDCard}
-                  alt="ID Card"
-                  style={{
-                    width: "420px",
-                    height: "220px",
-                    display: "block",
-                    margin: "3rem",
-                  }}
-                />
-              ) : (
-                <img
-                  src={IDCardBack}
-                  alt="ID Card Back"
-                  style={{
-                    width: "420px",
-                    height: "220px",
-                    display: "block",
-                    margin: "3rem",
-                  }}
-                />
-              )}
-            </Box>
-          )}
-          {/* parent's card */}
-          {selectedValue === "Parent's Card" && (
-            <Box
-              onClick={() => {
-                setFlip(!flip);
-              }}
-            >
-              {!flip ? (
-                <img
-                  src={GuardianCard}
-                  alt="Guardian Card"
-                  style={{
-                    width: "420px",
-                    height: "220px",
-                    display: "block",
-                    margin: "3rem",
-                  }}
-                />
-              ) : (
-                <img
-                  src={GuardianCardBack}
-                  alt="Guardian Card Back"
-                  style={{
-                    width: "420px",
-                    height: "220px",
-                    display: "block",
-                    margin: "3rem",
-                  }}
-                />
-              )}
-            </Box>
-          )}
-          {/* guardian's card */}
-          {selectedValue === "Local Guardian's Card" && (
-            <Box
-              onClick={() => {
-                setFlip(!flip);
-              }}
-            >
-              {!flip ? (
-                <img
-                  src={LocalGuardianCard}
-                  alt="Local Guardian Card"
-                  style={{
-                    width: "420px",
-                    height: "220px",
-                    display: "block",
-                    margin: "3rem",
-                  }}
-                />
-              ) : (
-                <img
-                  src={LocalGuardianCardBack}
-                  alt="Local Guardian Card Back"
-                  style={{
-                    width: "420px",
-                    height: "220px",
-                    display: "block",
-                    margin: "3rem",
-                  }}
-                />
-              )}
-            </Box>
-          )}
-          {/* library card */}
-          {selectedValue === "Library Card" && (
-            <Box
-              onClick={() => {
-                setFlip(!flip);
-              }}
-              sx={{ height: "500px" }}
-            >
-              {!flip ? (
-                <img
-                  src={LibraryCard}
-                  alt="Library Card"
-                  style={{
-                    width: "400px",
-                    height: "450px",
-                    display: "block",
-                    margin: "3rem",
-                  }}
-                />
-              ) : (
-                <img
-                  src={LibraryCardBack}
-                  alt="Library Card Back"
-                  style={{
-                    width: "400px",
-                    height: "450px",
-                    display: "block",
-                    margin: "3rem",
-                  }}
-                />
-              )}
-            </Box>
-          )}
-          {/* event pass */}
-          {selectedValue === "Event Pass" && (
-            <img
-              src={EventPass}
-              alt="ID Card"
-              style={{
-                width: "420px",
-                height: "220px",
-                display: "block",
-                margin: "3rem",
-              }}
-            />
-          )}
-        </Box>
-
-        <DialogActions>
-          <Button
-            onClick={handleClosePrompt}
-            sx={{
-              color: "red",
-              fontWeight: "400",
-              "&:hover": {
-                backgroundColor: "#FFECEB",
-              },
-            }}
-          >
-            No
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleNotifyInactiveUsers}
-            color="primary"
-            autoFocus
-          >
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Preview open={previewPopup} close={() => setPreviewPopup(false)} />
     </RevealCard>
   );
 };
