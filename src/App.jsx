@@ -89,11 +89,9 @@ import EmployeeManage from "./pages/employee/EmployeeManage";
 
 import OnBoardingEditEmployee from "./components/employee/manage/EditInformation/OnBoardingEdit";
 import OnBoardingDetailsEmployee from "./components/employee/manage/EditInformation/OnBoardingDetails";
-import ManageStreamRequestEmployee from "./components/employee/manage/SectionAllotment/ManageStreamRequest";
-import ManageSystemRequestEmployee from "./components/employee/manage/SectionAllotment/ManageSystemRequest";
-import ReviewPromotionEmployee from "./components/employee/manage/SectionAllotment/ReviewPromotion";
 import EmployeeAccount from "./components/employee/manage/EmployeeAccount/EmployeeAccount";
 import EmployeeIDCardPass from "./components/employee/manage/EmployeeIDCardPass/EmployeeIDCardPass";
+import EmployeeDepartment from "./components/employee/manage/Department/Department";
 
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
 const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
@@ -426,29 +424,12 @@ function App() {
 						element={EmployeeIDCardPass}
 					/>
 					<Route
-						path="/employee/manage/section-allotment/"
-						element={SectionAllotment}
+						path="/employee/manage/department/"
+						element={EmployeeDepartment}
 					/>
 					<Route
 						path="/employee/manage/promotion/"
 						element={Promotion}
-					/>
-
-					<Route
-						path={
-							"/employee/manage/section-allotment/manage-stream-request"
-						}
-						element={<ManageStreamRequestEmployee />}
-					/>
-					<Route
-						path={
-							"/employee/manage/section-allotment/manage-stream-request/rationalise"
-						}
-						element={<ManageSystemRequestEmployee />}
-					/>
-					<Route
-						path="/employee/manage/promotion/review"
-						element={<ReviewPromotionEmployee />}
 					/>
 
 					<Route

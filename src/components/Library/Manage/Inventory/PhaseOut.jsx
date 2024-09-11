@@ -21,12 +21,12 @@ import Popup from "../../../UiComponents/Popup";
 import ReignsSelect from "../../../UiComponents/ReignsSelect";
 import { DataGrid } from "@mui/x-data-grid";
 import { Icon } from "@iconify/react";
-
+import api from '../../../../config/api';
 
 const columns = [
-	{ field: "id", headerName: "Media ID", flex: 1 },
-	{ field: "mediaType", headerName: "Media Type", flex: 1 },
-	{ field: "mediaName", headerName: "Media Name", flex: 2 },
+	{ field: "id", headerName: "Media ID", flex: 1, },
+	{ field: "media_type", headerName: "Media Type", flex: 1 },
+	{ field: "media_name", headerName: "Media Name", flex: 2 },
 	{ field: "author", headerName: "Author", flex: 1 },
 	{ field: "note", headerName: "Note", flex: 2 },
 ];
@@ -38,8 +38,65 @@ const PhaseOut = () => {
 	const closeEdit = () => setEditOpen(false);
 
 	const [scanType, setScanType] = useState("manual");
-
+	const [mediaIDs, setMediaIDs] = useState("");
 	const [addToTable, setAddToTable] = useState(false);
+	const [rows, setRows] = useState([]);
+
+	// MEDIA8, MEDIA9, MEDIA10
+
+	async function getMediaDetails() {
+		try {
+			const response = await api.post("/library/get-bulk-media/", {
+				media_list: mediaIDs.split(",").map((id) => id.trim()),
+			})
+			console.log(response);
+			setRows(response.data.map(row => ({ ...row, id: row.media_id })));
+
+			if (response.status === 200) {
+				toast.success("Media added to table");
+			} else {
+				toast.error("Media not found");
+			}
+		} catch (error) {
+			console.log(error);
+			toast.error("Media not found");
+		} finally {
+			close();
+			setAddToTable(true);
+		}
+	}
+
+	const [selectedRows, setSelectedRows] = useState([]);
+
+	const handleSelectionChange = (newSelectionModel) => {
+		const selectedIDs = new Set(newSelectionModel);
+		const selectedRowData = rows.filter((row) =>
+			selectedIDs.has(row.id)
+		);
+		setSelectedRows(selectedRowData);
+		console.log('Selected rows:', selectedRowData);
+	};
+
+	const handleDelete = async () => {
+		try {
+			const mediaIds = selectedRows.map(row => row.media_id);
+			console.log(mediaIds);
+
+			const response = await api.delete("/library/media/", {
+				media_list: mediaIds
+			});
+
+			if (response.status === 200) {
+				console.log(response.data);
+				setRows(rows.filter(row => !selectedRows.includes(row)));
+				toast.success("Media deleted successfully");
+			} else {
+				toast.error("Failed to delete media");
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<Section title={"Phase Out / Edit Media"}>
@@ -58,8 +115,10 @@ const PhaseOut = () => {
 							),
 						}}
 						sx={{ "--DataGrid-overlayHeight": "100px" }}
-						rows={[]}
+						rows={rows}
 						columns={columns}
+						checkboxSelection
+						onRowSelectionModelChange={handleSelectionChange}
 					/>
 				</Box>
 			)}
@@ -112,16 +171,17 @@ const PhaseOut = () => {
 
 				{addToTable && (
 					<>
-						<Button sx={{ ml: "auto" }} variant="contained">
+						<Button sx={{ ml: "auto" }} variant="contained" disabled={selectedRows.length !== 1}>
 							Add All Copies
 						</Button>
-						<Button variant="contained" color="secondary">
+						<Button variant="contained" color="secondary" disabled={selectedRows.length === 0} onClick={() => handleDelete()}>
 							Delete From Inventory
 						</Button>
 						<Button
 							variant="contained"
 							color="secondary"
 							onClick={() => setEditOpen(true)}
+							disabled={selectedRows.length !== 1}
 						>
 							Edit
 						</Button>
@@ -143,6 +203,8 @@ const PhaseOut = () => {
 							minRows={5}
 							label={"Media ID"}
 							placeholder="Enter Media ID (s) - Example ABCDE00000000, EFGHI1111111..."
+							value={mediaIDs}
+							onChange={(e) => setMediaIDs(event.target.value)}
 						/>
 					</Stack>
 					<Button
@@ -150,8 +212,7 @@ const PhaseOut = () => {
 						fullWidth
 						sx={{ mt: 4 }}
 						onClick={() => {
-							close();
-							setAddToTable(true);
+							getMediaDetails();
 						}}
 					>
 						Add To Table

@@ -40,6 +40,7 @@
     "framer-motion": "^10.15.1",
     "gridicons": "^1.0.0-alpha.4",
     "lodash.debounce": "^4.0.8",
+    "lucide-react": "^0.439.0",
     "material-ui-phone-number": "^3.0.0",
     "material-ui-scrollable-tabs": "^2.0.0",
     "prop-types": "^15.8.1",
