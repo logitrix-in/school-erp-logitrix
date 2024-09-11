@@ -7,6 +7,7 @@ import {
   Select,
   Typography,
   Button,
+  Link,
 } from "@mui/material";
 import axios from "axios";
 import RevealCard from "../../AnimationComponents/RevealCard";
@@ -15,6 +16,7 @@ import { useMediaQuery } from "@material-ui/core";
 import { DataGrid } from "@mui/x-data-grid";
 import Calendar from "react-calendar";
 import "./styles.css";
+import MonthCarousel from "./MonthCarousel";
 
 const StudentView = () => {
   // breakpoints
@@ -111,7 +113,16 @@ const StudentView = () => {
   // table columns
   const columns = [
     { field: "space", headerName: "", width: isLarge ? 80 : 50 },
-    { field: "id", headerName: "Student ID", flex: 1 },
+    {
+      field: "id",
+      headerName: "Student ID",
+      flex: 1,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
+    },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "class", headerName: "Class", flex: 1 },
     { field: "section", headerName: "Section", flex: 1 },
@@ -451,7 +462,7 @@ const StudentView = () => {
         </Box>
 
         {/* table 1 */}
-        <Box m={2} mb={5} height={"100%"}>
+        <Box m={2} mb={5}>
           <DataGrid
             rows={rows}
             columns={columns}
@@ -465,49 +476,10 @@ const StudentView = () => {
           />
         </Box>
 
-        {/* calendar */}
-        <Box m={2} mb={7}>
-          {/* row 1 */}
-          <Box
-            display={"flex"}
-            flexDirection={"row"}
-            gap={isLaptop ? 1.2 : isLarge ? 13.4 : isTablet ? 4.5 : 6.6}
-          >
-            <Calendar onChange={setValue} value={value} className="calendar" />
-            <Calendar onChange={setValue} value={value} className="calendar" />
-            <Calendar onChange={setValue} value={value} className="calendar" />
-            <Calendar onChange={setValue} value={value} className="calendar" />
-            {!isTablet && (
-              <Calendar
-                onChange={setValue}
-                value={value}
-                className="calendar"
-              />
-            )}
-          </Box>
-
-          {/* row 2 */}
-          <Box
-            mt={isLaptop ? 1.2 : 4}
-            display={"flex"}
-            flexDirection={"row"}
-            gap={isLaptop ? 1.2 : isLarge ? 13.4 : isTablet ? 4.5 : 6.6}
-          >
-            <Calendar onChange={setValue} value={value} className="calendar" />
-            <Calendar onChange={setValue} value={value} className="calendar" />
-            <Calendar onChange={setValue} value={value} className="calendar" />
-            <Calendar onChange={setValue} value={value} className="calendar" />
-            {!isTablet && (
-              <Calendar
-                onChange={setValue}
-                value={value}
-                className="calendar"
-              />
-            )}
-          </Box>
+        <Box sx={{ height: "350px" }}>
+          <MonthCarousel />
         </Box>
 
-        {/* table 2 */}
         <Box m={2} mb={5} height={"100%"}>
           <DataGrid
             rows={rows2}

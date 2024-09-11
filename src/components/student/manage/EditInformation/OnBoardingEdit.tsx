@@ -33,6 +33,7 @@ const OnBoardingEdit = () => {
   const navigate = useNavigate();
 
   const [confirmation, setConfirmation] = React.useState(false);
+  const [cancel, setCancel] = React.useState(false);
 
   const [formValues, setFormValues] = React.useState({
     profileImage: null,
@@ -157,14 +158,18 @@ const OnBoardingEdit = () => {
   };
 
   const handleClose = () => {
-    setConfirmation(false);
+   setCancel(true);
+  };
+
+  const handleYes = () => {
+    setCancel(false);
     toast.error("Edit Details Cancelled", {
       autoClose: 2000,
     });
     setTimeout(() => {
       navigate("/student/manage/OnBoardingDetails");
     }, 2000);
-  };
+  }
 
   return (
     <form>
@@ -1479,6 +1484,33 @@ const OnBoardingEdit = () => {
           <Button
             onClick={() => {
               handleSubmit();
+            }}
+            color="primary"
+            variant="contained"
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={cancel} onClose={() => setCancel(false)}>
+        <DialogTitle>
+          <Typography variant="h6">Confirmation</Typography>
+        </DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to discard the changes?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setCancel(false)}
+            color="primary"
+            variant="outlined"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleYes();
             }}
             color="primary"
             variant="contained"

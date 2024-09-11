@@ -6,10 +6,13 @@ import {
   Button,
   Typography,
   Radio,
+  Link,
+  IconButton
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useMediaQuery } from "@material-ui/core";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 
 const LLRRecords = () => {
   // breakpoints
@@ -36,6 +39,11 @@ const LLRRecords = () => {
       field: "id",
       headerName: "Student ID",
       width: isLaptop ? 100 : isLarge ? 140 : isTablet ? 140 : 120,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
     },
     {
       field: "name",
@@ -43,19 +51,16 @@ const LLRRecords = () => {
       width: isLaptop ? 100 : isLarge ? 140 : 120,
     },
     {
-      field: "class",
-      headerName: "Class",
-      width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 110 : 90,
-    },
-    {
-      field: "section",
-      headerName: "Section",
-      width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 120 : 90,
-    },
-    {
-      field: "roll",
-      headerName: "Roll #",
-      width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 110 : 90,
+      field: "details",
+      headerName: "Details",
+      width: isLaptop ? 100 : isLarge ? 150 : 110,
+      renderCell: (params) => (
+        <Box>
+          <Typography variant="body2">
+            {params.row.class}/{params.row.section}/{params.row.roll}
+          </Typography>
+        </Box>
+      ),
     },
     {
       field: "period",
@@ -68,8 +73,8 @@ const LLRRecords = () => {
       width: isLaptop ? 110 : isLarge ? 150 : 130,
     },
     {
-      field: "details",
-      headerName: "Details",
+      field: "description",
+      headerName: "Description",
       width: isLaptop ? 150 : isLarge ? 190 : 170,
     },
     {
@@ -80,23 +85,17 @@ const LLRRecords = () => {
         <Box
           style={{
             backgroundColor:
-              params.value === "Accepeted"
-                ? "#E8DEF8"
+              params.value === "Accepted"
+                ? "#c6f6d5"
                 : params.value === "Rejected"
-                ? "#FFCCCC"
+                ? "#fed7d7"
+                :params.value === "Pending"
+                ? "#feebcb"
                 : "transparent",
             borderRadius: "6px",
-            display: "inline-block",
-            width:
-              params.value === "Accepeted" || params.value === "Rejected"
-                ? "90px"
-                : "auto",
-            paddingLeft:
-              params.value === "Accepeted"
-                ? "11px"
-                : params.value === "Rejected"
-                ? "18px"
-                : "0px",
+            width: "90px",
+            display: "flex",
+            justifyContent: "center",
           }}
         >
           {params.value}
@@ -106,12 +105,16 @@ const LLRRecords = () => {
     {
       field: "comment",
       headerName: "Comment",
-      width: isLaptop ? 100 : isLarge ? 110 : isTablet ? 140 : 120,
+      width: isLaptop ? 150 : isLarge ? 110 : isTablet ? 140 : 120,
     },
     {
       field: "attachment",
-      headerName: "Attachment(s)",
-      width: isTablet ? 160 : 110,
+      headerName: (
+        <IconButton>
+          <AttachFileIcon />
+        </IconButton>
+      ),
+      width: isTablet ? 160 : 100,
     },
   ];
 
@@ -126,8 +129,8 @@ const LLRRecords = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
-      status: "Accepeted",
+      description: "Will undergo surgery...",
+      status: "Accepted",
       comment: "-",
       attachment: "",
     },
@@ -140,7 +143,7 @@ const LLRRecords = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+      description: "Will undergo surgery...",
       status: "Rejected",
       comment: "-",
       attachment: "",
@@ -154,7 +157,7 @@ const LLRRecords = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+      description: "Will undergo surgery...",
       status: "Pending",
       comment: "-",
       attachment: "",
@@ -168,8 +171,8 @@ const LLRRecords = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
-      status: "Accepeted",
+      description: "Will undergo surgery...",
+      status: "Accepted",
       comment: "-",
       attachment: "",
     },
@@ -182,8 +185,8 @@ const LLRRecords = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
-      status: "Accepeted",
+      description: "Will undergo surgery...",
+      status: "Accepted",
       comment: "-",
       attachment: "",
     },
@@ -196,8 +199,8 @@ const LLRRecords = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
-      status: "Accepeted",
+      description: "Will undergo surgery...",
+      status: "Accepted",
       comment: "-",
       attachment: "",
     },
@@ -210,8 +213,8 @@ const LLRRecords = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
-      status: "Accepeted",
+      description: "Will undergo surgery...",
+      status: "Accepted",
       comment: "-",
       attachment: "",
     },
@@ -224,8 +227,8 @@ const LLRRecords = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
-      status: "Accepeted",
+      description: "Will undergo surgery...",
+      status: "Accepted",
       comment: "-",
       attachment: "",
     },
@@ -238,8 +241,8 @@ const LLRRecords = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
-      status: "Accepeted",
+      description: "Will undergo surgery...",
+      status: "Accepted",
       comment: "-",
       attachment: "",
     },
@@ -252,8 +255,8 @@ const LLRRecords = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
-      status: "Accepeted",
+      description: "Will undergo surgery...",
+      status: "Accepted",
       comment: "-",
       attachment: "",
     },
@@ -266,8 +269,8 @@ const LLRRecords = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
-      status: "Accepeted",
+      description: "Will undergo surgery...",
+      status: "Accepted",
       comment: "-",
       attachment: "",
     },
@@ -291,18 +294,11 @@ const LLRRecords = () => {
             ),
           }}
         />
-
-        {/* search button */}
-        <Button variant="contained" style={{ marginLeft: "20px" }}>
-          Search
-        </Button>
       </Box>
 
       {/* Total number of results found */}
       <Box style={{ display: "flex", justifyContent: "flex-end" }}>
         <Box
-          mt={5}
-          // mr={3}
           style={{
             backgroundColor: "#E1EEFB",
             border: "1px solid #3381A5",
