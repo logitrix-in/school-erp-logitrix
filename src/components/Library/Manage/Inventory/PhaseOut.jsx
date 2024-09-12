@@ -4,24 +4,25 @@ import { toast, ToastContainer } from "react-toastify";
 import {
 	Box,
 	Button,
-	Dialog,
 	FormControl,
 	FormControlLabel,
 	FormLabel,
-	IconButton,
+	InputLabel,
+	Select,
 	Radio,
 	RadioGroup,
 	Stack,
+	MenuItem,
 	TextField,
 	Typography,
 	Divider
 } from "@mui/material";
 import Flex from "../../../UiComponents/Flex";
 import Popup from "../../../UiComponents/Popup";
-import ReignsSelect from "../../../UiComponents/ReignsSelect";
 import { DataGrid } from "@mui/x-data-grid";
 import { Icon } from "@iconify/react";
 import api from '../../../../config/api';
+import useMedia from "../../../../hooks/useMedia";
 
 const columns = [
 	{ field: "id", headerName: "Media ID", flex: 1, },
@@ -38,10 +39,19 @@ const PhaseOut = () => {
 	const closeEdit = () => setEditOpen(false);
 
 	const [scanType, setScanType] = useState("manual");
-	const [mediaIDs, setMediaIDs] = useState("");
 	const [addToTable, setAddToTable] = useState(false);
 	const [rows, setRows] = useState([]);
-
+	const [mediaIDs, setMediaIDs] = useState("");
+	const { mediaTypes, mediaCategories, mediaLanguages } = useMedia();
+	const [mediaId, setMediaId] = useState('');
+	const [mediaType, setMediaType] = useState('');
+	const [mediaName, setMediaName] = useState('');
+	const [author, setAuthor] = useState('');
+	const [publisher, setPublisher] = useState('');
+	const [mediaCategory, setMediaCategory] = useState('');
+	const [mediaLanguage, setMediaLanguage] = useState('');
+	const [edition, setEdition] = useState('');
+	const [note, setNote] = useState('');
 	// MEDIA8, MEDIA9, MEDIA10
 
 	async function getMediaDetails() {
@@ -50,9 +60,9 @@ const PhaseOut = () => {
 				media_list: mediaIDs.split(",").map((id) => id.trim()),
 			})
 			console.log(response);
-			setRows(response.data.map(row => ({ ...row, id: row.media_id })));
 
 			if (response.status === 200) {
+				setRows(response.data.map(row => ({ ...row, id: row.media_id })));
 				toast.success("Media added to table");
 			} else {
 				toast.error("Media not found");
@@ -79,10 +89,11 @@ const PhaseOut = () => {
 
 	const handleDelete = async () => {
 		try {
+			console.log(selectedRows);
 			const mediaIds = selectedRows.map(row => row.media_id);
 			console.log(mediaIds);
 
-			const response = await api.delete("/library/media/", {
+			const response = await api.delete("/library/bulk-media", {
 				media_list: mediaIds
 			});
 
@@ -97,6 +108,75 @@ const PhaseOut = () => {
 			console.log(error);
 		}
 	};
+
+	const handleEditButtonClick = () => {
+		setEditOpen(true);
+		setMediaId(selectedRows[0].media_id);
+		setMediaType(selectedRows[0].media_type);
+		setMediaName(selectedRows[0].media_name);
+		setMediaCategory(selectedRows[0].category);
+		setAuthor(selectedRows[0].author);
+		setPublisher(selectedRows[0].publisher);
+		setMediaLanguage(selectedRows[0].media_language);
+		setEdition(selectedRows[0].edition);
+		setNote(selectedRows[0].note);
+	};
+
+	const handleUpdate = async () => {
+		try {
+			const newRow = {
+				id: mediaId, // Media ID from the form
+				media_id: mediaId, // Media ID from the form
+				media_type: mediaType, // Selected media type from the form
+				media_name: mediaName, // Entered media name
+				category: mediaCategory, // Selected media category
+				author: author, // Entered author name
+				publisher: publisher, // Entered publisher
+				media_language: mediaLanguage, // Selected media language
+				edition: edition, // Entered edition
+				note: note, // Entered note (additional information)
+			};
+
+			console.log(newRow);
+
+			const response = await api.patch("/library/media/",
+				newRow
+			);
+
+			console.log(response.data)
+
+			if (response.status === 200) {
+				console.log(response.data);
+				toast.success("Media updated successfully");
+
+				setMediaId(response.data.media_id);
+				setMediaType(response.data.media_type);
+				setMediaName(response.data.media_name);
+				setMediaCategory(response.data.category);
+				setAuthor(response.data.author);
+				setPublisher(response.data.publisher);
+				setMediaLanguage(response.data.media_language);
+				setEdition(response.data.edition);
+				setNote(response.data.note);
+
+				// handleSelectionChange();
+				const resp = await api.post("/library/get-bulk-media/", {
+					media_list: mediaIDs.split(",").map((id) => id.trim()),
+				})
+				console.log(resp);
+
+				if (resp.status === 200) {
+					setRows(resp.data.map(row => ({ ...row, id: row.media_id })));
+				}
+			} else {
+				toast.error("Failed to update media");
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			closeEdit();
+		}
+	}
 
 	return (
 		<Section title={"Phase Out / Edit Media"}>
@@ -180,7 +260,7 @@ const PhaseOut = () => {
 						<Button
 							variant="contained"
 							color="secondary"
-							onClick={() => setEditOpen(true)}
+							onClick={() => handleEditButtonClick()}
 							disabled={selectedRows.length !== 1}
 						>
 							Edit
@@ -204,7 +284,7 @@ const PhaseOut = () => {
 							label={"Media ID"}
 							placeholder="Enter Media ID (s) - Example ABCDE00000000, EFGHI1111111..."
 							value={mediaIDs}
-							onChange={(e) => setMediaIDs(event.target.value)}
+							onChange={(e) => setMediaIDs(e.target.value)}
 						/>
 					</Stack>
 					<Button
@@ -224,43 +304,74 @@ const PhaseOut = () => {
 			<Popup title={"Media Details"} open={editOpen} close={closeEdit}>
 				<Box p={5} component={"form"} height={"80vh"} overflow={"auto"}>
 					<Stack gap={1}>
-						<Typography mb={2}>Media ID: </Typography>
-						<ReignsSelect
-							required
-							options={[]}
-							label="Enter Media Type"
-						/>
-						<ReignsSelect
-							required
-							options={[]}
-							label="Enter Media Name"
-						/>
-						<ReignsSelect
-							required
-							options={[]}
-							label="Enter Media Category"
-						/>
-						<TextField required label="Enter Author" />
-						<TextField required label="Publisher" />
-						<ReignsSelect
-							required
-							options={[]}
-							label="Enter Media Language"
-						/>
-						<TextField required label="Enter Edition" />
+						<Typography mb={2}>Media ID: {mediaId}</Typography>
+						<FormControl fullWidth>
+							<InputLabel>Enter Media Type</InputLabel>
+							<Select
+								label="Enter Media Type"
+								value={mediaType}
+								onChange={(e) => setMediaType(e.target.value)}
+							>
+								{
+									mediaTypes.map((type) => (
+										<MenuItem key={type} value={type}>{type}</MenuItem>
+									))
+								}
+							</Select>
+						</FormControl>
+						<TextField required label="Enter Media Name" value={mediaName}
+							onChange={(e) => setMediaName(e.target.value)} />
+						<FormControl fullWidth>
+							<InputLabel>Enter Media Category</InputLabel>
+							<Select
+								label="Enter Media Category"
+								value={mediaCategory}
+								onChange={(e) => setMediaCategory(e.target.value)}
+							>
+								{
+									mediaCategories.map((type) => (
+										<MenuItem key={type} value={type}>{type}</MenuItem>
+									))
+								}
+							</Select>
+						</FormControl>
+						<TextField required label="Enter Author" value={author}
+							onChange={(e) => setAuthor(e.target.value)} />
+						<TextField required label="Publisher" value={publisher}
+							onChange={(e) => setPublisher(e.target.value)} />
+						<FormControl fullWidth>
+							<InputLabel>Enter Media Language</InputLabel>
+							<Select
+								label="Enter Media Language"
+								value={mediaLanguage}
+								onChange={(e) => setMediaLanguage(e.target.value)}
+							>
+								{
+									mediaLanguages.map((type) => (
+										<MenuItem key={type} value={type}>{type}</MenuItem>
+									))
+								}
+							</Select>
+						</FormControl>
+						<TextField required label="Enter Edition" value={edition}
+							onChange={(e) => setEdition(e.target.value)} />
 						<TextField
 							multiline
 							minRows={5}
 							label={"Note"}
-							placeholder="Use this field to record issues specific to the media (Example wear and tear, spot
- marks, missing pages etc.)"
+							placeholder="Use this field to record issues specific to the media (Example wear and tear, spotmarks, missing pages etc.)"
+							items={note}
+							onChange={(e) => {
+								setNote(e.target.value);
+							}}
 						/>
 
-						<FormControl>
+						{/* <FormControl>
 							<FormLabel sx={{ display: "inline" }}>
-								Do you want more copies of the same media?
+								Do you want to add more copies of the same
+								media?
 							</FormLabel>
-							<RadioGroup row sx={{ display: "inline" }}>
+							<RadioGroup row sx={{ display: "inline" }} value={addMoreCopies} onChange={(e) => setAddMoreCopies(e.target.value)}>
 								<FormControlLabel
 									value="yes"
 									control={<Radio />}
@@ -272,14 +383,14 @@ const PhaseOut = () => {
 									label="No"
 								/>
 							</RadioGroup>
-						</FormControl>
+						</FormControl> */}
 					</Stack>
 					<Button
 						variant={"contained"}
 						fullWidth
 						sx={{ mt: 4 }}
 						onClick={() => {
-							closeEdit();
+							handleUpdate();
 						}}
 					>
 						Update
