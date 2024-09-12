@@ -8,6 +8,12 @@ import {
   IconButton,
   Avatar,
   AvatarGroup,
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Link
 } from "@mui/material";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
 import { Search } from "@mui/icons-material";
@@ -18,6 +24,12 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import EditIcon from "@mui/icons-material/Edit";
+import Frame from "../../../assets/icons/frame.png";
+import Invoice from "../../../assets/icons/invoice-dollar.png";
+import Suspend from "../../../assets/icons/suspend.png";
+import Profile from "../../../assets/icons/photo.png";
+import { DataGrid } from "@mui/x-data-grid";
 
 const ViewEditIncident = () => {
   const isSmall = useMediaQuery("(max-width: 1364px)");
@@ -33,11 +45,337 @@ const ViewEditIncident = () => {
 
   const [openId, setOpenId] = useState(null);
 
-  const handleToggle = (id) => {
-    setOpenId(openId === id ? null : id);
+  const columns = [
+    { field: "space", headerName: "", width: 50 },
+    {
+      field: "id",
+      headerName: "Student ID",
+      width: isLaptop ? 120 : isLarge ? 160 : 140,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      )
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      width: isLaptop ? 120 : isLarge ? 160 : 120,
+    },
+    {
+      field: "details",
+      headerName: "Details",
+      width: isLaptop ? 100 : isLarge ? 150 : 110,
+      renderCell: (params) => (
+        <Box>
+          <Typography variant="body2">
+            {params.row.class}/{params.row.section}/{params.row.roll}
+          </Typography>
+        </Box>
+      ),
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: isLaptop ? 100 : isLarge ? 150 : 110,
+      renderCell: (params) => (
+        <Box
+          style={{
+            backgroundColor:
+              params.value === "Active"
+                ? "#C6F6D5"
+                : params.value === "Inactive"
+                ? "#FFCCCC"
+                : "transparent",
+            borderRadius: "6px",
+            display: "inline-block",
+            width:
+              params.value === "Active" || params.value === "Inactive"
+                ? "60px"
+                : "auto",
+            paddingLeft:
+              params.value === "Active"
+                ? "11px"
+                : params.value === "Inactive"
+                ? "7px"
+                : "0px",
+          }}
+        >
+          {params.value}
+        </Box>
+      ),
+    },
+    {
+      field: "period",
+      headerName: "Last Suspension Period",
+      width: isLaptop ? 160 : isLarge ? 140 : 110,
+    },
+    {
+      field: "date",
+      headerName: "Date",
+      width: isLaptop ? 130 : isLarge ? 170 : 130,
+    },
+    { field: "amount", headerName: "Amount Due", width: isLaptop ? 100 : 120 },
+    {
+      field: "incidents",
+      headerName: "Incidents",
+      width: 300,
+      renderCell: (params) => (
+        <Box sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}>
+          {params.row.incidents.map((incident, index) => (
+            <Typography
+              key={index}
+              variant="body2"
+              sx={{
+                backgroundColor: "#e8def8",
+                color: "black",
+                padding: "2px 4px",
+                borderRadius: "4px",
+              }}
+            >
+              {incident}
+            </Typography>
+          ))}
+        </Box>
+      ),
+    },
+  ];
+
+  const rows = [
+    {
+      id: "AG240001",
+      name: "Saunav Ray",
+      class: "VI",
+      section: "A",
+      roll: "19",
+      status: "Active",
+      period: "N/A",
+      date: "20-Sep-2023",
+      incidents: ["#223344"],
+    },
+  ];
+
+  const [recentincidents, setRecentIncidents] = useState([
+    {
+      id: 0,
+      incidentNumber: "INC12345",
+      incidentDate: "2024-08-01",
+      status: "Cancelled",
+      startDate: "2024-07-30",
+      endDate: "2024-08-05",
+      lastActionedBy: {
+        profilePic: "path/to/profilePic1.jpg",
+        empId: "E123",
+        name: "John Doe",
+      },
+      comments: "Initial investigation is underway.",
+      involvedUsers: [
+        { name: "Alice", avatar: "path/to/aliceAvatar.jpg" },
+        { name: "Bob", avatar: "path/to/bobAvatar.jpg" },
+      ],
+    },
+    {
+      id: 1,
+      incidentNumber: "INC67890",
+      incidentDate: "2024-08-02",
+      status: "Cancelled",
+      startDate: "2024-07-31",
+      endDate: "2024-08-06",
+      lastActionedBy: {
+        profilePic: "path/to/profilePic2.jpg",
+        empId: "E124",
+        name: "Jane Smith",
+      },
+      comments: "Issue resolved and closed.",
+      involvedUsers: [
+        { name: "Charlie", avatar: "path/to/charlieAvatar.jpg" },
+        { name: "Dave", avatar: "path/to/daveAvatar.jpg" },
+      ],
+    },
+    {
+      id: 2,
+      incidentNumber: "INC67890",
+      incidentDate: "2024-08-02",
+      status: "Cancelled",
+      startDate: "2024-07-31",
+      endDate: "2024-08-06",
+      lastActionedBy: {
+        profilePic: "path/to/profilePic2.jpg",
+        empId: "E124",
+        name: "Jane Smith",
+      },
+      comments: "Issue resolved and closed.",
+      involvedUsers: [
+        { name: "Charlie", avatar: "path/to/charlieAvatar.jpg" },
+        { name: "Dave", avatar: "path/to/daveAvatar.jpg" },
+      ],
+    },
+    {
+      id: 3,
+      incidentNumber: "INC67890",
+      incidentDate: "2024-08-02",
+      status: "Cancelled",
+      startDate: "2024-07-31",
+      endDate: "2024-08-06",
+      lastActionedBy: {
+        profilePic: "path/to/profilePic2.jpg",
+        empId: "E124",
+        name: "Jane Smith",
+      },
+      comments: "Issue resolved and closed.",
+      involvedUsers: [
+        { name: "Charlie", avatar: "path/to/charlieAvatar.jpg" },
+        { name: "Dave", avatar: "path/to/daveAvatar.jpg" },
+      ],
+    },
+  ]);
+
+  const handleToggle1 = (id) => {
+    setRecentIncidents((prevCards) =>
+      prevCards.map((card) =>
+        card.id === id
+          ? { ...card, isOpen: !card.isOpen }
+          : { ...card, isOpen: false }
+      )
+    );
   };
 
-  const components = [1, 2, 3];
+  const [incidentsByAcademicYear, setIncidentsByAcademicYear] = useState([
+    {
+      academicYear: "2024-2025",
+      incidents: [
+        {
+          id: 0,
+          incidentNumber: "INC12345",
+          incidentDate: "2024-08-01",
+          status: "Cancelled",
+          startDate: "2024-07-30",
+          endDate: "2024-08-05",
+          lastActionedBy: {
+            profilePic: "path/to/profilePic1.jpg",
+            empId: "E123",
+            name: "John Doe",
+          },
+          comments: "Initial investigation is underway.",
+          involvedUsers: [
+            { name: "Alice", avatar: "path/to/aliceAvatar.jpg" },
+            { name: "Bob", avatar: "path/to/bobAvatar.jpg" },
+          ],
+        },
+        {
+          id: 1,
+          incidentNumber: "INC12345",
+          incidentDate: "2024-08-01",
+          status: "Cancelled",
+          startDate: "2024-07-30",
+          endDate: "2024-08-05",
+          lastActionedBy: {
+            profilePic: "path/to/profilePic1.jpg",
+            empId: "E123",
+            name: "John Doe",
+          },
+          comments: "Initial investigation is underway.",
+          involvedUsers: [
+            { name: "Alice", avatar: "path/to/aliceAvatar.jpg" },
+            { name: "Bob", avatar: "path/to/bobAvatar.jpg" },
+          ],
+        },
+      ],
+    },
+    {
+      academicYear: "2023-2024",
+      incidents: [
+        {
+          id: 0,
+          incidentNumber: "INC12345",
+          incidentDate: "2024-08-01",
+          status: "Cancelled",
+          startDate: "2024-07-30",
+          endDate: "2024-08-05",
+          lastActionedBy: {
+            profilePic: "path/to/profilePic1.jpg",
+            empId: "E123",
+            name: "John Doe",
+          },
+          comments: "Initial investigation is underway.",
+          involvedUsers: [
+            { name: "Alice", avatar: "path/to/aliceAvatar.jpg" },
+            { name: "Bob", avatar: "path/to/bobAvatar.jpg" },
+          ],
+        },
+        {
+          id: 1,
+          incidentNumber: "INC12345",
+          incidentDate: "2024-08-01",
+          status: "Cancelled",
+          startDate: "2024-07-30",
+          endDate: "2024-08-05",
+          lastActionedBy: {
+            profilePic: "path/to/profilePic1.jpg",
+            empId: "E123",
+            name: "John Doe",
+          },
+          comments: "Initial investigation is underway.",
+          involvedUsers: [
+            { name: "Alice", avatar: "path/to/aliceAvatar.jpg" },
+            { name: "Bob", avatar: "path/to/bobAvatar.jpg" },
+          ],
+        },
+      ],
+    },
+    {
+      academicYear: "2022-2023",
+      incidents: [],
+    },
+    {
+      academicYear: "2021-2022",
+      incidents: [],
+    },
+    {
+      academicYear: "2020-2021",
+      incidents: [],
+    },
+    {
+      academicYear: "2019-2020",
+      incidents: [],
+    },
+  ]);
+
+  const handleToggle2 = (id) => {
+    setIncidentsByAcademicYear((prevYears) =>
+      prevYears.map((year) => ({
+        ...year,
+        incidents: year.incidents.map((card) =>
+          card.id === id
+            ? { ...card, isOpen: !card.isOpen }
+            : { ...card, isOpen: false }
+        ),
+      }))
+    );
+  };
+
+  const [expandedYear, setExpandedYear] = useState(null);
+
+  const handleToggle3 = (year) => {
+    if (expandedYear === year) {
+      setExpandedYear(null);
+    } else {
+      setExpandedYear(year);
+    }
+  };
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const handleAvatarClick = (user) => {
+    setSelectedUser(user);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setSelectedUser(null);
+  };
 
   return (
     <RevealCard>
@@ -64,12 +402,52 @@ const ViewEditIncident = () => {
                 ),
               }}
             />
-
-            <Button variant="contained" style={{ marginLeft: "30px" }}>
-              Search
-            </Button>
           </Box>
         </Box>
+        <Box style={{ height: "100%", paddingBottom: "20px" }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+          />
+        </Box>
+
+        {incidentsByAcademicYear.map((year) => (
+          <Box key={year.academicYear}>
+            <Box>
+              <Typography
+                sx={{
+                  backgroundColor: "#ECEDED",
+                  margin: "10px",
+                  borderRadius: "6px",
+                  fontWeight: "700",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <IconButton onClick={() => handleToggle3(year.academicYear)}>
+                  {expandedYear ? <ArrowRightIcon /> : <ArrowDropDownIcon />}
+                </IconButton>
+                {year.academicYear}
+              </Typography>
+            </Box>
+            {expandedYear === year.academicYear && (
+              <Grid container spacing={2}>
+                {year.incidents.map((card) => (
+                  <Grid item xs={12} sm={6} md={4} key={card.id}>
+                    <DisplayCard {...card} onToggle={handleToggle2} />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
+          </Box>
+        ))}
+
         <Box
           display="flex"
           flexDirection="row"
@@ -89,23 +467,21 @@ const ViewEditIncident = () => {
           />
         </Box>
 
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingTop: "20px",
-          }}
-        >
-          {components.map((id) => (
-            <DisplayCard
-              key={id}
-              id={id}
-              isOpen={openId === id}
-              onToggle={handleToggle}
-            />
+        <Grid container spacing={2}>
+          {recentincidents.map((card) => (
+            <Grid item xs={12} sm={6} md={4} key={card.id}>
+              <DisplayCard
+                {...card}
+                onToggle={handleToggle1}
+                dialogOpen={dialogOpen}
+                selectedUser={selectedUser}
+                handleAvatarClick={handleAvatarClick}
+                handleCloseDialog={handleCloseDialog}
+              />
+            </Grid>
           ))}
-        </Box>
+        </Grid>
+
         <Box
           sx={{
             display: "flex",
@@ -113,6 +489,7 @@ const ViewEditIncident = () => {
             paddingTop: "20px",
             paddingRight: "20px",
             paddingBottom: "20px",
+            gap: "20px",
           }}
         >
           <IconButton sx={{ border: "0.5px solid black" }}>
@@ -127,15 +504,30 @@ const ViewEditIncident = () => {
   );
 };
 
-const DisplayCard = ({ id, isOpen, onToggle }) => {
+const DisplayCard = ({
+  id,
+  isOpen,
+  onToggle,
+  incidentNumber,
+  incidentDate,
+  status,
+  startDate,
+  endDate,
+  lastActionedBy,
+  comments,
+  involvedUsers,
+  dialogOpen,
+  selectedUser,
+  handleAvatarClick,
+  handleCloseDialog,
+}) => {
   return (
     <Box
       sx={{
         padding: "5px",
-        width: "380px",
+        width: "400px",
         display: "flex",
         flexDirection: "column",
-        height: "300px",
       }}
     >
       <Box
@@ -149,35 +541,67 @@ const DisplayCard = ({ id, isOpen, onToggle }) => {
           sx={{
             display: "flex",
             flexDirection: "row",
-            paddingX: "10px",
             paddingY: "1px",
             alignItems: "center",
             justifyContent: "space-between",
           }}
         >
           <Box
-            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              marginBottom: "20px",
+              marginTop: "10px",
+            }}
           >
-            <Typography sx={{ fontSize: "12px", paddingRight: "20px" }}>
-              Incident # : <span style={{ fontWeight: "700" }}>#112233</span>
-            </Typography>
-            <Typography sx={{ fontSize: "11px" }}>10 Jan 2024</Typography>
+            <img src={Frame} alt="frame" />
+            <Box
+              sx={{
+                position: "absolute",
+                paddingLeft: "10px",
+                display: "flex",
+                flexDirection: "row",
+                gap: "10px",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: "600",
+                  color: "white",
+                  fontSize: "13px",
+                }}
+              >
+                Incident#: {incidentNumber}
+              </Typography>
+              <Typography
+                sx={{
+                  fontWeight: "300",
+                  color: "white",
+                  fontSize: "11px",
+                }}
+              >
+                {incidentDate}
+              </Typography>
+            </Box>
           </Box>
-          <Box
-            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-          >
+
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Typography
               sx={{
                 fontSize: "12px",
-                padding: "5px",
+                paddingX: "5px",
                 backgroundColor: "#fed7d7",
                 borderRadius: "6px",
+                height: "20px",
               }}
             >
-              Cancelled
+              {status}
             </Typography>
-            <IconButton>
-              <MoreVertIcon />
+            <IconButton sx={{ marginRight: "5px" }}>
+              {isOpen ? <EditIcon /> : <MoreVertIcon />}
             </IconButton>
           </Box>
         </Box>
@@ -198,19 +622,24 @@ const DisplayCard = ({ id, isOpen, onToggle }) => {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
+              width: "100%",
             }}
           >
             <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <img src={Suspend} alt="suspend" />
               <Typography
                 sx={{
                   fontSize: "12px",
                   fontWeight: "700",
-                  paddingRight: "20px",
+                  paddingX: "10px",
                 }}
               >
-                11 Jan 2024 - 20 Jan 2024
+                {startDate} - {endDate}
               </Typography>
-              <Typography sx={{ fontSize: "11px" }}>10 Jan 2024</Typography>
+              <img src={Invoice} alt="invoice" />
+              <Typography sx={{ fontSize: "11px", paddingX: "10px" }}>
+                {incidentDate}
+              </Typography>
             </Box>
 
             <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -218,7 +647,7 @@ const DisplayCard = ({ id, isOpen, onToggle }) => {
                 onClick={() => {
                   onToggle(id);
                 }}
-                sx={{ marginLeft: "30px" }}
+                sx={{}}
               >
                 {isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
               </IconButton>
@@ -248,7 +677,7 @@ const DisplayCard = ({ id, isOpen, onToggle }) => {
                 >
                   Non-Compliance type
                 </Typography>
-                <Typography sx={{ fontSize: "11px", fontWeight: "700" }}>
+                <Typography sx={{ fontSize: "12px", fontWeight: "700" }}>
                   Loss or Damage of Property
                 </Typography>
               </Box>
@@ -281,7 +710,7 @@ const DisplayCard = ({ id, isOpen, onToggle }) => {
                   Last Actioned By
                 </Typography>
 
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                <Avatar alt="profile" src={lastActionedBy.profilePic} />
 
                 <Box
                   sx={{
@@ -291,9 +720,11 @@ const DisplayCard = ({ id, isOpen, onToggle }) => {
                   }}
                 >
                   <Typography sx={{ fontSize: "12px", fontWeight: "700" }}>
-                    EMP0021
+                    {lastActionedBy.empId}
                   </Typography>
-                  <Typography sx={{ fontSize: "11px" }}>Rohit Saha</Typography>
+                  <Typography sx={{ fontSize: "11px" }}>
+                    {lastActionedBy.name}
+                  </Typography>
                 </Box>
               </Box>
             </Box>
@@ -319,7 +750,20 @@ const DisplayCard = ({ id, isOpen, onToggle }) => {
                   Comments
                 </Typography>
 
-                <TextField variant="outlined" size="small" />
+                <Box
+                  sx={{
+                    border: "0.25px solid #cbc6c6",
+                    padding: "5px",
+                    borderRadius: "5px",
+                    height: "90px",
+                    overflowY: "scroll",
+                    scrollbarWidth: "none",
+                    fontSize: "11px",
+                    width: "280px",
+                  }}
+                >
+                  {comments}
+                </Box>
               </Box>
             </Box>
 
@@ -335,37 +779,45 @@ const DisplayCard = ({ id, isOpen, onToggle }) => {
             >
               <Box flexGrow={1} />
 
-              <AvatarGroup max={4}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="/static/images/avatar/1.jpg"
-                  sx={{ width: "30px", height: "30px" }}
-                />
-                <Avatar
-                  alt="Travis Howard"
-                  src="/static/images/avatar/2.jpg"
-                  sx={{ width: "30px", height: "30px" }}
-                />
-                <Avatar
-                  alt="Cindy Baker"
-                  src="/static/images/avatar/3.jpg"
-                  sx={{ width: "30px", height: "30px" }}
-                />
-                <Avatar
-                  alt="Agnes Walker"
-                  src="/static/images/avatar/4.jpg"
-                  sx={{ width: "30px", height: "30px" }}
-                />
-                <Avatar
-                  alt="Trevor Henderson"
-                  src="/static/images/avatar/5.jpg"
-                  sx={{ width: "30px", height: "30px" }}
-                />
-              </AvatarGroup>
+              <Button onClick={() => handleAvatarClick(user)}>
+                <Box>
+                  <AvatarGroup max={4}>
+                    {involvedUsers.map((user, index) => (
+                      <Avatar
+                        key={index}
+                        alt={user.name}
+                        src={user.avatar}
+                        sx={{ width: "30px", height: "30px" }}
+                      />
+                    ))}
+                  </AvatarGroup>
+                </Box>
+              </Button>
             </Box>
           </>
         )}
       </Box>
+
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>User Details</DialogTitle>
+        <DialogContent>
+          {selectedUser && (
+            <Box>
+              <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                Name: {selectedUser.name}
+              </Typography>
+              <Typography variant="body2">
+                Employee ID: {selectedUser.empId}
+              </Typography>
+            </Box>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

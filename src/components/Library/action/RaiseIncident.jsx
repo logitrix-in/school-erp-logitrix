@@ -13,6 +13,7 @@ import {
   Checkbox,
   Typography,
   ListItemText,
+  Link
 } from "@mui/material";
 import { useMediaQuery } from "@material-ui/core";
 import useClasses from "../../../hooks/useClasses";
@@ -191,7 +192,12 @@ const RaiseIncident = () => {
     {
       field: "id",
       headerName: "Student ID",
-      flex: 1
+      flex: 1,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      )
     },
     {
       field: "name",

@@ -42,24 +42,21 @@ const ActionRecords = () => {
       width: isLaptop ? 120 : isLarge ? 160 : 120,
     },
     {
-      field: "class",
-      headerName: "Class",
-      width: isLaptop ? 80 : isLarge ? 120 : 110,
-    },
-    {
-      field: "section",
-      headerName: "Section",
-      width: isLaptop ? 100 : isLarge ? 140 : 120,
-    },
-    {
-      field: "roll",
-      headerName: "Roll #",
-      width: isLaptop ? 90 : isLarge ? 130 : 110,
+      field: "details",
+      headerName: "Details",
+      width: isLaptop ? 100 : isLarge ? 150 : 110,
+      renderCell: (params) => (
+        <Box>
+          <Typography variant="body2">
+            {params.row.class}/{params.row.section}/{params.row.roll}
+          </Typography>
+        </Box>
+      ),
     },
     {
       field: "status",
       headerName: "Status",
-      width: isLaptop ? 110 : isLarge ? 150 : 110,
+      width: isLaptop ? 100 : isLarge ? 150 : 110,
       renderCell: (params) => (
         <Box
           style={{
@@ -89,15 +86,15 @@ const ActionRecords = () => {
     },
     {
       field: "period",
-      headerName: "Suspension Period",
-      width: isLaptop ? 100 : isLarge ? 140 : 110,
+      headerName: "Last Suspension Period",
+      width: isLaptop ? 160 : isLarge ? 140 : 110,
     },
     {
       field: "date",
       headerName: "Date",
       width: isLaptop ? 130 : isLarge ? 170 : 130,
     },
-    { field: "amount", headerName: "Amount", width: isLaptop ? 100 : 120 },
+    { field: "amount", headerName: "Amount Due", width: isLaptop ? 100 : 120 },
     {
       field: "incidents",
       headerName: "Incidents",
@@ -210,7 +207,7 @@ const ActionRecords = () => {
       status: "Active",
       period: "N/A",
       date: "20-Sep-2023",
-      incidents: ["#223344", "#223344", "#223344"],
+      incidents: ["#223344", "#223344"],
     },
     {
       id: "AG240009",
@@ -227,8 +224,8 @@ const ActionRecords = () => {
 
   return (
     <RevealCard>
-      <Box sx={{ padding: "50px", display: "flex", flexDirection: "column" }}>
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
+      <Box sx={{ padding: "20px", display: "flex", flexDirection: "column" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center"}}>
           <Box
             sx={{
               display: "flex",
@@ -286,7 +283,6 @@ const ActionRecords = () => {
 
             <ReignsSelect
               items={nonCompliance}
-              multiple
               label="Non Compliance"
             />
           </Box>
@@ -300,7 +296,6 @@ const ActionRecords = () => {
         <Box style={{ display: "flex", justifyContent: "flex-end" }}>
           <Box
             mt={8}
-            mr={3}
             style={{
               backgroundColor: "#E1EEFB",
               border: "1px solid #3381A5",

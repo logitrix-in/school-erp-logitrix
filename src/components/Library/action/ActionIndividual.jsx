@@ -14,6 +14,7 @@ import {
   ListItemIcon,
   Checkbox,
   ListItemText,
+  Link,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { useMediaQuery } from "@material-ui/core";
@@ -106,12 +107,18 @@ const ActionIndividual = () => {
       width: isLaptop
         ? 100
         : isLarge
-          ? 140
-          : isTablet
-            ? 140
-            : isSmall
-              ? 90
-              : 120,
+        ? 140
+        : isTablet
+        ? 140
+        : isSmall
+        ? 90
+        : 120,
+
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
     },
     {
       field: "name",
@@ -119,12 +126,12 @@ const ActionIndividual = () => {
       width: isLaptop
         ? 120
         : isLarge
-          ? 160
-          : isTablet
-            ? 120
-            : isSmall
-              ? 100
-              : 140,
+        ? 160
+        : isTablet
+        ? 120
+        : isSmall
+        ? 100
+        : 140,
     },
     {
       field: "class",
@@ -137,12 +144,12 @@ const ActionIndividual = () => {
       width: isLaptop
         ? 70
         : isLarge
-          ? 110
-          : isTablet
-            ? 120
-            : isSmall
-              ? 70
-              : 100,
+        ? 110
+        : isTablet
+        ? 120
+        : isSmall
+        ? 70
+        : 100,
     },
     {
       field: "roll",
@@ -155,12 +162,12 @@ const ActionIndividual = () => {
       width: isLaptop
         ? 100
         : isLarge
-          ? 140
-          : isTablet
-            ? 130
-            : isSmall
-              ? 110
-              : 120,
+        ? 140
+        : isTablet
+        ? 130
+        : isSmall
+        ? 110
+        : 120,
       renderCell: (params) => (
         <Box
           style={{
@@ -168,8 +175,8 @@ const ActionIndividual = () => {
               params.value === "Active"
                 ? "#C6F6D5"
                 : params.value === "Suspended"
-                  ? "#FFCCCC"
-                  : "transparent",
+                ? "#FFCCCC"
+                : "transparent",
             borderRadius: "6px",
             display: "inline-block",
             width:
@@ -180,14 +187,14 @@ const ActionIndividual = () => {
               params.value === "Active"
                 ? "7px"
                 : params.value === "Suspended"
-                  ? "7px"
-                  : "0px",
+                ? "7px"
+                : "0px",
             paddingRight:
               params.value === "Active"
                 ? "7px"
                 : params.value === "Suspended"
-                  ? "7px"
-                  : "0px",
+                ? "7px"
+                : "0px",
           }}
         >
           {params.value}
@@ -200,12 +207,12 @@ const ActionIndividual = () => {
       width: isLaptop
         ? 170
         : isLarge
-          ? 210
-          : isTablet
-            ? 220
-            : isSmall
-              ? 170
-              : 190,
+        ? 210
+        : isTablet
+        ? 220
+        : isSmall
+        ? 170
+        : 190,
     },
     {
       field: "date",
@@ -213,12 +220,12 @@ const ActionIndividual = () => {
       width: isLaptop
         ? 190
         : isLarge
-          ? 230
-          : isTablet
-            ? 250
-            : isSmall
-              ? 200
-              : 210,
+        ? 230
+        : isTablet
+        ? 250
+        : isSmall
+        ? 200
+        : 210,
     },
     {
       field: "amount",
@@ -330,7 +337,7 @@ const ActionIndividual = () => {
             },
           }}
           pageSizeOptions={[5, 10]}
-        // checkboxSelection
+          // checkboxSelection
         />
       </Box>
 
