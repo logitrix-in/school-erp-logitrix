@@ -92,6 +92,7 @@ import OnBoardingDetailsEmployee from "./components/employee/manage/EditInformat
 import EmployeeAccount from "./components/employee/manage/EmployeeAccount/EmployeeAccount";
 import EmployeeIDCardPass from "./components/employee/manage/EmployeeIDCardPass/EmployeeIDCardPass";
 import EmployeeDepartment from "./components/employee/manage/Department/Department";
+import EmployeeProbation from "./components/employee/manage/Probation/Probation";
 
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
 const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
@@ -430,6 +431,10 @@ function App() {
 					<Route
 						path="/employee/manage/promotion/"
 						element={Promotion}
+					/>
+					<Route
+						path="/employee/manage/probation/"
+						element={EmployeeProbation}
 					/>
 
 					<Route

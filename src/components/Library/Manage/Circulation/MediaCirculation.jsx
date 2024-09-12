@@ -43,7 +43,7 @@ const MediaCirculation = () => {
 	const [showRule, setShowRule] = useState(false);
 	const [libraryCardNumbers, setLibraryCardNumbers] = useState([]);
 	const [selectedLibraryCard, setSelectedLibraryCard] = useState(null);
-	const [rows, setRows] = useState([]);
+	const [employeeRows, setEmployeeRows] = useState([]);
 
 	// const studentColumns = [
 	// 	{ field: "id", headerName: "Library Card #", flex: 1 },
@@ -86,8 +86,15 @@ const MediaCirculation = () => {
 		try {
 			setSelectedLibraryCard(e.target.value);
 			const response = await api.get(`/library/library-cards/?card_number=${e.target.value}`);
-			console.log(response.data);
-			setRows(response.data);
+			// console.log(response.data);
+			console.log(employeeRows);
+
+			if (response.data[0].student === null) {
+				setEmployeeRows([{ id: response.data[0].card_number, employee_id: response.data[0].employee.employee_id, employee_type: response.data[0].employee.employee_type, department: response.data[0].employee.department, media_id: response.data[0].media_id, media_name: response.data[0].media_name, penalty_due_date: response.data[0].penalty_due_date === null ? null : response.data[0].penalty_due_date, penalty_due: response.data[0].penalty_due }]);
+			} else {
+				// employee
+				toast.error("Student Library Card is not supported yet");
+			}
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -133,7 +140,7 @@ const MediaCirculation = () => {
 					},
 				]}
 				autoHeight
-				rows={rows}
+				rows={employeeRows}
 				columns={employeeColumns}
 			/>
 
