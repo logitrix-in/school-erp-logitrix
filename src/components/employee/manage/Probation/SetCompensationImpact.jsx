@@ -113,7 +113,7 @@ const SetCompensationImpact = ({ open, close }) => {
                                 value={row.increment}
                                 onChange={(e) => handleChange(row.id, 'increment', e.target.value)}
                             />
-                            <Delete onClick={() => handleDeleteRow(row.id)} sx={{ cursor: 'pointer' }} />
+                            <Delete color="error" onClick={() => handleDeleteRow(row.id)} sx={{ cursor: 'pointer' }} />
                         </Box>
                     ))}
 

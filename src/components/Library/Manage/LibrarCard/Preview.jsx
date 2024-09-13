@@ -1,25 +1,16 @@
-import React from "react";
 import {
     Box,
     Button,
     Dialog,
-    TextField,
     IconButton,
     Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
-import { DatePicker } from "@mui/x-date-pickers";
 import ReactFlipCard from "reactjs-flip-card";
 import LibraryCard1Front from "@/assets/cards/lc.png";
 import LibraryCard1Back from "@/assets/cards/lcb.png";
 
-const Preview = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+const Preview = ({ open, close, handleIssueCard }) => {
 
     return (
         <Dialog
@@ -91,7 +82,7 @@ const Preview = ({ open, close }) => {
 
                     <Box marginY={1} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="primary" fullWidth onClick={() => {
-                            toast.success("Card Issued Successfully");
+                            handleIssueCard()
                             close();
                         }}>Yes</Button>
                         <Button variant="outlined" color="primary" fullWidth onClick={() => {

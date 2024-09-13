@@ -20,6 +20,7 @@ const Popup = ({
   children,
   close,
   title,
+  maxWidth="md",
   secondaryColor,
   ...rest
 }: Props) => {
@@ -31,7 +32,7 @@ const Popup = ({
           maxHeight: "100%",
         },
       }}
-      maxWidth="md"
+      maxWidth={maxWidth}
       open={open}
       onClose={() => close()}
       disableEnforceFocus={true}

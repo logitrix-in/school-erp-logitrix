@@ -56,23 +56,30 @@ const PhaseOut = () => {
 
 	async function getMediaDetails() {
 		try {
+			if (mediaIDs.trim() === "") {
+				toast.error("Please enter media ID(s)");
+				return;
+			}
+
 			const response = await api.post("/library/get-bulk-media/", {
 				media_list: mediaIDs.split(",").map((id) => id.trim()),
 			})
 			console.log(response);
 
 			if (response.status === 200) {
-				setRows(response.data.map(row => ({ ...row, id: row.media_id })));
-				toast.success("Media added to table");
+				setRows(prevRows => [
+					...prevRows,
+					...response.data.map(row => ({ ...row, id: row.media_id }))
+				]);
+				toast.success("Media Details Fetched");
+				close();
+				setAddToTable(true);
 			} else {
 				toast.error("Media not found");
 			}
 		} catch (error) {
 			console.log(error);
 			toast.error("Media not found");
-		} finally {
-			close();
-			setAddToTable(true);
 		}
 	}
 
@@ -94,10 +101,12 @@ const PhaseOut = () => {
 			console.log(mediaIds);
 
 			const response = await api.delete("/library/bulk-media", {
-				media_list: mediaIds
+				data: {
+					media_list: mediaIds
+				}
 			});
 
-			if (response.status === 200) {
+			if (response.status === 202) {
 				console.log(response.data);
 				setRows(rows.filter(row => !selectedRows.includes(row)));
 				toast.success("Media deleted successfully");
@@ -122,8 +131,34 @@ const PhaseOut = () => {
 		setNote(selectedRows[0].note);
 	};
 
+	const clearStates = () => {
+		setMediaIDs([]);
+		setMediaId('');
+		setMediaType('');
+		setMediaName('');
+		setAuthor('');
+		setPublisher('');
+		setMediaCategory('');
+		setMediaLanguage('');
+		setEdition('');
+		setNote('');
+	};
+
 	const handleUpdate = async () => {
 		try {
+
+			if (
+				mediaType.trim() === '' ||
+				mediaName.trim() === '' ||
+				mediaCategory.trim() === '' ||
+				author.trim() === '' ||
+				publisher.trim() === '' ||
+				mediaLanguage.trim() === ''
+			) {
+				toast.error("Please fill all the required fields to proceed");
+				return false; // Validation failed, return early
+			}
+
 			const newRow = {
 				id: mediaId, // Media ID from the form
 				media_id: mediaId, // Media ID from the form
@@ -149,6 +184,8 @@ const PhaseOut = () => {
 				console.log(response.data);
 				toast.success("Media updated successfully");
 
+				closeEdit();
+
 				setMediaId(response.data.media_id);
 				setMediaType(response.data.media_type);
 				setMediaName(response.data.media_name);
@@ -158,6 +195,23 @@ const PhaseOut = () => {
 				setMediaLanguage(response.data.media_language);
 				setEdition(response.data.edition);
 				setNote(response.data.note);
+
+				setSelectedRows(prevRows => {
+					const updatedRows = [...prevRows];
+					updatedRows[0] = {
+						...updatedRows[0],
+						media_id: mediaId,
+						media_type: mediaType,
+						media_name: mediaName,
+						category: mediaCategory,
+						author: author,
+						publisher: publisher,
+						media_language: mediaLanguage,
+						edition: edition,
+						note: note
+					};
+					return updatedRows;
+				});
 
 				// handleSelectionChange();
 				const resp = await api.post("/library/get-bulk-media/", {
@@ -173,8 +227,6 @@ const PhaseOut = () => {
 			}
 		} catch (error) {
 			console.log(error);
-		} finally {
-			closeEdit();
 		}
 	}
 
@@ -251,7 +303,14 @@ const PhaseOut = () => {
 
 				{addToTable && (
 					<>
-						<Button sx={{ ml: "auto" }} variant="contained" disabled={selectedRows.length !== 1}>
+						<Button sx={{ ml: "auto" }} variant="outlined" onClick={() => {
+							setScanType("manual");
+							setDialogOpen(true);
+							clearStates();
+						}}>
+							Add Manual
+						</Button>
+						<Button variant="contained" disabled={selectedRows.length !== 1}>
 							Add All Copies
 						</Button>
 						<Button variant="contained" color="secondary" disabled={selectedRows.length === 0} onClick={() => handleDelete()}>
