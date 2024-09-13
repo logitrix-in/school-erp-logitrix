@@ -22,6 +22,9 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Icon } from "@iconify/react";
 import useMedia from "../../../../hooks/useMedia";
 import api from "../../../../config/api"
+import { toast } from "react-toastify";
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { Delete } from "@mui/icons-material";
 
 const columns = [
 	{ field: "id", headerName: "Media ID", flex: 1 },
@@ -54,7 +57,25 @@ const MediaEntry = () => {
 
 	const [row, setRow] = useState([]);
 
+	const [rows, setRows] = useState([
+		{ id: 1, grade: 10, increment: '' },
+		{ id: 2, grade: 10, increment: '' },
+	]);
+
 	const handleAddToTable = () => {
+
+		if (
+			mediaType.trim() === '' ||
+			mediaName.trim() === '' ||
+			mediaCategory.trim() === '' ||
+			author.trim() === '' ||
+			publisher.trim() === '' ||
+			mediaLanguage.trim() === ''
+		) {
+			toast.error("Please fill all the required fields to proceed");
+			return false; // Validation failed, return early
+		}
+
 		const newRow = {
 			id: mediaId, // Media ID from the form
 			media_id: mediaId, // Media ID from the form
@@ -88,6 +109,14 @@ const MediaEntry = () => {
 	};
 
 	const handleAddMoreCopies = () => {
+		console.log(copiesInputValues);
+		const emptyFields = copiesInputValues.some(value => value.trim() === '');
+
+		if (emptyFields) {
+			toast.error("Please fill all the required fields to proceed");
+			return false;
+		}
+
 		const newRows = copiesInputValues.map((mediaId) => ({
 			id: mediaId, // Each media ID from the dynamic input
 			media_id: mediaId, // Each media ID from the dynamic input
@@ -112,10 +141,19 @@ const MediaEntry = () => {
 	}
 
 	const sendData = async () => {
-		const response = await api.post("/library/bulk-media/", {
-			media_list: selectedRows
-		});
-		console.log(response.data);
+		try {
+			const response = await api.post("/library/bulk-media/", {
+				media_list: selectedRows
+			});
+			console.log(response.data);
+
+			if (response.status === 201) {
+				toast.success("Data submitted successfully");
+			}
+		} catch (error) {
+			console.error(error.response.data.error);
+			toast.error(error.response.data.error);
+		}
 	}
 
 	const [selectedRows, setSelectedRows] = useState([]);
@@ -127,6 +165,37 @@ const MediaEntry = () => {
 		);
 		setSelectedRows(selectedRowData);
 		console.log('Selected rows:', selectedRowData);
+	};
+
+	const handleDeleteRow = (id) => {
+		const newInputValues = copiesInputValues.filter((_, index) => index !== id);
+		setCopiesInputValues(newInputValues);
+		setAddMoreCopiesNumber(prevNumber => String(Number(prevNumber) - 1));
+	};
+
+	const handleAddRow = () => {
+		setAddMoreCopiesNumber(prevNumber => String(Number(prevNumber) + 1));
+		setCopiesInputValues([...copiesInputValues, '']);
+	};
+
+	const handleDeleteChecked = () => {
+		const newRows = row.filter((row) => !selectedRows.includes(row));
+		setRow(newRows);
+	};
+
+	const clearStates = () => {
+		setMediaId('');
+		setMediaType('');
+		setMediaName('');
+		setAuthor('');
+		setPublisher('');
+		setMediaCategory('');
+		setMediaLanguage('');
+		setEdition('');
+		setNote('');
+		setAddMoreCopiesNumber('');
+		setAddMoreCopies('no');
+		setCopiesInputValues([]);
 	};
 
 	return (
@@ -190,6 +259,7 @@ const MediaEntry = () => {
 								onClick={() => {
 									setScanType("manual");
 									setDialogOpen(true);
+									clearStates();
 								}}
 							>
 								Manual
@@ -204,6 +274,7 @@ const MediaEntry = () => {
 						<Button sx={{ ml: "auto" }} variant="outlined" onClick={() => {
 							setScanType("manual");
 							setDialogOpen(true);
+							clearStates();
 						}}>
 							Add Manual
 						</Button>
@@ -213,7 +284,7 @@ const MediaEntry = () => {
 						<Button
 							variant="contained"
 							color="secondary"
-							onClick={() => { setRow([]); setAddToTable(false) }}
+							onClick={() => { handleDeleteChecked() }}
 						>
 							Delete
 						</Button>
@@ -221,9 +292,9 @@ const MediaEntry = () => {
 				)}
 			</Flex>
 
-			<Popup title={"Add More Copies"} open={showAddMoreCopiesPopup} close={() => setShowAddMoreCopiesPopup(false)}>
+			<Popup maxWidth="sm" title={"Add More Copies"} open={showAddMoreCopiesPopup} close={() => setShowAddMoreCopiesPopup(false)}>
 				{
-					showAddNumberPopup === true ? <Box p={5} component={"form"} height={"40vh"} overflow={"auto"}>
+					showAddNumberPopup === true ? <Box p={5} component={"form"} height={"25vh"} overflow={"auto"}>
 						<Stack gap={1}>
 							<FormControl fullWidth>
 								<TextField label="Enter Number of Copies" value={addMoreCopiesNumber}
@@ -238,30 +309,43 @@ const MediaEntry = () => {
 							fullWidth
 							sx={{ mt: 4 }}
 							onClick={() => {
+								if (addMoreCopiesNumber.trim() === '') {
+									toast.error("Please fill all the required fields to proceed");
+									return false; // Validation failed, return early
+								}
 								setShowAddNumberPopup(false)
 							}}
 						>
 							Proceed
 						</Button>
 					</Box> :
-						<Box p={5} component={"form"} height={"80vh"} overflow={"auto"}>
-							<Stack gap={1}>
-								{[...Array(Number(addMoreCopiesNumber))].map((_, index) => (
-									<FormControl fullWidth key={index}>
-										<TextField
-											label={`media ID ${index + 1}`}
-											value={copiesInputValues[index] || ""}
-											onChange={(e) => handleInputChange(index, e.target.value)}
-										/>
-									</FormControl>
-								))}
-							</Stack>
+						<Box p={4} component={"form"} height={"70vh"} overflow={"auto"}>
+							{[...Array(Number(addMoreCopiesNumber))].map((_, index) => (
+								<Box key={row.id} display="flex" alignItems="center" gap={4} mt={4}>
+									<TextField
+										label={`Media ID ${index + 1}`}
+										value={copiesInputValues[index] || ""}
+										onChange={(e) => handleInputChange(index, e.target.value)}
+										fullWidth
+									/>
+									<Delete color="error" onClick={() => handleDeleteRow(row.id)} sx={{ cursor: 'pointer' }} />
+								</Box>
+							))}
+
+							<Button
+								variant="contained"
+								color="primary"
+								sx={{ mt: 2 }}
+								onClick={handleAddRow}
+							>
+								<AddCircleOutlineOutlinedIcon sx={{ mr: 1 }} />
+								Add New
+							</Button>
 							<Button
 								variant={"contained"}
 								fullWidth
 								sx={{ mt: 4 }}
 								onClick={() => {
-									console.log(copiesInputValues); // You can handle the collected input values here
 									handleAddMoreCopies();
 								}}
 							>
@@ -286,6 +370,7 @@ const MediaEntry = () => {
 							<Select
 								label="Enter Media Type"
 								value={mediaType}
+								required
 								onChange={(e) => setMediaType(e.target.value)}
 							>
 								{
@@ -302,6 +387,7 @@ const MediaEntry = () => {
 							<Select
 								label="Enter Media Category"
 								value={mediaCategory}
+								required
 								onChange={(e) => setMediaCategory(e.target.value)}
 							>
 								{
@@ -320,6 +406,7 @@ const MediaEntry = () => {
 							<Select
 								label="Enter Media Language"
 								value={mediaLanguage}
+								required
 								onChange={(e) => setMediaLanguage(e.target.value)}
 							>
 								{
@@ -329,7 +416,7 @@ const MediaEntry = () => {
 								}
 							</Select>
 						</FormControl>
-						<TextField required label="Enter Edition" value={edition}
+						<TextField label="Enter Edition" value={edition}
 							onChange={(e) => setEdition(e.target.value)} />
 						<TextField
 							multiline

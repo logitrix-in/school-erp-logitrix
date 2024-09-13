@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import api from "../config/api";
 
 export const AppContext = createContext();
@@ -38,7 +38,7 @@ const AppContextProvider = ({ children }) => {
   }, []);
 
   function generateMediaTypes() {
-    return ["Books", "Periodicals", "Research Papers"];
+    return ["Book", "Periodical", "Research Paper"];
   }
 
   useEffect(() => {
@@ -85,7 +85,8 @@ const AppContextProvider = ({ children }) => {
       "Accountancy",
       "Business Studies",
       "Fiction",
-      "Non-fiction"
+      "Non-fiction",
+      "Others"
     ];
   }
 

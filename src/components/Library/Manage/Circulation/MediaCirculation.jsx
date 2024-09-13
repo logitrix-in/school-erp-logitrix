@@ -13,6 +13,7 @@ import {
 	FormControl,
 	InputLabel,
 	Select,
+	Radio,
 	MenuItem,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -22,7 +23,7 @@ import Popup from "../../../UiComponents/Popup";
 import { Box, Stack } from "@mui/system";
 import { Icon } from "@iconify/react";
 import { DatePicker } from "@mui/x-date-pickers";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import api from '../../../../config/api'
 
 const names = [];
@@ -43,7 +44,13 @@ const MediaCirculation = () => {
 	const [showRule, setShowRule] = useState(false);
 	const [libraryCardNumbers, setLibraryCardNumbers] = useState([]);
 	const [selectedLibraryCard, setSelectedLibraryCard] = useState(null);
+	const [issueMediaID, setIssueMediaID] = useState(null);
+	const [revisedData, setRevisedData] = useState({
+		note: null,
+		revisedReturnDate: null,
+	});
 	const [employeeRows, setEmployeeRows] = useState([]);
+
 
 	// const studentColumns = [
 	// 	{ field: "id", headerName: "Library Card #", flex: 1 },
@@ -57,8 +64,27 @@ const MediaCirculation = () => {
 	// 	{ field: "penalty_due", headerName: "Penalty Due", flex: 1 },
 	// ];
 
+	const [selectedRow, setSelectedRow] = useState(null);
+
 	const employeeColumns = [
-		{ field: "id", headerName: "Library Card #", flex: 1 },
+		{
+			field: "radioButtons",
+			headerName: "",
+			flex: 0.5,
+			renderCell: (params) => (
+				<Radio
+					checked={params.row.id === selectedRow}
+					color="primary"
+					sx={{
+						transform: "scale(0.6)",
+					}}
+					inputProps={{ "aria-label": params.row.id }}
+					onChange={() => { setSelectedRow(params.row.id); console.log(selectedRow) }}
+					onClick={(event) => event.stopPropagation()}
+				/>
+			),
+		},
+		{ field: "library_card_number", headerName: "Library Card #", flex: 1 },
 		{ field: "employee_id", headerName: "Employee ID", flex: 1 },
 		// { field: "employee_name", headerName: "Employee Name", flex: 2 },
 		{ field: "employee_type", headerName: "Employee Type", flex: 1 },
@@ -79,27 +105,145 @@ const MediaCirculation = () => {
 		}
 
 		fetchData();
-
 	}, []);
 
 	async function getLibraryCardDetail(e) {
 		try {
+			setEmployeeRows([]);
 			setSelectedLibraryCard(e.target.value);
-			const response = await api.get(`/library/library-cards/?card_number=${e.target.value}`);
-			// console.log(response.data);
+			const response = await api.get(`/library/media-issue/?card_number=${e.target.value}`);
+			console.log(response.data);
 			console.log(employeeRows);
 
-			if (response.data[0].student === null) {
-				setEmployeeRows([{ id: response.data[0].card_number, employee_id: response.data[0].employee.employee_id, employee_type: response.data[0].employee.employee_type, department: response.data[0].employee.department, media_id: response.data[0].media_id, media_name: response.data[0].media_name, penalty_due_date: response.data[0].penalty_due_date === null ? null : response.data[0].penalty_due_date, penalty_due: response.data[0].penalty_due }]);
-			} else {
-				// employee
-				toast.error("Student Library Card is not supported yet");
+			const newRows = response.data.map(media => ({
+				id: media.media_id,
+				library_card_number: e.target.value,
+				employee_id: media.current_borrower.issued_by,
+				employee_type: media.current_borrower.employee.employee_type,
+				department: media.current_borrower.employee.department,
+				media_id: media.media_id,
+				media_name: media.media_name,
+				penalty_due_date: media.current_borrower.penalty_due_date === null ? 'null' : media.current_borrower.penalty_due_date,
+				penalty_due: media.current_borrower.penalty_due
+			}));
+
+			console.log(newRows);
+			setEmployeeRows(newRows);
+			console.log(employeeRows);
+
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	async function handleIssue() {
+		try {
+			const response = await api.post('/library/media-issue/', {
+				card_number: selectedLibraryCard,
+				media_id: issueMediaID,
+				submission_date: getTodaysDate(),
+				action: "issue"
+			});
+
+			console.log(response.data);
+			if (response.status === 200) {
+				setIssueState(false);
+				toast.success("Media Issued Successfully");
+
+				setEmployeeRows([]);
+				const response = await api.get(`/library/media-issue/?card_number=${selectedLibraryCard}`);
+				console.log(response.data);
+				console.log(employeeRows);
+
+				const newRows = response.data.map(media => ({
+					id: media.media_id,
+					library_card_number: selectedLibraryCard,
+					employee_id: media.current_borrower.issued_by,
+					employee_type: media.current_borrower.employee.employee_type,
+					department: media.current_borrower.employee.department,
+					media_id: media.media_id,
+					media_name: media.media_name,
+					penalty_due_date: media.current_borrower.penalty_due_date === null ? 'null' : media.current_borrower.penalty_due_date,
+					penalty_due: media.current_borrower.penalty_due
+				}));
+
+				console.log(newRows);
+				setEmployeeRows(newRows);
+				console.log(employeeRows);
 			}
 		} catch (error) {
 			console.log(error);
-		} finally {
-			console.log('done');
+			toast.error("Failed to Issue Media");
 		}
+	}
+
+	async function handleRenew() {
+		try {
+			const response = await api.post('/library/media-issue/', {
+				card_number: selectedLibraryCard,
+				media_id: selectedRow,
+				submission_date: getTodaysDate(),
+				action: "renew"
+			});
+
+			console.log(response.data);
+			if (response.status === 200) {
+				toast.success("Media Renewed Successfully");
+				setRenewOpen(false)
+			}
+		} catch (error) {
+			console.log(error);
+			toast.error("Failed to Renew Media");
+		}
+	}
+
+	async function handleReturn() {
+		try {
+			const response = await api.post('/library/media-issue/', {
+				card_number: selectedLibraryCard,
+				media_id: selectedRow,
+				action: "return"
+			});
+
+			console.log(response.data);
+			if (response.status === 200) {
+				setReturnState("auth-success");
+				setRenewOpen(false)
+
+				setEmployeeRows([]);
+				const response = await api.get(`/library/media-issue/?card_number=${selectedLibraryCard}`);
+				console.log(response.data);
+				console.log(employeeRows);
+
+				const newRows = response.data.map(media => ({
+					id: media.media_id,
+					library_card_number: selectedLibraryCard,
+					employee_id: media.current_borrower.issued_by,
+					employee_type: media.current_borrower.employee.employee_type,
+					department: media.current_borrower.employee.department,
+					media_id: media.media_id,
+					media_name: media.media_name,
+					penalty_due_date: media.current_borrower.penalty_due_date === null ? 'null' : media.current_borrower.penalty_due_date,
+					penalty_due: media.current_borrower.penalty_due
+				}));
+
+				console.log(newRows);
+				setEmployeeRows(newRows);
+				console.log(employeeRows);
+			}
+		} catch (error) {
+			console.log(error);
+			toast.error("Failed to Return Media");
+		}
+	}
+
+	function getTodaysDate() {
+		const today = new Date();
+		const year = today.getFullYear();
+		const month = String(today.getMonth() + 1).padStart(2, '0');
+		const day = String(today.getDate()).padStart(2, '0');
+
+		return `${year}-${month}-${day}`;
 	}
 
 	return (
@@ -142,22 +286,30 @@ const MediaCirculation = () => {
 				autoHeight
 				rows={employeeRows}
 				columns={employeeColumns}
+				disableRowSelectionOnClick
+				disableColumnSelector
+				isRowSelectable={() => false}
 			/>
 
 			<Flex justifyContent={"flex-end"} my={2}>
 				<Button
 					variant="contained"
 					onClick={() => setIssueState("scan-auto")}
+					disabled={!selectedLibraryCard}
 				>
 					New Issue
 				</Button>
-				<Button variant="outlined" onClick={() => setRenewOpen(true)}>
+				<Button variant="outlined" onClick={() => setRenewOpen(true)
+				}
+					disabled={!selectedLibraryCard || !selectedRow}
+				>
 					Renew
 				</Button>
 				<Button
 					variant="contained"
 					color={"secondary"}
-					onClick={() => setReturnState("scan-auto")}
+					onClick={() => handleReturn()}
+					disabled={!selectedLibraryCard}
 				>
 					Return
 				</Button>
@@ -169,7 +321,7 @@ const MediaCirculation = () => {
 				maxWidth="sm"
 				close={() => setReturnState(null)}
 			>
-				{returnState == "scan-auto" && (
+				{/* {returnState == "scan-auto" && (
 					<>
 						<Flex justifyContent={"center"}>
 							<Box display={'flex'} flexDirection={'column'} alignItems={'center'} margin={'auto'}>
@@ -224,7 +376,7 @@ const MediaCirculation = () => {
 								variant={"contained"}
 								fullWidth
 								onClick={() => {
-									setReturnState("auth-success");
+									handleReturn();
 								}}
 							>
 								Submit
@@ -259,7 +411,7 @@ const MediaCirculation = () => {
 							<Typography>Scan media ID to Authenticate...</Typography>
 						</Stack>
 					</>
-				)}
+				)} */}
 				{returnState == "auth-success" && (
 					<>
 						<Stack
@@ -284,7 +436,8 @@ const MediaCirculation = () => {
 							<Button
 								variant={"contained"}
 								onClick={() => {
-									setReturnState("auth-delayed-return");
+									setReturnState(false);
+									// setReturnState("auth-delayed-return");
 								}}
 							>
 								Done
@@ -359,10 +512,10 @@ const MediaCirculation = () => {
 
 			{/* issue popup */}
 			<Popup
+				open={issueState}
 				title={"Scan"}
 				maxWidth="sm"
-				open={issueState == "scan-auto"}
-				close={() => { setIssueState("close") }}
+				close={() => { setIssueState(null) }}
 			>
 				{issueState == "scan-auto" && (
 					<>
@@ -414,12 +567,13 @@ const MediaCirculation = () => {
 							height={"10rem"}
 							mx={10}
 						>
-							<TextField label={"Media ID"} />
+							<TextField label={"Media ID"} value={issueMediaID} onChange={(e) => setIssueMediaID(e.target.value)} />
+
 							<Button
 								variant={"contained"}
 								fullWidth
 								onClick={() => {
-									setIssueState(true);
+									handleIssue();
 								}}
 							>
 								Submit
@@ -458,13 +612,28 @@ const MediaCirculation = () => {
 			</Popup>
 
 			<IssuePage issueState={issueState} setIssueState={setIssueState} />
-			<Renew setRenewOpen={setRenewOpen} renewOpen={renewOpen} />
+			<Renew setRenewOpen={setRenewOpen} renewOpen={renewOpen} revisedData={revisedData} setRevisedData={setRevisedData} handleRenew={handleRenew} />
 			<SetRule open={showRule} close={() => setShowRule(false)} />
 		</Section>
 	);
 };
 
-const Renew = ({ setRenewOpen, renewOpen }) => {
+const Renew = ({ setRenewOpen, renewOpen, revisedData, setRevisedData, handleRenew }) => {
+
+	const handleDateChange = (date) => {
+		if (date) {
+			const formattedDate = date.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+			setRevisedData(prevData => ({
+				...prevData,
+				revisedReturnDate: formattedDate,
+			}));
+		} else {
+			setRevisedData(prevData => ({
+				...prevData,
+				revisedReturnDate: null,
+			}));
+		}
+	};
 
 	return (
 		<Popup
@@ -480,11 +649,15 @@ const Renew = ({ setRenewOpen, renewOpen }) => {
 					fullWidth
 					minRows={4}
 					placeholder="Use this field to record issues specific to the media (Example wear and tear, spot marks, missing pages etc.)"
+					value={revisedData.note}
+					onChange={(e) => setRevisedData({ ...revisedData, note: e.target.value })}
 				></TextField>
 
 				<Flex>
 					<Typography>Revised Return Date: </Typography>
-					<DatePicker />
+					<DatePicker selected={revisedData.revisedReturnDate ? new Date(revisedData.revisedReturnDate) : null}
+						onChange={handleDateChange}
+						dateFormat="yyyy-MM-dd" />
 				</Flex>
 
 				<Typography fontWeight={700} mt={2} fontSize={"1.1rem"}>
@@ -492,7 +665,7 @@ const Renew = ({ setRenewOpen, renewOpen }) => {
 				</Typography>
 				<Flex gap={2}>
 					<Button variant="contained" sx={{ width: "8rem" }}
-						onClick={() => setRenewOpen(false)}
+						onClick={() => handleRenew()}
 					>
 						Yes
 					</Button>
