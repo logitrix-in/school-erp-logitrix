@@ -1,32 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Box,
-    Button,
     Dialog,
-    InputLabel,
-    Divider,
-    TextField,
     IconButton,
-    Tab,
-    Tabs,
-    Select,
-    MenuItem,
-    FormControl,
     Typography,
 } from "@mui/material";
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
 import Navigator from "../Navigator";
 import { IssueLetter } from './IssueLetter'
 import { SetTemplate } from './SetTemplate'
 
 const AnnualCompensationLetter = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
 
     const [active, setActive] = useState(0);
 
