@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Box,
     Button,
@@ -14,14 +14,35 @@ import {
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import CloseIcon from "@mui/icons-material/Close";
 import { ToastContainer, toast } from "react-toastify";
+import api from "../../../../config/api";
 
+const Fulfill = ({ open, close, handleGetDetails, selectedRow, bookDetails }) => {
+    const [mediaId, setMediaId] = useState('');
+    const [mediaName, setMediaName] = useState('');
+    const [author, setAuthor] = useState('');
+    const [publications, setPublications] = useState('');
+    const [edition, setEdition] = useState('');
 
-const Fulfill = ({ open, close, setSelected }) => {
-    const [value, setValue] = React.useState(0);
+    const handleSubmit = async () => {
+        try {
+            const response = await api.post(`/library/recommendation/`, {
+                "request_id": selectedRow,
+                "status": "Fulfill",
+            });
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+            console.log(response);
+
+            if (response.status === 200) {
+                toast.success("Updated Successfully");
+                handleGetDetails();
+                close();
+            }
+        } catch (err) {
+            console.log(err);
+            toast.error("Error Occured!");
+        }
     };
+
 
     return (
         <Dialog
@@ -62,17 +83,43 @@ const Fulfill = ({ open, close, setSelected }) => {
                 </Box>
 
                 <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"90%"} margin="auto" alignItems="center">
-
-                    <TextField label="Media ID" fullWidth />
-                    <TextField label="Media Name" fullWidth />
-                    <TextField label="Author" fullWidth />
-                    <TextField label="Publications" fullWidth />
-                    <TextField label="Edition" fullWidth />
+                    <TextField
+                        label="Media ID"
+                        fullWidth
+                        value={mediaId}
+                        required
+                        onChange={(e) => setMediaId(e.target.value)}
+                    />
+                    <TextField
+                        label="Media Name"
+                        fullWidth
+                        required
+                        value={mediaName}
+                        onChange={(e) => setMediaName(e.target.value)}
+                    />
+                    <TextField
+                        label="Author"
+                        fullWidth
+                        required
+                        value={author}
+                        onChange={(e) => setAuthor(e.target.value)}
+                    />
+                    <TextField
+                        label="Publications"
+                        fullWidth
+                        required
+                        value={publications}
+                        onChange={(e) => setPublications(e.target.value)}
+                    />
+                    <TextField
+                        label="Edition"
+                        fullWidth
+                        value={edition}
+                        onChange={(e) => setEdition(e.target.value)}
+                    />
 
                     <Button variant="contained" color="primary" fullWidth onClick={() => {
-                        toast.success("Updated Successfully");
-                        setSelected("Fulfilled");
-                        close();
+                        handleSubmit();
                     }}
                         sx={{ my: 2 }}>Submit</Button>
                 </Box>

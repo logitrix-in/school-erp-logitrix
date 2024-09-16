@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
     Box,
     Button,
@@ -8,13 +8,32 @@ import {
     Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import api from "../../../../config/api";
 
-const Reject = ({ open, close, setSelected }) => {
-    const [value, setValue] = React.useState(0);
+const Reject = ({ open, close, handleGetDetails, selectedRow }) => {
+    const [comments, setComments] = useState('');
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const handleSubmit = async () => {
+        try {
+
+            const response = await api.post(`/library/recommendation/`, {
+                "request_id": selectedRow,
+                "status": "Reject",
+                comments
+            });
+
+            console.log(response);
+
+            if (response.status === 200) {
+                toast.success("Updated Successfully");
+                handleGetDetails(); // Call function to refresh data if needed
+                close(); // Close the dialog
+            }
+        } catch (err) {
+            console.log(err);
+            toast.error("Error Occured!");
+        }
     };
 
     return (
@@ -62,8 +81,8 @@ const Reject = ({ open, close, setSelected }) => {
                         id="comments"
                         label="Comments"
                         placeholder="Enter reason for request rejection along with additional details as deemed  appropriate. This comment will also be visible to the requestor. (Max 160 characters)"
-                        // value={comments}
-                        // onChange={(e) => setComments(e.target.value)}
+                        value={comments}
+                        onChange={(e) => setComments(e.target.value)}
                         variant="outlined"
                         fullWidth
                         multiline
@@ -74,9 +93,7 @@ const Reject = ({ open, close, setSelected }) => {
 
                     <Box marginY={1} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="secondary" fullWidth onClick={() => {
-                            toast.success("Updated Successfully");
-                            setSelected("Rejected");
-                            close();
+                            handleSubmit()
                         }}>Yes</Button>
                         <Button variant="outlined" color="secondary" fullWidth onClick={() => {
                             close();

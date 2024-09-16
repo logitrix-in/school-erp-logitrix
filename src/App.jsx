@@ -86,6 +86,9 @@ import EmployeeAction from "./pages/employee/EmployeeAction";
 import EmployeeInformation from "./pages/employee/EmployeeInformation";
 import EmployeeLeave from "./pages/employee/EmployeeLeave";
 import EmployeeManage from "./pages/employee/EmployeeManage";
+import EmployeeRecruitment from "./pages/employee/EmployeeRecruitment";
+
+import EmployeeApplications from "./components/employee/recruitment/Applications/Applications";
 
 import OnBoardingEditEmployee from "./components/employee/manage/EditInformation/OnBoardingEdit";
 import OnBoardingDetailsEmployee from "./components/employee/manage/EditInformation/OnBoardingDetails";
@@ -407,8 +410,29 @@ function App() {
 					{/* EMPLOYEE */}
 					<Route
 						path={"employee/recruitment/"}
-						element={<LibraryRecommandation />}
+						element={<EmployeeRecruitment />}
 					/>
+					<Route
+						path="/employee/recruitment/applications/"
+						element={EmployeeApplications}
+					/>
+					<Route
+						path="/employee/recruitment/screening/"
+						element={EmployeeIDCardPass}
+					/>
+					<Route
+						path="/employee/recruitment/selection/"
+						element={EmployeeDepartment}
+					/>
+					<Route
+						path="/employee/recruitment/offer/"
+						element={EmployeePromotion}
+					/>
+					<Route
+						path="/employee/recruitment/onboarding/"
+						element={EmployeeProbation}
+					/>
+
 					<Route
 						path={"employee/information/"}
 						element={<EmployeeInformation />}
@@ -418,6 +442,10 @@ function App() {
 						element={<EmployeeManage />}
 					/>
 
+					<Route
+						path={"employee/manage/"}
+						element={<EmployeeManage />}
+					/>
 					<Route
 						path="/employee/manage/employee-account/"
 						element={EmployeeAccount}

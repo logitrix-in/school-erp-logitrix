@@ -6,14 +6,14 @@ import {
 	IconButton,
 	Menu,
 	MenuItem,
-	Autocomplete,
-	TextField,
+	FormControl,
+	Select,
+	InputLabel,
 	Avatar,
 } from "@mui/material";
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import Tooltip from '@mui/material/Tooltip';
-import ReignsSelect from "../../UiComponents/ReignsSelect";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, selectedGridRowsCountSelector } from "@mui/x-data-grid";
 import useClasses from "../../../hooks/useClasses";
 import Section from "../../Section";
 import { Icon } from "@iconify/react";
@@ -24,35 +24,109 @@ import FulfillPopup from './popup/Fulfill';
 import RequestDetails from './popup/RequestDetails';
 import { useState, useEffect } from "react";
 import api from "../../../config/api";
-
-const rows = [
-	{
-		id: "RQ1234",
-		employeeName: {
-			name: "John Doe",
-			id: "1234",
-			img: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?cs=srgb&dl=pexels-creationhill-1681010.jpg&fm=jpg",
-		},
-		Reqdate: "10-10-2022",
-		Department: "Finance",
-		"Media Type": "Video",
-		"Media Name": "Book 1",
-		Author: "John",
-		Status: "open",
-		actions: "Delete",
-	},
-];
-
-const names = [];
+import { toast } from 'react-toastify'
 
 const Recommendation = () => {
 	const { acYear, curYear } = useClasses();
-	const [selected, setSelected] = useState("Open");
-	const [academicYear, setAcademicYear] = useState(curYear);
 	const [acceptPopup, setAcceptPopup] = useState(false);
 	const [rejectPopup, setRejectPopup] = useState(false);
 	const [fulfillPopup, setFulfillPopup] = useState(false);
 	const [requestDetailsPopup, setRequestDetailsPopup] = useState(false);
+	const [libraryCardNumbers, setLibraryCardNumbers] = useState([]);
+	const [academicYear, setAcademicYear] = useState(curYear);
+	const [selectedLibraryCard, setSelectedLibraryCard] = useState('');
+	const [rows, setRows] = useState([])
+	const [selectedRow, setSelectedRow] = useState('');
+	const [bookDetails, setBookDetails] = useState({})
+
+	useEffect(() => {
+		async function getLibraryCardDetails() {
+			try {
+				const response = await api.get('/library/library-cards/?display_type=list_view');
+				console.log(response.data);
+
+				setLibraryCardNumbers(response.data.library_cards);
+			} catch (err) {
+				console.log(err);
+				toast.error('Error Occured!');
+			}
+		}
+		getLibraryCardDetails();
+	}, []);
+
+	async function handleGetDetails() {
+		try {
+			const response = await api.get(`/library/recommendation/?library_card=${selectedLibraryCard}`);
+			console.log(response.data);
+
+			const transformedRows = transformApiData(response.data);
+
+			setRows(transformedRows);
+		} catch (err) {
+			console.log(err);
+			toast.error('Error Occured!');
+		}
+	}
+
+	function transformApiData(apiData) {
+		return apiData.map(item => ({
+			id: item.request_id,
+			employeeName: {
+				name: `${item.employee_profile.employee_id}`,
+				id: item.employee_profile.employee_id,
+				img: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?cs=srgb&dl=pexels-creationhill-1681010.jpg&fm=jpg",
+			},
+			Reqdate: item.request_date,
+			Department: item.department,
+			"Media Type": item.media_type,
+			"Media Name": item.media_name,
+			Author: item.author,
+			Status: capitalizeEachWord(item.status),
+			actions: "Actions", // This field is now used for rendering the actions column
+		}));
+	}
+
+	function capitalizeEachWord(string) {
+		return string.split(' ').map(word =>
+			word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+		).join(' ');
+	}
+
+	async function handleReview(reqId) {
+		try {
+			console.log(reqId);
+
+			const response = await api.post(`/library/recommendation/`, {
+				"request_id": reqId,
+				"status": "In Review",
+			});
+
+			if (response.status === 200) {
+				toast.success('Recommendation Updated!');
+				handleGetDetails();
+			}
+		} catch (err) {
+			console.log(err);
+			toast.error(err.response.data);
+		}
+	}
+
+	const getStatusText = (value) => {
+		switch (value) {
+			case "In Review":
+				return "In Review";
+			case "Accept":
+				return "Accepted";
+			case "Reject":
+				return "Rejected";
+			case "Fulfill":
+				return "Fulfilled";
+			case "Open":
+				return "Open";
+			default:
+				return value;
+		}
+	};
 
 	const columns = [
 		{
@@ -150,39 +224,38 @@ const Recommendation = () => {
 			field: "Author",
 			headerName: "Author",
 			flex: 0.7,
-		},
-		{
+		}, {
 			field: "Status",
 			headerName: "Status",
 			flex: 0.7,
 			renderCell: (params) => (
 				<Flex bgcolor={
-					selected === "In Review"
+					params.value === "In Review"
 						? "#FEEBCB"
-						: selected === "Accepted"
+						: params.value === "Accept"
 							? "#C6F6D5"
-							: selected === "Rejected"
+							: params.value === "Reject"
 								? "#FED7D7"
-								: selected === "Fulfilled"
+								: params.value === "Fulfill"
 									? "#BEE3F8"
-									: selected === "Open"
+									: params.value === "Open"
 										? "#E2E8F0"
 										: "transparent"
 				}
 					color={
-						selected === "In Review"
+						params.value === "In Review"
 							? "#822727"
-							: selected === "Accepted"
+							: params.value === "Accept"
 								? "#22543D"
-								: selected === "Rejected"
+								: params.value === "Reject"
 									? "#822727"
-									: selected === "Fulfilled"
+									: params.value === "Fulfill"
 										? "#2B6CB0"
-										: selected === "Open"
+										: params.value === "Open"
 											? "#4A5568"
 											: "inherit"
 					} p={0.4} px={1.2} borderRadius={1}>
-					<Flex>{selected}</Flex>
+					<Flex>{getStatusText(params.value)}</Flex>
 				</Flex>
 			),
 		},
@@ -203,9 +276,8 @@ const Recommendation = () => {
 					setAnchorEl(null);
 				};
 
-
 				const options = [
-					// "Mark as Open",
+					"Open",
 					"In Review",
 					"Accept",
 					"Reject",
@@ -213,16 +285,15 @@ const Recommendation = () => {
 				];
 
 				const statusMap = {
-					// "Mark as Open": "Open",
+					"Open": "Open",
 					"In Review": "In Review",
-					"Accept": "Accepted",
+					"Accept": "Accept",
 					"Reject": "Rejected",
 					"Fulfill": "Fulfilled"
 				};
 
 				return (
 					<>
-
 						<IconButton size="small" onClick={handleClick}>
 							<Icon icon="tabler:dots-vertical" />
 						</IconButton>
@@ -241,20 +312,24 @@ const Recommendation = () => {
 								}}
 							>
 								{options.map((opt, idx) => {
-									if (selected !== statusMap[opt]) {
+									if (params.row.Status !== statusMap[opt]) {
 										return (
 											<MenuItem
 												key={idx}
 												onClick={() => {
 
 													if (opt === "Accept") {
+														setSelectedRow(params.id);
 														setAcceptPopup(true);
 													} else if (opt === "Reject") {
+														setSelectedRow(params.id);
 														setRejectPopup(true);
 													} else if (opt === "Fulfill") {
+														setSelectedRow(params.id);
 														setFulfillPopup(true);
 													} else if (opt === "In Review") {
-														setSelected("In Review");
+														setSelectedRow(params.id);
+														handleReview(params.id)
 													}
 
 													handleClose();
@@ -271,57 +346,54 @@ const Recommendation = () => {
 						</Box>
 
 
-						<AcceptPopup open={acceptPopup} close={() => setAcceptPopup(false)} setSelected={setSelected} />
-						<RejectPopup open={rejectPopup} close={() => setRejectPopup(false)} setSelected={setSelected} />
-						<FulfillPopup open={fulfillPopup} close={() => setFulfillPopup(false)} setSelected={setSelected} />
-						<RequestDetails open={requestDetailsPopup} close={() => setRequestDetailsPopup(false)} />
+						<AcceptPopup open={acceptPopup} close={() => setAcceptPopup(false)} handleGetDetails={handleGetDetails} selectedRow={selectedRow} />
+						<RejectPopup open={rejectPopup} close={() => setRejectPopup(false)} handleGetDetails={handleGetDetails} selectedRow={selectedRow} />
+						<FulfillPopup open={fulfillPopup} close={() => setFulfillPopup(false)} handleGetDetails={handleGetDetails} selectedRow={selectedRow} bookDetails={bookDetails} />
+						<RequestDetails open={requestDetailsPopup} close={() => setRequestDetailsPopup(false)} handleGetDetails={handleGetDetails} selectedRow={selectedRow} />
 					</>
 				);
 			},
 		},
 	];
 
-	async function getData() {
-		api
-			.get("/library/recommendation/")
-			.then((res) => { console.log(res.data); })
-			.catch()
-	}
-
-	useEffect(() => {
-		getData();
-	}, []);
-
 	return (
 		<Section title={"Recommendation"}>
 			<Stack p={2} gap={2}>
-				<Box display={"flex"} gap={1} alignItems={"center"}>
-					<Autocomplete
-						options={names}
-						filterSelectedOptions
-						freeSolo={false}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								label="Search by Library Card #"
-								placeholder="Search by Library Card #"
+				<Box display={"flex"} gap={1} alignItems={"center"} justifyContent={'space-between'}>
 
-							/>
-						)}
-						sx={{ width: "30%" }}
-					/>
-					<ReignsSelect
-						items={acYear}
-						onChange={(e) =>
-							setAcademicYear(e?.target.value ?? academicYear)
-						}
-						value={academicYear}
-						label="Academic Year"
-						sx={{
-							width: "15rem",
-							ml: "auto",
-						}}
-					/>
+					<FormControl sx={{ width: '25%' }}>
+						<InputLabel>Search by Library Card #</InputLabel>
+						<Select
+							label="Search by Library Card #"
+							value={selectedLibraryCard}
+							required
+							onChange={(e) => setSelectedLibraryCard(e.target.value)}
+							onBlur={handleGetDetails}
+						>
+							{
+								libraryCardNumbers?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							}
+						</Select>
+					</FormControl>
+
+					<FormControl sx={{ width: '25%' }}>
+						<InputLabel>Enter Academic Year</InputLabel>
+						<Select
+							label="Enter Academic Year"
+							value={academicYear}
+							required
+							onChange={(e) => setAcademicYear(e.target.value)}
+							onBlur={handleGetDetails}
+						>
+							{
+								acYear?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							}
+						</Select>
+					</FormControl>
 				</Box>
 				<Box sx={{ width: "100%" }}>
 					<DataGrid
