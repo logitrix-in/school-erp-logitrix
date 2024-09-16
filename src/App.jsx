@@ -89,6 +89,10 @@ import EmployeeManage from "./pages/employee/EmployeeManage";
 import EmployeeRecruitment from "./pages/employee/EmployeeRecruitment";
 
 import EmployeeApplications from "./components/employee/recruitment/Applications/Applications";
+import EmployeeScreening from "./components/employee/recruitment/Screening/Screening";
+import EmployeeSelection from "./components/employee/recruitment/Selection/Selection";
+import EmployeeOffer from "./components/employee/recruitment/Offer/Offer";
+import EmployeeOnboarding from "./components/employee/recruitment/Onboarding/Onboarding";
 
 import OnBoardingEditEmployee from "./components/employee/manage/EditInformation/OnBoardingEdit";
 import OnBoardingDetailsEmployee from "./components/employee/manage/EditInformation/OnBoardingDetails";
@@ -418,19 +422,19 @@ function App() {
 					/>
 					<Route
 						path="/employee/recruitment/screening/"
-						element={EmployeeIDCardPass}
+						element={EmployeeScreening}
 					/>
 					<Route
 						path="/employee/recruitment/selection/"
-						element={EmployeeDepartment}
+						element={EmployeeSelection}
 					/>
 					<Route
 						path="/employee/recruitment/offer/"
-						element={EmployeePromotion}
+						element={EmployeeOffer}
 					/>
 					<Route
 						path="/employee/recruitment/onboarding/"
-						element={EmployeeProbation}
+						element={EmployeeOnboarding}
 					/>
 
 					<Route

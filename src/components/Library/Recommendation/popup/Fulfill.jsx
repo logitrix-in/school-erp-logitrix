@@ -43,7 +43,6 @@ const Fulfill = ({ open, close, handleGetDetails, selectedRow, bookDetails }) =>
         }
     };
 
-
     return (
         <Dialog
             fullWidth={false}

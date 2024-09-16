@@ -17,7 +17,7 @@ const EmployeeRecruitment = () => {
                     backgroundColor: "#E5F3FB",
                     display: "flex",
                     padding: "10px",
-                    maxWidth: "730px",
+                    maxWidth: "670px",
                     borderRadius: "10px",
                 }}
             >

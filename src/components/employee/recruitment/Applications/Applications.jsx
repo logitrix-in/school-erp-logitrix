@@ -73,7 +73,7 @@ const StudentAccount = () => {
           backgroundColor: "#E5F3FB",
           display: "flex",
           padding: "10px",
-          maxWidth: "730px",
+          maxWidth: "670px",
           borderRadius: "10px",
         }}
       >
@@ -199,7 +199,7 @@ const StudentAccount = () => {
             alignItems="center"
           >
             <Typography fontWeight={700} fontSize="1.1rem">
-              Bulk
+              View Applications
             </Typography>
           </Box>
 
