@@ -145,7 +145,7 @@ const AppContextProvider = ({ children }) => {
 
   // function to generate days values
   const generateDays = () => {
-    return ["Last 7 days", "Last 15 days", "Last 30 days", "Last 60 days"];
+    return ["Today", "Last 7 days", "Last 15 days", "Last 30 days", "Last 60 days"];
   };
 
   // function to generate roll no values

@@ -1,22 +1,36 @@
-import React from "react";
-import Bbox from "../../components/UiComponents/Bbox";
+import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import RevealCard from "../../components/AnimationComponents/RevealCard";
 import Dashboard from "../../components/Library/Visitors/Dashboard";
 import Inventory from "../../components/Library/Visitors/Inventory";
 import QuickSearch from "../../components/Library/Visitors/QuickSearch";
+import api from '../../config/api'
 
 const LibraryVisitors = () => {
+	const [libraryCardNumbers, setLibraryCardNumbers] = useState([]);
+
+	useEffect(() => {
+		async function fetchData() {
+			const response = await api.get('/library/library-cards/');
+			console.log(response.data);
+
+			const cardNumbersArray = response.data.map(item => item.card_number);
+			setLibraryCardNumbers(cardNumbersArray);
+		}
+
+		fetchData();
+	}, []);
+
 	return (
 		<Box display={"flex"} flexDirection={"column"} gap={2}>
 			<RevealCard>
-				<Dashboard />
+				<Dashboard libraryCardNumbers={libraryCardNumbers} />
 			</RevealCard>
 			<RevealCard>
-				<Inventory />
+				<Inventory libraryCardNumbers={libraryCardNumbers} />
 			</RevealCard>
 			<RevealCard>
-				<QuickSearch />
+				<QuickSearch libraryCardNumbers={libraryCardNumbers} />
 			</RevealCard>
 		</Box>
 	);

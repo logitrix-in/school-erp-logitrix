@@ -8,61 +8,77 @@ import {
     Typography,
     Autocomplete,
     TextField,
+    Radio,
 } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
-import NewJobRequirement from "../popup/NewJobRequirement";
 import { useState } from "react";
-import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
+import Manage from "./Manage";
+import Reject from './popups/Reject'
+import Initiate from './popups/Initiate'
 
 const StudentAccount = () => {
     const navigate = useNavigate();
+    const [selectedRow, setSelectedRow] = useState(null);
+    const [rejectPopup, setRejectPopup] = useState(false);
+    const [initiatePopup, setInitiatePopup] = useState(false);
 
     const columns = [
-        { field: "id", headerName: "Application ID", flex: 0.8 },
-        { field: "candidate_name", headerName: "Candidate Name", flex: 0.8 },
-        { field: "job_id", headerName: "Job ID", flex: 0.8 },
-        { field: "emp_type", headerName: "Employee Type", flex: 1 },
-        { field: "department", headerName: "Department", flex: 1 },
-        { field: "grade", headerName: "Grade", flex: 1 },
-        { field: "application_date", headerName: "Application Date", flex: 1 },
-        { field: "resume", headerName: "Resume", flex: 1 },
+        {
+            field: "radioButtons",
+            headerName: "",
+            flex: 0.6,
+            renderCell: (params) => (
+                <Radio
+                    checked={params.row.id === selectedRow}
+                    color="primary"
+                    sx={{
+                        transform: "scale(0.6)",
+                    }}
+                    inputProps={{ "aria-label": params.row.id }}
+                    onChange={() => {
+                        setSelectedRow(params.row.id);
+                    }}
+                />
+            ),
+        },
+        { field: 'applicationId', headerName: 'Application ID', flex: 1 },
+        { field: 'candidateName', headerName: 'Candidate Name', flex: 1 },
+        { field: 'onboardingStatus', headerName: 'Onboarding Status', flex: 1.4 },
+        { field: 'jobId', headerName: 'Job ID', flex: 0.8 },
+        { field: 'department', headerName: 'Department', flex: 1 },
+        { field: 'grade', headerName: 'Grade', flex: 0.8 },
+        { field: 'offeredCTC', headerName: 'Offered CTC/Contract Payment', flex: 1.8 },
+        { field: 'expectedJoiningDate', headerName: 'Expected Date of Joining', flex: 1.6 }
     ];
 
     const rows = [
         {
             id: 1,
-            candidate_name: "John Doe",
-            job_id: 101,
-            emp_type: "Full-Time",
-            department: "Engineering",
-            grade: "A",
-            application_date: "2023-10-01",
-            resume: "john_doe_resume.pdf"
+            applicationId: 'EMP35443443',
+            candidateName: 'Debarati Ghosh',
+            onboardingStatus: 'Not Initiated',
+            jobId: 'CHN2401',
+            department: 'Science',
+            grade: 'B2',
+            offeredCTC: '₹ 25,000.00',
+            expectedJoiningDate: '25 Mar 2024'
         },
         {
             id: 2,
-            candidate_name: "Jane Smith",
-            job_id: 102,
-            emp_type: "Part-Time",
-            department: "Marketing",
-            grade: "B",
-            application_date: "2023-10-02",
-            resume: "jane_smith_resume.pdf"
-        },
-        {
-            id: 3,
-            candidate_name: "Alice Johnson",
-            job_id: 103,
-            emp_type: "Contract",
-            department: "HR",
-            grade: "C",
-            application_date: "2023-10-03",
-            resume: "alice_johnson_resume.pdf"
+            applicationId: 'EMP35443442',
+            candidateName: 'Debarati Ghosh',
+            onboardingStatus: 'Pending with Employee',
+            jobId: 'CHN2401',
+            department: 'History',
+            grade: 'B2',
+            offeredCTC: '₹ 25,000.00',
+            expectedJoiningDate: '25 Mar 2024'
         }
     ];
 
-    const [newJobPopup, setNewJobPopup] = useState(false);
+    const [applicationIDPopup, setApplicationIDPopup] = useState(false);
 
 
     return (
@@ -199,7 +215,7 @@ const StudentAccount = () => {
                         alignItems="center"
                     >
                         <Typography fontWeight={700} fontSize="1.1rem">
-                            Bulk
+                            Onboarding
                         </Typography>
                     </Box>
 
@@ -259,10 +275,22 @@ const StudentAccount = () => {
                                 )}
                                 sx={{ width: "20%" }}
                             />
+
+                            <Autocomplete
+                                options={["Student 1", "Student 2"]}
+                                filterSelectedOptions
+                                freeSolo={false}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        placeholder="Onboarding Status"
+                                        label="Onboarding Status"
+                                    />
+                                )}
+                                sx={{ width: "20%" }}
+                            />
                             <Button variant="contained">Submit</Button>
                         </Box>
-
-
 
                         {/* total number of results found */}
                         <Box p={2} mt={1} display="flex" justifyContent="space-between" alignItems={'flex-end'}>
@@ -315,28 +343,43 @@ const StudentAccount = () => {
                                     },
                                 }}
                                 pageSizeOptions={[5, 10]}
-                                columnGroupingModel={[
-                                    {
-                                        groupId: "applied_for",
-                                        headerName: "Applied For",
-                                        headerAlign: 'center',
-                                        children: [
-                                            { field: "job_id" },
-                                            { field: "emp_type" },
-                                            { field: "department" },
-                                            { field: "grade" },
-                                        ],
-                                    },
-                                ]}
                                 disableRowSelectionOnClick
                             />
                         </Box>
 
-                        <ToastContainer />
-                        <NewJobRequirement open={newJobPopup} close={() => setNewJobPopup(false)} />
+                        <Box
+                            display="flex"
+                            justifyContent="flex-end"
+                            marginBottom={5}
+                            marginRight={2}
+                            gap={2}
+                        >
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={() => { setInitiatePopup(true) }}
+                            >
+                                Initiate
+                            </Button>
+
+                            <Button
+                                color="secondary"
+                                variant="contained"
+                                onClick={() => { setRejectPopup(true) }}
+                            >
+                                Reject
+                            </Button>
+                        </Box>
+
                     </Box>
+
+                    <Reject open={rejectPopup} close={() => setRejectPopup(false)} />
+                    <Initiate open={initiatePopup} close={() => setInitiatePopup(false)} />
+
                 </Bbox>
-            </RevealCard>
+            </RevealCard >
+
+            <Manage />
         </>
     );
 };

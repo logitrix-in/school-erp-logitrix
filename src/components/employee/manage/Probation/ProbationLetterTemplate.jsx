@@ -33,7 +33,6 @@ function ProbationLetterTemplate() {
                 <Divider />
 
                 <ToastContainer />
-
                 <EditLetter open={editLetterPopup} close={() => setEditLetterPopup(false)} />
 
                 <Box display="flex" justifyContent="center" mt={2} mb={5} mr={2}>

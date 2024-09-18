@@ -28,7 +28,7 @@ export default function Manage() {
 
     return (
         <RevealCard>
-            <Bbox borderRadius={2} overflow={"hidden"} >
+            <Bbox borderRadius={2} overflow={"hidden"} mt={4}>
                 <Box
                     bgcolor={"white"}
                     py={1.3}
