@@ -93,6 +93,7 @@ import EmployeeScreening from "./components/employee/recruitment/Screening/Scree
 import EmployeeSelection from "./components/employee/recruitment/Selection/Selection";
 import EmployeeOffer from "./components/employee/recruitment/Offer/Offer";
 import EmployeeOnboarding from "./components/employee/recruitment/Onboarding/Onboarding";
+import OfflineApplicationFormEmployee from "./components/employee/recruitment/Applications/OfflineApplicationForm";
 
 import OnBoardingEditEmployee from "./components/employee/manage/EditInformation/OnBoardingEdit";
 import OnBoardingDetailsEmployee from "./components/employee/manage/EditInformation/OnBoardingDetails";
@@ -525,6 +526,20 @@ function App() {
 				<Route
 					path={"/employee/manage/OnBoardingDetails"}
 					element={<OnBoardingDetailsEmployee />}
+				/>
+
+				<Route
+					path={"/employee/recruitment/applications/OfflineApplicationFormEdit"}
+					element={<OfflineApplicationFormEmployee />}
+				/>
+				<Route
+					path={"/employee/recruitment/applications/OfflineApplicationFormView"}
+					element={<OfflineApplicationFormEmployee />}
+				/>
+
+				<Route
+					path={"/employee/recruitment/onboarding/OfflineOnboardingFormEdit"}
+					element={<OfflineApplicationFormEmployee />}
 				/>
 			</Routes>
 		</>

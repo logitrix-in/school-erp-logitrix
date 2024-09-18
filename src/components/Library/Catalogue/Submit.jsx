@@ -1,24 +1,67 @@
 import {
-	Autocomplete,
 	Box,
 	Button,
 	Divider,
 	Grid,
-	TextField,
 	Typography,
 } from "@mui/material";
-import React from "react";
+import { useState, useEffect } from "react";
 import Bbox from "../../UiComponents/Bbox";
-import ReignsSelect from "../../UiComponents/ReignsSelect";
-import { Stack } from "@mui/system";
-import { Icon } from "@iconify/react";
 import { DataGrid } from "@mui/x-data-grid";
 import AutocompleteWithAll from "../../UiComponents/AutocompleteWithAll";
+import { toast } from "react-toastify";
+import useMedia from "../../../hooks/useMedia";
+import api from "../../../config/api";
 
 const Submit = () => {
+	const { mediaTypes, mediaCategories, mediaLanguages } = useMedia();
+	const [mediaNames, setMediaNames] = useState([]);
+	const [authors, setAuthors] = useState([]);
+	const [publishers, setPublishers] = useState([]);
+
+	const [mediaType, setMediaType] = useState([]);
+	const [category, setCategory] = useState([]);
+	const [name, setName] = useState([]);
+	const [author, setAuthor] = useState([]);
+	const [publisher, setPublisher] = useState([]);
+	const [language, setLanguage] = useState([]);
+	const [rows, setRows] = useState([]);
+
+	const handleSubmit = async () => {
+		const formData = {
+			media_types: mediaType,
+			media_languages: language,
+			categories: category,
+			media_names: name,
+			authors: author,
+			publishers: publisher
+		};
+		console.log('Form data:', formData);
+
+		try {
+			const response = await api.post('/library/catalogue/', formData);
+			console.log('API response:', response.data);
+
+			setRows(response.data.map(item => ({
+				...item,
+				id: item.media_id
+			})));
+
+			setMediaType([]);
+			setCategory([]);
+			setName([]);
+			setAuthor([]);
+			setPublisher([]);
+			setLanguage([]);
+		} catch (error) {
+			console.error('Error submitting form:', error);
+		}
+	};
+
 	const columns = [
+		{ field: 'media_id', headerName: 'Media ID', width: 100 },
 		{
-			field: "mediaType",
+			field: "media_type",
 			headerName: "Media Type",
 			width: 150,
 		},
@@ -28,7 +71,7 @@ const Submit = () => {
 			flex: 1,
 		},
 		{
-			field: "mediaName",
+			field: "media_name",
 			headerName: "Media Name",
 			flex: 2,
 		},
@@ -47,14 +90,14 @@ const Submit = () => {
 			sortable: true,
 		},
 		{
-			field: "mediaLanguage",
+			field: "media_language",
 			headerName: "Media Language",
 			flexWrap: true,
 			flex: 1,
 			sortable: true,
 		},
 		{
-			field: "copiesAvailable",
+			field: "num_copies",
 			headerName: "Copies Available",
 			flexWrap: true,
 			flex: 1,
@@ -62,18 +105,23 @@ const Submit = () => {
 		},
 	];
 
-	const rows = [
-		{
-			id: 1,
-			copiesAvailable: "5",
-			mediaLanguage: "English",
-			publisher: "Neeraj Publication",
-			author: "Florentino Ayson",
-			mediaName: "Fundamentals of Political Science",
-			category: "Political Science",
-			mediaType: "Books",
-		},
-	];
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await api.get('/library/catalogue/');
+				console.log(response.data);
+
+				// Extract and set the required data
+				setMediaNames(response.data.media_names);
+				setAuthors(response.data.authors);
+				setPublishers(response.data.publishers);
+			} catch (error) {
+				console.log(error);
+				toast.error('Error fetching data');
+			}
+		};
+		fetchData();
+	}, [])
 
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
@@ -91,80 +139,64 @@ const Submit = () => {
 				<Grid container spacing={2} mt={1}>
 					<Grid item xs={4}>
 						<AutocompleteWithAll
-							items={["Books", "Periodicals", "Research Papers"]}
+							items={mediaTypes}
 							title="Media Type"
+							value={mediaType}
+							onChange={setMediaType}
 						/>
 					</Grid>
 					<Grid item xs={4}>
 						<AutocompleteWithAll
 							limitTags={2}
-							items={[
-								"Bengali literature",
-								"Hindi literature",
-								"English literature",
-								"Mathematics",
-								"Physics",
-								"Chemistry",
-								"Biology",
-								"Computer Science",
-								"statistic",
-								"History",
-								"Geography",
-								"Political Science",
-								"Psychology",
-								"Sociology",
-								"Economics",
-								"Accountancy",
-								"Business Studies",
-								"Fiction",
-								"Non-fiction",
-							]}
+							items={mediaCategories}
 							title="Select Category"
+							value={category}
+							onChange={setCategory}
 						/>
 					</Grid>
 					<Grid item xs={4}>
 						<AutocompleteWithAll
 							limitTags={2}
-							items={["Bengali literature", "Hindi literature"]}
+							items={mediaNames}
 							title="Select Name"
+							value={name}
+							onChange={setName}
 						/>
 					</Grid>
 					<Grid item xs={4}>
 						<AutocompleteWithAll
 							limitTags={2}
-							items={["Bengali literature", "Hindi literature"]}
+							items={authors}
 							title="Select Author"
+							value={author}
+							onChange={setAuthor}
 						/>
 					</Grid>
 					<Grid item xs={4}>
 						<AutocompleteWithAll
 							limitTags={2}
-							items={["Bengali literature", "Hindi literature"]}
-							title={"Select Publisher"}
+							items={publishers}
+							title="Select Publisher"
+							value={publisher}
+							onChange={setPublisher}
 						/>
 					</Grid>
 					<Grid item xs={4}>
 						<AutocompleteWithAll
-							title={"Language"}
+							title="Language"
 							limitTags={2}
-							items={[
-								"English",
-								"Bengali",
-								"Hindi",
-								"Sanskrit",
-								"Tamil",
-								"Telugu",
-								"Kannada",
-								"Malayalam",
-							]}
+							items={mediaLanguages}
+							value={language}
+							onChange={setLanguage}
 						/>
 					</Grid>
 				</Grid>
 
-				<Box mt={2} display={"flex"} justifyContent={"center"}>
+				<Box mt={2} display="flex" justifyContent="center">
 					<Button
 						sx={{ width: "min(30rem,100%)" }}
 						variant="contained"
+						onClick={handleSubmit}
 					>
 						Submit
 					</Button>

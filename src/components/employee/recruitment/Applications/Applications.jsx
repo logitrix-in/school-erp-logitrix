@@ -11,15 +11,21 @@ import {
 } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import NewJobRequirement from "../popup/NewJobRequirement";
+import ApplicationID from "../popup/ApplicationID";
+import ManageApplications from "./ManageApplications";
 import { useState } from "react";
 
 const StudentAccount = () => {
   const navigate = useNavigate();
 
   const columns = [
-    { field: "id", headerName: "Application ID", flex: 0.8 },
+    {
+      field: "id", headerName: "Application ID", flex: 1, renderCell: (params) => (
+        <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setApplicationIDPopup(true)}>
+          {params.value}
+        </Typography>
+      ),
+    },
     { field: "candidate_name", headerName: "Candidate Name", flex: 0.8 },
     { field: "job_id", headerName: "Job ID", flex: 0.8 },
     { field: "emp_type", headerName: "Employee Type", flex: 1 },
@@ -31,7 +37,7 @@ const StudentAccount = () => {
 
   const rows = [
     {
-      id: 1,
+      id: "EMP35435443",
       candidate_name: "John Doe",
       job_id: 101,
       emp_type: "Full-Time",
@@ -41,7 +47,7 @@ const StudentAccount = () => {
       resume: "john_doe_resume.pdf"
     },
     {
-      id: 2,
+      id: "EMP35435444",
       candidate_name: "Jane Smith",
       job_id: 102,
       emp_type: "Part-Time",
@@ -51,7 +57,7 @@ const StudentAccount = () => {
       resume: "jane_smith_resume.pdf"
     },
     {
-      id: 3,
+      id: "EMP35435445",
       candidate_name: "Alice Johnson",
       job_id: 103,
       emp_type: "Contract",
@@ -62,7 +68,7 @@ const StudentAccount = () => {
     }
   ];
 
-  const [newJobPopup, setNewJobPopup] = useState(false);
+  const [applicationIDPopup, setApplicationIDPopup] = useState(false);
 
 
   return (
@@ -331,11 +337,12 @@ const StudentAccount = () => {
                 disableRowSelectionOnClick
               />
             </Box>
-            <NewJobRequirement open={newJobPopup} close={() => setNewJobPopup(false)} />
+            <ApplicationID open={applicationIDPopup} close={() => setApplicationIDPopup(false)} />
 
           </Box>
         </Bbox>
       </RevealCard>
+      <ManageApplications />
     </>
   );
 };

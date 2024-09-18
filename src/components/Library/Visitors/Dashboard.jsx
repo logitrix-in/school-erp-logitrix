@@ -6,9 +6,9 @@ import { AppContext } from "../../../context/AppContext";
 import useClasses from "../../../hooks/useClasses";
 import { Icon } from "@iconify/react";
 
-const Dashboard = () => {
+const Dashboard = ({ libraryCardNumbers }) => {
 	const ctx = useContext(AppContext);
-	const { classes, sections, acYear, curYear, status, days } = useClasses();
+	const { classes, sections, acYear, curYear, days } = useClasses();
 	const [academicYear, setAcademicYear] = useState(curYear);
 
 	return (
