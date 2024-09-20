@@ -8,62 +8,107 @@ import {
     Typography,
     Autocomplete,
     TextField,
+    Radio,
 } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import NewJobRequirement from "../popup/NewJobRequirement";
+import Select from "./popups/Select";
+import OnHold from "./popups/OnHold";
+import Reject from "./popups/Reject";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 const StudentAccount = () => {
     const navigate = useNavigate();
+    const [selectedRow, setSelectedRow] = useState(null);
+    const [selectPopup, setSelectPopup] = useState(false);
+    const [onHoldPopup, setOnHoldPopup] = useState(false);
+    const [rejectPopup, setRejectPopup] = useState(false);
 
     const columns = [
+        {
+            field: "radioButtons",
+            headerName: "",
+            renderCell: (params) => (
+                <Radio
+                    checked={params.row.id === selectedRow}
+                    color="primary"
+                    sx={{
+                        transform: "scale(0.6)",
+                    }}
+                    inputProps={{ "aria-label": params.row.id }}
+                    onChange={() => {
+                        setSelectedRow(params.row.id);
+                    }}
+                />
+            ),
+        },
         { field: "id", headerName: "Application ID", flex: 0.8 },
-        { field: "candidate_name", headerName: "Candidate Name", flex: 0.8 },
+        { field: "candidate_name", headerName: "Candidate Name", flex: 1 },
+        {
+            field: "selection_status", headerName: "Selection Status", flex: 0.8,
+            renderCell: (params) => (
+                <Box
+                    style={{
+                        backgroundColor:
+                            params.value === "Selected"
+                                ? "#C6F6D5"
+                                : params.value === "On Hold"
+                                    ? "#FFCCCC"
+                                    : "transparent",
+                        borderRadius: "6px",
+                        display: "inline-block",
+                        width:
+                            params.value === "Selected" || params.value === "On Hold"
+                                ? "60px"
+                                : "auto",
+                        paddingLeft:
+                            params.value === "Selected"
+                                ? "11px"
+                                : params.value === "On Hold"
+                                    ? "7px"
+                                    : "0px",
+                    }}
+                >
+                    {params.value}
+                </Box>
+            ),
+        },
         { field: "job_id", headerName: "Job ID", flex: 0.8 },
-        { field: "emp_type", headerName: "Employee Type", flex: 1 },
+        { field: "employee_type", headerName: "Employee Type", flex: 1 },
         { field: "department", headerName: "Department", flex: 1 },
-        { field: "grade", headerName: "Grade", flex: 1 },
-        { field: "application_date", headerName: "Application Date", flex: 1 },
-        { field: "resume", headerName: "Resume", flex: 1 },
+        { field: "grade", headerName: "Grade", flex: 0.5 },
+        { field: "expected_ctc", headerName: "Expected CTC", flex: 0.8 },
+        { field: "expected_date_of_joining", headerName: "Expected Date of Joining", flex: 1 },
+        { field: "reason_for_selection", headerName: "Reason for Selection/Not Selection", flex: 1.2 }
     ];
 
     const rows = [
         {
-            id: 1,
-            candidate_name: "John Doe",
-            job_id: 101,
-            emp_type: "Full-Time",
-            department: "Engineering",
-            grade: "A",
-            application_date: "2023-10-01",
-            resume: "john_doe_resume.pdf"
+            id: "APP0024342443",
+            candidate_name: "Deepash Ghosh",
+            selection_status: "Selected",
+            job_id: "DPIN2475",
+            employee_type: "Teaching Staff",
+            department: "Science",
+            grade: "B1",
+            expected_ctc: "₹ 300000",
+            expected_date_of_joining: "20 Mar 2024",
+            reason_for_selection: "Lorem Ipsum"
         },
         {
-            id: 2,
-            candidate_name: "Jane Smith",
-            job_id: 102,
-            emp_type: "Part-Time",
-            department: "Marketing",
-            grade: "B",
-            application_date: "2023-10-02",
-            resume: "jane_smith_resume.pdf"
-        },
-        {
-            id: 3,
-            candidate_name: "Alice Johnson",
-            job_id: 103,
-            emp_type: "Contract",
-            department: "HR",
-            grade: "C",
-            application_date: "2023-10-03",
-            resume: "alice_johnson_resume.pdf"
+            id: "APP0024342442",
+            candidate_name: "Deepash Ghosh",
+            selection_status: "On Hold",
+            job_id: "DPIN2475",
+            employee_type: "Teaching Staff",
+            department: "Science",
+            grade: "B2",
+            expected_ctc: "₹ 300000",
+            expected_date_of_joining: "20 Mar 2024",
+            reason_for_selection: "Lorem Ipsum"
         }
     ];
-
-    const [newJobPopup, setNewJobPopup] = useState(false);
-
 
     return (
         <>
@@ -259,6 +304,20 @@ const StudentAccount = () => {
                                 )}
                                 sx={{ width: "20%" }}
                             />
+
+                            <Autocomplete
+                                options={["Student 1", "Student 2"]}
+                                filterSelectedOptions
+                                freeSolo={false}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        placeholder="Selection Status"
+                                        label="Selection Status"
+                                    />
+                                )}
+                                sx={{ width: "20%" }}
+                            />
                             <Button variant="contained">Submit</Button>
                         </Box>
 
@@ -331,7 +390,44 @@ const StudentAccount = () => {
                                 disableRowSelectionOnClick
                             />
                         </Box>
-                        <NewJobRequirement open={newJobPopup} close={() => setNewJobPopup(false)} />
+
+                        <Box
+                            display="flex"
+                            justifyContent="flex-end"
+                            marginBottom={5}
+                            marginRight={2}
+                            gap={2}
+                        >
+
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={() => { setSelectPopup(true) }}
+                            >
+                                Select
+                            </Button>
+
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={() => { setOnHoldPopup(true) }}
+                            >
+                                On Hold
+                            </Button>
+
+                            <Button
+                                color="secondary"
+                                variant="contained"
+                                onClick={() => { setRejectPopup(true) }}
+                            >
+                                Reject
+                            </Button>
+                        </Box>
+
+                        <ToastContainer />
+                        <Select open={selectPopup} close={() => setSelectPopup(false)} />
+                        <OnHold open={onHoldPopup} close={() => setOnHoldPopup(false)} />
+                        <Reject open={rejectPopup} close={() => setRejectPopup(false)} />
 
                     </Box>
                 </Bbox>

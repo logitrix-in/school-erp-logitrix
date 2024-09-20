@@ -17,14 +17,12 @@ import "react-toastify/dist/ReactToastify.css";
 import Manage from "./Manage";
 import Reject from './popups/Reject'
 import Initiate from './popups/Initiate'
-import ReleaseJoiningLetter from './popups/ReleaseJoiningLetter'
 
 const StudentAccount = () => {
     const navigate = useNavigate();
     const [selectedRow, setSelectedRow] = useState(null);
     const [rejectPopup, setRejectPopup] = useState(false);
     const [initiatePopup, setInitiatePopup] = useState(false);
-    const [releaseJoiningLetter, setReleaseJoiningLetter] = useState(false);
 
     const columns = [
         {
@@ -399,7 +397,6 @@ const StudentAccount = () => {
 
                     <Reject open={rejectPopup} close={() => setRejectPopup(false)} />
                     <Initiate open={initiatePopup} close={() => setInitiatePopup(false)} />
-                    <ReleaseJoiningLetter open={releaseJoiningLetter} close={() => setReleaseJoiningLetter(false)} />
 
                 </Bbox>
             </RevealCard >

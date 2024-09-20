@@ -89,11 +89,15 @@ import EmployeeManage from "./pages/employee/EmployeeManage";
 import EmployeeRecruitment from "./pages/employee/EmployeeRecruitment";
 
 import EmployeeApplications from "./components/employee/recruitment/Applications/Applications";
+import OfflineApplicationFormEmployee from "./components/employee/recruitment/Applications/OfflineApplicationForm";
+
 import EmployeeScreening from "./components/employee/recruitment/Screening/Screening";
 import EmployeeSelection from "./components/employee/recruitment/Selection/Selection";
 import EmployeeOffer from "./components/employee/recruitment/Offer/Offer";
 import EmployeeOnboarding from "./components/employee/recruitment/Onboarding/Onboarding";
-import OfflineApplicationFormEmployee from "./components/employee/recruitment/Applications/OfflineApplicationForm";
+
+import OfflineOnboardingFormEmployee from "./components/employee/recruitment/Onboarding/OfflineOnboardingForm";
+import OfflineOnboardingFormEmployeeView from "./components/employee/recruitment/Onboarding/OfflineOnboardingFormView";
 
 import OnBoardingEditEmployee from "./components/employee/manage/EditInformation/OnBoardingEdit";
 import OnBoardingDetailsEmployee from "./components/employee/manage/EditInformation/OnBoardingDetails";
@@ -539,7 +543,11 @@ function App() {
 
 				<Route
 					path={"/employee/recruitment/onboarding/OfflineOnboardingFormEdit"}
-					element={<OfflineApplicationFormEmployee />}
+					element={<OfflineOnboardingFormEmployee />}
+				/>
+				<Route
+					path={"/employee/recruitment/onboarding/OfflineOnboardingFormView"}
+					element={<OfflineOnboardingFormEmployeeView />}
 				/>
 			</Routes>
 		</>

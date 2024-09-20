@@ -59,7 +59,6 @@ const Submit = () => {
 	};
 
 	const columns = [
-		{ field: 'media_id', headerName: 'Media ID', width: 100 },
 		{
 			field: "media_type",
 			headerName: "Media Type",
