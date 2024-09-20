@@ -46,6 +46,7 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
+    "react-barcode": "^1.5.3",
     "react-calendar": "^4.8.0",
     "react-chartjs-2": "^5.2.0",
     "react-date-range": "^1.4.0",

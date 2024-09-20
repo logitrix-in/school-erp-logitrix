@@ -17,6 +17,10 @@ import { useState } from "react";
 
 const StudentAccount = () => {
     const navigate = useNavigate();
+    const [selectedRow, setSelectedRow] = useState(null);
+    const [selectPopup, setSelectPopup] = useState(false);
+    const [onHoldPopup, setOnHoldPopup] = useState(false);
+    const [rejectPopup, setRejectPopup] = useState(false);
 
     const columns = [
         { field: "id", headerName: "Application ID", flex: 0.8 },
@@ -61,9 +65,6 @@ const StudentAccount = () => {
             resume: "alice_johnson_resume.pdf"
         }
     ];
-
-    const [newJobPopup, setNewJobPopup] = useState(false);
-
 
     return (
         <>
@@ -259,6 +260,20 @@ const StudentAccount = () => {
                                 )}
                                 sx={{ width: "20%" }}
                             />
+
+                            <Autocomplete
+                                options={["Student 1", "Student 2"]}
+                                filterSelectedOptions
+                                freeSolo={false}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        placeholder="Selection Status"
+                                        label="Selection Status"
+                                    />
+                                )}
+                                sx={{ width: "20%" }}
+                            />
                             <Button variant="contained">Submit</Button>
                         </Box>
 
@@ -331,7 +346,46 @@ const StudentAccount = () => {
                                 disableRowSelectionOnClick
                             />
                         </Box>
-                        <NewJobRequirement open={newJobPopup} close={() => setNewJobPopup(false)} />
+
+
+                        <Box
+                            display="flex"
+                            justifyContent="flex-end"
+                            marginBottom={5}
+                            marginRight={2}
+                            gap={2}
+                        >
+
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={() => { setSelectPopup(true) }}
+                            >
+                                Select
+                            </Button>
+
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                onClick={() => { setOnHoldPopup(true) }}
+                            >
+                                On Hold
+                            </Button>
+
+                            <Button
+                                color="secondary"
+                                variant="contained"
+                                onClick={() => { setRejectPopup(true) }}
+                            >
+                                Reject
+                            </Button>
+                        </Box>
+
+                        <ToastContainer />
+                        <Select open={selectPopup} close={() => setSelectPopup(false)} />
+                        <OnHold open={onHoldPopup} close={() => setOnHoldPopup(false)} />
+                        <Reject open={rejectPopup} close={() => setRejectPopup(false)} />
+
 
                     </Box>
                 </Bbox>

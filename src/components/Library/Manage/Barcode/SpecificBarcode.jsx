@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import Section from "../../../Section";
 import Flex from "../../../UiComponents/Flex";
+import Popup from "../../../UiComponents/Popup";
 import { Button, IconButton, TextField } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { Icon } from "@iconify/react";
+import Barcode from 'react-barcode';
 
 const SpecificBarcode = () => {
 	const [codes, setCodes] = useState([]);
 	const [val, setVal] = useState("");
+	const [generateBarcodePopup, setGenerateBarcodePopup] = useState(false);
 
 	return (
 		<Section title={"Specific Barcode Generator"}>
@@ -64,7 +67,7 @@ const SpecificBarcode = () => {
 					</Box>
 				))}
 			</Flex>
-			<Button variant="contained">Generate</Button>
+			<Button variant="contained" onClick={() => setGenerateBarcodePopup(true)}>Generate</Button>
 			<Flex mt={3}>
 				<Button variant="contained" disabled>
 					Download
@@ -73,7 +76,43 @@ const SpecificBarcode = () => {
 					Print
 				</Button>
 			</Flex>
+
+			<Popup
+				title="Barcode"
+				open={generateBarcodePopup}
+				close={() => {
+					setGenerateBarcodePopup(false);
+				}}
+				maxWidth="md"
+			>
+				<BarcodeGenerator codes={codes} />
+			</Popup>
 		</Section>
+
+	);
+};
+
+const BarcodeGenerator = ({ codes }) => {
+	return (
+		<div style={{ width: '210mm', minHeight: '297mm', margin: 'auto', backgroundColor: 'white', padding: '1rem' }}>
+			<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+				{codes.map((code, index) => (
+					<div
+						key={index}
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							alignItems: 'center',
+							justifyContent: 'center',
+							padding: '0.5rem',
+							border: '1px solid #D1D5DB' // gray-300
+						}}
+					>
+						<Barcode value={code} width={1.5} height={40} fontSize={12} />
+					</div>
+				))}
+			</div>
+		</div>
 	);
 };
 

@@ -72,7 +72,7 @@ function OfflineApplicationForm() {
 
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Typography fontSize={"1.2rem"} color={"white"} textAlign="center">
-              Offline Application Form
+              Offline Onboarding Form
             </Typography>
           </Box>
 
@@ -91,7 +91,7 @@ function OfflineApplicationForm() {
             }}
           >
             <Icon
-              onClick={() => navigate("/employee/recruitment/applications/")}
+              onClick={() => navigate("/employee/recruitment/onboarding/")}
               icon="fa:close"
               fontSize={"1.2rem"}
               color="inherit"
@@ -155,9 +155,9 @@ function OfflineApplicationForm() {
               type="submit"
               variant="contained"
               sx={{ width: '50%', margin: 'auto', display: 'block' }}
-              onClick={() => { toast.success('Submited'); navigate("/employee/recruitment/applications/") }}
+              onClick={() => { toast.success('Submited'); navigate("/employee/recruitment/onboarding/") }}
             >
-              Submit
+              Next
             </Button>
           </Bbox>
         </RevealCard>
