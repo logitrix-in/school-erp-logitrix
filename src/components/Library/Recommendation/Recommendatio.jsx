@@ -364,11 +364,10 @@ const Recommendation = () => {
 					<FormControl sx={{ width: '25%' }}>
 						<InputLabel>Search by Library Card #</InputLabel>
 						<Select
+							required
 							label="Search by Library Card #"
 							value={selectedLibraryCard}
-							required
 							onChange={(e) => setSelectedLibraryCard(e.target.value)}
-							onBlur={handleGetDetails}
 						>
 							{
 								libraryCardNumbers?.map((type) => (

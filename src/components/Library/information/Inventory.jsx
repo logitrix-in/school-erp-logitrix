@@ -5,9 +5,12 @@ import Chart from "react-apexcharts";
 import { Stack } from "@mui/system";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
 import useClasses from "../../../hooks/useClasses";
+import useMedia from "../../../hooks/useMedia";
 
 const Inventory = () => {
 	const { days } = useClasses();
+	const { mediaTypes } = useMedia();
+
 	const series = [
 		{
 			name: "Books In Circulation",
@@ -26,7 +29,7 @@ const Inventory = () => {
 		},
 		{
 			name: "Media Inventory",
-			data: [1010, 970, 1050, 950, 810, 940, 1050],
+			data: [800, 1200, 1050, 950, 810, 940, 1050],
 			type: "line",
 		},
 	];
@@ -92,21 +95,15 @@ const Inventory = () => {
 				<Stack flex={1}>
 					<Box p={2} gap={2} display={"flex"}>
 						<ReignsSelect
-							items={["Books", "Periodicals", "Research Papers"]}
-							defaultValues={["Books", "Periodicals", "Research Papers"]}
+							items={mediaTypes}
+							defaultValues={mediaTypes}
 							label="Media Type"
 							sx={{ width: "17rem" }}
 							multiple
 						/>
 						<ReignsSelect
-							items={[
-								"Last 7 Days",
-								"Last 15 Days",
-								"Last 1 Month",
-								"Last 6 month",
-								"Last 1 Year",
-							]}
-							defaultVal="Last 7 Days"
+							items={days}
+							defaultVal="Today"
 							label="Time Frame"
 							sx={{ width: "17rem" }}
 						/>

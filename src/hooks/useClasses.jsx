@@ -17,6 +17,7 @@ const useClasses = () => {
     active: context.activeButton,
     setActiveButton: context.setActiveButton,
     employeeRole: context.employeeRole,
+    employeeType: context.employeeType,
   };
 };
 
