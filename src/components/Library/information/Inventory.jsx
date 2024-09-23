@@ -1,5 +1,4 @@
-import { Box, Divider, Grid, Typography } from "@mui/material";
-import React from "react";
+import { Box, Divider, Typography } from "@mui/material";
 import Bbox from "../../UiComponents/Bbox";
 import Chart from "react-apexcharts";
 import { Stack } from "@mui/system";
@@ -62,7 +61,7 @@ const Inventory = () => {
 			colors: ["transparent", "transparent", "transparent", "#1D55E5"],
 		},
 		xaxis: {
-			categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+			categories: ["", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
 		},
 		yaxis: {
 			// title: {
