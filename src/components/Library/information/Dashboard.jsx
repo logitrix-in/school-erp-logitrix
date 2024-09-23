@@ -1,17 +1,44 @@
 import { Box, Divider, Grid, Typography, IconButton } from "@mui/material";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Bbox from "../../UiComponents/Bbox";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
 import { AppContext } from "../../../context/AppContext";
 import useClasses from "../../../hooks/useClasses";
 import { Icon } from "@iconify/react";
-import { maxWidth } from "@mui/system";
+import api from "../../../config/api";
 
 const Dashboard = () => {
 	const ctx = useContext(AppContext);
-	const { classes, sections, acYear, curYear, status } = useClasses();
+	const { classes, sections, acYear, curYear, status, employeeType } = useClasses();
 	const [academicYear, setAcademicYear] = useState(curYear);
-	console.log(classes);
+	const [selectedClasses, setSelectedClasses] = useState(classes);
+	const [selectedSections, setSelectedSections] = useState(sections);
+	const [selectedEmployeeTypes, setSelectedEmployeeTypes] = useState(["Management", "Teaching Staff", "Support Staff"]);
+	const [selectedStatus, setSelectedStatus] = useState(status);
+	const [dashboardData, setDashboardData] = useState(null);
+
+	useEffect(() => {
+		fetchDashboardData();
+	}, []);
+
+	const fetchDashboardData = async () => {
+		try {
+			const response = await api.post('/library/information/inventory-dashboard', {
+				academic_year: academicYear,
+				classes: selectedClasses,
+				sections: selectedSections,
+				employee_types: selectedEmployeeTypes,
+				status: selectedStatus
+			});
+			setDashboardData(response.data);
+		} catch (error) {
+			console.error("Error fetching dashboard data:", error);
+		}
+	};
+
+	const handleAcademicYearChange = (e) => {
+		setAcademicYear(e?.target?.value ?? curYear);
+	};
 
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
@@ -41,114 +68,91 @@ const Dashboard = () => {
 				>
 					<ReignsSelect
 						items={acYear}
-						onChange={(e) =>
-							setAcademicYear(e?.target.value ?? academicYear)
-						}
+						onChange={handleAcademicYearChange}
 						label="Academic Year"
 						value={academicYear}
+						defaultVal={curYear}
 					/>
 					<ReignsSelect
 						items={classes}
 						multiple
 						label="Class"
 						defaultValues={classes}
+						onChange={setSelectedClasses}
+						value={selectedClasses}
 					/>
 					<ReignsSelect
 						items={sections}
 						multiple
 						label="Section"
 						defaultValues={sections}
+						onChange={setSelectedSections}
+						value={selectedSections}
 					/>
 					<ReignsSelect
-						items={[
-							"Management",
-							"Teaching Staff",
-							"Support Staff",
-						]}
+						items={employeeType}
 						multiple
 						label="Employee Type"
-						defaultValues={["Management", "Teaching Staff", "Support Staff"]}
+						defaultValues={employeeType}
+						onChange={setSelectedEmployeeTypes}
+						value={selectedEmployeeTypes}
 					/>
 					<ReignsSelect
 						items={status}
 						multiple
 						label="Status"
 						defaultValues={status}
+						onChange={setSelectedStatus}
+						value={selectedStatus}
 					/>
 				</Bbox>
 				<Grid container flex={2} spacing={1}>
-					<DisplayCard
-						bgColor={"#D9EBF4"}
-						color={"#3B98C4"}
-						header="Media in Circulation"
-						value="3100/39000"
-						data={[
-							{
-								title: "Books",
-								val: 2700,
-							},
-							{
-								title: "Periodicals",
-								val: 200,
-							},
-							{
-								title: "Research Papers",
-								val: 200,
-							},
-						]}
-					/>
-					<DisplayCard
-						bgColor={"#FAD2C0"}
-						color={"#B34A19"}
-						header="Borrowers"
-						value="32/2900"
-						data={[
-							{
-								title: "Students",
-								val: 8,
-							},
-							{
-								title: "Employees",
-								val: 24,
-							},
-						]}
-					/>
-					<DisplayCard
-						bgColor={"#FAD2C0"}
-						color={"#B34A19"}
-						header="Media Inventory"
-						value="39000"
-						data={[
-							{
-								title: "Books",
-								val: 27000,
-							},
-							{
-								title: "Periodicals",
-								val: 7000,
-							},
-							{
-								title: "Research Papers",
-								val: 5000,
-							},
-						]}
-					/>
-					<DisplayCard
-						bgColor={"#D9EBF4"}
-						color={"#3B98C4"}
-						header="Current Defaulters (Library)"
-						value="2900"
-						data={[
-							{
-								title: "Students",
-								val: 8,
-							},
-							{
-								title: "Employees",
-								val: 24,
-							},
-						]}
-					/>
+					{dashboardData && (
+						<>
+							<DisplayCard
+								bgColor={"#D9EBF4"}
+								color={"#3B98C4"}
+								header="Media in Circulation"
+								value={`${dashboardData.media_in_circulation.media_circulation}/${dashboardData.media_inventory.total_media}`}
+								data={[
+									{ title: "Books", val: dashboardData.media_in_circulation.books },
+									{ title: "Periodicals", val: dashboardData.media_in_circulation.periodicals },
+									{ title: "Research Papers", val: dashboardData.media_in_circulation.research_papers },
+								]}
+							/>
+							<DisplayCard
+								bgColor={"#FAD2C0"}
+								color={"#B34A19"}
+								header="Borrowers"
+								value={`${dashboardData.borrowers.total_borrowed}/${dashboardData.borrowers.total_library_cards}`}
+								data={[
+									{ title: "Students", val: dashboardData.borrowers.students },
+									{ title: "Employees", val: dashboardData.borrowers.employees },
+								]}
+							/>
+							<DisplayCard
+								bgColor={"#FAD2C0"}
+								color={"#B34A19"}
+								header="Media Inventory"
+								value={dashboardData.media_inventory.total_media.toString()}
+								data={[
+									{ title: "Books", val: dashboardData.media_inventory.total_books },
+									{ title: "Periodicals", val: dashboardData.media_inventory.total_periodicals },
+									{ title: "Research Papers", val: dashboardData.media_inventory.total_research_papers },
+								]}
+							/>
+							<DisplayCard
+								bgColor={"#D9EBF4"}
+								color={"#3B98C4"}
+								header="Current Defaulters (Library)"
+								value={dashboardData.current_defaulters.total_defaulters.toString()}
+								data={[
+									{ title: "Students", val: dashboardData.current_defaulters.students },
+									{ title: "Employees", val: dashboardData.current_defaulters.employees },
+								]}
+							/>
+						</>
+					)}
 				</Grid>
 			</Box>
 		</Bbox>

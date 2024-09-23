@@ -87,6 +87,7 @@ import EmployeeInformation from "./pages/employee/EmployeeInformation";
 import EmployeeLeave from "./pages/employee/EmployeeLeave";
 import EmployeeManage from "./pages/employee/EmployeeManage";
 import EmployeeRecruitment from "./pages/employee/EmployeeRecruitment";
+import EmployeeTimetable from "./pages/employee/EmployeeTimetable";
 
 import EmployeeApplications from "./components/employee/recruitment/Applications/Applications";
 import OfflineApplicationFormEmployee from "./components/employee/recruitment/Applications/OfflineApplicationForm";
@@ -482,7 +483,7 @@ function App() {
 
 					<Route
 						path={"employee/timetable/"}
-						element={<LibraryRecommandation />}
+						element={<EmployeeTimetable />}
 					/>
 					<Route
 						path={"employee/leave/"}

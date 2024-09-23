@@ -8,21 +8,43 @@ import {
     Typography,
     Autocomplete,
     TextField,
+    Radio,
 } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import NewJobRequirement from "../popup/NewJobRequirement";
+import Reject from "./popups/Reject";
+import OnHold from "./popups/OnHold";
+import ReleaseOfferLetter from "./popups/ReleaseOfferLetter";
+import EditLetter from "./popups/EditLetter";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 const StudentAccount = () => {
     const navigate = useNavigate();
     const [selectedRow, setSelectedRow] = useState(null);
-    const [selectPopup, setSelectPopup] = useState(false);
+    const [releaseOfferLetterPopup, setReleaseOfferLetterPopup] = useState(false);
     const [onHoldPopup, setOnHoldPopup] = useState(false);
     const [rejectPopup, setRejectPopup] = useState(false);
+    const [setTemplatePopup, setSetTemplatePopup] = useState(false);
 
     const columns = [
+        {
+            field: "radioButtons",
+            headerName: "",
+            renderCell: (params) => (
+                <Radio
+                    checked={params.row.id === selectedRow}
+                    color="primary"
+                    sx={{
+                        transform: "scale(0.6)",
+                    }}
+                    inputProps={{ "aria-label": params.row.id }}
+                    onChange={() => {
+                        setSelectedRow(params.row.id);
+                    }}
+                />
+            ),
+        },
         { field: "id", headerName: "Application ID", flex: 0.8 },
         { field: "candidate_name", headerName: "Candidate Name", flex: 0.8 },
         { field: "job_id", headerName: "Job ID", flex: 0.8 },
@@ -359,9 +381,9 @@ const StudentAccount = () => {
                             <Button
                                 color="primary"
                                 variant="contained"
-                                onClick={() => { setSelectPopup(true) }}
+                                onClick={() => { setReleaseOfferLetterPopup(true) }}
                             >
-                                Select
+                                Release Offer Letter
                             </Button>
 
                             <Button
@@ -382,10 +404,10 @@ const StudentAccount = () => {
                         </Box>
 
                         <ToastContainer />
-                        <Select open={selectPopup} close={() => setSelectPopup(false)} />
+                        <ReleaseOfferLetter open={releaseOfferLetterPopup} close={() => setReleaseOfferLetterPopup(false)} setSetTemplatePopup={setSetTemplatePopup} />
                         <OnHold open={onHoldPopup} close={() => setOnHoldPopup(false)} />
                         <Reject open={rejectPopup} close={() => setRejectPopup(false)} />
-
+                        <EditLetter open={setTemplatePopup} close={() => setSetTemplatePopup(false)} />
 
                     </Box>
                 </Bbox>
