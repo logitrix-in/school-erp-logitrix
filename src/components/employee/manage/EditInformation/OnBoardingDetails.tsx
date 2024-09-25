@@ -76,7 +76,7 @@ const OnboardingDetails = () => {
       >
         {/* Edit Information text */}
         <Typography fontSize={"1.2rem"} color={"white"}>
-          Student Information
+          View Employee Information
         </Typography>
 
         {/* {searchParams.get("admin") == "true" && ( */}

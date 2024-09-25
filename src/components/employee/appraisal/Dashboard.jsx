@@ -26,18 +26,7 @@ import Analyze from "./popup/Analyze";
 import useClasses from "@/hooks/useClasses";
 
 export default function Dashboard() {
-    const isSmall = useMediaQuery("(max-width: 1364px)");
-    const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
-    const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-    const isDesktop = useMediaQuery(
-        "(min-width: 1707px) and (max-width: 1919px)"
-    );
-    const isLarge = useMediaQuery("(min-width: 1920px)");
-    const isXlarge = useMediaQuery("(min-width: 2560px)");
-
-    const [appraisalCycle, setAppraisalCycle] = useState("");
     const [analyzePopup, setAnalyzePopup] = useState(false);
-    const [year, setYear] = useState([]);
     const { curYear } = useClasses();
 
     const years = ["2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];

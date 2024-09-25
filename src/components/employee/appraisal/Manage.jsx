@@ -58,7 +58,7 @@ export default function Manage() {
                         Stage Clearance
                     </Button>
                     <Button variant="contained" color="primary" fullWidth onClick={() => setAppraisalIncrementPopup(true)}>
-                        Appraisal Increment
+                        Appraisal Increement
                     </Button>
                     <Button variant="outlined" color="primary" fullWidth onClick={() => setAnnualCompensationLetterPopup(true)}>
                         Annual Compensation Letter
