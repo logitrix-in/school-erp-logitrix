@@ -87,7 +87,10 @@ import EmployeeInformation from "./pages/employee/EmployeeInformation";
 import EmployeeLeave from "./pages/employee/EmployeeLeave";
 import EmployeeManage from "./pages/employee/EmployeeManage";
 import EmployeeRecruitment from "./pages/employee/EmployeeRecruitment";
+
 import EmployeeTimetable from "./pages/employee/EmployeeTimetable";
+import SmartTimetable from "./components/employee/timetable/SmartTimetable/SmartTimetable";
+import ManualTimetable from "./components/employee/timetable/ManualTimetable/ManualTimetable";
 
 import EmployeeApplications from "./components/employee/recruitment/Applications/Applications";
 import OfflineApplicationFormEmployee from "./components/employee/recruitment/Applications/OfflineApplicationForm";
@@ -453,10 +456,6 @@ function App() {
 					/>
 
 					<Route
-						path={"employee/manage/"}
-						element={<EmployeeManage />}
-					/>
-					<Route
 						path="/employee/manage/employee-account/"
 						element={EmployeeAccount}
 					/>
@@ -485,6 +484,15 @@ function App() {
 						path={"employee/timetable/"}
 						element={<EmployeeTimetable />}
 					/>
+					<Route
+						path={"employee/timetable/smarttable"}
+						element={SmartTimetable}
+					/>
+					<Route
+						path={"employee/timetable/manualtable"}
+						element={ManualTimetable}
+					/>
+
 					<Route
 						path={"employee/leave/"}
 						element={<EmployeeLeave />}

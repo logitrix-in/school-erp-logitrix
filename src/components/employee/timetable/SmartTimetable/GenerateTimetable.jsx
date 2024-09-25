@@ -8,15 +8,14 @@ import {
 import Bbox from "../../../UiComponents/Bbox";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import { ToastContainer } from "react-toastify";
-import NewCandidateInvitation from '../popup/NewCandidateInvitation';
-import InternalReferrals from '../popup/InternalReferrals';
 import { useNavigate } from "react-router-dom";
+import PublishSmartTimeTablePopup from './popups/PublishSmartTimeTablePopup'
+import GenerateSmartTimeTablePopup from './popups/GenerateSmartTimeTablePopup'
 
-export default function ManageApplications() {
+export default function GenerateTimetable() {
     const navigate = useNavigate();
-
-    const [inviteNewCandidatePopup, setInviteNewCandidatePopup] = useState(false);
-    const [internalReferralPopup, setInternalReferralPopup] = useState(false);
+    const [generateSmartTimeTable, setGenerateSmartTimeTable] = useState(false);
+    const [publishSmartTimeTable, setPublishSmartTimeTable] = useState(false);
 
     return (
         <RevealCard>
@@ -31,27 +30,24 @@ export default function ManageApplications() {
                     alignItems={"center"}
                 >
                     <Typography fontWeight={"700"} borderRadius={1} fontSize={"1.1rem"}>
-                        Manage
+                        Generate / Publish Timetable
                     </Typography>
                 </Box>
 
                 <Divider />
 
                 <ToastContainer />
-                <NewCandidateInvitation open={inviteNewCandidatePopup} close={() => setInviteNewCandidatePopup(false)} />
-                <InternalReferrals open={internalReferralPopup} close={() => setInternalReferralPopup(false)} />
+                <GenerateSmartTimeTablePopup open={generateSmartTimeTable} close={() => setGenerateSmartTimeTable(false)} />
+                <PublishSmartTimeTablePopup open={publishSmartTimeTable} close={() => setPublishSmartTimeTable(false)} />
 
                 <Box display="grid"
                     gridTemplateColumns="repeat(3, 1fr)"
                     gap={2} px={3} py={4}>
-                    <Button variant="contained" color="primary" fullWidth onClick={() => navigate('/employee/recruitment/applications/OfflineApplicationFormEdit')}>
-                        Offline Application
+                    <Button variant="contained" color="primary" fullWidth onClick={() => setGenerateSmartTimeTable(true)}>
+                        Generate Smart Timetable
                     </Button>
-                    <Button variant="contained" color="primary" fullWidth onClick={() => setInviteNewCandidatePopup(true)}>
-                        Invite New Candidate
-                    </Button>
-                    <Button variant="outlined" color="primary" fullWidth onClick={() => setInternalReferralPopup(true)}>
-                        Internal Referrals
+                    <Button variant="outlined" color="primary" fullWidth onClick={() => setPublishSmartTimeTable(true)}>
+                        Publish Smart Timetable
                     </Button>
                 </Box>
             </Bbox>

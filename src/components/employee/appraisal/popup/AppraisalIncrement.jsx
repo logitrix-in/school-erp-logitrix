@@ -1,30 +1,129 @@
-import React from "react";
 import {
     Box,
     Button,
     Dialog,
     InputLabel,
-    Divider,
     TextField,
     IconButton,
-    Tab,
-    Tabs,
     Select,
     MenuItem,
     FormControl,
     Typography,
 } from "@mui/material";
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
-
+import { toast } from "react-toastify";
+import { DataGrid } from "@mui/x-data-grid";
 
 const AppraisalIncrement = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const columns = [
+        { field: 'space', headerName: '', flex: 0.2 },
+        { field: 'grade', headerName: 'Grade', flex: 1 },
+        {
+            field: 'rating1',
+            headerName: '1',
+            flex: 1,
+            renderCell: (params) => (
+                <TextField
+                    value={params.value}
+                    size="small"
+                    onChange={(e) => {
+                        // Handle change here
+                    }}
+                    sx={{ width: '50%' }}
+                    InputProps={{
+                        endAdornment: '%',
+                    }}
+                />
+            ),
+        },
+        {
+            field: 'rating2',
+            headerName: '2',
+            flex: 1,
+            renderCell: (params) => (
+                <TextField
+                    value={params.value}
+                    size="small"
+                    onChange={(e) => {
+                        // Handle change here
+                    }}
+                    InputProps={{
+                        endAdornment: '%',
+                    }}
+                    sx={{ width: '50%' }}
+                />
+            ),
+        },
+        {
+            field: 'rating3',
+            headerName: '3',
+            flex: 1,
+            renderCell: (params) => (
+                <TextField
+                    value={params.value}
+                    size="small"
+                    onChange={(e) => {
+                        // Handle change here
+                    }}
+                    InputProps={{
+                        endAdornment: '%',
+                    }}
+                    sx={{ width: '50%' }}
+                />
+            ),
+        },
+        {
+            field: 'rating4',
+            headerName: '4',
+            flex: 1,
+            renderCell: (params) => (
+                <TextField
+                    value={params.value}
+                    size="small"
+                    onChange={(e) => {
+                        // Handle change here
+                    }}
+                    InputProps={{
+                        endAdornment: '%',
+                    }}
+                    sx={{ width: '50%' }}
+                />
+            ),
+        },
+        {
+            field: 'rating5',
+            headerName: '5',
+            flex: 1,
+            renderCell: (params) => (
+                <TextField
+                    value={params.value}
+                    size="small"
+                    onChange={(e) => {
+                        // Handle change here
+                    }}
+                    InputProps={{
+                        endAdornment: '%',
+                    }}
+                    sx={{ width: '50%' }}
+                />
+            ),
+        },
+    ];
+
+    const rows = [
+        { id: 1, grade: 'A1', rating1: '2', rating2: '4', rating3: '5', rating4: '6', rating5: '8' },
+        { id: 2, grade: 'A2', rating1: '2', rating2: '4', rating3: '5', rating4: '6', rating5: '8' },
+        { id: 3, grade: 'A3', rating1: '2', rating2: '4', rating3: '5', rating4: '6', rating5: '8' },
+        { id: 4, grade: 'B1', rating1: '2', rating2: '4', rating3: '5', rating4: '6', rating5: '8' },
+        { id: 5, grade: 'B2', rating1: '2', rating2: '4', rating3: '5', rating4: '6', rating5: '8' },
+        { id: 6, grade: 'B3', rating1: '2', rating2: '4', rating3: '5', rating4: '6', rating5: '8' },
+        { id: 7, grade: 'B4', rating1: '2', rating2: '4', rating3: '5', rating4: '6', rating5: '8' },
+        { id: 8, grade: 'C1', rating1: '2', rating2: '4', rating3: '5', rating4: '6', rating5: '8' },
+        { id: 9, grade: 'C2', rating1: '2', rating2: '4', rating3: '5', rating4: '6', rating5: '8' },
+        { id: 10, grade: 'C3', rating1: '2', rating2: '4', rating3: '5', rating4: '6', rating5: '8' },
+    ];
+
 
     return (
         <Dialog
@@ -39,7 +138,7 @@ const AppraisalIncrement = ({ open, close }) => {
             onClose={() => close()}
             disableEnforceFocus={true}
         >
-            <Box overflow={"hidden"}>
+            <Box>
                 <Box
                     p={1}
                     py={1}
@@ -82,16 +181,41 @@ const AppraisalIncrement = ({ open, close }) => {
                         </FormControl>
                     </Box>
 
-                    <Typography fontWeight={"medium"} marginTop={5}>Increment Percentage :</Typography>
+                    <Typography fontWeight={"medium"} marginY={2}>Increment Percentage Grid</Typography>
 
 
+                    <Box sx={{ width: "100%" }}>
+                        <DataGrid
+                            autoHeight
+                            experimentalFeatures={{
+                                columnGrouping: true,
+                            }}
+                            rows={rows}
+                            columns={columns}
+                            columnGroupingModel={[
+                                {
+                                    groupId: "ratings",
+                                    headerName: "Ratings",
+                                    headerAlign: 'center',
+                                    children: [
+                                        { field: "rating1" },
+                                        { field: "rating2" },
+                                        { field: "rating3" },
+                                        { field: "rating4" },
+                                        { field: "rating5" },
+                                    ],
+                                },
+                            ]}
+                            disableRowSelectionOnClick
+                        />
+                    </Box>
 
 
                     <Box marginY={4} width={"100%"}>
                         <Button variant="contained" color="primary" fullWidth onClick={() => {
                             toast.success("Updated Successfully");
                             close();
-                        }}>Submit</Button>
+                        }}>Save</Button>
                     </Box>
                 </Box>
             </Box>

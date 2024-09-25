@@ -2,7 +2,6 @@ import React from "react";
 import Individual from "../../components/employee/manage/EditInformation/Individual";
 import Bulk from "../../components/employee/manage/EditInformation/Bulk";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
 
 // edit information page
 const EmployeeManage = () => {
@@ -83,7 +82,7 @@ const EmployeeManage = () => {
                             fontSize: "16px",
                             fontWeight: 400,
                         }}
-                        onClick={() => navigate("/employee/manage/department/")}
+                        onClick={() => navigate("/employee/manage/promotion/")}
                     >
                         Department
                     </button>
@@ -116,17 +115,16 @@ const EmployeeManage = () => {
                             fontSize: "16px",
                             fontWeight: 400,
                         }}
-                        onClick={() => navigate("/employee/manage/probation/")}
+                        onClick={() => navigate("/employee/manage/section-allotment/")}
                     >
                         Probation
                     </button>
                 </div>
             </div>
 
-            <ToastContainer />
-
             {/* individual component */}
             <Individual />
+
             {/* bulk component */}
             <Bulk />
         </>

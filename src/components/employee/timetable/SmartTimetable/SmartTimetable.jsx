@@ -1,12 +1,32 @@
-import { Box } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import RevealCard from "../../../AnimationComponents/RevealCard";
+import Bbox from "../../../UiComponents/Bbox";
+import {
+    Box,
+    Divider,
+    Typography,
+    Button,
+    TextField,
+    Link,
+    FormControlLabel,
+    Switch,
+    Autocomplete,
+    IconButton
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import Overview from "../../components/employee/timetable/Overview";
+import { DataGrid } from "@mui/x-data-grid";
+import { ToastContainer } from "react-toastify";
+import CloseIcon from "@mui/icons-material/Close";
+import GenerateTimetable from './GenerateTimetable'
+import ManageClassWise from './ManageClassWise'
+import ManageFacultyWise from './ManageFacultyWise'
 
-const EmployeeRecruitment = () => {
+const SmartTimetable = () => {
     const navigate = useNavigate();
+    const [mapping, setMapping] = useState('class');
 
     return (
-        <Box display={'flex'} flexDirection={'column'} gap={2}>
+        <RevealCard>
             <div
                 style={{
                     backgroundColor: "#E5F3FB",
@@ -19,7 +39,7 @@ const EmployeeRecruitment = () => {
                 <div>
                     <button
                         style={{
-                            backgroundColor: "white",
+                            backgroundColor: "transparent",
                             border: "none",
                             color: "black",
                             marginRight: "10px",
@@ -36,7 +56,7 @@ const EmployeeRecruitment = () => {
 
                     <button
                         style={{
-                            backgroundColor: "transparent",
+                            backgroundColor: "white",
                             border: "none",
                             color: "black",
                             marginRight: "10px",
@@ -70,9 +90,24 @@ const EmployeeRecruitment = () => {
                 </div>
             </div>
 
-            <Overview />
-        </Box>
+            <RevealCard>
+                <Bbox borderRadius={2} overflow={"hidden"} my={2}>
+                    <ToastContainer />
+                </Bbox>
+            </RevealCard >
+
+            {
+                mapping === 'class' ?
+                    <>
+                        <ManageClassWise setMapping={setMapping} />
+                        <GenerateTimetable />
+                    </>
+                    :
+                    <ManageFacultyWise setMapping={setMapping} />
+            }
+
+        </RevealCard>
     );
 };
 
-export default EmployeeRecruitment;
+export default <SmartTimetable />;

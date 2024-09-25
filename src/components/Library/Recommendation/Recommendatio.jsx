@@ -408,7 +408,6 @@ const Recommendation = () => {
 								headerName: "Media Requirement",
 								headerAlign: 'center',
 								children: [
-									{ field: "Media Type" },
 									{ field: "Media Name" },
 									{ field: "Author" },
 								],

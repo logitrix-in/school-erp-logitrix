@@ -151,9 +151,7 @@ const OnBoardingEdit = () => {
     toast.success("Submitted Successfully", {
       autoClose: 2000,
     });
-    setTimeout(() => {
-      navigate("/student/manage/OnBoardingDetails");
-    }, 2000);
+    navigate("/employee/manage/");
   };
 
   const handleClose = () => {
@@ -161,9 +159,7 @@ const OnBoardingEdit = () => {
     toast.error("Edit Details Cancelled", {
       autoClose: 2000,
     });
-    setTimeout(() => {
-      navigate("/student/manage/OnBoardingDetails");
-    }, 2000);
+    navigate("/employee/manage/");
   };
 
   return (
@@ -178,7 +174,7 @@ const OnBoardingEdit = () => {
       >
         {/* Edit Information text */}
         <Typography fontSize={"1.2rem"} color={"white"}>
-          Student Information
+          Offline Onboarding Form
         </Typography>
 
         <IconButton onClick={() => handleClose()}>
@@ -411,7 +407,6 @@ const OnBoardingEdit = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "row",
-                  justifyContent: "space-between",
                   alignItems: "center",
                   gap: "10px",
                   padding: "10px",
@@ -432,7 +427,143 @@ const OnBoardingEdit = () => {
                     <MenuItem value="Other">Other</MenuItem>
                   </Select>
                 </FormControl>
+              </Box>
 
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Father's Name:{" "}
+                </Typography>
+                <TextField
+                  label="Father's Name"
+                  name="contactNumber"
+                  value={formValues.contactNumber}
+                  onChange={(event) => {
+                    const newContactNumber = event.target.value.replace(
+                      /[^0-9]/g,
+                      ""
+                    ); // Remove non-numeric characters
+                    if (newContactNumber.length <= 10) {
+                      setFormValues({
+                        ...formValues,
+                        contactNumber: newContactNumber,
+                      });
+                    }
+                  }}
+                  inputProps={{ maxLength: 10 }}
+                />
+
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Father's Occupation:{" "}
+                </Typography>
+                <TextField
+                  label="Father's Occupation"
+                  name="email"
+                  value={formValues.email}
+                  onChange={handleInputChange}
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Mother's Name:{" "}
+                </Typography>
+                <TextField
+                  label="Mother's Name"
+                  name="contactNumber"
+                  value={formValues.contactNumber}
+                  onChange={(event) => {
+                    const newContactNumber = event.target.value.replace(
+                      /[^0-9]/g,
+                      ""
+                    ); // Remove non-numeric characters
+                    if (newContactNumber.length <= 10) {
+                      setFormValues({
+                        ...formValues,
+                        contactNumber: newContactNumber,
+                      });
+                    }
+                  }}
+                  inputProps={{ maxLength: 10 }}
+                />
+
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Mother's Occupation:{" "}
+                </Typography>
+                <TextField
+                  label="Mother's Occupation"
+                  name="email"
+                  value={formValues.email}
+                  onChange={handleInputChange}
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Spouse's Name:{" "}
+                </Typography>
+                <TextField
+                  label="Spouse's Name"
+                  name="contactNumber"
+                  value={formValues.contactNumber}
+                  onChange={(event) => {
+                    const newContactNumber = event.target.value.replace(
+                      /[^0-9]/g,
+                      ""
+                    ); // Remove non-numeric characters
+                    if (newContactNumber.length <= 10) {
+                      setFormValues({
+                        ...formValues,
+                        contactNumber: newContactNumber,
+                      });
+                    }
+                  }}
+                  inputProps={{ maxLength: 10 }}
+                />
+
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Spouse's Occupation:{" "}
+                </Typography>
+                <TextField
+                  label="Spouse's Occupation"
+                  name="email"
+                  value={formValues.email}
+                  onChange={handleInputChange}
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "10px",
+                }}
+              >
                 <Typography sx={{ fontWeight: "600", width: "120px" }}>
                   Blood Group:
                 </Typography>
@@ -467,13 +598,89 @@ const OnBoardingEdit = () => {
                 <Typography sx={{ fontWeight: "600", width: "250px" }}>
                   Critical Medical Ailment (s):
                 </Typography>
+                <Typography sx={{ fontWeight: "600", width: "250px" }}>
+                  Yes (Chronic Aplastic Anaemia)
+                </Typography>
+
                 <TextField
                   label="Critical Medical Ailments"
                   name="criticalMedicalAilments"
                   value={formValues.criticalMedicalAilments}
                   onChange={handleInputChange}
                   rows={4}
-                  fullWidth
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Emergency Contact Number:{" "}
+                </Typography>
+                <TextField
+                  label="Emergency Contact Number"
+                  name="contactNumber"
+                  value={formValues.contactNumber}
+                  onChange={(event) => {
+                    const newContactNumber = event.target.value.replace(
+                      /[^0-9]/g,
+                      ""
+                    ); // Remove non-numeric characters
+                    if (newContactNumber.length <= 10) {
+                      setFormValues({
+                        ...formValues,
+                        contactNumber: newContactNumber,
+                      });
+                    }
+                  }}
+                  inputProps={{ maxLength: 10 }}
+                />
+
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Emergency Contact Name:{" "}
+                </Typography>
+                <TextField
+                  label="Emergency Contact Name"
+                  name="email"
+                  value={formValues.email}
+                  onChange={handleInputChange}
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  padding: "10px",
+                }}
+              >
+                <Typography sx={{ fontWeight: "600", width: "120px" }}>
+                  Emergency Contact Relationship:{" "}
+                </Typography>
+                <TextField
+                  label="Emergency Contact Relationship"
+                  name="contactNumber"
+                  value={formValues.contactNumber}
+                  onChange={(event) => {
+                    const newContactNumber = event.target.value.replace(
+                      /[^0-9]/g,
+                      ""
+                    ); // Remove non-numeric characters
+                    if (newContactNumber.length <= 10) {
+                      setFormValues({
+                        ...formValues,
+                        contactNumber: newContactNumber,
+                      });
+                    }
+                  }}
+                  inputProps={{ maxLength: 10 }}
                 />
               </Box>
 
@@ -487,22 +694,26 @@ const OnBoardingEdit = () => {
                 }}
               >
                 <Typography sx={{ fontWeight: "600", width: "250px" }}>
-                  Transfer / Migration Document (s):
+                  ID Proof:
                 </Typography>
-                <Typography>Transfer Certificate</Typography>
+                <FormControl sx={{ width: "200px" }}>
+                  <InputLabel>Blood Group</InputLabel>
+                  <Select
+                    name="bloodGroup"
+                    value={formValues.bloodGroup}
+                    onChange={handleInputChange}
+                  >
+                    <MenuItem value="A+">A+</MenuItem>
+                    <MenuItem value="A-">A-</MenuItem>
+                    <MenuItem value="B+">B+</MenuItem>
+                    <MenuItem value="B-">B-</MenuItem>
+                    <MenuItem value="AB+">AB+</MenuItem>
+                    <MenuItem value="AB-">AB-</MenuItem>
+                    <MenuItem value="O+">O+</MenuItem>
+                    <MenuItem value="O-">O-</MenuItem>
+                  </Select>
+                </FormControl>
                 <Tooltip title="Upload Transfer Certificate">
-                  <IconButton component="label">
-                    <UploadFileIcon />
-                    <input
-                      type="file"
-                      name="categoryCertificate"
-                      onChange={handleFileChange}
-                      hidden
-                    />
-                  </IconButton>
-                </Tooltip>
-                <Typography>Migration Certificate</Typography>
-                <Tooltip title="Upload Migration Certificate">
                   <IconButton component="label">
                     <UploadFileIcon />
                     <input
@@ -1339,6 +1550,18 @@ const OnBoardingEdit = () => {
                 value={formValues.district1}
                 onChange={handleInputChange}
               />
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "10px",
+                gap: "10px",
+              }}
+            >
               <Typography sx={{ fontWeight: "600" }}>Pin Code:</Typography>
 
               <TextField
@@ -1352,6 +1575,22 @@ const OnBoardingEdit = () => {
                   }
                 }}
               />
+
+              <Typography sx={{ fontWeight: "600", width: "250px" }}>
+                Address Proof:
+              </Typography>
+
+              <Tooltip title="Update Father's Valid ID Proof">
+                <IconButton component="label">
+                  <UploadFileIcon />
+                  <input
+                    type="file"
+                    name="fatherIDProof"
+                    onChange={handleFileChange}
+                    hidden
+                  />
+                </IconButton>
+              </Tooltip>
             </Box>
 
             <Box
@@ -1431,19 +1670,47 @@ const OnBoardingEdit = () => {
                 value={formValues.district2}
                 onChange={handleInputChange}
               />
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "10px",
+                gap: "10px",
+              }}
+            >
               <Typography sx={{ fontWeight: "600" }}>Pin Code:</Typography>
 
               <TextField
                 label="Pin Code"
-                name="pinCode2"
-                value={formValues.pinCode2}
+                name="pinCode1"
+                value={formValues.pinCode1}
                 onChange={(event) => {
                   const newPinCode = event.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
                   if (newPinCode.length <= 6) {
-                    setFormValues({ ...formValues, pinCode2: newPinCode });
+                    setFormValues({ ...formValues, pinCode1: newPinCode });
                   }
                 }}
               />
+
+              <Typography sx={{ fontWeight: "600", width: "250px" }}>
+                Address Proof:
+              </Typography>
+
+              <Tooltip title="Update Father's Valid ID Proof">
+                <IconButton component="label">
+                  <UploadFileIcon />
+                  <input
+                    type="file"
+                    name="fatherIDProof"
+                    onChange={handleFileChange}
+                    hidden
+                  />
+                </IconButton>
+              </Tooltip>
             </Box>
           </Box>
         </Box>

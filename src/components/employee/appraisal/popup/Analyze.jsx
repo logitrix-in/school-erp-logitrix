@@ -1,33 +1,33 @@
-import React from "react";
 import {
     Box,
-    Button,
     Dialog,
-    InputLabel,
     Divider,
-    TextField,
     IconButton,
-    Tab,
-    Tabs,
-    Select,
-    MenuItem,
-    FormControl,
     Typography,
 } from "@mui/material";
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import Bbox from "../../../UiComponents/Bbox";
 import CloseIcon from "@mui/icons-material/Close";
 import Chart from "react-apexcharts";
 import { Stack } from "@mui/system";
-import { BarChart } from '@mui/x-charts/BarChart';
-import { ResponsiveChartContainer } from '@mui/x-charts/ResponsiveChartContainer';
 
 const Analyze = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const data = [
+        { name: 'Not Eligible', value: 65, color: '#1D55E5' },
+        { name: 'Eligible', value: 35, color: '#EC7C30' },
+    ];
+
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            return (
+                <Box sx={{ bgcolor: 'background.paper', p: 1, border: '1px solid #ccc' }} borderRadius={1}>
+                    <Typography variant="body2">{`${label} : ${payload[0].value}%`}</Typography>
+                </Box>
+            );
+        }
+        return null;
     };
 
     const series = [
@@ -223,38 +223,34 @@ const Analyze = ({ open, close }) => {
 
                         <Divider />
 
-                        <Box py={2} width="100%">
-                            {/* <BarChart
-                                dataset={dataset}
-                                // options={horizontalBarChartOptions}
-                                slotProps={{
-                                    legend: {
-                                        show: true,
-                                        position: "top",
-                                        horizontalAlign: "right"
-                                    }
-                                }}
-                                xAxis={[{
-                                    scaleType: 'linear',
-                                }]}
-                                yAxis={[{
-                                    scaleType: 'band', dataKey: 'eligibility',
-                                }]}
-                                series={[{
-                                    dataKey: 'percentage', valueFormatter
-                                }]}
-
-                                layout="horizontal"
-                                grid={{ vertical: true, horizontal: false }}
-                                height={400}
-                            /> */}
-
-                            <Chart
-                                options={horizontalBarChartOptions}
-                                series={horizontalBarChartSeries}
-                                type="bar"
-                                height={350}
-                            />
+                        <Box sx={{ width: '100%', height: 400, py: 2 }}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart
+                                    layout="vertical"
+                                    data={data}
+                                    margin={{ top: 5, right: 30, left: 30, bottom: 5 }}
+                                >
+                                    <XAxis type="number" tickFormatter={(value) => `${value}%`} />
+                                    <YAxis dataKey="name" type="category" />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Legend />
+                                    <Bar
+                                        dataKey="value"
+                                        shape={props => {
+                                            return (
+                                                <rect
+                                                    {...props}
+                                                    fill={props.payload.color}
+                                                    height={props.height * 0.2}  // Reduce thickness by 50%
+                                                    y={props.y + props.height * 0.40}  // Center the thinner bar
+                                                    rx={4}
+                                                    ry={4}
+                                                />
+                                            );
+                                        }}
+                                    />
+                                </BarChart>
+                            </ResponsiveContainer>
                         </Box>
                     </Bbox>
                 </RevealCard>
