@@ -1,58 +1,52 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   TextField,
-  InputAdornment,
-  Button,
   Typography,
   IconButton,
   Avatar,
   AvatarGroup,
-  Autocomplete,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
-import { Search } from "@mui/icons-material";
-import { useMediaQuery } from "@material-ui/core";
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 import { DataGrid } from "@mui/x-data-grid";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
-import RequestPageOutlinedIcon from '@mui/icons-material/RequestPageOutlined';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SVG from './SVG';
 import ListOfStudents from "./ListStudents";
 import DisplayCardSingle from "./DisplayCardSingle";
 import EditAction from './EditAction';
 import GavelOutlinedIcon from '@mui/icons-material/GavelOutlined';
+import PageLoader from '../../PageLoader'
+import api from "../../../config/api";
+import { toast } from "react-toastify";
 
 const ViewEditIncident = () => {
-  const isSmall = useMediaQuery("(max-width: 1364px)");
-  const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
-  const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-  const isDesktop = useMediaQuery(
-    "(min-width: 1707px) and (max-width: 1919px)"
-  );
-  const isLarge = useMediaQuery("(min-width: 1920px)");
-  const isXlarge = useMediaQuery("(min-width: 2560px)");
-
   const statuses = ["Open", "Cancelled", "Closed", "All"];
-
   const [openId, setOpenId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [libraryCardNumbers, setLibraryCardNumbers] = useState([]);
+  const [selectedLibraryCard, setSelectedLibraryCard] = useState('');
+  const [userType, setUserType] = useState('')
+  const [rows, setRows] = useState([]);
+
+  const [showList, setShowList] = useState(false);
+  const components = [1, 2, 3];
 
   const handleToggle = (id) => {
     setOpenId(openId === id ? null : id);
   };
-
-  const components = [1, 2, 3];
-  const [showList, setShowList] = useState(false);
 
   const columns1 = [
     {
@@ -158,32 +152,121 @@ const ViewEditIncident = () => {
     }
   ];
 
+
+  async function getLibraryCardDetail() {
+    try {
+      setLoading(true);
+      if (!selectedLibraryCard) return;
+
+      const response = await api.get(`/library/library-cards/?card_number=${selectedLibraryCard}`);
+      console.log(response.data);
+
+      if (response.data.length > 0) {
+        const cardData = response.data[0];
+        if (userType === '' && cardData.person_type === 'Employee') {
+          setUserType('employee')
+        } else if (userType === '' && cardData.person_type === 'Student') {
+          setUserType('student')
+        }
+
+        let newRow;
+        if (cardData.person_type === 'Employee') {
+          newRow = {
+            id: cardData.id,
+            library_card_number: cardData.card_number,
+            name: `${cardData.employee.employee_personal_details.first_name} ${cardData.employee.employee_personal_details.last_name}`,
+            user_id: cardData.issued_by,
+            caution_money: cardData.caution_money,
+            type: cardData.employee.employee_type, // Note: 'category' is not directly available, using 'employee_type' instead
+            department: cardData.employee.department,
+            current_status: cardData.is_active ? 'Active' : 'Inactive',
+            current_borrowings: cardData.current_borrowings,
+            period: cardData.last_suspension_end_date || 'null',
+            amount: cardData.penalty_due,
+            open_incidents: cardData.open_incidents.join(', ') || 'None'
+          };
+        } else if (cardData.person_type === 'Student') {
+          newRow = {
+            id: cardData.id,
+            library_card_number: cardData.card_number,
+            name: `${cardData.employee.employee_personal_details.first_name} ${cardData.employee.employee_personal_details.last_name}`,
+            user_id: cardData.issued_by,
+            caution_money: cardData.caution_money,
+            type: cardData.employee.employee_type, // Note: 'category' is not directly available, using 'employee_type' instead
+            department: cardData.employee.department,
+            current_status: cardData.is_active ? 'Active' : 'Inactive',
+            current_borrowings: cardData.current_borrowings,
+            period: cardData.last_suspension_end_date || 'null',
+            amount: cardData.penalty_due,
+            open_incidents: cardData.open_incidents.join(', ') || 'None'
+          };
+        }
+        console.log('New row:', newRow);
+        setRows((prevRows) => {
+          // Check if a row with the same id already exists
+          const rowExists = prevRows.some(row => row.id === newRow.id);
+
+          if (rowExists) {
+            // If the row already exists, return the previous rows unchanged
+            return prevRows;
+          } else {
+            // If the row doesn't exist, add it to the array
+            return [...prevRows, newRow];
+          }
+        });
+      } else {
+        ([]); // Set to empty array if no data returned
+      }
+
+    } catch (error) {
+      console.log(error);
+      toast.error('Error Loading Data.')
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => { getLibraryCardDetail() }, [selectedLibraryCard])
+
+  useEffect(() => {
+    async function getLibraryCardDetails() {
+      try {
+        const response = await api.get('/library/library-cards/?display_type=list_view');
+        console.log(response.data);
+
+        setLibraryCardNumbers(response.data.library_cards);
+      } catch (err) {
+        console.log(err);
+        toast.error('Error Occured!');
+      }
+    }
+    getLibraryCardDetails();
+  }, []);
+
+
+  if (loading) {
+    console.log('loading');
+    <PageLoader />
+  }
   return (
     <RevealCard>
       <Box ml={2} mr={2}>
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          height={70}
-          width={"100%"}
-          mt={1}
-        >
-          <Autocomplete
-            options={['stud 1', 'stud 2', 'stud 3', 'stud 4']}
-            filterSelectedOptions
-            freeSolo={false}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search by Student ID / Student Name"
-                placeholder="Search by Student ID / Student Name"
-                size="small"
-                variant="outlined"
-                sx={{ width: isLaptop ? 300 : 350 }}
-              />
-            )}
-          />
+        <Box display={"flex"} gap={1} sx={{ width: '25%', marginY: '24px' }}>
+          <FormControl fullWidth>
+            <InputLabel>Search by Library Card #</InputLabel>
+            <Select
+              label="Search by Library Card #"
+              value={selectedLibraryCard}
+              required
+              onChange={(e) => setSelectedLibraryCard(e.target.value)}
+            >
+              {
+                libraryCardNumbers?.map((type) => (
+                  <MenuItem key={type} value={type}>{type}</MenuItem>
+                ))
+              }
+            </Select>
+          </FormControl>
         </Box>
 
 

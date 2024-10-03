@@ -26,6 +26,8 @@ import { AppContext } from "./context/AppContext";
 import useAuth from "./hooks/useAuth";
 import _404 from "./pages/404Page";
 import Dashboard from "./pages/Dashboard";
+// import PDFViewer from './components/employee/recruitment/Onboarding/PDFviewer'
+
 const AdmissionApplication = lazy(() =>
 	import("./pages/admission/AdmissionApplication")
 );
@@ -409,7 +411,6 @@ function App() {
 
 					<Route path={"/library/action/new incident/"} element={<LibraryActionSuspend />} />
 
-
 					<Route
 						path={"library/visitors/"}
 						element={<LibraryVisitors />}
@@ -509,7 +510,10 @@ function App() {
 						path={"employee/claims&bonuses/"}
 						element={<ClaimsBonuses />}
 					/>
-
+					{/* <Route
+						path={"employee/document/"}
+						element={<PDFViewer />}
+					/> */}
 
 					<Route path="*" element={<_404 />} />
 				</Route>

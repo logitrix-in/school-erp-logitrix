@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import RevealCard from "../../components/AnimationComponents/RevealCard";
 import Dashboard from "../../components/Library/Visitors/Dashboard";
@@ -24,7 +24,7 @@ const LibraryVisitors = () => {
 	return (
 		<Box display={"flex"} flexDirection={"column"} gap={2}>
 			<RevealCard>
-				<Dashboard libraryCardNumbers={libraryCardNumbers} />
+				<Dashboard />
 			</RevealCard>
 			<RevealCard>
 				<Inventory libraryCardNumbers={libraryCardNumbers} />

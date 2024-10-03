@@ -1,22 +1,21 @@
 import { Box, Divider, Grid, Typography, IconButton } from "@mui/material";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useState, MenuItem, Select, FormControl, InputLabel } from "react";
 import Bbox from "../../UiComponents/Bbox";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
-import { AppContext } from "../../../context/AppContext";
 import useClasses from "../../../hooks/useClasses";
 import { Icon } from "@iconify/react";
 import api from "../../../config/api";
 import { toast } from 'react-toastify';
 
-const Dashboard = ({ libraryCardNumbers }) => {
-	const ctx = useContext(AppContext);
-	const { classes, sections, acYear, curYear, days } = useClasses();
+const Dashboard = () => {
+	const { classes, sections, acYear, curYear, days, employeeType } = useClasses();
 	const [academicYear, setAcademicYear] = useState(curYear);
 	const [selectedClass, setSelectedClass] = useState([]);
 	const [selectedSection, setSelectedSection] = useState([]);
 	const [selectedEmployeeType, setSelectedEmployeeType] = useState([]);
 	const [selectedDays, setSelectedDays] = useState('');
 	const [dashboardData, setDashboardData] = useState(null);
+	const [selectedAcademicYear, setSelectedAcademicYear] = useState();
 
 	useEffect(() => {
 		fetchDashboardData();
@@ -49,20 +48,30 @@ const Dashboard = ({ libraryCardNumbers }) => {
 			<Divider />
 			<Box p={2} display={"flex"} gap={1} flexDirection={{ sm: "column", md: "row" }}>
 				<Bbox width={"23rem"} p={2} borderRadius={1} display={"flex"} flexDirection={"column"} gap={2}>
+					<FormControl style={{ width: "100%" }}>
+						<InputLabel>Academic Year</InputLabel>
+						<Select
+							label="Academic Year"
+							value={academicYear}
+							onChange={(e) => setAcademicYear(e.target.value)}
+							defaultValue={acYear}
+						>
+							<MenuItem value={"2021-22"}>2021-22</MenuItem>
+							<MenuItem value={"2023-24"}>2023-24</MenuItem>
+							<MenuItem value={"2024-25"}>2024-25</MenuItem>
+							<MenuItem value={"2025-26"}>2025-26</MenuItem>
+						</Select>
+					</FormControl>
+
+					<ReignsSelect items={classes} multiple label="Class" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)} defaultValues={classes} />
+					<ReignsSelect items={sections} multiple label="Section" value={selectedSection} onChange={(e) => setSelectedSection(e.target.value)} defaultValues={sections} />
 					<ReignsSelect
-						items={acYear}
-						onChange={(e) => setAcademicYear(e?.target.value ?? academicYear)}
-						label="Academic Year"
-						value={academicYear}
-					/>
-					<ReignsSelect items={classes} multiple label="Class" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)} />
-					<ReignsSelect items={sections} multiple label="Section" value={selectedSection} onChange={(e) => setSelectedSection(e.target.value)} />
-					<ReignsSelect
-						items={["Management", "Teaching Staff", "Support Staff"]}
+						items={employeeType}
 						multiple
 						label="Employee Type"
 						value={selectedEmployeeType}
 						onChange={(e) => setSelectedEmployeeType(e.target.value)}
+						defaultValues={employeeType}
 					/>
 					<ReignsSelect items={days} label="Days" value={selectedDays} onChange={(e) => setSelectedDays(e.target.value)} />
 				</Bbox>

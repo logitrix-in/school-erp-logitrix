@@ -5,6 +5,7 @@ import { Box, Divider } from "@mui/material";
 import ViewEditIncident from "../../components/Library/action/ViewEditIncident";
 import RaiseIncident from "../../components/Library/action/RaiseIncident";
 import ActionRecords from "../../components/Library/action/ActionRecords";
+import { ToastContainer } from "react-toastify";
 
 export default function LibraryAction() {
     const [activeButton, setActiveButton] = useState("New Incident");
@@ -94,6 +95,7 @@ export default function LibraryAction() {
 
                 <Divider style={{ marginTop: "-10px" }} />
 
+                <ToastContainer />
                 {renderComponent()}
             </Bbox>
         </RevealCard>
