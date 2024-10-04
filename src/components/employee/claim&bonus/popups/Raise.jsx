@@ -95,7 +95,7 @@ const Raise = ({ open, close }) => {
             PaperProps={{
                 sx: {
                     maxHeight: "90%",
-                    width: "50%",
+                    width: "70%",
                 },
             }}
             maxWidth="lg"

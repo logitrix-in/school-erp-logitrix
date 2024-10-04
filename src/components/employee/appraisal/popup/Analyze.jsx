@@ -15,8 +15,8 @@ import { Stack } from "@mui/system";
 const Analyze = ({ open, close }) => {
 
     const data = [
-        { name: 'Not Eligible', value: 65, color: '#1D55E5' },
-        { name: 'Eligible', value: 35, color: '#EC7C30' },
+        { name: 'Not Eligible', percentage: 65, color: '#1D55E5' },
+        { name: 'Eligible', percentage: 35, color: '#EC7C30' },
     ];
 
     const CustomTooltip = ({ active, payload, label }) => {
@@ -104,70 +104,6 @@ const Analyze = ({ open, close }) => {
         }
     };
 
-    const horizontalBarChartSeries = [
-        {
-            name: "Not Eligible",
-            data: [65, 0],
-            type: "column",
-        },
-        {
-            name: "Eligible",
-            data: [0, 35],
-            type: "column",
-        },
-    ];
-
-    const horizontalBarChartOptions = {
-        chart: {
-            type: "bar",
-            toolbar: {
-                show: false,
-            },
-        },
-        legend: {
-            show: true,
-            position: "top",
-            horizontalAlign: "right",
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true,
-                columnWidth: "40px",
-                borderRadius: '4px 0 0 4px',
-                // dataLabels: {
-                //     position: 'top' // Position the labels on top of the bars
-                // }
-            },
-        },
-
-        dataLabels: {
-            enabled: false,
-            formatter: (val) => `${((val / series.reduce((a, b) => a + b.data.reduce((c, d) => c + d, 0), 0)) * 100).toFixed(2)}%`,
-            style: {
-                fontSize: "10px",
-                fontWeight: "400",
-            }
-        },
-        xaxis: {
-            categories: ["Not Eligible", "Eligible"],
-        },
-        colors: ["#1D55E5", "#EC7C30",],
-        tooltip: {
-            enabled: true,
-            theme: 'light',
-            style: {
-                fontSize: '12px',
-                fontFamily: undefined
-            },
-            x: {
-                show: true
-            },
-            y: {
-                formatter: (value) => `${value}%`
-            }
-        }
-    }
-
     return (
         <Dialog
             fullWidth
@@ -235,7 +171,7 @@ const Analyze = ({ open, close }) => {
                                     <Tooltip content={<CustomTooltip />} />
                                     <Legend />
                                     <Bar
-                                        dataKey="value"
+                                        dataKey="percentage"
                                         shape={props => {
                                             return (
                                                 <rect

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Box,
     Button,
@@ -14,17 +14,31 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import Bbox from "../../UiComponents/Bbox";
 import RevealCard from "../../AnimationComponents/RevealCard";
+import ReignsSelect from "../../UiComponents/ReignsSelect";
+import useEmployees from "@/hooks/useEmployees";
+import useClasses from "@/hooks/useClasses";
+import EmployeePopup from '../EmployeePopup'
 
 export default function AppraisalDetails() {
-    const [appraisalCycle, setAppraisalCycle] = useState("");
+
+    const { curYear, acYear } = useClasses();
+    const { employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment, employeeGrade, employeeStatus } = useEmployees();
+
+    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [selectedGrade, setSelectedGrade] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
+    const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
+    const [selectedYear, setSelectedYear] = useState(curYear);
+    const [employeePopup, setEmployeePopup] = useState(false);
 
     const columns = [
+        { field: "space", headerName: " ", flex: 0.2 },
         {
             field: "id",
             headerName: "Employee ID",
-            flex: 1,
+            flex: 0.8,
             renderCell: (params) => (
-                <Typography sx={{ cursor: "pointer", color: "primary.main" }}>
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setEmployeePopup(true)}>
                     {params.value}
                 </Typography>
             ),
@@ -32,17 +46,17 @@ export default function AppraisalDetails() {
         {
             field: "emp_name",
             headerName: "Employee Name",
-            flex: 1.5,
+            flex: 1.4,
         },
         {
             field: "grade",
             headerName: "Grade",
-            flex: 1,
+            flex: 0.6,
         },
         {
             field: "status",
             headerName: "Status",
-            flex: 1,
+            flex: 0.8,
         },
         {
             field: "department",
@@ -63,16 +77,31 @@ export default function AppraisalDetails() {
             field: "2024",
             headerName: "2024",
             flex: 0.6,
+            renderCell: (params) => (
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }}>
+                    {params.value}
+                </Typography>
+            ),
         },
         {
             field: "2023",
             headerName: "2023",
             flex: 0.6,
+            renderCell: (params) => (
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }}>
+                    {params.value}
+                </Typography>
+            ),
         },
         {
             field: "2022",
             headerName: "2022",
             flex: 0.6,
+            renderCell: (params) => (
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }}>
+                    {params.value}
+                </Typography>
+            ),
         }
     ];
 
@@ -135,81 +164,74 @@ export default function AppraisalDetails() {
                 <Divider />
 
                 <Box display={"grid"} gridTemplateColumns={"repeat(5, 1fr)"} gap={2} px={3} py={4}>
-                    <FormControl fullWidth>
+
+                    <FormControl sx={{ width: "100%" }}>
                         <InputLabel>Appraisal Cycle</InputLabel>
                         <Select
                             label="Appraisal Cycle"
-                            value={appraisalCycle}
-                            onChange={(e) => setAppraisalCycle(e.target.value)}
+                            onChange={(e) =>
+                                setSelectedYear(e.target.value)
+                            }
+                            value={selectedYear}
+
                         >
-                            <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                            <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                            <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                            <MenuItem value={"2025-26"}>2025-26</MenuItem>
+                            {acYear.map((year) => (
+                                <MenuItem key={year} value={year}>
+                                    {year}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
 
-                    <FormControl fullWidth>
-                        <InputLabel>Department</InputLabel>
-                        <Select
-                            label="Department"
-                            value={appraisalCycle}
-                            onChange={(e) => setAppraisalCycle(e.target.value)}
-                        >
-                            <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                            <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                            <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                            <MenuItem value={"2025-26"}>2025-26</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <ReignsSelect
+                        multiple
+                        items={employeeDepartment}
+                        defaultValues={employeeDepartment}
+                        onChange={setSelectedDepartment}
+                        value={selectedDepartment}
+                        label="Department"
+                    />
 
-                    <FormControl fullWidth>
-                        <InputLabel>Grade</InputLabel>
-                        <Select
-                            label="Grade"
-                            value={appraisalCycle}
-                            onChange={(e) => setAppraisalCycle(e.target.value)}
-                        >
-                            <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                            <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                            <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                            <MenuItem value={"2025-26"}>2025-26</MenuItem>
-                        </Select>
-                    </FormControl>
 
-                    <FormControl fullWidth>
-                        <InputLabel>Status</InputLabel>
-                        <Select
-                            label="Status"
-                            value={appraisalCycle}
-                            onChange={(e) => setAppraisalCycle(e.target.value)}
-                        >
-                            <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                            <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                            <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                            <MenuItem value={"2025-26"}>2025-26</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <ReignsSelect
+                        multiple
+                        items={employeeGrade}
+                        defaultValues={employeeGrade}
+                        onChange={setSelectedGrade}
+                        value={selectedGrade}
+                        label="Grade"
+                    />
+
+                    <ReignsSelect
+                        multiple
+                        items={employeeStatus}
+                        defaultValues={employeeStatus}
+                        onChange={setSelectedStatus}
+                        value={selectedStatus}
+                        label="Status"
+                    />
 
                     <Box display={'flex'} justifyContent={'flex-start'} alignItems={'center'}>
                         <Button variant="contained" color="primary">Apply</Button>
                     </Box>
                 </Box>
 
-                <Box px={3}>
-                    <Autocomplete
-                        options={["Student 1", "Student 2"]}
-                        filterSelectedOptions
-                        freeSolo={false}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder="Employee name or Employee ID"
-                                label="Search by Employee name or Employee ID"
-                            />
-                        )}
-                        sx={{ width: "30%" }}
-                    />
+                <Box display={"flex"} gap={1} sx={{ width: '35%' }} px={3}>
+                    <FormControl fullWidth>
+                        <InputLabel>Search by Employee Name or Employee ID</InputLabel>
+                        <Select
+                            label="Search by Employee Name or Employee ID"
+                            // value={selectedLibraryCard}
+                            required
+                        // onChange={(e) => setSelectedLibraryCard(e.target.value)}
+                        >
+                            {/* {
+								libraryCardNumbers?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							} */}
+                        </Select>
+                    </FormControl>
                 </Box>
 
                 <Box px={3} py={4}>
@@ -235,6 +257,8 @@ export default function AppraisalDetails() {
                         disableRowSelectionOnClick
                     />
                 </Box>
+
+                <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
 
             </Bbox>
         </RevealCard>
