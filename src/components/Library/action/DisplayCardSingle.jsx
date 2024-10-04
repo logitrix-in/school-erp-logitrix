@@ -5,7 +5,6 @@ import {
     Avatar,
     AvatarGroup,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
 import RequestPageOutlinedIcon from '@mui/icons-material/RequestPageOutlined';
 import SVG from './SVG';

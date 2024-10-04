@@ -5,7 +5,7 @@ import {
     Avatar,
     AvatarGroup,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import NotInterestedOutlinedIcon from '@mui/icons-material/NotInterestedOutlined';
 import RequestPageOutlinedIcon from '@mui/icons-material/RequestPageOutlined';
 import SVG from './SVG';
@@ -67,7 +67,7 @@ export default function DisplayCardSingle({ setShowList }) {
                                 cursor: "pointer",
                             }}
                         >
-                            <MoreVertIcon />
+                            <EditOutlinedIcon />
                         </button>
                     </Box>
                 </Box>
