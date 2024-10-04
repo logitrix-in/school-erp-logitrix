@@ -28,6 +28,7 @@
     "@mui/x-data-grid": "^6.11.1",
     "@mui/x-date-pickers": "^6.11.0",
     "@mui/x-date-pickers-pro": "^6.11.0",
+    "@react-pdf/renderer": "^4.0.0",
     "@tinymce/tinymce-react": "^4.3.0",
     "apexcharts": "^3.41.1",
     "axios": "^1.6.7",

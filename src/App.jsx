@@ -11,6 +11,7 @@ import {
 	useNavigate,
 	BrowserRouter as Router,
 } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 import "./App.scss";
 import "./assets/scss/scrollbar.scss";
 import Breadcrumb from "./components/Breadcrumb";
@@ -120,6 +121,7 @@ const LibraryVisitors = lazy(() => import("./pages/Library/LibraryVisitors"));
 const LibraryRecommandation = lazy(() =>
 	import("./pages/Library/LibraryRecommandation")
 );
+import { PDFViewer } from '@react-pdf/renderer';
 
 dayjs.locale("en-in");
 
@@ -155,6 +157,7 @@ const NavLayout = () => {
 				<Loader />
 			) : (
 				<>
+					<ToastContainer />
 					<Box
 						display={"flex"}
 						width={"100vw"}
@@ -510,10 +513,11 @@ function App() {
 						path={"employee/claims&bonuses/"}
 						element={<ClaimsBonuses />}
 					/>
+
 					{/* <Route
-						path={"employee/document/"}
-						element={<PDFViewer />}
-					/> */}
+							path={"employee/document/"}
+							element={<PDFViewer />}
+						/> */}
 
 					<Route path="*" element={<_404 />} />
 				</Route>

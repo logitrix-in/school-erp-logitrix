@@ -14,12 +14,76 @@ const AppContextProvider = ({ children }) => {
   const [role, setRole] = useState([]);
   const [employeeRole, setEmployeeRole] = useState([]);
   const [employeeType, setEmployeeType] = useState([]);
+  const [employeeManagementDepartment, setEmployeeManagementDepartment] = useState([]);
+  const [employeeTeachingDepartment, setEmployeeTeachingDepartment] = useState([]);
+  const [employeeSupportStaffDepartment, setEmployeeSupportStaffDepartment] = useState([]);
+  const [employeeGrade, setEmployeeGrade] = useState([]);
+  const [employeeStatus, setEmployeeStatus] = useState([]);
   const [nonCompliance, setNonCompliance] = useState([]);
   const [suspend, setSuspend] = useState([]);
   const [activeButton, setActiveButton] = useState("New Incident");
   const [mediaTypes, setMediaTypes] = useState([]);
   const [mediaCategory, setMediaCategory] = useState([]);
   const [mediaLanguage, setMediaLanguage] = useState([]);
+
+
+  // ? EMPLOYEES
+  useEffect(() => {
+    setEmployeeRole(generateEmployeeRoles());
+  }, []);
+
+  const generateEmployeeRoles = () => {
+    return ["House Coordinator", "High School Coordinator", "Dance club supervisor", "No"];
+  };
+
+  useEffect(() => {
+    setEmployeeType(generateEmployeeTypes());
+  }, []);
+
+  const generateEmployeeTypes = () => {
+    return ["Management", "Teaching Staff", "Support Staff"];
+  };
+
+  useEffect(() => {
+    setEmployeeManagementDepartment(generateEmployeeManagementDepartment());
+  }, []);
+
+  const generateEmployeeManagementDepartment = () => {
+    return ["Management"];
+  };
+
+  useEffect(() => {
+    setEmployeeTeachingDepartment(generateEmployeeTeachingDepartment());
+  }, []);
+
+  const generateEmployeeTeachingDepartment = () => {
+    return ["English", "Bengali", "Hindi", "Sanskrit", "History", "Geography", "Political Science", "Economics", "Music", "Psychology", "Sociology", "Physical Education", "Mathematics", "Physics", "Chemistry", "Biology", "Computer Science", "Statistics", "Accountancy", "Business Studies", "Environmental Studies"];
+  };
+
+  useEffect(() => {
+    setEmployeeSupportStaffDepartment(generateEmployeeSupportStaffDepartment());
+  }, []);
+
+  const generateEmployeeSupportStaffDepartment = () => {
+    return ["Administration", "Finance", "Human Resources", "Marketing", "Maintenance"];
+  };
+
+  useEffect(() => {
+    setEmployeeGrade(generateEmployeeGrade());
+  }, []);
+
+  const generateEmployeeGrade = () => {
+    return ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3", "D1", "D2", "D3", "E1", "E2", "E3", "CON1", "CON2", "CON3", "INT1", "INT2"];
+  };
+
+  useEffect(() => {
+    setEmployeeStatus(generateEmployeeStatus());
+  }, []);
+
+  const generateEmployeeStatus = () => {
+    return ["Active", "Serving Noice Period", "On Long Leave", "Suspended"];
+  };
+
 
   // classes
   useEffect(() => {
@@ -118,16 +182,6 @@ const AppContextProvider = ({ children }) => {
   useEffect(() => {
     setRole(generateRoles());
   }, []);
-
-  // assign Employee role
-  useEffect(() => {
-    setEmployeeRole(generateEmployeeRoles());
-  }, []);
-
-  useEffect(() => {
-    setEmployeeType(generateEmployeeTypes());
-  }, []);
-
   // non-compliance
   useEffect(() => {
     setNonCompliance(generateNonCompliance());
@@ -174,14 +228,6 @@ const AppContextProvider = ({ children }) => {
   // function to generate roles values
   const generateRoles = () => {
     return ["House Captain", "House Prefect", "Sports Club Secretary", "No"];
-  };
-
-  const generateEmployeeRoles = () => {
-    return ["House Coordinator", "High School Coordinator", "Dance club supervisor", "No"];
-  };
-
-  const generateEmployeeTypes = () => {
-    return ["Management", "Teaching Staff", "Support Staff"];
   };
 
   // function to generate non-compliance values
@@ -244,7 +290,17 @@ const AppContextProvider = ({ children }) => {
     employeeRole,
     setEmployeeRole,
     employeeType,
-    setEmployeeType
+    setEmployeeType,
+    employeeManagementDepartment,
+    setEmployeeManagementDepartment,
+    employeeTeachingDepartment,
+    setEmployeeTeachingDepartment,
+    employeeSupportStaffDepartment,
+    setEmployeeSupportStaffDepartment,
+    employeeGrade,
+    setEmployeeGrade,
+    employeeStatus,
+    setEmployeeStatus,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -1,21 +1,49 @@
-import { Box, Divider, Grid, Typography, IconButton } from "@mui/material";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { Box, Divider, Typography, IconButton } from "@mui/material";
 import Bbox from "../../UiComponents/Bbox";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
-import { AppContext } from "../../../context/AppContext";
-import useClasses from "../../../hooks/useClasses";
+import useEmployees from "../../../hooks/useEmployees";
 import { Icon } from "@iconify/react";
-import { maxWidth } from "@mui/system";
 import Chart from "react-apexcharts";
 import RevealCard from "../../AnimationComponents/RevealCard";
+import { useState, useEffect } from "react";
+
 
 const Dashboard = () => {
-	const ctx = useContext(AppContext);
-	const { classes, sections, acYear, curYear, status } = useClasses();
-	const [academicYear, setAcademicYear] = useState(curYear);
-	console.log(classes);
+	const { employeeType, employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment, employeeGrade, employeeStatus } = useEmployees();
 
-	const items = ['A', 'B', 'C', 'D'];
+	const [selectedEmployeeType, setSelectedEmployeeType] = useState('');
+	const [selectedDepartment, setSelectedDepartment] = useState('');
+	const [selectedGrade, setSelectedGrade] = useState('');
+	const [selectedStatus, setSelectedStatus] = useState('');
+	const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
+
+	useEffect(() => {
+		console.log(selectedEmployeeType);
+		let departments = [];
+
+		if (selectedEmployeeType === '') {
+			return;
+		}
+
+		selectedEmployeeType.forEach(type => {
+			switch (type) {
+				case 'Management':
+					departments = [...departments, ...employeeManagementDepartment];
+					break;
+				case 'Teaching Staff':
+					departments = [...departments, ...employeeTeachingDepartment];
+					break;
+				case 'Support Staff':
+					departments = [...departments, ...employeeSupportStaffDepartment];
+					break;
+				default:
+					break;
+			}
+		});
+
+		setEmployeeDepartment(departments);
+	}, [selectedEmployeeType]);
+
 
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
@@ -46,33 +74,39 @@ const Dashboard = () => {
 					gap={2}
 				>
 					<ReignsSelect
-						items={[
-							"Management",
-							"Teaching Staff",
-							"Support Staff",
-						]}
+						items={employeeType}
 						multiple
 						label="Employee Type"
-						defaultValues={["Management", "Teaching Staff", "Support Staff"]}
+						defaultValues={employeeType}
+						onChange={setSelectedEmployeeType}
+						value={selectedEmployeeType}
 					/>
+
+
 					<ReignsSelect
-						items={items}
+						items={employeeDepartment}
 						multiple
+						defaultValues={employeeDepartment}
+						onChange={setSelectedDepartment}
+						value={selectedDepartment}
 						label="Department"
-						defaultValues={items}
 					/>
 					<ReignsSelect
-						items={items}
+						items={employeeGrade}
 						multiple
 						label="Grade"
-						defaultValues={items}
+						defaultValues={employeeGrade}
+						onChange={setSelectedGrade}
+						value={selectedGrade}
 					/>
 
 					<ReignsSelect
-						items={items}
+						items={employeeStatus}
 						multiple
 						label="Status"
-						defaultValues={items}
+						defaultValues={employeeStatus}
+						onChange={setSelectedStatus}
+						value={selectedStatus}
 					/>
 				</Bbox>
 
@@ -119,7 +153,7 @@ const Dashboard = () => {
 								<Bbox borderRadius={2} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
 									<Box display="flex" flexDirection={'column'} alignItems="center" height="100%" px={0} py={2}>
 										<Box >
-											<Typography fontWeight={"600"} fontSize={'20px'}>Category</Typography>
+											<Typography fontWeight={"600"} fontSize={'20px'}>Employee Type</Typography>
 										</Box>
 										<Box width="100%" my={2}>
 											<Chart
