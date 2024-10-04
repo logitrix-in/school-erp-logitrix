@@ -7,7 +7,6 @@ import Chart from "react-apexcharts";
 import RevealCard from "../../AnimationComponents/RevealCard";
 import { useState, useEffect } from "react";
 
-
 const Dashboard = () => {
 	const { employeeType, employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment, employeeGrade, employeeStatus } = useEmployees();
 

@@ -15,44 +15,6 @@ import IncidentHeaderBanner from './Banner'
 
 const EmployeePopup = ({ open, close }) => {
 
-    const columns = [
-        {
-            field: "activity_date", headerName: "Activity Date", flex: 1
-        },
-        {
-            field: "activity_type", headerName: "Activity Type", flex: 2
-        },
-        {
-            field: "actioned_by", headerName: "Actioned By", flex: 2
-        },
-        {
-            field: "notes", headerName: "Notes/Comments", flex: 3,
-        }];
-
-    const rows = [
-        {
-            id: 1,
-            activity_date: "14 Mar 2023",
-            activity_type: "Claim Amount Reimbursed",
-            actioned_by: "Rohit Sen (EMP12344)",
-            notes: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-        {
-            id: 2,
-            activity_date: "12 Mar 2023",
-            activity_type: "Claim Request Approved",
-            actioned_by: "Rohit Sen (EMP12344)",
-            notes: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-        {
-            id: 3,
-            activity_date: "10 Mar 2023",
-            activity_type: "Claim Request Raised",
-            actioned_by: "Amartya Ghosh (EMP789)",
-            notes: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        }
-    ];
-
     return (
         <Dialog
             fullWidth

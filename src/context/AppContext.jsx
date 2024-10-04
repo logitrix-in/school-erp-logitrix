@@ -12,6 +12,7 @@ const AppContextProvider = ({ children }) => {
   const [days, setDays] = useState([]);
   const [roll, setRoll] = useState([]);
   const [role, setRole] = useState([]);
+
   const [employeeRole, setEmployeeRole] = useState([]);
   const [employeeType, setEmployeeType] = useState([]);
   const [employeeManagementDepartment, setEmployeeManagementDepartment] = useState([]);
@@ -19,6 +20,8 @@ const AppContextProvider = ({ children }) => {
   const [employeeSupportStaffDepartment, setEmployeeSupportStaffDepartment] = useState([]);
   const [employeeGrade, setEmployeeGrade] = useState([]);
   const [employeeStatus, setEmployeeStatus] = useState([]);
+  const [employeeClaimRequestType, setEmployeeClaimRequestType] = useState([]);
+
   const [nonCompliance, setNonCompliance] = useState([]);
   const [suspend, setSuspend] = useState([]);
   const [activeButton, setActiveButton] = useState("New Incident");
@@ -84,8 +87,22 @@ const AppContextProvider = ({ children }) => {
     return ["Active", "Serving Noice Period", "On Long Leave", "Suspended"];
   };
 
+  useEffect(() => {
+    setEmployeeClaimRequestType(generateEmployeeClaimRequestType());
+  }, []);
 
-  // classes
+  const generateEmployeeClaimRequestType = () => {
+    return ["Travel Expenses",
+      "Meal Expenses",
+      "Internet Reimbursement",
+      "Training and Development Claims",
+      "Health and Wellness Claims",
+      "Relocation Expenses",
+      "Others"];
+  };
+
+
+  //? classes
   useEffect(() => {
     if (user != null)
       api
@@ -287,6 +304,7 @@ const AppContextProvider = ({ children }) => {
     setMediaCategory,
     mediaLanguage,
     setMediaLanguage,
+
     employeeRole,
     setEmployeeRole,
     employeeType,
@@ -301,6 +319,8 @@ const AppContextProvider = ({ children }) => {
     setEmployeeGrade,
     employeeStatus,
     setEmployeeStatus,
+    employeeClaimRequestType,
+    setEmployeeClaimRequestType,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

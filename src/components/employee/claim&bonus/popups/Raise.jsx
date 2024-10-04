@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Box,
     Button,
@@ -9,22 +9,27 @@ import {
     Typography,
     Select,
     FormControl,
-    Autocomplete,
     MenuItem
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
+import useEmployees from "../../../../hooks/useEmployees";
+import { toast } from 'react-toastify'
 
 const Raise = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
-    const [file, setFile] = React.useState("");
+    const { employeeClaimRequestType } = useEmployees();
+    const [file, setFile] = useState("");
     const [amount, setAmount] = useState('')
+    const [selectedRequestType, setSelectedRequestType] = useState('');
+    const [customRequestType, setCustomRequestType] = useState('');
+    const [comments, setComments] = useState('');
+    const [selectedEmployee, setSelectedEmployee] = useState('');
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
-    const names = ["Amartya Ghosh (EMP1234)", "Rajesh Kumar (EMP1235)", "Shubham Sharma (EMP1236)", "Rajesh Kumar (EMP1235)", "Shubham Sharma (EMP1236)"];
+    const names = [
+        "Arindam Das (AUG202365) Teaching Staff (Physics)",
+        "Arindam Dey (AUG205665) Support Staff (Accounts)",
+        "Arinesh Ghosh (AUG200165) Teaching Staff (Geography)",
+        "Arinika Ghosh (AUG200065) Teaching Staff (History)"
+    ];
 
     function handleAmountChange(e) {
         const inputValue = e.target.value;
@@ -36,6 +41,53 @@ const Raise = ({ open, close }) => {
             setAmount(`₹ ${parseInt(numericValue).toLocaleString('en-IN')}`);
         }
     }
+
+    const renderEmployeeContent = (item) => {
+        const match = item.match(/(.*\s*\(AUG\d+\))\s*(.*)/);
+
+        if (match) {
+            const [_, nameWithId, role] = match;
+            return (
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    alignItems: 'center'
+                }}>
+                    <span>
+                        {nameWithId}
+                    </span>
+                    <span style={{
+                        backgroundColor: '#e0e0e0',
+                        padding: '2px 6px',
+                        borderRadius: '16px',
+                        fontSize: '0.9em'
+                    }}>
+                        {role}
+                    </span>
+                </div>
+            );
+        }
+        return item;
+    };
+
+
+    const renderMenuItem = (item) => {
+        return (
+            <MenuItem
+                value={item}
+                key={item}
+                sx={{
+                    width: '100%',
+                    '& .MuiTouchRipple-root': {
+                        width: '100%'
+                    }
+                }}
+            >
+                {renderEmployeeContent(item)}
+            </MenuItem>
+        );
+    };
 
     return (
         <Dialog
@@ -85,28 +137,44 @@ const Raise = ({ open, close }) => {
                                 id="claim-request-type"
                                 label="Claim Request Type"
                                 placeholder="Enter Claim Request Type"
-                            // value={'age'}
-                            // onChange={handleChange}
+                                value={selectedRequestType}
+                                onChange={(e) => setSelectedRequestType(e.target.value)}
                             >
-                                <MenuItem value={"internet"}>Internet Reimbursement</MenuItem>
-                                <MenuItem value={"travel"}>Travel Expenses</MenuItem>
+                                {employeeClaimRequestType.map((type) => (
+                                    <MenuItem value={type} key={type}>{type}</MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
 
-                        <Autocomplete
-                            options={names}
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Employee Name"
-                                    placeholder="Select Employee(s)"
-                                />
-                            )}
-                            sx={{ width: "48%" }}
-                        />
+                        <FormControl sx={{ width: "48%" }}>
+                            <InputLabel id="claim-request-type">Claim Request Type</InputLabel>
+                            <Select
+                                id="claim-request-type"
+                                label="Select Employee(s)"
+                                placeholder="Select Employee(s)"
+                                value={selectedEmployee}
+                                onChange={(e) => setSelectedEmployee(e.target.value)}
+                                renderValue={(selected) => renderEmployeeContent(selected)}
+
+                            >
+                                {names.map((item) => renderMenuItem(item))}
+                            </Select>
+                        </FormControl>
                     </Box>
+
+                    {
+                        selectedRequestType === 'Others' && (
+                            <TextField
+                                label="Enter Custom Request Type"
+                                placeholder="Enter Custom Request Type"
+                                value={customRequestType}
+                                onChange={(e) => setCustomRequestType(e.target.value)}
+                                variant="outlined"
+                                fullWidth
+                                multiline
+                                rows={2}
+                            />
+                        )}
 
                     <Box display="flex" justifyContent="space-between" width="100%" alignItems="center">
                         <TextField
@@ -126,7 +194,7 @@ const Raise = ({ open, close }) => {
                         />
 
                         <Box sx={{ width: "48%" }}>
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <Typography>Supporting Document</Typography>
 
                                 <input
@@ -149,13 +217,12 @@ const Raise = ({ open, close }) => {
                         id="comments"
                         label="Enter Notes/Comments"
                         placeholder="Enter Notes/Comments"
-                        // value={comments}
-                        // onChange={(e) => setComments(e.target.value)}
+                        value={comments}
+                        onChange={(e) => setComments(e.target.value)}
                         variant="outlined"
                         fullWidth
                         multiline
                         rows={4}
-
                     />
 
                     <Box marginY={4} width={"100%"}>

@@ -8,66 +8,49 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    Autocomplete,
-    TextField,
     Typography,
 } from "@mui/material";
 import Bbox from "../../UiComponents/Bbox";
 import RevealCard from "../../AnimationComponents/RevealCard";
 import { DataGrid } from "@mui/x-data-grid";
-import { useMediaQuery } from "@material-ui/core";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { ToastContainer } from "react-toastify";
 import Approve from "./popups/Approve";
 import Reject from "./popups/Reject";
 import Raise from "./popups/Raise";
 import ClaimID from "./popups/ClaimID";
-import { useNavigate } from "react-router-dom";
+import ReignsSelect from "../../UiComponents/ReignsSelect";
+import useClasses from "../../../hooks/useClasses";
+import EmployeePopup from '../EmployeePopup'
 
 export default function Claims() {
-
-    const curYear = new Date().getFullYear();
-    const academicYear = `${curYear}-${(curYear + 1).toString().slice(2, 4)}`;
-    const [acYear, setAcYear] = useState(academicYear);
-    const [type, setType] = useState("pending");
+    const { acYear, curYear } = useClasses();
+    const [academicYear, setAcademicYear] = useState(curYear);
     const [selectedRow, setSelectedRow] = useState(null);
-    const [isEditButtonActive, setIsEditButtonActive] = useState(null);
-
-    // breakpoints
-    const isSmall = useMediaQuery("(max-width: 1364px)");
-    const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
-    const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-    const isDesktop = useMediaQuery(
-        "(min-width: 1707px) and (max-width: 1919px)"
-    );
-    const isLarge = useMediaQuery("(min-width: 1920px)");
-    const isXlarge = useMediaQuery("(min-width: 2560px)");
+    const [selectedClaimStatus, setSelectedClaimStatus] = useState(["Pending"]);
 
     const [approvePopup, setApprovePopup] = useState(false);
     const [rejectPopup, setRejectPopup] = useState(false);
-    const [downloadPopup, setDownloadPopup] = useState(false);
     const [raisePopup, setRaisePopup] = useState(false);
     const [claimIDPopup, setClaimIDPopup] = useState(false);
-    const [tab, setTab] = useState("claims");
-    const navigate = useNavigate();
+    const [employeePopup, setEmployeePopup] = useState(false);
 
-    // table columns
     const columns = [
         {
             field: "radioButtons",
             headerName: "",
-            width: isLaptop ? 50 : isSmall ? 40 : isTablet ? 50 : 70,
+            flex: 0.5,
             renderCell: (params) => (
                 <Radio
-                    checked={params.row.id === selectedRow}
+                    checked={selectedRow?.id === params.row.id}
                     color="primary"
                     sx={{
                         transform: "scale(0.6)",
                     }}
                     inputProps={{ "aria-label": params.row.id }}
                     onChange={() => {
-                        setSelectedRow(params.row.id);
-                        setIsEditButtonActive(params.row.id);
+                        setSelectedRow(params.row);  // Store the entire row object
+                        console.log('Selected Row Data:', params.row);
                     }}
                 />
             ),
@@ -94,6 +77,7 @@ export default function Claims() {
                     <Typography
                         component="span"
                         sx={{ color: "primary.main", cursor: "pointer" }}
+                        onClick={() => setEmployeePopup(true)}
                     >
                         ({params.value.id})
                     </Typography>
@@ -157,7 +141,6 @@ export default function Claims() {
         },
     ];
 
-    // table rows
     const rows = [
         {
             id: "CLA76890",
@@ -238,37 +221,33 @@ export default function Claims() {
                         height={50}
                     >
 
-                        {/* academic year dropdown */}
-                        <FormControl fullWidth style={{ width: "21%", marginRight: "30px" }}>
+                        <FormControl sx={{ width: "25%" }}>
                             <InputLabel>Academic Year</InputLabel>
                             <Select
                                 label="Academic Year"
-                                value={acYear}
-                                onChange={(e) => setAcYear(e.target.value)}
+                                onChange={(e) =>
+                                    setAcademicYear(e.target.value)
+                                }
+                                value={academicYear}
+                                sx={{ marginRight: '16px' }}
                             >
-                                <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                                <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                                <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                                <MenuItem value={"2025-26"}>2025-26</MenuItem>
+                                {acYear.map((year) => (
+                                    <MenuItem key={year} value={year}>
+                                        {year}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
 
-                        <FormControl fullWidth style={{ width: "21%", marginRight: "30px" }}>
-                            <Autocomplete
-                                options={['Pending', 'Approved', 'Rejected', 'All']}
-                                multiple
-                                filterSelectedOptions
-                                freeSolo={false}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Claim Status"
-                                        placeholder="Claim Status"
-                                    />
-                                )}
-                                sx={{ width: "70%" }}
-                            />
-                        </FormControl>
+                        <ReignsSelect
+                            items={['Pending', 'Approved', 'Rejected', 'All']}
+                            multiple
+                            label="Claim Status"
+                            defaultValues={['Pending']}
+                            value={selectedClaimStatus}
+                            onChange={setSelectedClaimStatus}
+                            sx={{ width: "25%" }}
+                        />
 
                         {/* Spacer */}
                         <Box flex={1} />
@@ -292,12 +271,11 @@ export default function Claims() {
                     />
                 </Box>
 
-                <ToastContainer />
-
                 <Approve open={approvePopup} close={() => setApprovePopup(false)} />
                 <Reject open={rejectPopup} close={() => setRejectPopup(false)} />
                 <Raise open={raisePopup} close={() => setRaisePopup(false)} />
                 <ClaimID open={claimIDPopup} close={() => setClaimIDPopup(false)} />
+                <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
 
                 <Box display="flex" justifyContent="flex-end" mt={2} mb={5} mr={2}>
                     <Button
@@ -305,6 +283,7 @@ export default function Claims() {
                         variant="contained"
                         sx={{ mr: 2 }}
                         onClick={() => setApprovePopup(true)}
+                        disabled={selectedRow?.claim_status !== 'Pending'}
                     >
                         Approve
                     </Button>
@@ -314,6 +293,7 @@ export default function Claims() {
                         color="secondary"
                         sx={{ mr: 2 }}
                         onClick={() => setRejectPopup(true)}
+                        disabled={selectedRow?.claim_status !== 'Pending'}
                     >
                         Reject
                     </Button>
@@ -324,6 +304,7 @@ export default function Claims() {
                     >
                         Download List
                     </Button>
+
                 </Box>
             </Bbox>
         </RevealCard >

@@ -2,41 +2,83 @@ import { useState } from "react";
 import {
     Box,
     Button,
-    Checkbox,
-    Radio,
     Divider,
     FormControl,
     InputLabel,
-    ListItemIcon,
-    ListItemText,
     MenuItem,
-    OutlinedInput,
     Select,
     Typography,
+    IconButton,
+    Menu
 } from "@mui/material";
 import Bbox from "../../../components/UiComponents/Bbox";
 import RevealCard from "../../../components/AnimationComponents/RevealCard";
 import { DataGrid } from "@mui/x-data-grid";
-import { useMediaQuery } from "@material-ui/core";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import AddNewBonus from "./AddNewBonus";
+import EditBonus from "./EditBonus";
 import useClasses from "../../../hooks/useClasses";
-import CloseIcon from '@mui/icons-material/Close';
+import { MoreVert as MoreVertIcon } from '@mui/icons-material';
+
+const ActionCell = ({ params, onEdit, onDelete }) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleEdit = () => {
+        onEdit(params.id);
+        handleClose();
+    };
+
+    const handleDelete = () => {
+        onDelete(params.id);
+        handleClose();
+    };
+
+    return (
+        <>
+            <IconButton onClick={handleClick}>
+                <MoreVertIcon />
+            </IconButton>
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+            >
+                <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+            </Menu>
+        </>
+    );
+};
 
 export default function Bonus() {
     const { acYear, curYear } = useClasses();
     const [academicYear, setAcademicYear] = useState(curYear);
     const [addNewBonusPopup, setAddNewBonusPopup] = useState(false);
+    const [editBonusPopup, setEditBonusPopup] = useState(false);
 
-    // breakpoints
-    const isSmall = useMediaQuery("(max-width: 1364px)");
-    const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
-    const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-    const isDesktop = useMediaQuery(
-        "(min-width: 1707px) and (max-width: 1919px)"
-    );
-    const isLarge = useMediaQuery("(min-width: 1920px)");
-    const isXlarge = useMediaQuery("(min-width: 2560px)");
+    const [rows, setRows] = useState([
+        {
+            id: 1, bonus_head_name: "Diwali Bonus", period: "Jul 2024 - Aug 2024", bonus_amount: {
+                "A1": '₹25000',
+                "B1": '₹25000',
+                "B3": '₹25000',
+                "A2": '₹25000'
+            }, tds_applicable: "Yes", elligiblity_criteria: {
+                "Employee Status": "Active",
+                "Leave without Pay": "No",
+                "Open Incident(s)": "No",
+                "Appraisal Rating": 2
+            }
+        },
+    ]);
 
     const columns = [
         {
@@ -51,7 +93,7 @@ export default function Bonus() {
             field: "period", headerName: "Period", flex: 1,
         },
         {
-            field: "bonus_amount", headerName: "Bonus Amount", flex: 2, renderCell: (params) => {
+            field: "bonus_amount", headerName: "Bonus Amount", flex: 1.5, renderCell: (params) => {
                 return (
                     <Box display={"grid"} gridTemplateColumns={"repeat(2, 1fr)"} gap={2}>
                         {Object.entries(params.value).map(([key, value]) => (
@@ -77,23 +119,24 @@ export default function Bonus() {
                 );
             }
         },
-    ];
-
-    const rows = [
         {
-            id: 1, bonus_head_name: "Diwali Bonus", period: "Jul 2024 - Aug 2024", bonus_amount: {
-                "A1": '₹25000',
-                "B1": '₹25000',
-                "B3": '₹25000',
-                "A2": '₹25000'
-            }, tds_applicable: "Yes", elligiblity_criteria: {
-                "Employee Status": "Active",
-                "Leave without Pay": "No",
-                "Open Incident(s)": "No",
-                "Appraisal Rating": 2
-            }
+            field: "actions",
+            headerName: "Actions",
+            flex: 0.5,
+            renderCell: (params) => (
+                <ActionCell params={params} onEdit={handleEdit} onDelete={handleDelete} />
+            ),
         },
     ];
+
+    const handleEdit = (id) => {
+        console.log(`Edit row with id: ${id}`);
+        setEditBonusPopup(true);
+    };
+
+    const handleDelete = (id) => {
+        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+    };
 
     return (
         <>
@@ -119,17 +162,17 @@ export default function Bonus() {
                         <FormControl sx={{ width: "30%" }}>
                             <InputLabel>Academic Year</InputLabel>
                             <Select
-                                items={acYear}
                                 label="Academic Year"
                                 onChange={(e) =>
-                                    setAcademicYear(e?.target.value ?? academicYear)
+                                    setAcademicYear(e.target.value)
                                 }
                                 value={academicYear}
                             >
-                                <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                                <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                                <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                                <MenuItem value={"2025-26"}>2025-26</MenuItem>
+                                {acYear.map((year) => (
+                                    <MenuItem key={year} value={year}>
+                                        {year}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
 
@@ -148,6 +191,7 @@ export default function Bonus() {
                         </Box>
 
                         <AddNewBonus open={addNewBonusPopup} close={() => setAddNewBonusPopup(false)} />
+                        <EditBonus open={editBonusPopup} close={() => setEditBonusPopup(false)} />
 
                         <Box marginBottom={4}>
                             <Button variant="contained" color="primary" width="auto" onClick={() => {
