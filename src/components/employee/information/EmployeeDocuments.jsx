@@ -4,37 +4,36 @@ import {
 	Divider,
 	Grid,
 	Stack,
-	InputBase,
 	Typography,
-	TextField,
-	Badge,
-	Chip,
-	Autocomplete,
-	Dialog,
+	Select,
+	InputLabel,
+	FormControl,
 } from "@mui/material";
-
-// quick search will render 3 different types of data set - student, employee, media
-import React, { useState } from "react";
+import { useState } from "react";
 import Bbox from "../../UiComponents/Bbox";
-import { Icon } from "@iconify/react";
 import { DataGrid } from "@mui/x-data-grid";
-import Section from "../../Section";
-import Flex from "../../UiComponents/Flex";
-import ReignsSelect from "../../UiComponents/ReignsSelect";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import EmployeePopup from '../EmployeePopup'
 
 const EmployeeDocuments = () => {
+	const [employeePopup, setEmployeePopup] = useState(false);
+
 	const columns = [
 		{ field: "space", headerName: " ", flex: 0.2 },
 		{
 			field: "id",
 			headerName: "Employee ID",
 			flex: 1,
+			renderCell: (params) => (
+				<Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => { console.log("hii"); setEmployeePopup(true) }}>
+					{params.value}
+				</Typography>
+			),
 		},
 		{
 			field: "name",
 			headerName: "Name",
-			flex: 1.5,
+			flex: 1.2,
 		},
 		{
 			field: "emp_type",
@@ -107,16 +106,6 @@ const EmployeeDocuments = () => {
 		},
 	];
 
-	const [modalVisible, setModalVisible] = useState(false);
-	const [activeLibId, setActiveLibId] = useState(null);
-	const [inputValue, setInputValue] = useState('');
-	const options = ["lib123", "lib124", "lib125", "med123", "med124", "med125"];
-
-	const handleLibIdClick = (libId) => {
-		setActiveLibId(libId);
-		setModalVisible(true);
-	};
-
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"} sx={{ paddingBottom: '40px' }}>
 			<Box bgcolor={"white"} py={1.3} px={2} borderRadius={2}>
@@ -127,24 +116,22 @@ const EmployeeDocuments = () => {
 
 			<Divider />
 			<Stack p={2} gap={2}>
-				<Box display={"flex"} gap={1}>
-					<Autocomplete
-						options={inputValue.length > 0 ? options : []}
-						filterSelectedOptions
-						sx={{ width: "30%" }}
-						freeSolo={false}
-						inputValue={inputValue}
-						onInputChange={(event, newInputValue) => {
-							setInputValue(newInputValue);
-						}}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								label="Search by Employee Name or Employee ID"
-								placeholder="Search by Employee Name or Employee ID"
-							/>
-						)}
-					/>
+				<Box display={"flex"} gap={1} sx={{ width: '30%' }}>
+					<FormControl fullWidth>
+						<InputLabel>Search by Employee Name or Employee ID</InputLabel>
+						<Select
+							label="Search by Employee Name or Employee ID"
+							// value={selectedLibraryCard}
+							required
+						// onChange={(e) => setSelectedLibraryCard(e.target.value)}
+						>
+							{/* {
+								libraryCardNumbers?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							} */}
+						</Select>
+					</FormControl>
 				</Box>
 
 				<Box display="flex" justifyContent="flex-end">
@@ -221,6 +208,8 @@ const EmployeeDocuments = () => {
 						</Grid>
 					</Grid>
 				</Box>
+
+				<EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
 			</Stack>
 		</Bbox>
 	);

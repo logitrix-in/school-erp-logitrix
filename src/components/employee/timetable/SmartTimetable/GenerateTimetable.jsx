@@ -9,8 +9,8 @@ import Bbox from "../../../UiComponents/Bbox";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import PublishSmartTimeTablePopup from './popups/PublishSmartTimeTablePopup'
-import GenerateSmartTimeTablePopup from './popups/GenerateSmartTimeTablePopup'
+import PublishSmartTimeTablePopup from './popup/PublishSmartTimetablePopup'
+import GenerateSmartTimeTablePopup from './popup/GenerateSmartTimetablePopup'
 
 export default function GenerateTimetable() {
     const navigate = useNavigate();

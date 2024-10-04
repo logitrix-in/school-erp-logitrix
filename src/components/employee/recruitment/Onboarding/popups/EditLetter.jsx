@@ -86,6 +86,12 @@ const EditLetter = ({ open, close }) => {
                             toast.success("Updated Successfully");
                             close();
                         }}>
+                            Preview
+                        </Button>
+                        <Button variant="contained" color="primary" sx={{ ml: '16px' }} fullWidth onClick={() => {
+                            toast.success("Updated Successfully");
+                            close();
+                        }}>
                             Save
                         </Button>
                     </Box>

@@ -68,14 +68,14 @@ const Dashboard = () => {
 				>
 					<ReignsSelect
 						items={acYear}
-						onChange={handleAcademicYearChange}
 						label="Academic Year"
-						value={academicYear}
 						defaultVal={curYear}
+						onChange={handleAcademicYearChange}
+						value={academicYear}
 					/>
 					<ReignsSelect
-						items={classes}
 						multiple
+						items={classes}
 						label="Class"
 						defaultValues={classes}
 						onChange={setSelectedClasses}

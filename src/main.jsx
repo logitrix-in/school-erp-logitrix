@@ -9,6 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 import AppContextProvider from "./context/AppContext.jsx";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import UserProvider from "./components/Library/action/UserContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
@@ -16,7 +17,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ThemeProvider>
       <BrowserRouter>
         <AppContextProvider>
-          <App />
+          <UserProvider>
+            <App />
+          </UserProvider>
         </AppContextProvider>
       </BrowserRouter>
     </ThemeProvider>

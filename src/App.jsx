@@ -11,6 +11,7 @@ import {
 	useNavigate,
 	BrowserRouter as Router,
 } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 import "./App.scss";
 import "./assets/scss/scrollbar.scss";
 import Breadcrumb from "./components/Breadcrumb";
@@ -26,6 +27,8 @@ import { AppContext } from "./context/AppContext";
 import useAuth from "./hooks/useAuth";
 import _404 from "./pages/404Page";
 import Dashboard from "./pages/Dashboard";
+// import PDFViewer from './components/employee/recruitment/Onboarding/PDFviewer'
+
 const AdmissionApplication = lazy(() =>
 	import("./pages/admission/AdmissionApplication")
 );
@@ -118,6 +121,7 @@ const LibraryVisitors = lazy(() => import("./pages/Library/LibraryVisitors"));
 const LibraryRecommandation = lazy(() =>
 	import("./pages/Library/LibraryRecommandation")
 );
+import { PDFViewer } from '@react-pdf/renderer';
 
 dayjs.locale("en-in");
 
@@ -153,6 +157,7 @@ const NavLayout = () => {
 				<Loader />
 			) : (
 				<>
+					<ToastContainer />
 					<Box
 						display={"flex"}
 						width={"100vw"}
@@ -409,7 +414,6 @@ function App() {
 
 					<Route path={"/library/action/new incident/"} element={<LibraryActionSuspend />} />
 
-
 					<Route
 						path={"library/visitors/"}
 						element={<LibraryVisitors />}
@@ -510,6 +514,10 @@ function App() {
 						element={<ClaimsBonuses />}
 					/>
 
+					{/* <Route
+							path={"employee/document/"}
+							element={<PDFViewer />}
+						/> */}
 
 					<Route path="*" element={<_404 />} />
 				</Route>

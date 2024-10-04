@@ -14,7 +14,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Banner from '../Banner'
 import { useState } from 'react'
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import AssignTeacher from './popups/AssignTeacher'
+import AssignTeacher from './popup/AssignTeacher'
 
 const Manage = ({ setMapping }) => {
   const [selectedRow, setSelectedRow] = useState('');
