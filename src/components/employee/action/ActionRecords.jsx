@@ -1,109 +1,117 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
 import { Box, TextField, Button, Typography, InputLabel, FormControl, Select, MenuItem } from "@mui/material";
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
-import useClasses from "../../../hooks/useClasses";
 import { DatePicker } from "@mui/x-date-pickers";
-import { useMediaQuery } from "@material-ui/core";
 import { DataGrid } from "@mui/x-data-grid";
+import useClasses from "../../../hooks/useClasses";
+import useEmployees from "../../../hooks/useEmployees";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const ActionRecords = () => {
-  const isSmall = useMediaQuery("(max-width: 1395px)");
-  const isTablet = useMediaQuery("(min-width: 1396px) and (max-width: 1535px)");
-  const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-  const isDesktop = useMediaQuery(
-    "(min-width: 1707px) and (max-width: 1919px)"
-  );
-  const isLarge = useMediaQuery("(min-width: 1920px)");
-  const isXlarge = useMediaQuery("(min-width: 2560px)");
+  const { acYear, curYear, nonCompliance } = useClasses();
+  const { employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment, employeeType } = useEmployees();
 
-  const { classes, acYear, curYear, sections, nonCompliance } = useClasses();
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [academicYear, setAcademicYear] = useState(curYear);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [selectedEmployeeType, setSelectedEmployeeType] = useState('');
+  const [penaltyDueAmount, setPenaltyDueAmount] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedCompliance, setSelectedCompliance] = useState('');
+  const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
 
   const columns = [
     {
       field: "id",
-      headerName: "Library Card #",
+      headerName: "Employee ID",
       flex: 1,
     },
     {
       field: "name",
       headerName: "Name",
-      flex: 1.4,
+      flex: 1,
     },
     {
-      field: "class",
-      headerName: "Class",
-      flex: 0.6,
+      field: "employeeType",
+      headerName: "Employee Type",
+      flex: 1,
     },
     {
-      field: "section",
-      headerName: "Section",
-      flex: 0.6,
+      field: "department",
+      headerName: "Department",
+      flex: 1,
     },
     {
-      field: "roll",
-      headerName: "Roll #",
-      flex: 0.6,
+      field: "grade",
+      headerName: "Grade",
+      flex: 0.5,
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: "Status", flex: 0.7,
       renderCell: (params) => (
         <Box
           style={{
             backgroundColor:
               params.value === "Active"
                 ? "#C6F6D5"
-                : params.value === "Inactive"
+                : params.value === "Suspended"
                   ? "#FFCCCC"
                   : "transparent",
-            flex: 1,
-            borderRadius: "4px",
-            width: "auto",
-            paddingRight: "2px",
-            paddingLeft: "2px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            borderRadius: "6px",
+            display: "inline-block",
+            width:
+              params.value === "Active" || params.value === "Suspended"
+                ? "auto"
+                : "auto",
+            paddingLeft:
+              params.value === "Active"
+                ? "7px"
+                : params.value === "Suspended"
+                  ? "7px"
+                  : "0px",
+            paddingRight:
+              params.value === "Active"
+                ? "7px"
+                : params.value === "Suspended"
+                  ? "7px"
+                  : "0px",
           }}
         >
-          <Typography
-          >
-            {params.value}
-          </Typography>
-        </Box >
+          {params.value}
+        </Box>
       ),
     },
     {
-      field: "period",
+      field: "lastSuspensionPeriod",
       headerName: "Last Suspension Period",
-      flex: 1.7,
+      flex: 1.4,
     },
     {
-      field: "amount",
-      headerName: "Penalty Due Amount",
+      field: "dueAmount",
+      headerName: "Penalty Due amount",
+      flex: 0.8,
+    },
+    {
+      field: "incidentid",
+      headerName: "Open Incident(s)",
       flex: 1.5,
-    },
-    {
-      field: "incidents",
-      headerName: "Open Incidents",
-      flex: 2,
       renderCell: (params) => (
-        <Box sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}>
-          {params.row.incidents.map((incident, index) => (
+        <Box sx={{ display: "flex", gap: "8px" }}>
+          {params.row.incidentid.map((incident, index) => (
             <Typography
               key={index}
-              variant="body2"
               sx={{
                 backgroundColor: "#e8def8",
+                borderRadius: "6px",
+                fontSize: "0.7rem",
+                fontWeight: "600",
+                display: "inline-block",
                 width: "auto",
-                paddingLeft: "7px",
-                paddingRight: "7px",
-                color: "#000000",
-                borderRadius: "4px",
+                paddingX: "7px",
+                paddingY: "4px",
               }}
             >
               {incident}
@@ -117,66 +125,97 @@ const ActionRecords = () => {
   const rows = [
     {
       id: "AG240001",
-      name: "Saunav Ray",
-      class: "VI",
-      section: "A",
-      roll: "19",
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
       status: "Active",
-      period: "N/A",
-      amount: "₹5000",
-      incidents: ["#223344"],
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334"],
     },
     {
-      id: "AG240002",
-      name: "Saunav Ray",
-      class: "VI",
-      section: "A",
-      roll: "19",
-      status: "Active",
-      period: "N/A",
-      amount: "₹5000",
-      incidents: ["#223344", "#112244"],
-    },
-    {
-      id: "AG240003",
-      name: "Saunav Ray",
-      class: "VI",
-      section: "A",
-      roll: "19",
+      id: "AG240001",
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
       status: "Inactive",
-      period: "N/A",
-      amount: "₹5000",
-      incidents: ["#223344"],
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334", "#456636"],
     },
     {
-      id: "AG240004",
-      name: "Saunav Ray",
-      class: "VI",
-      section: "A",
-      roll: "19",
+      id: "AG240001",
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
       status: "Active",
-      period: "N/A",
-      amount: "₹5000",
-      incidents: ["#223344"],
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334", "#456636"],
     }
   ];
+
+  function handleAmountChange(e) {
+    const inputValue = e.target.value;
+    const numericValue = inputValue.replace(/[^0-9]/g, '');
+
+    if (numericValue === '') {
+      setPenaltyDueAmount('');
+    } else {
+      setPenaltyDueAmount(`Greater than ₹ ${parseInt(numericValue).toLocaleString('en-IN')}`);
+    }
+  }
 
   return (
     <RevealCard>
       <Box sx={{ padding: "50px", display: "flex", flexDirection: "column" }}>
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
           <Box
             sx={{
               display: "flex",
               flexDirection: "column",
               gap: "20px",
-              width: "400px",
+              width: "500px",
             }}
           >
 
-            <ReignsSelect items={acYear} multiple defaultValues={[curYear]} label="Academic Year" />
-            <ReignsSelect items={classes} multiple label="Class" />
-            <ReignsSelect items={sections} multiple label="Section" />
+            <FormControl>
+              <InputLabel>Academic Year</InputLabel>
+              <Select
+                label="Academic Year"
+                onChange={(e) =>
+                  setAcademicYear(e.target.value)
+                }
+                value={academicYear}
+              >
+                {acYear.map((year) => (
+                  <MenuItem key={year} value={year}>
+                    {year}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <ReignsSelect
+              items={employeeType}
+              multiple
+              label="Employee Type"
+              defaultValues={employeeType}
+              onChange={setSelectedEmployeeType}
+              value={selectedEmployeeType}
+            />
+
+            <ReignsSelect
+              multiple
+              label="Department"
+              items={employeeDepartment}
+              defaultValues={employeeDepartment}
+              onChange={setSelectedDepartment}
+              value={selectedDepartment}
+            />
           </Box>
 
           <Box
@@ -185,30 +224,51 @@ const ActionRecords = () => {
               flexDirection: "column",
               gap: "20px",
               width: "500px",
-              marginLeft: "50px",
             }}
           >
-            <Box display={"flex"} gap={2}>
-              <DatePicker
-                label="Start Date"
-                onChange={(e) => setStartDate(e)}
-                // minDate={dayjs()}
-                format="DD MMM YYYY"
-              />
-              <DatePicker
-                format="DD MMM YYYY"
-                label="End Date"
-                minDate={startDate}
-                onChange={(e) => setEndDate(e)}
-              />
-            </Box>
 
-            <TextField label="Penalty Due Amount" fullWidth />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Box display="flex" gap={2}>
+                <DatePicker
+                  label="Start Date"
+                  onChange={(newValue) => setStartDate(newValue)}
+                  value={startDate}
+                  format="DD MMM YYYY"
+                  slotProps={{ textField: { fullWidth: true } }}
+                />
+                <DatePicker
+                  label="End Date"
+                  minDate={startDate}
+                  value={endDate}
+                  onChange={(newValue) => setEndDate(newValue)}
+                  format="DD MMM YYYY"
+                  slotProps={{ textField: { fullWidth: true } }}
+                />
+              </Box>
+            </LocalizationProvider>
+
+            <TextField
+              id="comments"
+              label="Penalty Due Amount >="
+              type="text"
+              placeholder="Enter Penalty Due Amount >="
+              value={penaltyDueAmount}
+              onChange={handleAmountChange}
+              variant="outlined"
+              fullWidth
+              inputProps={{
+                inputMode: 'numeric',
+                pattern: '[0-9]*'
+              }}
+            />
 
             <ReignsSelect
-              items={nonCompliance}
               multiple
               label="Non Compliance"
+              items={nonCompliance}
+              defaultValues={nonCompliance}
+              onChange={setSelectedCompliance}
+              value={selectedCompliance}
             />
           </Box>
         </Box>

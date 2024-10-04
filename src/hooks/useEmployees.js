@@ -12,6 +12,7 @@ const useEmployees = () => {
         employeeGrade: context.employeeGrade,
         employeeStatus: context.employeeStatus,
         employeeClaimRequestType: context.employeeClaimRequestType,
+        employeeStages: context.employeeStages,
     };
 };
 

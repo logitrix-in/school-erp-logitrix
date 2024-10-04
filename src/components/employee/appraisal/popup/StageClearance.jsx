@@ -1,30 +1,26 @@
-import React from "react";
 import {
     Box,
     Button,
     Dialog,
     InputLabel,
-    Divider,
-    TextField,
     IconButton,
-    Tab,
-    Tabs,
     Select,
     MenuItem,
     FormControl,
     Typography,
 } from "@mui/material";
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import useEmployees from "@/hooks/useEmployees";
+import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 
 
 const StageClearance = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const { employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment, employeeStages } = useEmployees();
+    const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
+    const [selectedDepartment, setSelectedDepartment] = useState(employeeDepartment);
+    const [selectedStage, setSelectedStage] = useState(employeeStages);
 
     return (
         <Dialog
@@ -34,7 +30,7 @@ const StageClearance = ({ open, close }) => {
                     maxHeight: "100%",
                 },
             }}
-            // maxWidth="lg"
+            maxWidth="md"
             open={open}
             onClose={() => close()}
             disableEnforceFocus={true}
@@ -65,32 +61,33 @@ const StageClearance = ({ open, close }) => {
 
                 <Box display="flex" flexDirection="column" px={2} py={4} justifyContent="space-between" width={"75%"} margin="auto" >
 
-                    <FormControl fullWidth>
-                        <InputLabel>Department</InputLabel>
-                        <Select
-                            label="Department"
-                        // value={appraisalCycle}
-                        // onChange={(e) => setAppraisalCycle(e.target.value)}
-                        >
-                            <MenuItem value={"2021-22"}>A</MenuItem>
-                            <MenuItem value={"2023-24"}>B</MenuItem>
-                            <MenuItem value={"2024-25"}>c</MenuItem>
-                            <MenuItem value={"2025-26"}>D</MenuItem>
-                        </Select>
-                    </FormControl>
-
+                    <ReignsSelect
+                        multiple
+                        items={employeeDepartment}
+                        defaultValues={employeeDepartment}
+                        onChange={setSelectedDepartment}
+                        value={selectedDepartment}
+                        label="Department"
+                        sx={{ mb: 2 }}
+                    />
                     <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Move all pending appraisal forms to :</Typography>
 
-                    <FormControl fullWidth>
+
+                    <FormControl sx={{ width: "100%" }}>
                         <InputLabel>Stage</InputLabel>
                         <Select
                             label="Stage"
-                        // value={appraisalCycle}
-                        // onChange={(e) => setAppraisalCycle(e.target.value)}
+                            onChange={(e) =>
+                                setSelectedStage(e.target.value)
+                            }
+                            value={selectedStage}
+                            sx={{ marginRight: '16px' }}
                         >
-                            <MenuItem value={"2021-22"}>X</MenuItem>
-                            <MenuItem value={"2023-24"}>Y</MenuItem>
-                            <MenuItem value={"2024-25"}>Z</MenuItem>
+                            {employeeStages.map((stage) => (
+                                <MenuItem key={stage} value={stage}>
+                                    {stage}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
 

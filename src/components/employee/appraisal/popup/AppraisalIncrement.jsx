@@ -13,8 +13,10 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
 import { DataGrid } from "@mui/x-data-grid";
+import { useState } from "react";
 
 const AppraisalIncrement = ({ open, close }) => {
+    const [revisedCompensationMonth, setRevisedCompensationMonth] = useState("");
 
     const columns = [
         { field: 'space', headerName: '', flex: 0.2 },
@@ -124,13 +126,14 @@ const AppraisalIncrement = ({ open, close }) => {
         { id: 10, grade: 'C3', rating1: '2', rating2: '4', rating3: '5', rating4: '6', rating5: '8' },
     ];
 
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     return (
         <Dialog
             fullWidth
             PaperProps={{
                 sx: {
-                    maxHeight: "100%",
+                    maxHeight: "90%",
                 },
             }}
             maxWidth="lg"
@@ -162,7 +165,7 @@ const AppraisalIncrement = ({ open, close }) => {
                     </IconButton>
                 </Box>
 
-                <Box display="flex" flexDirection="column" p={2} justifyContent="space-between" width={"75%"} margin="auto" >
+                <Box display="flex" flexDirection="column" p={2} justifyContent="space-between" width={"90%"} margin="auto" >
 
                     <Box display={"flex"} alignItems={"center"}>
                         <Typography fontWeight={"medium"}>Revised Compensation Effective From :</Typography>
@@ -170,19 +173,19 @@ const AppraisalIncrement = ({ open, close }) => {
                             <InputLabel>Month</InputLabel>
                             <Select
                                 label="Month"
-                            // value={appraisalCycle}
-                            // onChange={(e) => setAppraisalCycle(e.target.value)}
+                                value={revisedCompensationMonth}
+                                onChange={(e) => setRevisedCompensationMonth(e.target.value)}
                             >
-                                <MenuItem value={"2021-22"}>2021-22</MenuItem>
-                                <MenuItem value={"2023-24"}>2023-24</MenuItem>
-                                <MenuItem value={"2024-25"}>2024-25</MenuItem>
-                                <MenuItem value={"2025-26"}>2025-26</MenuItem>
+                                {
+                                    months.map((month, index) => (
+                                        <MenuItem key={index} value={month}>{month}</MenuItem>
+                                    ))
+                                }
                             </Select>
                         </FormControl>
                     </Box>
 
                     <Typography fontWeight={"medium"} marginY={2}>Increment Percentage Grid</Typography>
-
 
                     <Box sx={{ width: "100%" }}>
                         <DataGrid

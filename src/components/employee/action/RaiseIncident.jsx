@@ -11,31 +11,19 @@ import {
   MenuItem,
   ListItemIcon,
   Checkbox,
-  Typography,
   ListItemText,
+  Typography,
 } from "@mui/material";
-import { useMediaQuery } from "@material-ui/core";
 import useClasses from "../../../hooks/useClasses";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { DatePicker } from "@mui/x-date-pickers";
-import DeleteIcon from "@mui/icons-material/Delete";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import SVGIncident from './SVGIncident';
 
 const RaiseIncident = () => {
-  // breakpoints
-  const isSmall = useMediaQuery("(max-width: 1364px)");
-  const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
-  const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-  const isDesktop = useMediaQuery(
-    "(min-width: 1707px) and (max-width: 1919px)"
-  );
-  const isLarge = useMediaQuery("(min-width: 1920px)");
-  const isXlarge = useMediaQuery("(min-width: 2560px)");
-
   const { classes, sections, roll } = useClasses();
 
   const { nonCompliance } = useClasses();
@@ -58,35 +46,40 @@ const RaiseIncident = () => {
     );
   };
 
-  const [selectedRow, setSelectedRow] = useState(null);
-
-  const columns1 = [
+  const columns = [
     {
-      field: "space", headerName: "", flex: 0.2,
+      field: "space",
+      headerName: "",
+      flex: 0.2
     },
     {
       field: "id",
-      headerName: "Library Card #", flex: 1
+      headerName: "Employee ID",
+      flex: 1,
     },
     {
       field: "name",
-      headerName: "Name", flex: 1.5
+      headerName: "Name",
+      flex: 1,
     },
     {
-      field: "class",
-      headerName: "Class", flex: 0.8
+      field: "employeeType",
+      headerName: "Employee Type",
+      flex: 1,
     },
     {
-      field: "section",
-      headerName: "Section", flex: 0.8
+      field: "department",
+      headerName: "Department",
+      flex: 1,
     },
     {
-      field: "roll",
-      headerName: "Roll #", flex: 0.8
+      field: "grade",
+      headerName: "Grade",
+      flex: 0.5,
     },
     {
       field: "status",
-      headerName: "Library Card Status", flex: 1.5,
+      headerName: "Status", flex: 0.7,
       renderCell: (params) => (
         <Box
           style={{
@@ -121,69 +114,77 @@ const RaiseIncident = () => {
       ),
     },
     {
-      field: "period",
-      headerName: "Last Suspension Period", flex: 1.8
+      field: "lastSuspensionPeriod",
+      headerName: "Last Suspension Period",
+      flex: 1.4,
     },
     {
-      field: "amount",
-      headerName: "Penalty Due Amount", flex: 1.5
+      field: "dueAmount",
+      headerName: "Penalty Due amount",
+      flex: 0.8,
     },
     {
       field: "incidentid",
+      headerName: "Open Incident(s)",
       flex: 1.5,
-      headerName: "Open Incidents",
       renderCell: (params) => (
-        <Box
-          style={{
-            backgroundColor: "#e8def8",
-            borderRadius: "6px",
-            display: "inline-block",
-            width: "auto",
-            paddingLeft: "7px",
-            paddingRight: "7px",
-          }}
-        >
-          {params.value}
+        <Box sx={{ display: "flex", gap: "8px" }}>
+          {params.row.incidentid.map((incident, index) => (
+            <Typography
+              key={index}
+              sx={{
+                backgroundColor: "#e8def8",
+                borderRadius: "6px",
+                fontSize: "0.7rem",
+                fontWeight: "600",
+                display: "inline-block",
+                width: "auto",
+                paddingX: "7px",
+                paddingY: "4px",
+              }}
+            >
+              {incident}
+            </Typography>
+          ))}
         </Box>
       ),
     },
   ];
 
-  const rows1 = [
+  const rows = [
     {
       id: "AG240001",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
       status: "Active",
-      period: "N/A",
-      amount: "Nil",
-      incidentid: "#112233",
-
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334"],
     },
     {
-      id: "AG240002",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      status: "Active",
-      period: "N/A",
-      amount: "Nil",
-      incidentid: "#112233",
+      id: "AG240001",
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
+      status: "Inactive",
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334", "#456636"],
     },
     {
-      id: "AG240003",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      status: "Suspended",
-      period: "N/A",
-      amount: "Nil",
-      incidentid: "#112233",
-    },
+      id: "AG240001",
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
+      status: "Active",
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334", "#456636"],
+    }
   ];
 
   const columns2 = [
@@ -319,34 +320,59 @@ const RaiseIncident = () => {
         />
       ),
     },
-    { field: "id", headerName: "Library Card #", flex: 1 },
-    { field: "name", headerName: "Name", flex: 1.5 },
-    { field: "class", headerName: "Class", flex: 0.8 },
-    { field: "section", headerName: "Section", flex: 0.8 },
-    { field: "roll", headerName: "Roll #", flex: 0.8 },
+    {
+      field: "id",
+      headerName: "Employee ID",
+      flex: 1,
+    },
+    {
+      field: "name",
+      headerName: "Name",
+      flex: 1,
+    },
+    {
+      field: "employeeType",
+      headerName: "Employee Type",
+      flex: 1,
+    },
+    {
+      field: "department",
+      headerName: "Department",
+      flex: 1,
+    },
+    {
+      field: "grade",
+      headerName: "Grade",
+      flex: 0.5,
+    },
     {
       field: "status",
-      headerName: "Library Card Status",
-      flex: 1.5,
+      headerName: "Status", flex: 0.7,
       renderCell: (params) => (
         <Box
           style={{
             backgroundColor:
               params.value === "Active"
                 ? "#C6F6D5"
-                : params.value === "Inactive"
+                : params.value === "Suspended"
                   ? "#FFCCCC"
                   : "transparent",
             borderRadius: "6px",
             display: "inline-block",
             width:
-              params.value === "Active" || params.value === "Inactive"
-                ? "60px"
+              params.value === "Active" || params.value === "Suspended"
+                ? "auto"
                 : "auto",
             paddingLeft:
               params.value === "Active"
-                ? "11px"
-                : params.value === "Inactive"
+                ? "7px"
+                : params.value === "Suspended"
+                  ? "7px"
+                  : "0px",
+            paddingRight:
+              params.value === "Active"
+                ? "7px"
+                : params.value === "Suspended"
                   ? "7px"
                   : "0px",
           }}
@@ -355,44 +381,77 @@ const RaiseIncident = () => {
         </Box>
       ),
     },
-    { field: "suspension", headerName: "Last Suspension Period", flex: 1.5 },
-    { field: "penalty", headerName: "Penalty Due Amount", flex: 1.5 },
+    {
+      field: "lastSuspensionPeriod",
+      headerName: "Last Suspension Period",
+      flex: 1.4,
+    },
+    {
+      field: "dueAmount",
+      headerName: "Penalty Due amount",
+      flex: 0.8,
+    },
+    {
+      field: "incidentid",
+      headerName: "Open Incident(s)",
+      flex: 1.5,
+      renderCell: (params) => (
+        <Box sx={{ display: "flex", gap: "8px" }}>
+          {params.row.incidentid.map((incident, index) => (
+            <Typography
+              key={index}
+              sx={{
+                backgroundColor: "#e8def8",
+                borderRadius: "6px",
+                fontSize: "0.7rem",
+                fontWeight: "600",
+                display: "inline-block",
+                width: "auto",
+                paddingX: "7px",
+                paddingY: "4px",
+              }}
+            >
+              {incident}
+            </Typography>
+          ))}
+        </Box>
+      ),
+    },
   ];
 
   const rows3 = [
     {
       id: "AG240001",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
       status: "Active",
-      suspension: "N/A",
-      penalty: "Nil",
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334"],
     },
     {
-      id: "AG240002",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      id: "AG240001",
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
       status: "Inactive",
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334", "#456636"],
     },
     {
-      id: "AG240003",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      id: "AG240001",
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
       status: "Active",
-    },
-    {
-      id: "AG240004",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
-      status: "Active",
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334", "#456636"],
     }
   ];
 
@@ -473,8 +532,8 @@ const RaiseIncident = () => {
         < Box mt={2} mb={5} style={{ height: "100%" }}>
           {modeSwitch ? (
             <DataGrid
-              rows={rows1}
-              columns={columns1}
+              rows={rows}
+              columns={columns}
               initialState={{
                 pagination: {
                   paginationModel: { page: 0, pageSize: 5 },

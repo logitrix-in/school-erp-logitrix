@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   TextField,
-  InputAdornment,
-  Button,
   Typography,
   IconButton,
   Avatar,
   AvatarGroup,
-  Autocomplete,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import RevealCard from "@/components/AnimationComponents/RevealCard";
-import { Search } from "@mui/icons-material";
-import { useMediaQuery } from "@material-ui/core";
 import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 import { DataGrid } from "@mui/x-data-grid";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -25,21 +24,11 @@ import RequestPageOutlinedIcon from '@mui/icons-material/RequestPageOutlined';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import SVG from './SVG';
 import ListOfStudents from "./ListStudents";
 import DisplayCardSingle from "./DisplayCardSingle";
 
 const ViewEditIncident = () => {
-  const isSmall = useMediaQuery("(max-width: 1364px)");
-  const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
-  const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-  const isDesktop = useMediaQuery(
-    "(min-width: 1707px) and (max-width: 1919px)"
-  );
-  const isLarge = useMediaQuery("(min-width: 1920px)");
-  const isXlarge = useMediaQuery("(min-width: 2560px)");
-
   const statuses = ["Open", "Cancelled", "Closed", "All"];
 
   const [openId, setOpenId] = useState(null);
@@ -51,33 +40,40 @@ const ViewEditIncident = () => {
   const components = [1, 2, 3];
   const [showList, setShowList] = useState(false);
 
-  const columns1 = [
+  const columns = [
     {
-      field: "space", headerName: "", flex: 0.2,
+      field: "space",
+      headerName: "",
+      flex: 0.2
     },
     {
       field: "id",
-      headerName: "Library Card #", flex: 1
+      headerName: "Employee ID",
+      flex: 1,
     },
     {
       field: "name",
-      headerName: "Name", flex: 1.5
+      headerName: "Name",
+      flex: 1,
     },
     {
-      field: "class",
-      headerName: "Class", flex: 0.8
+      field: "employeeType",
+      headerName: "Employee Type",
+      flex: 1,
     },
     {
-      field: "section",
-      headerName: "Section", flex: 0.8
+      field: "department",
+      headerName: "Department",
+      flex: 1,
     },
     {
-      field: "roll",
-      headerName: "Roll #", flex: 0.8
+      field: "grade",
+      headerName: "Grade",
+      flex: 0.5,
     },
     {
       field: "status",
-      headerName: "Library Card Status", flex: 1.5,
+      headerName: "Status", flex: 0.7,
       renderCell: (params) => (
         <Box
           style={{
@@ -112,82 +108,105 @@ const ViewEditIncident = () => {
       ),
     },
     {
-      field: "period",
-      headerName: "Last Suspension Period", flex: 1.8
+      field: "lastSuspensionPeriod",
+      headerName: "Last Suspension Period",
+      flex: 1.4,
     },
     {
-      field: "amount",
-      headerName: "Penalty Due Amount", flex: 1.5
+      field: "dueAmount",
+      headerName: "Penalty Due amount",
+      flex: 0.8,
     },
     {
       field: "incidentid",
+      headerName: "Open Incident(s)",
       flex: 1.5,
-      headerName: "Open Incidents",
       renderCell: (params) => (
-        <Box
-          style={{
-            backgroundColor: "#e8def8",
-            borderRadius: "6px",
-            display: "inline-block",
-            width: "auto",
-            paddingLeft: "7px",
-            paddingRight: "7px",
-          }}
-        >
-          {params.value}
+        <Box sx={{ display: "flex", gap: "8px" }}>
+          {params.row.incidentid.map((incident, index) => (
+            <Typography
+              key={index}
+              sx={{
+                backgroundColor: "#e8def8",
+                borderRadius: "6px",
+                fontSize: "0.7rem",
+                fontWeight: "600",
+                display: "inline-block",
+                width: "auto",
+                paddingX: "7px",
+                paddingY: "4px",
+              }}
+            >
+              {incident}
+            </Typography>
+          ))}
         </Box>
       ),
     },
   ];
 
-  const rows1 = [
+  const rows = [
     {
       id: "AG240001",
-      class: "VI",
-      name: "Saunav Ray",
-      section: "A",
-      roll: 23,
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
       status: "Active",
-      period: "N/A",
-      amount: "Nil",
-      incidentid: "#112233",
-
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334"],
+    },
+    {
+      id: "AG240001",
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
+      status: "Inactive",
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334", "#456636"],
+    },
+    {
+      id: "AG240001",
+      name: "Saurav Ray",
+      employeeType: "Teaching Staff",
+      department: "Physics",
+      grade: "C1",
+      status: "Active",
+      lastSuspensionPeriod: "N/A",
+      dueAmount: "₹50",
+      incidentid: ["#112334", "#456636"],
     }
   ];
 
   return (
     <RevealCard>
       <Box ml={2} mr={2}>
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          height={70}
-          width={"100%"}
-          mt={1}
-        >
-          <Autocomplete
-            options={['stud 1', 'stud 2', 'stud 3', 'stud 4']}
-            filterSelectedOptions
-            freeSolo={false}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search by Student ID / Student Name"
-                placeholder="Search by Student ID / Student Name"
-                size="small"
-                variant="outlined"
-                sx={{ width: isLaptop ? 300 : 350 }}
-              />
-            )}
-          />
-        </Box>
 
+        <Box display={"flex"} gap={1} sx={{ width: '35%', marginY: '16px' }} >
+          <FormControl fullWidth>
+            <InputLabel>Search by Employee Name or Employee ID</InputLabel>
+            <Select
+              label="Search by Employee Name or Employee ID"
+              // value={selectedLibraryCard}
+              required
+            // onChange={(e) => setSelectedLibraryCard(e.target.value)}
+            >
+              {/* {
+								libraryCardNumbers?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							} */}
+            </Select>
+          </FormControl>
+        </Box>
 
         <Box>
           <DataGrid
-            rows={rows1}
-            columns={columns1}
+            rows={rows}
+            columns={columns}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 5 },
@@ -400,7 +419,7 @@ const DisplayCard = ({ id, isOpen, onToggle, setShowList }) => {
                 cursor: "pointer",
               }}
             >
-              <MoreVertIcon />
+              <EditOutlinedIcon />
             </button>
           </Box>
         </Box>

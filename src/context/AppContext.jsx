@@ -21,6 +21,7 @@ const AppContextProvider = ({ children }) => {
   const [employeeGrade, setEmployeeGrade] = useState([]);
   const [employeeStatus, setEmployeeStatus] = useState([]);
   const [employeeClaimRequestType, setEmployeeClaimRequestType] = useState([]);
+  const [employeeStages, setEmployeeStages] = useState([]);
 
   const [nonCompliance, setNonCompliance] = useState([]);
   const [suspend, setSuspend] = useState([]);
@@ -99,6 +100,18 @@ const AppContextProvider = ({ children }) => {
       "Health and Wellness Claims",
       "Relocation Expenses",
       "Others"];
+  };
+
+  useEffect(() => {
+    setEmployeeStages(generateEmployeeStages());
+  }, []);
+
+  const generateEmployeeStages = () => {
+    return [
+      "Self Assessment",
+      "Supervisor Review",
+      "Rationalization",
+    ];
   };
 
 
@@ -321,6 +334,8 @@ const AppContextProvider = ({ children }) => {
     setEmployeeStatus,
     employeeClaimRequestType,
     setEmployeeClaimRequestType,
+    employeeStages,
+    setEmployeeStages
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

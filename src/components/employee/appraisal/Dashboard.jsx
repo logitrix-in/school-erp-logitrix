@@ -1,44 +1,61 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     Box,
     Button,
-    Checkbox,
-    Radio,
     Divider,
+    Grid,
+    Typography,
     FormControl,
     InputLabel,
-    Grid,
-    ListItemIcon,
-    TextField,
-    Autocomplete,
-    ListItemText,
     MenuItem,
-    OutlinedInput,
     Select,
-    Typography,
 } from "@mui/material";
 import Chart from "react-apexcharts";
 import Bbox from "../../UiComponents/Bbox";
 import RevealCard from "../../AnimationComponents/RevealCard";
-import { useMediaQuery } from "@material-ui/core";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
 import Analyze from "./popup/Analyze";
 import useClasses from "@/hooks/useClasses";
+import useEmployees from "@/hooks/useEmployees";
 
 export default function Dashboard() {
     const [analyzePopup, setAnalyzePopup] = useState(false);
-    const { curYear } = useClasses();
+    const { curYear, acYear } = useClasses();
+    const { employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment, employeeGrade, employeeStatus } = useEmployees();
 
-    const years = ["2021-22", "2022-23", "2023-24", "2024-25", "2025-26"];
-    const values = ["A", "B", "C", "D"];
+    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [selectedGrade, setSelectedGrade] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
+    const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
+    const [selectedYear, setSelectedYear] = useState(curYear);
+    // const [selectedEmployeeType, setSelectedEmployeeType] = useState('');
 
-    const openAnalyzePopup = () => {
-        setAnalyzePopup(true);
-    }
+    // useEffect(() => {
+    //     console.log(selectedEmployeeType);
+    //     let departments = [];
 
-    const closeAnalyzePopup = () => {
-        setAnalyzePopup(false);
-    }
+    //     if (selectedEmployeeType === '') {
+    //         return;
+    //     }
+
+    //     selectedEmployeeType.forEach(type => {
+    //         switch (type) {
+    //             case 'Management':
+    //                 departments = [...departments, ...employeeManagementDepartment];
+    //                 break;
+    //             case 'Teaching Staff':
+    //                 departments = [...departments, ...employeeTeachingDepartment];
+    //                 break;
+    //             case 'Support Staff':
+    //                 departments = [...departments, ...employeeSupportStaffDepartment];
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
+    //     });
+
+    //     setEmployeeDepartment(departments);
+    // }, [selectedEmployeeType]);
 
     return (
         <RevealCard>
@@ -65,27 +82,31 @@ export default function Dashboard() {
                             <RevealCard>
                                 <Bbox borderRadius={2}>
                                     <Box px={3} py={4} mb={2}>
-                                        <ReignsSelect
-                                            multiple
-                                            defaultValues={[curYear]}
-                                            items={years}
-                                            // onChange={(val) => {
-                                            //     console.log(val);
-                                            //     setYear(val);
-                                            // }}
-                                            // value={curYear}
-                                            label="Appraisal Cycle"
-                                            sx={{ mb: 2 }}
-                                        />
+                                        <FormControl sx={{ width: "100%" }}>
+                                            <InputLabel>Appraisal Cycle</InputLabel>
+                                            <Select
+                                                label="Appraisal Cycle"
+                                                onChange={(e) =>
+                                                    setSelectedYear(e.target.value)
+                                                }
+                                                value={selectedYear}
+                                                sx={{ mb: 2 }}
+
+                                            >
+                                                {acYear.map((year) => (
+                                                    <MenuItem key={year} value={year}>
+                                                        {year}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
 
                                         <ReignsSelect
                                             multiple
-                                            items={years}
-                                            // onChange={(val) => {
-                                            //     console.log(val);
-                                            //     setYear(val);
-                                            // }}
-                                            // value={curYear}
+                                            items={employeeDepartment}
+                                            defaultValues={employeeDepartment}
+                                            onChange={setSelectedDepartment}
+                                            value={selectedDepartment}
                                             label="Department"
                                             sx={{ mb: 2 }}
                                         />
@@ -93,24 +114,20 @@ export default function Dashboard() {
 
                                         <ReignsSelect
                                             multiple
-                                            items={values}
-                                            // onChange={(val) => {
-                                            //     console.log(val);
-                                            //     setYear(val);
-                                            // }}
-                                            // value={curYear}
+                                            items={employeeGrade}
+                                            defaultValues={employeeGrade}
+                                            onChange={setSelectedGrade}
+                                            value={selectedGrade}
                                             label="Grade"
                                             sx={{ mb: 2 }}
                                         />
 
                                         <ReignsSelect
                                             multiple
-                                            items={values}
-                                            // onChange={(val) => {
-                                            //     console.log(val);
-                                            //     setYear(val);
-                                            // }}
-                                            // value={curYear}
+                                            items={employeeStatus}
+                                            defaultValues={employeeStatus}
+                                            onChange={setSelectedStatus}
+                                            value={selectedStatus}
                                             label="Status"
                                             sx={{ mb: 2 }}
                                         />
