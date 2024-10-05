@@ -7,70 +7,46 @@ import {
     Typography,
     FormControl,
     InputLabel,
-    MenuItem,
-    TextField,
-    Autocomplete,
     Select,
 } from "@mui/material";
 import Bbox from "../../UiComponents/Bbox";
 import RevealCard from "../../AnimationComponents/RevealCard";
 import { DataGrid } from "@mui/x-data-grid";
-import { useMediaQuery } from "@material-ui/core";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { ToastContainer } from "react-toastify";
 import Approve from "./popups/Approve";
 import Reject from "./popups/Reject";
 import ApplyLeave from "./popups/ApplyLeave";
 import LeaveCancellation from "./popups/LeaveCancellation";
-import ClaimID from "./popups/ClaimID";
-import { useNavigate } from "react-router-dom";
+import LeaveRequestID from "./LeaveRequestID";
+import EmployeePopup from "../EmployeePopup";
 
 export default function Claims() {
-
-    const curYear = new Date().getFullYear();
-    const academicYear = `${curYear}-${(curYear + 1).toString().slice(2, 4)}`;
-    const [acYear, setAcYear] = useState(academicYear);
-    const [type, setType] = useState("pending");
-    const [selectedRow, setSelectedRow] = useState(null);
-    const [isEditButtonActive, setIsEditButtonActive] = useState(null);
-
-    // breakpoints
-    const isSmall = useMediaQuery("(max-width: 1364px)");
-    const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
-    const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-    const isDesktop = useMediaQuery(
-        "(min-width: 1707px) and (max-width: 1919px)"
-    );
-    const isLarge = useMediaQuery("(min-width: 1920px)");
-    const isXlarge = useMediaQuery("(min-width: 2560px)");
+    const [selectedRow1, setSelectedRow1] = useState(null);
+    const [selectedRow2, setSelectedRow2] = useState(null);
 
     const [approvePopup, setApprovePopup] = useState(false);
     const [rejectPopup, setRejectPopup] = useState(false);
     const [applyLeavePopup, setApplyLeavePopup] = useState(false);
     const [leaveCancellationPopup, setLeaveCancellation] = useState(false);
-    const [downloadPopup, setDownloadPopup] = useState(false);
-    const [raisePopup, setRaisePopup] = useState(false);
-    const [claimIDPopup, setClaimIDPopup] = useState(false);
-    const [tab, setTab] = useState("claims");
-    const navigate = useNavigate();
+    const [leaveRequestID, setLeaveRequestID] = useState(false);
+    const [employeeDetailsPopup, setEmployeeDetailsPopup] = useState(false);
 
-    // table columns
     const columns = [
         {
             field: "radioButtons",
             headerName: "",
-            width: isLaptop ? 50 : isSmall ? 40 : isTablet ? 50 : 70,
+            flex: 0.2,
             renderCell: (params) => (
                 <Radio
-                    checked={params.row.id === selectedRow}
+                    checked={params.row.id === selectedRow1?.id}
                     color="primary"
                     sx={{
                         transform: "scale(0.6)",
                     }}
-                    inputProps={{ "aria-label": params.row.id }}
+                    inputProps={{ "aria-label": params.row }}
                     onChange={() => {
-                        setSelectedRow(params.row.id);
-                        setIsEditButtonActive(params.row.id);
+                        setSelectedRow1(params.row);
                     }}
                 />
             ),
@@ -79,7 +55,7 @@ export default function Claims() {
             field: "id", headerName: "Leave Request ID",
             flex: 1,
             renderCell: (params) => (
-                <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setClaimIDPopup(true)}>
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setLeaveRequestID(true)}>
                     {params.value}
                 </Typography>
             ),
@@ -87,7 +63,7 @@ export default function Claims() {
         {
             field: "emp_id", headerName: "Employee ID",
             flex: 1, renderCell: (params) => (
-                <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setClaimIDPopup(true)}>
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setEmployeeDetailsPopup(true)}>
                     {params.value}
                 </Typography>
             ),
@@ -102,10 +78,10 @@ export default function Claims() {
         },
         {
             field: "working_days", headerName: "No of Working Days",
-            flex: 1.5,
+            flex: 1.2,
         },
         {
-            field: "leave_period", headerName: "Leave Period", flex: 2,
+            field: "leave_period", headerName: "Leave Period", flex: 1.8,
         },
         {
             field: "attachment", headerName: "Attachment",
@@ -123,7 +99,6 @@ export default function Claims() {
         },
     ];
 
-    // table rows
     const rows = [
         {
             id: 'AG240001',
@@ -134,7 +109,7 @@ export default function Claims() {
             leave_period: "4-March-2020 - 6-March-2020",
         },
         {
-            id: 'AG240001',
+            id: 'AG240002',
             emp_id: "E002",
             emp_name: "Jane Smith",
             leave_type: "Annual Leave",
@@ -142,7 +117,7 @@ export default function Claims() {
             leave_period: "4-March-2020 - 6-March-2020",
         },
         {
-            id: 'AG240001',
+            id: 'AG240003',
             emp_id: "E003",
             emp_name: "Alice Johnson",
             leave_type: "Maternity Leave",
@@ -155,18 +130,17 @@ export default function Claims() {
         {
             field: "radioButtons",
             headerName: "",
-            width: isLaptop ? 50 : isSmall ? 40 : isTablet ? 50 : 70,
+            flex: 0.4,
             renderCell: (params) => (
                 <Radio
-                    checked={params.row.id === selectedRow}
+                    checked={params.row.id === selectedRow2?.id}
                     color="primary"
                     sx={{
                         transform: "scale(0.6)",
                     }}
-                    inputProps={{ "aria-label": params.row.id }}
+                    inputProps={{ "aria-label": params.row }}
                     onChange={() => {
-                        setSelectedRow(params.row.id);
-                        setIsEditButtonActive(params.row.id);
+                        setSelectedRow2(params.row);
                     }}
                 />
             ),
@@ -174,7 +148,7 @@ export default function Claims() {
         {
             field: "id", headerName: "Employee ID",
             flex: 1, renderCell: (params) => (
-                <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setClaimIDPopup(true)}>
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setEmployeeDetailsPopup(true)}>
                     {params.value}
                 </Typography>
             ),
@@ -200,7 +174,6 @@ export default function Claims() {
 
     ];
 
-    // table rows
     const rows2 = [
         {
             id: "E001",
@@ -262,11 +235,8 @@ export default function Claims() {
                         />
                     </Box>
 
-                    <ToastContainer />
-
                     <Approve open={approvePopup} close={() => setApprovePopup(false)} />
                     <Reject open={rejectPopup} close={() => setRejectPopup(false)} />
-                    <ClaimID open={claimIDPopup} close={() => setClaimIDPopup(false)} />
 
                     <Box display="flex" justifyContent="flex-end" mt={2} mb={5} mr={2}>
                         <Button
@@ -274,6 +244,7 @@ export default function Claims() {
                             variant="contained"
                             sx={{ mr: 2 }}
                             onClick={() => setApprovePopup(true)}
+                            disabled={!selectedRow1}
                         >
                             Approve
                         </Button>
@@ -283,6 +254,7 @@ export default function Claims() {
                             color="secondary"
                             sx={{ mr: 2 }}
                             onClick={() => setRejectPopup(true)}
+                            disabled={!selectedRow1}
                         >
                             Reject
                         </Button>
@@ -290,9 +262,8 @@ export default function Claims() {
                 </Bbox>
             </RevealCard >
 
-            <Box my={4} />
             <RevealCard>
-                <Bbox borderRadius={2} overflow={"hidden"}>
+                <Bbox borderRadius={2} overflow={"hidden"} mt={2}>
                     <Box
                         bgcolor={"white"}
                         py={1.3}
@@ -317,22 +288,26 @@ export default function Claims() {
                         mt={4}
                         height={50}
                     >
-                        <Autocomplete
-                            options={["Student 1", "Student 2"]}
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Search by Employee name or Employee ID"
-                                    label="Search by Employee name or Employee ID"
-                                />
-                            )}
-                            sx={{ width: "30%" }}
-                        />
+
+                        <Box display={"flex"} gap={1} sx={{ width: '35%', marginY: '16px' }} >
+                            <FormControl fullWidth>
+                                <InputLabel>Search by Employee Name or Employee ID</InputLabel>
+                                <Select
+                                    label="Search by Employee Name or Employee ID"
+                                    // value={selectedLibraryCard}
+                                    required
+                                // onChange={(e) => setSelectedLibraryCard(e.target.value)}
+                                >
+                                    {/* {
+								libraryCardNumbers?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							} */}
+                                </Select>
+                            </FormControl>
+                        </Box>
                     </Box>
 
-                    {/* table */}
                     <Box mt={2} mb={5} style={{ height: "100%" }} mx={2}>
                         <DataGrid
                             rows={rows2}
@@ -346,18 +321,13 @@ export default function Claims() {
                         />
                     </Box>
 
-                    <ToastContainer />
-
-                    <ApplyLeave open={applyLeavePopup} close={() => setApplyLeavePopup(false)} />
-                    <LeaveCancellation open={leaveCancellationPopup} close={() => setLeaveCancellation(false)} />
-                    {/* <ClaimID open={claimIDPopup} close={() => setClaimIDPopup(false)} /> */}
-
                     <Box display="flex" justifyContent="flex-end" mt={2} mb={5} mr={2}>
                         <Button
                             color="primary"
                             variant="contained"
                             sx={{ mr: 2 }}
                             onClick={() => setApplyLeavePopup(true)}
+                            disabled={!selectedRow2}
                         >
                             Apply
                         </Button>
@@ -367,10 +337,17 @@ export default function Claims() {
                             color="secondary"
                             sx={{ mr: 2 }}
                             onClick={() => setLeaveCancellation(true)}
+                            disabled={!selectedRow2}
                         >
                             Cancel Leave
                         </Button>
                     </Box>
+
+                    <ApplyLeave open={applyLeavePopup} close={() => setApplyLeavePopup(false)} />
+                    <LeaveCancellation open={leaveCancellationPopup} close={() => setLeaveCancellation(false)} />
+                    <LeaveRequestID open={leaveRequestID} close={() => setLeaveRequestID(false)} />
+                    <EmployeePopup open={employeeDetailsPopup} close={() => setEmployeeDetailsPopup(false)} />
+
                 </Bbox>
             </RevealCard >
         </>

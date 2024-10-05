@@ -16,11 +16,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import { ToastContainer, toast } from "react-toastify";
 
 const Reject = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
 
     return (
         <Dialog
@@ -65,27 +60,32 @@ const Reject = ({ open, close }) => {
                         <Box display="flex" gap={0} width="50%" justifyContent="space-between" >
                             <Box display="flex" flexDirection="column" justifyContent="space-between" >
                                 <Typography mb={2}>Employee Name</Typography>
-                                <Typography mb={2}>Department</Typography>
                                 <Typography mb={2}>Status</Typography>
+                                <Typography mb={2}>Academic Year</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Priya Naskar</Typography>
-                                <Typography fontWeight="medium" ml={1} mb={2}>: Physics</Typography>
-                                <Typography fontWeight="medium" ml={1} mb={2}>: Active</Typography>
+                                <Box display={'flex'} justifyContent={'center'} alignItems={'center'} ml={-2} mb={2}>
+                                    <Typography fontWeight="medium">:</Typography>
+                                    <Typography fontWeight="medium" ml={1} bgcolor={'#C6F6D5'} paddingX={'8px'} borderRadius={'6px'} fontSize={'0.8rem'}>Active</Typography>
+                                </Box>
+                                <Typography fontWeight="medium" ml={1} mb={2}>: 2024-25</Typography>
                             </Box>
                             <Box />
                         </Box>
                         <Box display="flex" gap={0} width="50%" justifyContent="space-between" alignItems={"flex-start"}>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
                                 <Typography mb={2}>Supervisor</Typography>
-                                <Typography mb={2}>Academic Year</Typography>
+                                <Typography mb={2}>Department</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography fontWeight="medium" ml={1} mb={2}>: Physics</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Ratan Basak (AUG245698)</Typography>
-                                <Typography fontWeight="medium" ml={1} mb={2}>: 2024-25</Typography>
                             </Box>
                         </Box>
                     </Box>
+
+
 
                     <TextField
                         id="comments"

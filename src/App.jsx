@@ -88,6 +88,9 @@ import Appraisal from "./pages/employee/Appraisal";
 import EmployeeAction from "./pages/employee/EmployeeAction";
 import EmployeeInformation from "./pages/employee/EmployeeInformation";
 import EmployeeLeave from "./pages/employee/EmployeeLeave";
+import LeaveRecordPage from "@/components/employee/leave/LeaveRecordPage";
+import LeaveConfigurePage from "@/components/employee/leave/LeaveConfigurePage";
+
 import EmployeeManage from "./pages/employee/EmployeeManage";
 import EmployeeRecruitment from "./pages/employee/EmployeeRecruitment";
 
@@ -501,6 +504,15 @@ function App() {
 						path={"employee/leave/"}
 						element={<EmployeeLeave />}
 					/>
+					<Route
+						path={"employee/leave/record"}
+						element={<LeaveRecordPage />}
+					/>
+					<Route
+						path={"employee/leave/configure"}
+						element={<LeaveConfigurePage />}
+					/>
+
 					<Route
 						path={"employee/action/"}
 						element={<EmployeeAction />}

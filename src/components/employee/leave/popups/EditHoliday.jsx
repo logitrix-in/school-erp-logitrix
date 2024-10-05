@@ -5,7 +5,6 @@ import {
     Dialog,
     TextField,
     IconButton,
-    Autocomplete,
     Typography,
     FormControl,
     InputLabel,
@@ -14,12 +13,12 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
-import useEmployees from "@/hooks/useEmployees";
 import { DatePicker } from "@mui/x-date-pickers";
+import useEmployees from "@/hooks/useEmployees";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-const AddNewHoliday = ({ open, close, setSelected }) => {
+const EditHoliday = ({ open, close, setSelected }) => {
     const { employeeLeaveTypes } = useEmployees();
 
     const [startDate, setStartDate] = useState(null);
@@ -52,7 +51,7 @@ const AddNewHoliday = ({ open, close, setSelected }) => {
                 >
                     <Box />
                     <Typography fontSize={"1.1rem"} textAlign={"center"}>
-                        Add New Holiday
+                        Edit Holiday
                     </Typography>
                     <IconButton
                         edge="start"
@@ -66,12 +65,7 @@ const AddNewHoliday = ({ open, close, setSelected }) => {
 
                 <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"90%"} margin="auto" alignItems="center">
 
-                    <Box display={'flex'} justifyContent={'flex-start'} alignItems={'flex-start'} textAlign={'left'} >
-                        <Typography marginY={1}>Academic Year:</Typography>
-                        <Typography fontWeight={"medium"} marginY={1} marginLeft={1}>2024-25</Typography>
-                    </Box>
-
-                    <Box display={'flex'} justifyContent={'space-between'} sx={{ width: '100%' }} gap={4}>
+                    <Box display={'flex'} justifyContent={'space-between'} sx={{ width: '100%' }} gap={4} mt={4}>
                         <TextField label="Enter Holiday Name" fullWidth />
 
                         <FormControl fullWidth>
@@ -125,4 +119,4 @@ const AddNewHoliday = ({ open, close, setSelected }) => {
     );
 };
 
-export default AddNewHoliday;
+export default EditHoliday;

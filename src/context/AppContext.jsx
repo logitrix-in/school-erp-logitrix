@@ -22,6 +22,9 @@ const AppContextProvider = ({ children }) => {
   const [employeeStatus, setEmployeeStatus] = useState([]);
   const [employeeClaimRequestType, setEmployeeClaimRequestType] = useState([]);
   const [employeeStages, setEmployeeStages] = useState([]);
+  const [employeeLeaveTypes, setEmployeeLeaveTypes] = useState([]);
+  const [employeeCategories, setEmployeeCategories] = useState([]);
+  const [employeeCreditCycle, setEmployeeCreditCycle] = useState([]);
 
   const [nonCompliance, setNonCompliance] = useState([]);
   const [suspend, setSuspend] = useState([]);
@@ -113,6 +116,55 @@ const AppContextProvider = ({ children }) => {
       "Rationalization",
     ];
   };
+
+  useEffect(() => {
+    setEmployeeLeaveTypes(generateEmployeeLeaveTypes());
+  }, []);
+
+  const generateEmployeeLeaveTypes = () => {
+    return [
+      "Privilege Leave",
+      "Casual Leave",
+      "Sick Leave",
+      "Maternity Leave",
+      "Paternity Leave",
+      "Optional Holiday",
+      "Bereavement Leave",
+      "Leave without Pay",
+      "Loss of Pay",
+      "Special Leave"
+    ];
+  };
+
+  useEffect(() => {
+    setEmployeeCategories(generateEmployeeCategories());
+  }, []);
+
+  const generateEmployeeCategories = () => {
+    return [
+      "Privilege Leave",
+      "Casual Leave",
+      "Sick Leave",
+      "Maternity Leave",
+      "Paternity Leave",
+      "Optional Holiday",
+      "Bereavement Leave",
+      "Leave without Pay",
+      "Loss of Pay",
+      "Special Leave"
+    ];
+  };
+
+  useEffect(() => {
+    setEmployeeCreditCycle(generateEmployeeCreditCycle());
+  }, []);
+
+  const generateEmployeeCreditCycle = () => {
+    return [
+      "Monthly", "Quarterly", "Annually"
+    ];
+  };
+
 
 
   //? classes
@@ -335,7 +387,13 @@ const AppContextProvider = ({ children }) => {
     employeeClaimRequestType,
     setEmployeeClaimRequestType,
     employeeStages,
-    setEmployeeStages
+    setEmployeeStages,
+    employeeLeaveTypes,
+    setEmployeeLeaveTypes,
+    employeeCategories,
+    setEmployeeCategories,
+    employeeCreditCycle,
+    setEmployeeCreditCycle,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

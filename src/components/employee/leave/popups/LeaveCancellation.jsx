@@ -1,50 +1,35 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Box,
     Button,
     Dialog,
-    InputLabel,
-    Divider,
-    TextField,
     IconButton,
-    Tab,
     Radio,
-    Tabs,
     Typography,
 } from "@mui/material";
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
-import Flex from "../../../UiComponents/Flex";
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import IncidentHeaderBanner from "../Banner";
-import Bbox from "../../../UiComponents/Bbox";
-import RevealCard from "../../../AnimationComponents/RevealCard";
 import { DataGrid } from "@mui/x-data-grid";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 
 const LeaveCancellation = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
-    const [isEditButtonActive, setIsEditButtonActive] = useState(null);
     const [selectedRow, setSelectedRow] = useState(null);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
 
     const columns = [{
         field: "radioButtons",
         headerName: "",
+        flex: 0.2,
         renderCell: (params) => (
             <Radio
-                checked={params.row.id === selectedRow}
+                checked={params.row.id === selectedRow?.id}
                 color="primary"
                 sx={{
                     transform: "scale(0.6)",
                 }}
                 inputProps={{ "aria-label": params.row.id }}
                 onChange={() => {
-                    setSelectedRow(params.row.id);
-                    setIsEditButtonActive(params.row.id);
+                    setSelectedRow(params.row);
                 }}
             />
         ),
@@ -91,23 +76,22 @@ const LeaveCancellation = ({ open, close }) => {
             <Box
                 style={{
                     backgroundColor:
-                        params.value === "Active"
+                        params.value === "Approved"
                             ? "#C6F6D5"
-                            : params.value === "Inactive"
-                                ? "#FFCCCC"
-                                : "transparent",
+                            : params.value === "Pending"
+                                ? "#FEEBCB"
+                                : params.value === "Rejected"
+                                    ? "#FFCCCC"
+                                    : "transparent",
                     borderRadius: "6px",
                     display: "inline-block",
                     width:
-                        params.value === "Active" || params.value === "Inactive"
-                            ? "60px"
+                        params.value === "Approved" || params.value === "Pending" || params.value === "Rejected"
+                            ? "80px"
                             : "auto",
-                    paddingLeft:
-                        params.value === "Active"
-                            ? "11px"
-                            : params.value === "Inactive"
-                                ? "7px"
-                                : "0px",
+                    paddingLeft: "11px",
+                    paddingRight: "11px",
+                    textAlign: "center",
                 }}
             >
                 {params.value}
@@ -122,7 +106,7 @@ const LeaveCancellation = ({ open, close }) => {
             leave_type: "Sick Leave",
             leave_duration: "4 Mar 2024 - 10 Mar 2024",
             no_of_working_days: 3,
-            status: "Active",
+            status: "Approved",
             approver_details: "John Doe",
         },
         {
@@ -130,7 +114,7 @@ const LeaveCancellation = ({ open, close }) => {
             leave_type: "Annual Leave",
             leave_duration: "4 Mar 2024 - 10 Mar 2024",
             no_of_working_days: 10,
-            status: "Inactive",
+            status: "Pending",
             approver_details: "Jane Smith",
         },
         {
@@ -138,7 +122,7 @@ const LeaveCancellation = ({ open, close }) => {
             leave_type: "Maternity Leave",
             leave_duration: "4 Mar 2024 - 10 Mar 2024",
             no_of_working_days: 30,
-            status: "Active",
+            status: "Rejected",
             approver_details: "Alice Johnson",
         },
     ];
@@ -214,7 +198,10 @@ const LeaveCancellation = ({ open, close }) => {
                                 <Typography mb={2}>Status</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
-                                <Typography fontWeight="medium" ml={1} mb={2}>: Active</Typography>
+                                <Box display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                                    <Typography fontWeight="medium">:</Typography>
+                                    <Typography fontWeight="medium" ml={1} bgcolor={'#C6F6D5'} paddingX={'8px'} borderRadius={'6px'} fontSize={'0.8rem'}>Active</Typography>
+                                </Box>
                             </Box>
                         </Box>
                         <Box width="10%" />

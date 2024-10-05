@@ -13,6 +13,9 @@ const useEmployees = () => {
         employeeStatus: context.employeeStatus,
         employeeClaimRequestType: context.employeeClaimRequestType,
         employeeStages: context.employeeStages,
+        employeeLeaveTypes: context.employeeLeaveTypes,
+        employeeCategories: context.employeeCategories,
+        employeeCreditCycle: context.employeeCreditCycle,
     };
 };
 

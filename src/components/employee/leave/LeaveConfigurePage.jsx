@@ -1,9 +1,7 @@
 import {
     Box,
 } from "@mui/material";
-import LeaveManagement from "../../components/employee/leave/LeaveManagement";
-import Record from "../../components/employee/leave/Record";
-import Configure from "../../components/employee/leave/Configure";
+import Configure from "./Configure";
 import { useNavigate } from "react-router-dom";
 
 const EmployeeLeave = () => {
@@ -23,7 +21,7 @@ const EmployeeLeave = () => {
                 <div>
                     <button
                         style={{
-                            backgroundColor: "white",
+                            backgroundColor: "transparent",
                             border: "none",
                             color: "black",
                             marginRight: "10px",
@@ -57,7 +55,7 @@ const EmployeeLeave = () => {
 
                     <button
                         style={{
-                            backgroundColor: "transparent",
+                            backgroundColor: "white",
                             border: "none",
                             color: "black",
                             marginRight: "10px",
@@ -74,7 +72,7 @@ const EmployeeLeave = () => {
                 </div>
             </div>
 
-            <LeaveManagement />
+            <Configure />
         </Box>
     )
 };

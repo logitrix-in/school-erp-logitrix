@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
     Box,
     Button,
@@ -7,28 +7,44 @@ import {
     Autocomplete,
     IconButton,
     Typography,
+    MenuItem,
+    Select,
+    InputLabel,
+    FormControl
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Bbox from "../../../UiComponents/Bbox";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import IncidentHeaderBanner from "../Banner";
 import { DataGrid } from "@mui/x-data-grid";
 import { DatePicker } from "@mui/x-date-pickers";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import LeaveRequestID from "../LeaveRequestID";
+import useEmployees from "@/hooks/useEmployees";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
 
 const ApplyLeave = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
+    const [leaveRequestID, setLeaveRequestID] = useState(false);
+    const { employeeLeaveTypes } = useEmployees();
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const [selectedLeaveType, setSelectedLeaveType] = useState('');
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
     const columns = [
+        { field: "space", headerName: "", flex: 0.2 },
         {
             field: "id",
             headerName: "Leave Request ID",
-            flex: 1
+            flex: 1,
+            renderCell: (params) => (
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setLeaveRequestID(true)}>
+                    {params.value}
+                </Typography>
+            ),
         },
         {
             field: "leave_type",
@@ -38,7 +54,7 @@ const ApplyLeave = ({ open, close }) => {
         {
             field: "no_of_working_days",
             headerName: "No. of Working Days",
-            flex: 1
+            flex: 0.8
         },
         {
             field: "leave_duration",
@@ -67,23 +83,22 @@ const ApplyLeave = ({ open, close }) => {
                 <Box
                     style={{
                         backgroundColor:
-                            params.value === "Active"
+                            params.value === "Approved"
                                 ? "#C6F6D5"
-                                : params.value === "Inactive"
-                                    ? "#FFCCCC"
-                                    : "transparent",
+                                : params.value === "Pending"
+                                    ? "#FEEBCB"
+                                    : params.value === "Rejected"
+                                        ? "#FFCCCC"
+                                        : "transparent",
                         borderRadius: "6px",
                         display: "inline-block",
                         width:
-                            params.value === "Active" || params.value === "Inactive"
-                                ? "60px"
+                            params.value === "Approved" || params.value === "Pending" || params.value === "Rejected"
+                                ? "80px"
                                 : "auto",
-                        paddingLeft:
-                            params.value === "Active"
-                                ? "11px"
-                                : params.value === "Inactive"
-                                    ? "7px"
-                                    : "0px",
+                        paddingLeft: "11px",
+                        paddingRight: "11px",
+                        textAlign: "center",
                     }}
                 >
                     {params.value}
@@ -98,7 +113,7 @@ const ApplyLeave = ({ open, close }) => {
             leave_type: "Sick Leave",
             leave_duration: "4 Mar 2024 - 10 Mar 2024",
             no_of_working_days: 3,
-            status: "Active",
+            status: "Approved",
             approver_details: "John Doe",
         },
         {
@@ -106,7 +121,7 @@ const ApplyLeave = ({ open, close }) => {
             leave_type: "Annual Leave",
             leave_duration: "4 Mar 2024 - 10 Mar 2024",
             no_of_working_days: 10,
-            status: "Inactive",
+            status: "Pending",
             approver_details: "Jane Smith",
         },
         {
@@ -114,7 +129,7 @@ const ApplyLeave = ({ open, close }) => {
             leave_type: "Maternity Leave",
             leave_duration: "4 Mar 2024 - 10 Mar 2024",
             no_of_working_days: 30,
-            status: "Active",
+            status: "Rejected",
             approver_details: "Alice Johnson",
         },
     ];
@@ -191,7 +206,10 @@ const ApplyLeave = ({ open, close }) => {
                                 <Typography mb={2}>Status</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
-                                <Typography fontWeight="medium" ml={1} mb={2}>: Active</Typography>
+                                <Box display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                                    <Typography fontWeight="medium">:</Typography>
+                                    <Typography fontWeight="medium" ml={1} bgcolor={'#C6F6D5'} paddingX={'8px'} borderRadius={'6px'} fontSize={'0.8rem'}>Active</Typography>
+                                </Box>
                             </Box>
                         </Box>
                         <Box width="10%" />
@@ -248,32 +266,42 @@ const ApplyLeave = ({ open, close }) => {
                     </Box>
 
                     <Box display={'flex'} gap={4} justifyContent={'space-between'} mt={4}>
-                        <Autocomplete
-                            options={["Student 1", "Student 2"]}
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Leave Type"
-                                    label="Leave Type"
-                                />
-                            )}
-                            sx={{ width: "30%" }}
-                        />
+                        <FormControl sx={{ width: "30%" }}>
+                            <InputLabel>Leave Type</InputLabel>
+                            <Select
+                                label="Leave Type"
+                                onChange={(e) =>
+                                    setSelectedLeaveType(e.target.value)
+                                }
+                                value={selectedLeaveType}
+                            >
+                                {employeeLeaveTypes.map((year) => (
+                                    <MenuItem key={year} value={year}>
+                                        {year}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
 
-                        <DatePicker
-                            label="Leave Period Starting"
-                            //   onChange={(e) => setStartDate(e)}
-                            // minDate={dayjs()}
-                            format="DD MMM YYYY"
-                        />
-                        <DatePicker
-                            label="Leave Period Ending"
-                            //   onChange={(e) => setStartDate(e)}
-                            // minDate={dayjs()}
-                            format="DD MMM YYYY"
-                        />
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <Box display="flex" gap={2}>
+                                <DatePicker
+                                    label="Leave Period Starting"
+                                    onChange={(newValue) => setStartDate(newValue)}
+                                    value={startDate}
+                                    format="DD MMM YYYY"
+                                    slotProps={{ textField: { fullWidth: true } }}
+                                />
+                                <DatePicker
+                                    label="Leave Period Ending"
+                                    minDate={startDate}
+                                    value={endDate}
+                                    onChange={(newValue) => setEndDate(newValue)}
+                                    format="DD MMM YYYY"
+                                    slotProps={{ textField: { fullWidth: true } }}
+                                />
+                            </Box>
+                        </LocalizationProvider>
                     </Box>
 
                     <Box display={'flex'} alignItems={'center'} sx={{ my: '16px' }}>
@@ -300,11 +328,13 @@ const ApplyLeave = ({ open, close }) => {
                                 width: "360px",
                                 marginTop: '40px'
                             }}
-                            onClick={() => close()}
+                            onClick={() => { toast.success('Successful!'); close(); }}
                         >
                             Apply
                         </Button>
                     </Box>
+
+                    <LeaveRequestID open={leaveRequestID} close={() => setLeaveRequestID(false)} />
                 </Box>
             </Box>
         </Dialog >
