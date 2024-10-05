@@ -1,15 +1,41 @@
 import { Box, Divider, Grid, Typography, IconButton } from "@mui/material";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useState, MenuItem, Select, FormControl, InputLabel } from "react";
 import Bbox from "../../UiComponents/Bbox";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
-import { AppContext } from "../../../context/AppContext";
 import useClasses from "../../../hooks/useClasses";
 import { Icon } from "@iconify/react";
+import api from "../../../config/api";
+import { toast } from 'react-toastify';
 
 const Dashboard = () => {
-	const ctx = useContext(AppContext);
-	const { classes, sections, acYear, curYear, status, days } = useClasses();
+	const { classes, sections, acYear, curYear, days, employeeType } = useClasses();
 	const [academicYear, setAcademicYear] = useState(curYear);
+	const [selectedClass, setSelectedClass] = useState([]);
+	const [selectedSection, setSelectedSection] = useState([]);
+	const [selectedEmployeeType, setSelectedEmployeeType] = useState([]);
+	const [selectedDays, setSelectedDays] = useState('');
+	const [dashboardData, setDashboardData] = useState(null);
+	const [selectedAcademicYear, setSelectedAcademicYear] = useState();
+
+	useEffect(() => {
+		fetchDashboardData();
+	}, [academicYear, selectedClass, selectedSection, selectedEmployeeType, selectedDays]);
+
+	const fetchDashboardData = async () => {
+		try {
+			const response = await api.post('/api/library/information/inventory-dashboard', {
+				academic_year: academicYear,
+				classes: selectedClass,
+				sections: selectedSection,
+				employee_types: selectedEmployeeType,
+				days: selectedDays
+			});
+			console.log(response)
+			setDashboardData(response.data);
+		} catch (error) {
+			console.error("Error fetching dashboard data:", error);
+		}
+	};
 
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
@@ -20,120 +46,82 @@ const Dashboard = () => {
 			</Box>
 
 			<Divider />
-			<Box
-				p={2}
-				display={"flex"}
-				gap={1}
-				flexDirection={{
-					sm: "column",
-					md: "row",
-				}}
-			>
-				<Bbox
-					width={"23rem"}
-					p={2}
-					borderRadius={1}
-					display={"flex"}
-					flexDirection={"column"}
-					gap={2}
-				>
+			<Box p={2} display={"flex"} gap={1} flexDirection={{ sm: "column", md: "row" }}>
+				<Bbox width={"23rem"} p={2} borderRadius={1} display={"flex"} flexDirection={"column"} gap={2}>
+					<FormControl style={{ width: "100%" }}>
+						<InputLabel>Academic Year</InputLabel>
+						<Select
+							label="Academic Year"
+							value={academicYear}
+							onChange={(e) => setAcademicYear(e.target.value)}
+							defaultValue={acYear}
+						>
+							<MenuItem value={"2021-22"}>2021-22</MenuItem>
+							<MenuItem value={"2023-24"}>2023-24</MenuItem>
+							<MenuItem value={"2024-25"}>2024-25</MenuItem>
+							<MenuItem value={"2025-26"}>2025-26</MenuItem>
+						</Select>
+					</FormControl>
+
+					<ReignsSelect items={classes} multiple label="Class" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)} defaultValues={classes} />
+					<ReignsSelect items={sections} multiple label="Section" value={selectedSection} onChange={(e) => setSelectedSection(e.target.value)} defaultValues={sections} />
 					<ReignsSelect
-						items={acYear}
-						onChange={(e) =>
-							setAcademicYear(e?.target.value ?? academicYear)
-						}
-						label="Academic Year"
-					/>
-					<ReignsSelect items={classes} multiple label="Class" />
-					<ReignsSelect items={sections} multiple label="Section" />
-					<ReignsSelect
-						items={[
-							"Management",
-							"Teaching Staff",
-							"Support Staff",
-						]}
+						items={employeeType}
 						multiple
 						label="Employee Type"
+						value={selectedEmployeeType}
+						onChange={(e) => setSelectedEmployeeType(e.target.value)}
+						defaultValues={employeeType}
 					/>
-					<ReignsSelect items={days} multiple label="Days" />
+					<ReignsSelect items={days} label="Days" value={selectedDays} onChange={(e) => setSelectedDays(e.target.value)} />
 				</Bbox>
 				<Grid container flex={2} spacing={1}>
-					<DisplayCard
-						bgColor={"#D9EBF4"}
-						color={"#3B98C4"}
-						header="Footfalls"
-						value="3100/39000"
-						data={[
-							{
-								title: "Books",
-								val: 2700,
-							},
-							{
-								title: "Periodicals",
-								val: 200,
-							},
-							{
-								title: "Research Papers",
-								val: 200,
-							},
-						]}
-					/>
-					<DisplayCard
-						bgColor={"#FAD2C0"}
-						color={"#B34A19"}
-						header="Media Inventory"
-						value="32/2900"
-						data={[
-							{
-								title: "Books",
-								val: 2700,
-							},
-							{
-								title: "Periodicals",
-								val: 200,
-							},
-							{
-								title: "Research Papers",
-								val: 200,
-							},
-						]}
-					/>
-					<DisplayCard
-						bgColor={"#FAD2C0"}
-						color={"#B34A19"}
-						header="Media Issued (Visitors)"
-						value="39000"
-						data={[
-							{
-								title: "Books",
-								val: 27000,
-							},
-							{
-								title: "Periodicals",
-								val: 7000,
-							},
-							{
-								title: "Research Papers",
-								val: 5000,
-							},
-						]}
-					/>
-					<DisplayCard
-						bgColor={"#D9EBF4"}
-						color={"#3B98C4"}
-						header="Current Defaulters (Visitors)"
-						value="2900"
-						data={[
-							{
-								title: "Students",
-								val: 8,
-							},
-							{
-								title: "Employees",
-								val: 24,
-							},
-						]}
-					/>
+					{dashboardData && (
+						<>
+							<DisplayCard
+								bgColor={"#D9EBF4"}
+								color={"#3B98C4"}
+								header="Borrowers"
+								value={dashboardData.borrowers.total_borrowed.toString()}
+								data={[
+									{ title: "Students", val: dashboardData.borrowers.students },
+									{ title: "Employees", val: dashboardData.borrowers.employees },
+								]}
+							/>
+							<DisplayCard
+								bgColor={"#FAD2C0"}
+								color={"#B34A19"}
+								header="Media Inventory"
+								value={dashboardData.media_inventory.total_media.toString()}
+								data={[
+									{ title: "Books", val: dashboardData.media_inventory.total_books },
+									{ title: "Periodicals", val: dashboardData.media_inventory.total_periodicals },
+									{ title: "Research Papers", val: dashboardData.media_inventory.total_research_papers },
+								]}
+							/>
+							<DisplayCard
+								bgColor={"#FAD2C0"}
+								color={"#B34A19"}
+								header="Media in Circulation"
+								value={dashboardData.media_in_circulation.media_circulation.toString()}
+								data={[
+									{ title: "Books", val: dashboardData.media_in_circulation.books },
+									{ title: "Periodicals", val: dashboardData.media_in_circulation.periodicals },
+									{ title: "Research Papers", val: dashboardData.media_in_circulation.research_papers },
+								]}
+							/>
+							<DisplayCard
+								bgColor={"#D9EBF4"}
+								color={"#3B98C4"}
+								header="Current Defaulters"
+								value={dashboardData.current_defaulters.total_defaulters.toString()}
+								data={[
+									{ title: "Students", val: dashboardData.current_defaulters.students },
+									{ title: "Employees", val: dashboardData.current_defaulters.employees },
+								]}
+							/>
+						</>
+					)}
 				</Grid>
 			</Box>
 		</Bbox>

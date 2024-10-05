@@ -144,24 +144,24 @@ function OfflineApplicationForm({ open, close }) {
     }
     devMode
       ? toast.dark("Dev mode On", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          hideProgressBar: true,
-          autoClose: 500,
-          closeButton: false,
-          style: {
-            textAlign: "center",
-            color: "#5cda46",
-            background:
-              "url(data:image/jpeg;base64,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)",
-            backgroundSize: "cover",
-          },
-        })
+        position: toast.POSITION.BOTTOM_RIGHT,
+        hideProgressBar: true,
+        autoClose: 500,
+        closeButton: false,
+        style: {
+          textAlign: "center",
+          color: "#5cda46",
+          background:
+            "url(data:image/jpeg;base64,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)",
+          backgroundSize: "cover",
+        },
+      })
       : toast.error("Dev mode Off", {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          hideProgressBar: true,
-          autoClose: 500,
-          closeButton: false,
-        });
+        position: toast.POSITION.BOTTOM_RIGHT,
+        hideProgressBar: true,
+        autoClose: 500,
+        closeButton: false,
+      });
   }, [devMode]);
 
   useEffect(() => {
@@ -756,7 +756,7 @@ function OfflineApplicationForm({ open, close }) {
                 label="Religion"
                 onChange={handleChange}
                 name="religion"
-                // value={formData.religion}
+              // value={formData.religion}
               >
                 {religionOptions.map((option, index) => (
                   <MenuItem key={index} value={option}>
@@ -776,7 +776,7 @@ function OfflineApplicationForm({ open, close }) {
                 label="Category"
                 onChange={handleChange}
                 name="category"
-                // value={formData.category}
+              // value={formData.category}
               >
                 {categoryOptions.map((cat, idx) => (
                   <MenuItem key={idx} value={cat}>
@@ -814,7 +814,7 @@ function OfflineApplicationForm({ open, close }) {
                 label="Gender"
                 onChange={handleChange}
                 name="gender"
-                // value={formData.gender}
+              // value={formData.gender}
               >
                 <MenuItem value={"male"}>Male</MenuItem>
                 <MenuItem value={"female"}>Female</MenuItem>
@@ -877,7 +877,7 @@ function OfflineApplicationForm({ open, close }) {
                 label="Applying For"
                 name="applying_for"
                 onChange={handleChange}
-                // value={formData.applying_for}
+              // value={formData.applying_for}
               >
                 {classOptions.map((option, index) => (
                   <MenuItem key={index} value={option}>
@@ -898,7 +898,7 @@ function OfflineApplicationForm({ open, close }) {
                 label="Admission Year"
                 name="admission_year"
                 onChange={handleChange}
-                // value={formData.admission_year}
+              // value={formData.admission_year}
               >
                 {admissionYearOptions.map((option, index) => (
                   <MenuItem key={index} value={option}>
@@ -921,7 +921,7 @@ function OfflineApplicationForm({ open, close }) {
                 disabled={["Nursery", "PP1", "PP2", "I"].some(
                   (v) => v == formData.applying_for
                 )}
-                // value={formData.current_class}
+              // value={formData.current_class}
               >
                 {classes.map((option, index) => (
                   <MenuItem key={index} value={option}>
@@ -971,7 +971,7 @@ function OfflineApplicationForm({ open, close }) {
                 label="Board"
                 name="board"
                 onChange={handleChange}
-                // value={formData.board}
+              // value={formData.board}
               >
                 {boardOptions.map((option, index) => (
                   <MenuItem key={index} value={option}>
@@ -1003,7 +1003,7 @@ function OfflineApplicationForm({ open, close }) {
                 label="Medium"
                 name="medium"
                 onChange={handleChange}
-                // value={formData.medium}
+              // value={formData.medium}
               >
                 {mediumOptions.map((option, index) => (
                   <MenuItem key={index} value={option}>
@@ -1068,7 +1068,7 @@ function OfflineApplicationForm({ open, close }) {
                 label="Payment Mode"
                 onChange={handleChange}
                 name="payment_mode"
-                // value={formData.payment_mode}
+              // value={formData.payment_mode}
               >
                 {paymentOptions.map((pay, idx) => (
                   <MenuItem key={idx} value={pay}>
@@ -1085,7 +1085,7 @@ function OfflineApplicationForm({ open, close }) {
               label="Challan No. / Reciept No."
               onChange={handleChange}
               name="receipt_no"
-              // value={formData.receipt_no}
+            // value={formData.receipt_no}
             />
           </Grid>
           <Grid item xs={12}>
@@ -1143,7 +1143,7 @@ function OfflineApplicationForm({ open, close }) {
                 name="permanent_country"
                 onChange={handleChange}
                 defaultValue={"IN"}
-                // value={formData.permanent_country}
+              // value={formData.permanent_country}
               >
                 {countries.map((c, idx) => (
                   <MenuItem key={idx} value={c.iso2}>
@@ -1165,7 +1165,7 @@ function OfflineApplicationForm({ open, close }) {
                 label="State"
                 onChange={handleChange}
                 name="permanent_states"
-                // value={formData.permanent_states}
+              // value={formData.permanent_states}
               >
                 {permStates.map((s, idx) => (
                   <MenuItem key={idx} value={s.iso2}>
@@ -1187,7 +1187,7 @@ function OfflineApplicationForm({ open, close }) {
                 label="City"
                 onChange={handleChange}
                 name="permanent_cities"
-                // value={formData.permanent_cities}
+              // value={formData.permanent_cities}
               >
                 {permCities.map((c, idx) => (
                   <MenuItem key={idx} value={c.name}>
@@ -1302,15 +1302,15 @@ function OfflineApplicationForm({ open, close }) {
               >
                 {PAC
                   ? permStates.map((c, idx) => (
-                      <MenuItem key={idx} value={c.iso2}>
-                        {c.name}
-                      </MenuItem>
-                    ))
+                    <MenuItem key={idx} value={c.iso2}>
+                      {c.name}
+                    </MenuItem>
+                  ))
                   : curState.map((c, idx) => (
-                      <MenuItem key={idx} value={c.iso2}>
-                        {c.name}
-                      </MenuItem>
-                    ))}
+                    <MenuItem key={idx} value={c.iso2}>
+                      {c.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
@@ -1334,15 +1334,15 @@ function OfflineApplicationForm({ open, close }) {
               >
                 {PAC
                   ? permCities.map((c, idx) => (
-                      <MenuItem key={idx} value={c.name}>
-                        {c.name}
-                      </MenuItem>
-                    ))
+                    <MenuItem key={idx} value={c.name}>
+                      {c.name}
+                    </MenuItem>
+                  ))
                   : curCities.map((c, idx) => (
-                      <MenuItem key={idx} value={c.name}>
-                        {c.name}
-                      </MenuItem>
-                    ))}
+                    <MenuItem key={idx} value={c.name}>
+                      {c.name}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>

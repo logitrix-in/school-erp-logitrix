@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import Bbox from "../../../UiComponents/Bbox";
-import { Box, Divider, Typography, Radio, Button } from "@mui/material";
+import { Box, Divider, Typography, Radio, Button, Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@material-ui/core";
 import { DataGrid } from "@mui/x-data-grid";
@@ -46,7 +46,16 @@ const Individual = () => {
       ),
     },
     { field: "space", headerName: "", width: isLarge ? 80 : 50 },
-    { field: "id", headerName: "Student ID", flex: 1 },
+    {
+      field: "id",
+      headerName: "Student ID",
+      flex: 1,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
+    },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "class", headerName: "Class", flex: 1 },
     { field: "section", headerName: "Section", flex: 1 },
@@ -163,10 +172,7 @@ const Individual = () => {
               }}
             />
 
-            {/* Search button */}
-            <Button variant="contained" style={{ marginLeft: "15px" }}>
-              Search
-            </Button>
+       
           </Box>
 
           {/* Spacer */}
@@ -184,7 +190,7 @@ const Individual = () => {
             onClick={() => navigate("/student/manage/OnBoardingDetails")}
             disabled={!isEditButtonActive}
           >
-            Edit
+            View / Edit
           </Button>
         </Box>
 

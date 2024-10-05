@@ -72,7 +72,7 @@ const EditManageApplication = ({ open, close, fetchData: refetch }) => {
         refetch();
         setLoading(false);
       })
-      .catch((err) =>{} );
+      .catch((err) => { });
   }
 
   useEffect(() => {
@@ -91,7 +91,6 @@ const EditManageApplication = ({ open, close, fetchData: refetch }) => {
     const data = [...applications];
 
     data[row][name] = new Date(val).toLocaleDateString("en-CA");
-    ;
     setApplications(data);
   }
 
@@ -99,7 +98,7 @@ const EditManageApplication = ({ open, close, fetchData: refetch }) => {
     api
       .put("/admission/application/manage-application/", applications)
       .then((res) => {
-        setStatus("Updated Successfully"); 
+        setStatus("Updated Successfully");
         toast.success("Updated Successfully", {
           autoClose: 3000,
         });

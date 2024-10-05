@@ -17,6 +17,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  InputAdornment,
+  Link,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useMediaQuery } from "@material-ui/core";
@@ -24,6 +26,8 @@ import useClasses from "../../../hooks/useClasses";
 import { DatePicker } from "@mui/x-date-pickers";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+
 
 const ActionBulk = () => {
   // breakpoints
@@ -59,11 +63,6 @@ const ActionBulk = () => {
   const [endDate2, setEndDate2] = useState("");
   const [type, setType] = useState("all");
   const [dialogOpen, setDialogOpen] = useState(false);
-
-  // table and checkbox states
-  const [isChecked, setIsChecked] = useState(false);
-  const [isChecked2, setIsChecked2] = useState(false);
-  const [isChecked3, setIsChecked3] = useState(false);
 
   // Proceed button click handle
   const handleProceed = () => {
@@ -182,6 +181,11 @@ const ActionBulk = () => {
       field: "id",
       headerName: "Student ID",
       width: isLaptop ? 120 : isLarge ? 160 : 140,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      )
     },
     {
       field: "name",
@@ -581,9 +585,20 @@ const ActionBulk = () => {
 
           {/* Penalty Due Amount ≥ */}
           <TextField
-            label="Penalty Due Amount ≥"
-            placeholder="Penalty Due Amount ≥"
-            variant="outlined"
+            label="Penalty Due Amount"
+            value={value}
+            onChange={(event) => {
+              const newValue = event.target.value.replace(/[^0-9]/g, "");
+              setValue(newValue);
+            }}
+            InputProps={{
+              maxLength: 10,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CurrencyRupeeIcon sx={{ fontSize: "1.3rem" }} />
+                </InputAdornment>
+              ),
+            }}
           />
 
           {/* non-compliance dropdown */}

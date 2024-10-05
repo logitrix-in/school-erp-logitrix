@@ -12,11 +12,13 @@ import {
   DialogTitle,
   DialogContent,
   TextField,
+  Divider,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@material-ui/core";
+import CloseIcon from "@mui/icons-material/Close";
 
 const ManageStreamRequest = () => {
   // breakpoints
@@ -36,6 +38,7 @@ const ManageStreamRequest = () => {
   const [scienceValue, setScienceValue] = useState("");
   const [commerceValue, setCommerceValue] = useState("");
   const [humanitiesValue, setHumanitiesValue] = useState("");
+  const [allocateSeats, setAllocateSeats] = useState(false);
 
   // set stream eligibility dialog open
   const handleOpenDialog = () => {
@@ -93,7 +96,7 @@ const ManageStreamRequest = () => {
         <Box mt={4} ml={3} display="flex" flexDirection="row">
           {/* Set Stream Eligibility button */}
           <Button variant="outlined" onClick={handleOpenDialog}>
-            Set Stream Eligibility
+            Set Stream Eligibility for Admission
           </Button>
 
           {/* Download Stream Preference List button */}
@@ -122,7 +125,7 @@ const ManageStreamRequest = () => {
               marginLeft: "15px",
             }}
           >
-            Dashboard
+            Dashboard - Existing Students
           </Typography>
 
           {/* stream selection dropdown */}
@@ -176,7 +179,7 @@ const ManageStreamRequest = () => {
                   0/100
                 </Typography>
                 <Typography fontSize={"20px"} fontWeight={"700"} color={"#FFF"}>
-                  Confirmed Seats
+                  Confirmed Seats (Science)
                 </Typography>
               </Box>
 
@@ -289,7 +292,7 @@ const ManageStreamRequest = () => {
                 )
               }
             >
-              Rationalise
+              Rationalise Seats for Existing Students
             </Button>
 
             {/* Allocate Seat for External Admission button */}
@@ -305,8 +308,9 @@ const ManageStreamRequest = () => {
                   color: "white",
                 },
               }}
+              onClick={() => setAllocateSeats(!allocateSeats)}
             >
-              Allocate Seat for External Admission
+              Allocate Seats for External Admission
             </Button>
           </Box>
         </Box>
@@ -423,6 +427,209 @@ const ManageStreamRequest = () => {
               style={{ marginLeft: "8px" }}
             >
               Cancel
+            </Button>
+          </Box>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={allocateSeats}
+        onClose={() => setAllocateSeats(!allocateSeats)}
+        maxWidth="lg"
+        maxLength="lg"
+      >
+        <DialogTitle
+          sx={{
+            height: "50px",
+            backgroundColor: "#a14e2c",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "900px",
+          }}
+        >
+          <Typography
+            sx={{ color: "white", fontWeight: "600", fontSize: "20px" }}
+          >
+            Seat Allocation for External Admission - Science
+          </Typography>
+
+          <IconButton
+            onClick={() => setAllocateSeats(!allocateSeats)}
+            sx={{ position: "absolute", right: "10px", color: "white" }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+
+        <DialogContent>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              flexDSirection: "row",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                height: "300px",
+                backgroundColor: "#f4f4f4",
+                margin: "20px",
+                borderRadius: "10px",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  border: "0.5px solid #e0dcdc",
+                  borderTopLeftRadius: "10px",
+                  borderBottomLeftRadius: "10px",
+                  padding: "20px",
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                }}
+              >
+                <Typography
+                  sx={{ fontSize: "40px", fontWeight: "600", color: "#00494e" }}
+                >
+                  100
+                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "#9aa0a5",
+                    }}
+                  >
+                    Total Number of Seats
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "#9aa0a5",
+                    }}
+                  >
+                    (Science)
+                  </Typography>
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  border: "0.25px solid #e0dcdc",
+                  borderTopRightRadius: "10px",
+                  borderBottomRightRadius: "10px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    paddingBottom: "20px",
+                    padding: "40px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "30px",
+                      fontWeight: "600",
+                      color: "#00494e",
+                    }}
+                  >
+                    12
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "#9aa0a5",
+                    }}
+                  >
+                    Seats Currently Allocated for External Admission
+                  </Typography>
+                </Box>
+                <Divider sx={{ border: "0.25px solid #e0dcdc", width: "100%" }} />
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: "40px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "30px",
+                      fontWeight: "600",
+                      color: "#00494e",
+                    }}
+                  >
+                    50
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      color: "#9aa0a5",
+                    }}
+                  >
+                    Seats Currently Reserved for Existing Admission
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography sx={{ fontSize: "16px", fontWeight: "600" }}>
+              Number of seats to be allocated for external admission
+            </Typography>
+            <TextField
+              label="Number of Seats"
+              variant="outlined"
+              size="small"
+              style={{ marginLeft: "20px", width: "150px" }}
+              inputProps={{
+                maxLength: 3,
+                pattern: "[0-9]*",
+                inputMode: "numeric",
+              }}
+            />
+            <Typography sx={{ fontSize: "16px", fontWeight: "600", paddingX: "10px" }}>
+              (Max 38)
+            </Typography>
+          </Box>
+          <Box
+            sx={{ display: "flex", justifyContent: "center", padding: "20px" }}
+          >
+            <Button
+              sx={{
+                backgroundColor: "#a14e2c",
+                width: "200px",
+                color: "white",
+              }}
+            >
+              Submit
             </Button>
           </Box>
         </DialogContent>

@@ -14,6 +14,7 @@ import {
   ListItemText,
   OutlinedInput,
   ListItemIcon,
+  Link
 } from "@mui/material";
 import { useMediaQuery } from "@material-ui/core";
 import useclasses from "../../../../hooks/useClasses";
@@ -137,11 +138,6 @@ const Bulk = () => {
 
   // table columns
   const columns = [
-    {
-      field: "space",
-      headerName: "",
-      width: isLaptop ? 70 : isLarge ? 100 : isSmall ? 60 : 70,
-    },
     { field: "id", headerName: "Student ID", flex: 1 },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "class", headerName: "Class", flex: 1 },
@@ -158,8 +154,8 @@ const Bulk = () => {
               params.value === "Active"
                 ? "#C6F6D5"
                 : params.value === "Inactive"
-                ? "#FFCCCC"
-                : "transparent",
+                  ? "#FFCCCC"
+                  : "transparent",
             borderRadius: "6px",
             display: "inline-block",
             width:
@@ -170,8 +166,8 @@ const Bulk = () => {
               params.value === "Active"
                 ? "11px"
                 : params.value === "Inactive"
-                ? "7px"
-                : "0px",
+                  ? "7px"
+                  : "0px",
           }}
         >
           {params.value}

@@ -1,24 +1,25 @@
 import {
 	Box,
-	Button,
 	Divider,
-	Grid,
 	Stack,
-	InputBase,
 	Typography,
-	Badge,
-	Chip,
 	Dialog,
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem
 } from "@mui/material";
 
 // quick search will render 3 different types of data set - student, employee, media
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Bbox from "../../UiComponents/Bbox";
 import { Icon } from "@iconify/react";
 import { DataGrid } from "@mui/x-data-grid";
 import Section from "../../Section";
 import Flex from "../../UiComponents/Flex";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
+import api from "../../../config/api";
+import { toast } from 'react-toastify'
 
 const QuickSearch = () => {
 	const activityColumn = [
@@ -57,7 +58,7 @@ const QuickSearch = () => {
 
 	const columns = [
 		{
-			field: "id",
+			field: "library_card_number",
 			headerName: "Library Card",
 			width: 140,
 			renderCell: (params) => {
@@ -76,9 +77,9 @@ const QuickSearch = () => {
 			},
 		},
 		{
-			field: "name",
+			field: "employee_name",
 			headerName: "Name",
-			width: 150,
+			flex: 1,
 		},
 		{
 			field: "category",
@@ -91,7 +92,7 @@ const QuickSearch = () => {
 			flex: 1,
 		},
 		{
-			field: "currentBorrowing",
+			field: "current_borrowings",
 			headerName: "current Borrowing",
 			renderCell: (params) => (
 				<div style={{ whiteSpace: "normal", wordBreak: "break-word" }}>
@@ -103,7 +104,7 @@ const QuickSearch = () => {
 			sortable: true,
 		},
 		{
-			field: "libraryCardStatus",
+			field: "current_status",
 			headerName: "Library Card Status",
 			flex: 1,
 			renderCell: (params) => {
@@ -124,25 +125,64 @@ const QuickSearch = () => {
 		},
 	];
 
-	const rows = [
-		{
-			id: "CHN2401",
-			name: "Arnab Chatterjee",
-			category: "Teaching Staff",
-			department: "Biology",
-			currentBorrowing:
-				"Alice's Adventure in the Wonderland, harry potter and the cursed child",
-			libraryCardStatus: "Active",
-		},
-	];
-
 	const [modalVisible, setModalVisible] = useState(false);
 	const [activeLibId, setActiveLibId] = useState(null);
+	const [libraryCardNumbers, setLibraryCardNumbers] = useState([]);
+	const [selectedLibraryCard, setSelectedLibraryCard] = useState('');
+	const [employeeRows, setEmployeeRows] = useState([]);
 
 	const handleLibIdClick = (libId) => {
 		setActiveLibId(libId);
 		setModalVisible(true);
 	};
+
+	async function getLibraryCardDetail() {
+		try {
+			if (!selectedLibraryCard) return;
+
+			const response = await api.get(`/library/library-cards/?card_number=${selectedLibraryCard}`);
+			console.log(response.data);
+
+			if (response.data.length > 0) {
+				const cardData = response.data[0];
+				const newRow = {
+					id: cardData.id,
+					library_card_number: cardData.card_number,
+					employee_name: `${cardData.employee.employee_personal_details.first_name} ${cardData.employee.employee_personal_details.last_name}`,
+					category: cardData.employee.employee_type, // Note: 'category' is not directly available, using 'employee_type' instead
+					department: cardData.employee.department,
+					current_borrowings: cardData.current_borrowings,
+					current_status: cardData.is_active ? 'Active' : 'Inactive'
+				};
+
+				console.log('New row:', newRow);
+				setEmployeeRows([newRow]); // Set as an array with a single item
+			} else {
+				setEmployeeRows([]); // Set to empty array if no data returned
+			}
+
+		} catch (error) {
+			console.log(error);
+			toast.error('Error Loading Data.')
+		}
+	}
+
+	useEffect(() => { getLibraryCardDetail() }, [selectedLibraryCard])
+
+	useEffect(() => {
+		async function getLibraryCardDetails() {
+			try {
+				const response = await api.get('/library/library-cards/?display_type=list_view');
+				console.log(response.data);
+
+				setLibraryCardNumbers(response.data.library_cards);
+			} catch (err) {
+				console.log(err);
+				toast.error('Error Occured!');
+			}
+		}
+		getLibraryCardDetails();
+	}, []);
 
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
@@ -155,18 +195,26 @@ const QuickSearch = () => {
 			<Divider />
 			<Stack p={2} gap={2}>
 				<Box display={"flex"} gap={1}>
-					<SearchBox />
-					<Button
-						variant="contained"
-						size="small"
-						sx={{ px: 2, ml: 2 }}
-					>
-						Search
-					</Button>
+
+					<FormControl sx={{ width: '25%' }}>
+						<InputLabel>Search by Library Card # or Media #</InputLabel>
+						<Select
+							label="Search by Library Card # or Media #"
+							value={selectedLibraryCard}
+							required
+							onChange={(e) => setSelectedLibraryCard(e.target.value)}
+						>
+							{
+								libraryCardNumbers?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							}
+						</Select>
+					</FormControl>
 				</Box>
 				<Box sx={{ width: "100%" }}>
 					<DataGrid
-						rows={rows}
+						rows={employeeRows}
 						columns={columns}
 						initialState={{
 							pagination: {
@@ -477,11 +525,8 @@ const SearchBox = () => {
 				alignItems: "center",
 			}}
 		>
-			<InputBase
-				fullWidth
-				placeholder="Search by Library Card # / Media ID"
-			/>
-			<Icon icon={"tabler:search"} fontSize={"1.2rem"} />
+
+
 		</Box>
 	);
 };

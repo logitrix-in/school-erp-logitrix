@@ -18,6 +18,8 @@ import {
   DialogTitle,
   OutlinedInput,
   ListItemIcon,
+  Radio,
+  Link
 } from "@mui/material";
 import RevealCard from "../../AnimationComponents/RevealCard";
 import Bbox from "../../UiComponents/Bbox";
@@ -29,6 +31,7 @@ import { useMediaQuery } from "@material-ui/core";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
+import { DataGrid } from "@mui/x-data-grid";
 
 const StudentAccountCompliance = () => {
   // breakpoints
@@ -60,6 +63,90 @@ const StudentAccountCompliance = () => {
   const [type, setType] = useState("all");
   const [apiData, setApiData] = useState(null);
   const [error, setError] = useState(null);
+
+  const [isEditButtonActive, setIsEditButtonActive] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  // table columns
+  const columns = [
+    { field: "space", headerName: "", width: isLarge ? 80 : 50 },
+    {
+      field: "id",
+      headerName: "Student ID",
+      flex: 1,
+      renderCell: (params) => (
+        <Link
+          underline="hover"
+          color="primary"
+        >
+          {params.value}
+        </Link>
+      ),
+    },
+    { field: "name", headerName: "Name", flex: 1 },
+    { field: "class", headerName: "Class", flex: 1 },
+    { field: "section", headerName: "Section", flex: 1 },
+    { field: "roll", headerName: "Roll #", flex: 1 },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 1,
+      renderCell: (params) => (
+        <Box
+          style={{
+            backgroundColor:
+              params.value === "Active"
+                ? "#C6F6D5"
+                : params.value === "Inactive"
+                  ? "#FFCCCC"
+                  : "transparent",
+            borderRadius: "6px",
+            display: "inline-block",
+            width:
+              params.value === "Active" || params.value === "Inactive"
+                ? "60px"
+                : "auto",
+            paddingLeft:
+              params.value === "Active"
+                ? "11px"
+                : params.value === "Inactive"
+                  ? "7px"
+                  : "0px",
+          }}
+        >
+          {params.value}
+        </Box>
+      ),
+    },
+  ];
+
+  // table rows
+  const rows = [
+    {
+      id: "AG240001",
+      class: "VI",
+      name: "Saunav Ray",
+      section: "A",
+      roll: 23,
+      status: "Active",
+    },
+    {
+      id: "AG240002",
+      class: "VI",
+      name: "Saunav Ray",
+      section: "A",
+      roll: 23,
+      status: "Inactive",
+    },
+    {
+      id: "AG240003",
+      class: "VI",
+      name: "Saunav Ray",
+      section: "A",
+      roll: 23,
+      status: "Active",
+    },
+  ];
 
   // api calling
   useEffect(() => {
@@ -219,6 +306,20 @@ const StudentAccountCompliance = () => {
             </Grid>
           </Grid>
 
+          <Box my={2} mb={2} height={"100%"} width={"100%"}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  paginationModel: { page: 0, pageSize: 5 },
+                },
+              }}
+              pageSizeOptions={[5, 10]}
+            // checkboxSelection
+            />
+          </Box>
+
           {/* Grid section */}
           <Box display="flex" gap={2} pt={4} pb={2}>
             {/* Left drop-down section */}
@@ -240,12 +341,12 @@ const StudentAccountCompliance = () => {
                   width: isLaptop
                     ? "20rem"
                     : isTablet
-                    ? "15rem"
-                    : isSmall
-                    ? "14rem"
-                    : isLarge
-                    ? "25rem"
-                    : "22rem",
+                      ? "15rem"
+                      : isSmall
+                        ? "14rem"
+                        : isLarge
+                          ? "25rem"
+                          : "22rem",
                 }}
               >
                 <InputLabel>Class</InputLabel>
@@ -301,12 +402,12 @@ const StudentAccountCompliance = () => {
                   width: isLaptop
                     ? "20rem"
                     : isTablet
-                    ? "15rem"
-                    : isSmall
-                    ? "14rem"
-                    : isLarge
-                    ? "25rem"
-                    : "22rem",
+                      ? "15rem"
+                      : isSmall
+                        ? "14rem"
+                        : isLarge
+                          ? "25rem"
+                          : "22rem",
                 }}
               >
                 <InputLabel>Section</InputLabel>
@@ -361,12 +462,12 @@ const StudentAccountCompliance = () => {
                   width: isLaptop
                     ? "20rem"
                     : isTablet
-                    ? "15rem"
-                    : isSmall
-                    ? "14rem"
-                    : isLarge
-                    ? "25rem"
-                    : "22rem",
+                      ? "15rem"
+                      : isSmall
+                        ? "14rem"
+                        : isLarge
+                          ? "25rem"
+                          : "22rem",
                 }}
               >
                 <InputLabel>Days</InputLabel>
@@ -375,10 +476,10 @@ const StudentAccountCompliance = () => {
                   value={day}
                   onChange={(e) => setDay(e.target.value)}
                 >
-                  <MenuItem value={"7"}>7</MenuItem>
-                  <MenuItem value={"15"}>15</MenuItem>
-                  <MenuItem value={"30"}>30</MenuItem>
-                  <MenuItem value={"60"}>60</MenuItem>
+                  <MenuItem value={"7"}>Last 7 days</MenuItem>
+                  <MenuItem value={"15"}>Last 15 days</MenuItem>
+                  <MenuItem value={"30"}>Last 30 days</MenuItem>
+                  <MenuItem value={"60"}>Last 60 days</MenuItem>
                 </Select>
               </FormControl>
             </Bbox>
@@ -422,15 +523,15 @@ const StudentAccountCompliance = () => {
                     // ["Inactive Users", 20],
                     // ["Active Users", 30],
                     apiData &&
-                      apiData.inactive_users && [
-                        "Inactive Users",
-                        apiData.inactive_users,
-                      ],
+                    apiData.inactive_users && [
+                      "Inactive Users",
+                      apiData.inactive_users,
+                    ],
                     apiData &&
-                      apiData.active_users && [
-                        "Active Users",
-                        apiData.active_users,
-                      ],
+                    apiData.active_users && [
+                      "Active Users",
+                      apiData.active_users,
+                    ],
                   ]}
                   options={{
                     chartArea: {
@@ -467,12 +568,12 @@ const StudentAccountCompliance = () => {
                     width: isLaptop
                       ? 340
                       : isDesktop
-                      ? 400
-                      : isTablet
-                      ? 250
-                      : isSmall
-                      ? 230
-                      : 400,
+                        ? 400
+                        : isTablet
+                          ? 250
+                          : isSmall
+                            ? 230
+                            : 400,
                     height: 40,
                     bgcolor: "#2F7DA1",
                     color: "white",
@@ -492,12 +593,12 @@ const StudentAccountCompliance = () => {
                     width: isLaptop
                       ? 340
                       : isDesktop
-                      ? 400
-                      : isTablet
-                      ? 250
-                      : isSmall
-                      ? 230
-                      : 400,
+                        ? 400
+                        : isTablet
+                          ? 250
+                          : isSmall
+                            ? 230
+                            : 400,
                     height: 40,
                   }}
                   onClick={handleOpenPrompt}

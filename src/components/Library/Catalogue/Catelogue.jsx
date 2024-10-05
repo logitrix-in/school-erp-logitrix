@@ -1,11 +1,31 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Bbox from "../../UiComponents/Bbox";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
 import { Stack } from "@mui/system";
 import { Icon } from "@iconify/react";
+import api from '../../../config/api'
+import { toast } from 'react-toastify'
 
 const Catelogue = () => {
+	const [catalogueDetails, setCatalogueDetails] = useState({ books: 0, periodicals: 0, research_papers: 0 })
+
+	useEffect(() => {
+		async function fetchData() {
+			try {
+				const response = await api.get('/library/catalogue-count/');
+				console.log(response.data)
+
+				setCatalogueDetails(response.data)
+			} catch (error) {
+				console.log(error);
+				toast.error('Error fetching data')
+			}
+		}
+
+		fetchData();
+	}, []);
+
 	return (
 		<>
 			<Bbox borderRadius={2} overflow={"hidden"}>
@@ -20,7 +40,7 @@ const Catelogue = () => {
 					<Box sx={{ display: "flex", gap: 2 }}>
 						<Card
 							title={"Books"}
-							val={1400}
+							val={catalogueDetails.books}
 							bgColor={"#FAD2C0"}
 							col={"#FFA57C"}
 							img={"emojione:books"}
@@ -28,7 +48,7 @@ const Catelogue = () => {
 						/>
 						<Card
 							title={"Periodicals"}
-							val={2900}
+							val={catalogueDetails.periodicals}
 							bgColor={"#D5E9F3"}
 							col={"#A2E0FE"}
 							img={"fluent-emoji-flat:books"}
@@ -36,7 +56,7 @@ const Catelogue = () => {
 						/>
 						<Card
 							title={"Research papers"}
-							val={200}
+							val={catalogueDetails.research_papers}
 							bgColor={"#FAD2C0"}
 							col={"#FFA57C"}
 							img={"noto-v1:rolled-up-newspaper"}

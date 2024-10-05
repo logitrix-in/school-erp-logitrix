@@ -11,16 +11,22 @@ import {
   Dialog,
   DialogActions,
   DialogTitle,
+  Link
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import IDCard from "../../../../assets/cards/IDCard.png";
-import GuardianCard from "../../../../assets/cards/GuardianCard.png";
-import EventPass from "../../../../assets/cards/EventPass.png";
-import LibraryCard from "../../../../assets/cards/LibraryCard.png";
-import GuestPass from "../../../../assets/cards/GuestPass.png";
+import IDCard from "../../../../assets/cards/idc.png";
+import IDCardBack from "../../../../assets/cards/idcb.png";
+import GuardianCard from "../../../../assets/cards/gc.png";
+import GuardianCardBack from "../../../../assets/cards/gcb.png";
+import EventPass from "../../../../assets/cards/ep.png";
+import LibraryCard from "../../../../assets/cards/lc.png";
+import LibraryCardBack from "../../../../assets/cards/lcb.png";
+import GuestPass from "../../../../assets/cards/gp.png";
+import LocalGuardianCard from "../../../../assets/cards/lgc.png";
+import LocalGuardianCardBack from "../../../../assets/cards/lgcb.png";
 import { useMediaQuery } from "@material-ui/core";
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -107,7 +113,13 @@ const IDindividual = () => {
       ),
     },
     { field: "space", headerName: "", width: isLarge ? 80 : 50 },
-    { field: "id", headerName: "Student ID", flex: 1 },
+    { field: "id", headerName: "Student ID", flex: 1,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
+     },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "class", headerName: "Class", flex: 1 },
     { field: "section", headerName: "Section", flex: 1 },
@@ -142,6 +154,8 @@ const IDindividual = () => {
       date: "20-Sep-2023",
     },
   ];
+
+  const [flip, setFlip] = useState(false);
 
   return (
     <RevealCard>
@@ -374,10 +388,6 @@ const IDindividual = () => {
               }}
             />
 
-            {/* search button */}
-            <Button variant="contained" style={{ marginLeft: "20px" }}>
-              Search
-            </Button>
           </Box>
 
           {/* Table */}
@@ -450,55 +460,132 @@ const IDindividual = () => {
             <Box>
               {/* id card */}
               {selectedValue === "ID Card" && (
-                <img
-                  src={IDCard}
-                  alt="ID Card"
-                  style={{
-                    width: "420px",
-                    height: "220px",
-                    display: "block",
-                    margin: "3rem",
+                <Box
+                  onClick={() => {
+                    setFlip(!flip);
                   }}
-                />
+                >
+                  {!flip ? (
+                    <img
+                      src={IDCard}
+                      alt="ID Card"
+                      style={{
+                        width: "420px",
+                        height: "220px",
+                        display: "block",
+                        margin: "3rem",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={IDCardBack}
+                      alt="ID Card Back"
+                      style={{
+                        width: "420px",
+                        height: "220px",
+                        display: "block",
+                        margin: "3rem",
+                      }}
+                    />
+                  )}
+                </Box>
               )}
               {/* parent's card */}
               {selectedValue === "Parent's Card" && (
-                <img
-                  src={GuardianCard}
-                  alt="ID Card"
-                  style={{
-                    width: "420px",
-                    height: "220px",
-                    display: "block",
-                    margin: "3rem",
+                <Box
+                  onClick={() => {
+                    setFlip(!flip);
                   }}
-                />
+                >
+                  {!flip ? (
+                    <img
+                      src={GuardianCard}
+                      alt="Guardian Card"
+                      style={{
+                        width: "420px",
+                        height: "220px",
+                        display: "block",
+                        margin: "3rem",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={GuardianCardBack}
+                      alt="Guardian Card Back"
+                      style={{
+                        width: "420px",
+                        height: "220px",
+                        display: "block",
+                        margin: "3rem",
+                      }}
+                    />
+                  )}
+                </Box>
               )}
               {/* guardian's card */}
               {selectedValue === "Local Guardian's Card" && (
-                <img
-                  src={GuardianCard}
-                  alt="ID Card"
-                  style={{
-                    width: "420px",
-                    height: "220px",
-                    display: "block",
-                    margin: "3rem",
+                <Box
+                  onClick={() => {
+                    setFlip(!flip);
                   }}
-                />
+                >
+                  {!flip ? (
+                    <img
+                      src={LocalGuardianCard}
+                      alt="Local Guardian Card"
+                      style={{
+                        width: "420px",
+                        height: "220px",
+                        display: "block",
+                        margin: "3rem",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={LocalGuardianCardBack}
+                      alt="Local Guardian Card Back"
+                      style={{
+                        width: "420px",
+                        height: "220px",
+                        display: "block",
+                        margin: "3rem",
+                      }}
+                    />
+                  )}
+                </Box>
               )}
               {/* library card */}
               {selectedValue === "Library Card" && (
-                <img
-                  src={LibraryCard}
-                  alt="ID Card"
-                  style={{
-                    width: "200px",
-                    height: "260px",
-                    display: "block",
-                    margin: "2rem 7rem",
+                <Box
+                  onClick={() => {
+                    setFlip(!flip);
                   }}
-                />
+                  sx={{height: "500px"}}
+                >
+                  {!flip ? (
+                    <img
+                      src={LibraryCard}
+                      alt="Library Card"
+                      style={{
+                        width: "400px",
+                        height: "450px",
+                        display: "block",
+                        margin: "3rem",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={LibraryCardBack}
+                      alt="Library Card Back"
+                      style={{
+                        width: "400px",
+                        height: "450px",
+                        display: "block",
+                        margin: "3rem",
+                      }}
+                    />
+                  )}
+                </Box>
               )}
               {/* event pass */}
               {selectedValue === "Event Pass" && (

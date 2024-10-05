@@ -1,9 +1,11 @@
 import { Box, Button, Chip } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import Flex from "../../../UiComponents/Flex";
 import ReignsSelect from "../../../UiComponents/ReignsSelect";
 import useClasses from "../../../../hooks/useClasses";
 import { DataGrid } from "@mui/x-data-grid";
+import Preview from "./Preview";
+import { ToastContainer, toast } from "react-toastify";
 
 const columns = [
 	{ field: "id", headerName: "Library Card #", flex: 1 },
@@ -16,6 +18,7 @@ const columns = [
 
 const LibraryBulk = () => {
 	const c = useClasses();
+	const [preview, setPreview] = useState(false);
 
 	return (
 		<Box>
@@ -27,7 +30,7 @@ const LibraryBulk = () => {
 			</Flex>
 			<Flex justifyContent={"center"} mt={2}>
 				<Button sx={{ width: "30rem" }} variant="contained">
-					Submit
+					Apply
 				</Button>
 			</Flex>
 			<Box mt={3}>
@@ -42,13 +45,20 @@ const LibraryBulk = () => {
 				/>
 			</Box>
 			<Flex justifyContent={"flex-end"} mt={4}>
-				<Button variant="contained" color="secondary">
+				<Button variant="contained" color="secondary" onClick={() => setPreview(true)}>
 					Issue Library Card
 				</Button>
 				<Button variant="contained" color="secondary">
 					Print
 				</Button>
 			</Flex>
+
+			<ToastContainer />
+			{
+				preview && (
+					<Preview open={preview} close={() => setPreview(false)} />
+				)
+			}
 		</Box>
 	);
 };

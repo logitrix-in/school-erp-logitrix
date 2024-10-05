@@ -556,27 +556,29 @@ const AttendanceOverview = () => {
             <Bbox borderRadius={1} marginTop={4}>
               {/*  height="204px" */}
               <Box p={1} width="100%">
-                {/* <Bar
-                  data={data}
-                  options={{ ...options, maintainAspectRatio: false }}
-                /> */}
-
-                {/* <BarChart
-                  series={[
-                    { data: [3, 4, 1, 6, 5], stack: "A", label: "Series A1" },
-                    { data: [4, 3, 1, 5, 8], stack: "A", label: "Series A2" },
-                    { data: [4, 2, 5, 4, 1], stack: "A", label: "Series A3" },
-                  ]}
-                  width={600}
-                  height={350}
-                /> */}
-
                 <Paper sx={{ width: "100%", height: 300 }} elevation={3}>
                   <Container
                     series={[
                       {
                         type: "bar",
                         data: [1, 2, 3, 2, 1],
+                        stack: "bar",
+                        barWidth: 0.5,
+                        itemStyle: {
+                          color: "#FF6384",
+                        },
+                      },
+                      {
+                        type: "bar",
+                        data: [1, 1, 2, 1, 1],
+                        stack: "bar",
+                        barWidth: 0.5,
+                      },
+                      {
+                        type: "bar",
+                        data: [1, 1, 2, 1, 1],
+                        stack: "bar",
+                        barWidth: 0.5,
                       },
                       {
                         type: "line",
@@ -608,7 +610,7 @@ const AttendanceOverview = () => {
       </Bbox>
 
       {/* Defaulters / Long Leave Request */}
-      <Bbox width={"100%"} mt={4} borderRadius={2} overflow="hidden">
+      <Bbox width={"100%"} borderRadius={2} overflow="hidden">
         {/* Top text box */}
         <Box
           bgcolor="white"
@@ -770,158 +772,226 @@ const AttendanceOverview = () => {
             />
           </Bbox>
 
-          {/* Boxes and buttons */}
-          <Grid container spacing={2}>
-            {/* Defaulters box */}
-            <Grid item>
-              <Grid
-                pt={5}
-                pl={3}
-                sx={{
-                  width: isLaptop
-                    ? 440
-                    : isLarge
-                    ? 480
-                    : isTablet
-                    ? 360
-                    : isSmall
-                    ? 430
-                    : 460,
-                  height: 200,
-                  backgroundColor: "rgba(205, 212, 216, 0.30)",
-                  borderRadius: "8px",
-                }}
-              >
-                <Box
-                  display={"flex"}
-                  flexDirection={"row"}
-                  alignItems={"center"}
-                >
-                  {/* text */}
-                  <Box>
-                    <Typography
-                      sx={{
-                        color: "#2F7DA1",
-                        fontSize: "40px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      98
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#2F7DA1",
-                        fontSize: "20px",
-                        fontWeight: "400",
-                      }}
-                    >
-                      Defaulters
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#2F7DA1",
-                        fontSize: "16px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      9% of total active students
-                    </Typography>
-                  </Box>
-
-                  {/* image */}
-                  <Box ml={isTablet ? 6 : 15}>
-                    <img src={Pic2} />
-                  </Box>
-                </Box>
-
-                {/* download icon */}
-                <Box
-                  ml={
-                    isLaptop
-                      ? 47
+          {/* boxes and chart */}
+          <Box>
+            {/* Boxes and buttons */}
+            <Grid container spacing={1}>
+              {/* Defaulters box */}
+              <Grid item>
+                <Grid
+                  pt={5}
+                  pl={3}
+                  sx={{
+                    width: isLaptop
+                      ? 440
                       : isLarge
-                      ? 52
+                      ? 480
                       : isTablet
-                      ? 37
+                      ? 360
                       : isSmall
-                      ? 45
-                      : 49
+                      ? 430
+                      : 460,
+                    height: 200,
+                    backgroundColor: "rgba(205, 212, 216, 0.30)",
+                    borderRadius: "8px",
+                  }}
+                >
+                  <Box
+                    display={"flex"}
+                    flexDirection={"row"}
+                    alignItems={"center"}
+                  >
+                    {/* text */}
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "#2F7DA1",
+                          fontSize: "40px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        98
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#2F7DA1",
+                          fontSize: "20px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        Defaulters
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#2F7DA1",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        9% of total active students
+                      </Typography>
+                    </Box>
+
+                    {/* image */}
+                    <Box ml={isTablet ? 6 : 15}>
+                      <img src={Pic2} />
+                    </Box>
+                  </Box>
+
+                  {/* download icon */}
+                  <Box
+                    ml={
+                      isLaptop
+                        ? 47
+                        : isLarge
+                        ? 52
+                        : isTablet
+                        ? 37
+                        : isSmall
+                        ? 45
+                        : 49
+                    }
+                    mt={1.2}
+                  >
+                    <IconButton>
+                      <Icon icon={"ic:round-download"} fontSize={"1.4rem"} />
+                    </IconButton>
+                  </Box>
+                </Grid>
+              </Grid>
+
+              {/* Long Leave Request box */}
+              <Grid item>
+                <Grid
+                  pt={5}
+                  pl={3}
+                  sx={{
+                    width: isLaptop
+                      ? 440
+                      : isLarge
+                      ? 480
+                      : isTablet
+                      ? 360
+                      : isSmall
+                      ? 430
+                      : 460,
+                    height: 200,
+                    backgroundColor: "rgba(255, 241, 211, 0.69)",
+                    borderRadius: "8px",
+                  }}
+                  onClick={() =>
+                    navigate("/student/attendance/long-leave-request")
                   }
-                  mt={1.2}
                 >
-                  <IconButton>
-                    <Icon icon={"ic:round-download"} fontSize={"1.4rem"} />
-                  </IconButton>
-                </Box>
+                  <Box
+                    display={"flex"}
+                    flexDirection={"row"}
+                    alignItems={"center"}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "#C4673B",
+                          fontSize: "40px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        12
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#C4673B",
+                          fontSize: "20px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        Long Leave Request
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "#C4673B",
+                          fontSize: "16px",
+                          fontWeight: "500",
+                        }}
+                      >
+                        1.8% of total active students
+                      </Typography>
+                    </Box>
+
+                    {/* image */}
+                    <Box ml={isTablet ? 4 : 12}>
+                      <img src={Pic1} />
+                    </Box>
+                  </Box>
+                </Grid>
               </Grid>
             </Grid>
 
-            {/* Long Leave Request box */}
-            <Grid item>
-              <Grid
-                pt={5}
-                pl={3}
-                sx={{
-                  width: isLaptop
-                    ? 440
-                    : isLarge
-                    ? 480
-                    : isTablet
-                    ? 360
-                    : isSmall
-                    ? 430
-                    : 460,
-                  height: 200,
-                  backgroundColor: "rgba(255, 241, 211, 0.69)",
-                  borderRadius: "8px",
-                }}
-                onClick={() =>
-                  navigate("/student/attendance/long-leave-request")
-                }
-              >
-                <Box
-                  display={"flex"}
-                  flexDirection={"row"}
-                  alignItems={"center"}
-                >
-                  <Box>
-                    <Typography
-                      sx={{
-                        color: "#C4673B",
-                        fontSize: "40px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      12
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#C4673B",
-                        fontSize: "20px",
-                        fontWeight: "400",
-                      }}
-                    >
-                      Long Leave Request
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#C4673B",
-                        fontSize: "16px",
-                        fontWeight: "500",
-                      }}
-                    >
-                      1.8% of total active students
-                    </Typography>
-                  </Box>
+            {/* chart */}
+            <Bbox borderRadius={1} marginTop={4}>
+              {/*  height="204px" */}
+              <Box p={1} width="100%">
+                <Paper sx={{ width: "100%", height: 300 }} elevation={3}>
+                  <Container
+                    series={[
+                      {
+                        type: "bar",
+                        data: [1, 2, 3, 2, 1],
+                        stack: "bar",
+                        barWidth: 0.5,
+                        itemStyle: {
+                          color: "#FF6384",
+                        },
+                      },
+                      {
+                        type: "bar",
+                        data: [1, 1, 2, 1, 1],
+                        stack: "bar",
+                        barWidth: 0.5,
+                      },
+                      {
+                        type: "bar",
+                        data: [1, 1, 2, 1, 1],
+                        stack: "bar",
+                        barWidth: 0.5,
+                      },
+                      {
+                        type: "line",
+                        data: [4, 3, 1, 3, 4],
+                      },
+                    ]}
+                    xAxis={[
+                      {
+                        data: ["A", "B", "C", "D", "E"],
+                        scaleType: "band",
+                        id: "x-axis-id",
+                      },
+                    ]}
+                    {...sizingProps}
+                  >
+                    <BarPlot />
+                    <LinePlot />
+                    <ChartsXAxis
+                      label="X axis"
+                      position="bottom"
+                      axisId="x-axis-id"
+                    />
+                  </Container>
+                </Paper>
+              </Box>
+            </Bbox>
+          </Box>
+        </Box>
 
-                  {/* image */}
-                  <Box ml={isTablet ? 4 : 12}>
-                    <img src={Pic1} />
-                  </Box>
-                </Box>
-              </Grid>
-            </Grid>
-          </Grid>
+        {/* Set Attendance Criteria button */}
+        <Box display={"flex"} justifyContent={"center"} mt={7} mb={3}>
+          <Button
+            variant="contained"
+            sx={{ width: "766px" }}
+            onClick={() => setShowDialog(true)}
+          >
+            Set Attendance Criteria
+          </Button>
         </Box>
       </Bbox>
 
@@ -934,17 +1004,6 @@ const AttendanceOverview = () => {
           />
         )}
       </Bbox>
-
-      {/* Set Attendance Criteria button */}
-      <Box display={"flex"} justifyContent={"center"} mt={7} mb={3}>
-        <Button
-          variant="contained"
-          sx={{ width: "766px" }}
-          onClick={() => setShowDialog(true)}
-        >
-          Set Attendance Criteria
-        </Button>
-      </Box>
     </RevealCard>
   );
 };

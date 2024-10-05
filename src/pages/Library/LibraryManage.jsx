@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Section from "../../components/Section";
+import { useState } from "react";
 import { Box } from "@mui/material";
 import Navigtor from "../../components/Library/Manage/Components/Navigtor";
 import ManageInventory from "./LibraryManage/ManageInventory";
 import ManageCirculation from "./LibraryManage/ManageCirculation";
 import ManageLibrarayCard from "./LibraryManage/ManageLibrarayCard";
 import ManageBarcode from "./LibraryManage/ManageBarcode";
+import { ToastContainer } from "react-toastify";
 
 const navs = [
 	{
@@ -27,6 +27,8 @@ const LibraryManage = () => {
 
 	return (
 		<>
+
+			<ToastContainer />
 			<Navigtor navs={navs} onChange={setActive} />
 			<Box mb={2} />
 			{active == 0 && <ManageInventory />}

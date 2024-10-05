@@ -6,10 +6,13 @@ import {
   Button,
   Typography,
   Radio,
+  Link,
+  IconButton
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useMediaQuery } from "@material-ui/core";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 
 const PendingRequest = () => {
   // breakpoints
@@ -44,7 +47,6 @@ const PendingRequest = () => {
         />
       ),
     },
-    { field: "space", headerName: "", width: isLarge ? 80 : 50 },
     {
       field: "llrid",
       headerName: "LLR ID",
@@ -54,6 +56,11 @@ const PendingRequest = () => {
       field: "id",
       headerName: "Student ID",
       width: isLaptop ? 100 : isLarge ? 140 : isTablet ? 140 : 120,
+      renderCell: (params) => (
+        <Link underline="hover" color="primary">
+          {params.value}
+        </Link>
+      ),
     },
     {
       field: "name",
@@ -61,19 +68,16 @@ const PendingRequest = () => {
       width: isLaptop ? 100 : isLarge ? 140 : 120,
     },
     {
-      field: "class",
-      headerName: "Class",
-      width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 110 : 90,
-    },
-    {
-      field: "section",
-      headerName: "Section",
-      width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 120 : 90,
-    },
-    {
-      field: "roll",
-      headerName: "Roll #",
-      width: isLaptop ? 70 : isLarge ? 110 : isTablet ? 110 : 90,
+      field: "details",
+      headerName: "Details",
+      width: isLaptop ? 100 : isLarge ? 150 : 110,
+      renderCell: (params) => (
+        <Box>
+          <Typography variant="body2">
+            {params.row.class}/{params.row.section}/{params.row.roll}
+          </Typography>
+        </Box>
+      ),
     },
     {
       field: "period",
@@ -83,16 +87,20 @@ const PendingRequest = () => {
     {
       field: "reason",
       headerName: "Reason",
-      width: isLaptop ? 110 : isLarge ? 150 : 130,
+      width: isLaptop ? 130 : isLarge ? 150 : 130,
     },
     {
-      field: "details",
-      headerName: "Details",
-      width: isLaptop ? 150 : isLarge ? 190 : 170,
+      field: "description",
+      headerName: "Description",
+      width: isLaptop ? 200 : isLarge ? 190 : 170,
     },
     {
       field: "attachment",
-      headerName: "Attachment(s)",
+      headerName: (
+        <IconButton>
+          <AttachFileIcon />
+        </IconButton>
+      ),
       width: isTablet ? 160 : 100,
     },
   ];
@@ -108,7 +116,7 @@ const PendingRequest = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+      description: "Will undergo surgery...",
       attachment: "",
     },
     {
@@ -120,7 +128,7 @@ const PendingRequest = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+       description: "Will undergo surgery...",
       attachment: "",
     },
     {
@@ -132,7 +140,7 @@ const PendingRequest = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+       description: "Will undergo surgery...",
       attachment: "",
     },
     {
@@ -144,7 +152,7 @@ const PendingRequest = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+       description: "Will undergo surgery...",
       attachment: "",
     },
     {
@@ -156,7 +164,7 @@ const PendingRequest = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+       description: "Will undergo surgery...",
       attachment: "",
     },
     {
@@ -168,7 +176,7 @@ const PendingRequest = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+       description: "Will undergo surgery...",
       attachment: "",
     },
     {
@@ -180,7 +188,7 @@ const PendingRequest = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+       description: "Will undergo surgery...",
       attachment: "",
     },
     {
@@ -192,7 +200,7 @@ const PendingRequest = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+       description: "Will undergo surgery...",
       attachment: "",
     },
     {
@@ -204,7 +212,7 @@ const PendingRequest = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+       description: "Will undergo surgery...",
       attachment: "",
     },
     {
@@ -216,7 +224,7 @@ const PendingRequest = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+       description: "Will undergo surgery...",
       attachment: "",
     },
     {
@@ -228,7 +236,7 @@ const PendingRequest = () => {
       roll: "19",
       period: "20-Sep-2023 to 27-Sep-2023",
       reason: "Medical Issue",
-      details: "Will undergo surgery...",
+       description: "Will undergo surgery...",
       attachment: "",
     },
   ];
@@ -251,18 +259,11 @@ const PendingRequest = () => {
             ),
           }}
         />
-
-        {/* search button */}
-        <Button variant="contained" style={{ marginLeft: "20px" }}>
-          Search
-        </Button>
       </Box>
 
       {/* Total number of results found */}
       <Box style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Box
-          mt={5}
-          // mr={3}
+        <Box         
           style={{
             backgroundColor: "#E1EEFB",
             border: "1px solid #3381A5",

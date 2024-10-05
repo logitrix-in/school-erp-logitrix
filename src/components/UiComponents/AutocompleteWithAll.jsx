@@ -14,7 +14,7 @@ import {
 export const AutocompleteWithAll = ({
 	title,
 	items,
-	onChange = () => {},
+	onChange = () => { },
 	value,
 	limitTags,
 }) => {
@@ -57,9 +57,9 @@ export const AutocompleteWithAll = ({
 				return val.length == allOptions.length
 					? "All"
 					: columns.length > limitTags
-					? val.slice(0, limitTags).join(", ") +
-					  ` +${columns.length - limitTags}`
-					: val.join(", ");
+						? val.slice(0, limitTags).join(", ") +
+						` +${columns.length - limitTags}`
+						: val.join(", ");
 			}}
 			renderInput={(params) => <TextField {...params} label={title} />}
 			PaperComponent={(paperProps) => {

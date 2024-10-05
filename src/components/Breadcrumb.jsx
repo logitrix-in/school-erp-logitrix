@@ -40,7 +40,7 @@ const Breadcrumb = () => {
                 fontSize={"0.95rem"}
                 key={idx}
               >
-                {path.replaceAll('-',' ')}
+                {path.replaceAll('-', ' ').replaceAll('&', ' & ').replaceAll('%20', ' ')}
               </Typography>
             ) : (
               <Typography
@@ -50,7 +50,7 @@ const Breadcrumb = () => {
                 component={Link}
                 to={paths.slice(1, idx + 2).join("/") + "/"}
               >
-                {path.replaceAll('-',' ')}
+                {path.replaceAll('-', ' ').replaceAll('&', ' & ').replaceAll('%20', ' ')}
               </Typography>
             )
           )}

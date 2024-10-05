@@ -55,6 +55,7 @@ const ManageApplications = () => {
   });
 
   useEffect(() => {}, [openDates]);
+  useEffect(() => { }, [openDates]);
 
   // close all
 
@@ -63,6 +64,7 @@ const ManageApplications = () => {
   );
 
   useEffect(() => {}, [closeDate]);
+  useEffect(() => { }, [closeDate]);
 
   return (
     <>
@@ -233,6 +235,11 @@ const ManageApplications = () => {
                 onClick={() => setShowDialog(true)}
               >
                 Edit
+              </Button>
+
+              {/* Search button */}
+              <Button variant="contained" sx={{ marginLeft: "20px" }}>
+                Search
               </Button>
             </Box>
           </Box>
