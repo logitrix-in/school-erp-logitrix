@@ -96,6 +96,7 @@ const Approve = ({ open, close }) => {
                                 <Typography mb={2}>Rahul Mondal (AG252401)</Typography>
                                 <Typography
                                     fontWeight="medium"
+
                                     ml={1}
                                     mb={2}
                                     bgcolor={'#C6F6D5'}
