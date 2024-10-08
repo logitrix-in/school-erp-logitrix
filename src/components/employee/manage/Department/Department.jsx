@@ -3,14 +3,19 @@ import RevealCard from "../../../AnimationComponents/RevealCard";
 import Bbox from "../../../UiComponents/Bbox";
 import { Box, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import {
     Button,
     TextField,
     Autocomplete,
     Radio,
     Typography,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from "@mui/material";
+import ReignsSelect from '@/components/UiComponents/ReignsSelect'
+import useEmployees from '@/hooks/useEmployees'
 import { DataGrid } from "@mui/x-data-grid";
 import EditSupervisor from "./EditSupervisor";
 import DepartmentTransfer from "./DepartmentTransfer";
@@ -18,8 +23,16 @@ import LocationTransfer from "./LocationTransfer";
 import AddNewDepartment from "./AddNewDepartment";
 import ModifyDepartment from "./ModifyDepartment";
 import DeleteDepartment from "./DeleteDepartment";
+import EmployeePopup from '../../EmployeePopup'
 
 const EmployeeDepartment = () => {
+    const { employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment } = useEmployees();
+
+    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
+
+    const [employeePopup, setEmployeePopup] = useState(false);
+
     const columns1 = [
         {
             field: "radioButtons",
@@ -41,7 +54,16 @@ const EmployeeDepartment = () => {
         },
         {
             field: "id",
-            headerName: "Employee ID", flex: 1
+            headerName: "Employee ID", flex: 1,
+            renderCell: (params) => (
+                <Typography
+                    component="span"
+                    sx={{ color: "primary.main", cursor: "pointer" }}
+                    onClick={() => setEmployeePopup(true)}
+                >
+                    {params.value}
+                </Typography>
+            ),
         },
         {
             field: "name",
@@ -120,7 +142,16 @@ const EmployeeDepartment = () => {
         },
         {
             field: "id",
-            headerName: "Employee ID", flex: 1
+            headerName: "Employee ID", flex: 1,
+            renderCell: (params) => (
+                <Typography
+                    component="span"
+                    sx={{ color: "primary.main", cursor: "pointer" }}
+                    onClick={() => setEmployeePopup(true)}
+                >
+                    {params.value}
+                </Typography>
+            ),
         },
         {
             field: "name",
@@ -214,6 +245,7 @@ const EmployeeDepartment = () => {
             status: "Approved",
         },
     ];
+
     const navigate = useNavigate();
     const [selectedRow, setSelectedRow] = useState(null);
     const [editSupervisorPopup, setEditSupervisorPopup] = useState(false);
@@ -225,7 +257,6 @@ const EmployeeDepartment = () => {
 
     return (
         <RevealCard>
-            {/* top navigation buttons */}
             <div
                 style={{
                     backgroundColor: "#E5F3FB",
@@ -338,8 +369,6 @@ const EmployeeDepartment = () => {
                 </div>
             </div>
 
-            <ToastContainer />
-
             <Bbox borderRadius={2} mt={2} pb={4} overflow={"hidden"}>
                 <Box
                     bgcolor={"white"}
@@ -368,18 +397,14 @@ const EmployeeDepartment = () => {
                         width={"100%"}
                     >
 
-                        <Autocomplete
-                            options={["Student 1", "Student 2"]}
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Select Department"
-                                    label="Select Department"
-                                />
-                            )}
-                            sx={{ width: "30%" }}
+                        <ReignsSelect
+                            multiple
+                            items={employeeDepartment}
+                            defaultValues={employeeDepartment}
+                            onChange={setSelectedDepartment}
+                            value={selectedDepartment}
+                            label="Department"
+                            sx={{ mY: 2, width: '30%' }}
                         />
 
                         <Button
@@ -415,6 +440,7 @@ const EmployeeDepartment = () => {
                     </Box>
 
                     <EditSupervisor open={editSupervisorPopup} close={() => setEditSupervisorPopup(false)} />
+                    <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
                 </Box>
             </Bbox>
 
@@ -446,19 +472,23 @@ const EmployeeDepartment = () => {
                         width={"100%"}
                     >
 
-                        <Autocomplete
-                            options={["Student 1", "Student 2"]}
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Search by Employee name or Employee ID"
-                                    label="Search by Employee name or Employee ID"
-                                />
-                            )}
-                            sx={{ width: "30%" }}
-                        />
+                        <Box display={"flex"} gap={1} sx={{ width: '35%', marginY: '16px' }} >
+                            <FormControl fullWidth>
+                                <InputLabel>Search by Employee Name or Employee ID</InputLabel>
+                                <Select
+                                    label="Search by Employee Name or Employee ID"
+                                    // value={selectedLibraryCard}
+                                    required
+                                // onChange={(e) => setSelectedLibraryCard(e.target.value)}
+                                >
+                                    {/* {
+								libraryCardNumbers?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							} */}
+                                </Select>
+                            </FormControl>
+                        </Box>
                     </Box>
 
                     < Box mt={2} mb={5} style={{ height: "100%" }}>
@@ -493,6 +523,8 @@ const EmployeeDepartment = () => {
 
                     <DepartmentTransfer open={departmentTransferPopup} close={() => setDepartmentTransferPopup(false)} />
                     <LocationTransfer open={locationTransferPopup} close={() => setLocationTransferPopup(false)} />
+                    <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
+
                 </Box>
             </Bbox>
 
@@ -519,34 +551,28 @@ const EmployeeDepartment = () => {
                         flexDirection="row"
                         alignItems="center"
                         justifyContent={"space-between"}
-                        mt={1}
-                        height={70}
+                        mt={2}
                         width={"100%"}
                     >
 
                         <Box />
 
-                        <Autocomplete
-                            options={["Student 1", "Student 2"]}
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Select Department"
-                                    label="Select Department"
-                                />
-                            )}
-                            sx={{ width: "30%" }}
+                        <ReignsSelect
+                            multiple
+                            items={employeeDepartment}
+                            defaultValues={employeeDepartment}
+                            onChange={setSelectedDepartment}
+                            value={selectedDepartment}
+                            label="Department"
+                            sx={{ mY: 2, width: '30%' }}
                         />
 
                         <Button variant="contained" onClick={() => setAddNewDepartmentPopup(true)}>Add New Department</Button>
                     </Box>
 
-                    <Box display="flex" justifyContent="center" gap={2} mt={4}>
+                    <Box display="flex" justifyContent="center" gap={4} mt={4}>
                         <Button
                             variant="outlined"
-                            sx={{ marginLeft: "20px" }}
                             onClick={() => setModifyDepartmentPopup(true)}
                         >
                             Modify
@@ -554,7 +580,6 @@ const EmployeeDepartment = () => {
                         <Button
                             color="secondary"
                             variant="contained"
-                            sx={{ marginLeft: "20px" }}
                             onClick={() => setDeleteDepartmentPopup(true)}
                         >
                             Delete
@@ -564,7 +589,7 @@ const EmployeeDepartment = () => {
                     <AddNewDepartment open={addNewDepartmentPopup} close={() => setAddNewDepartmentPopup(false)} />
                     <ModifyDepartment open={modifyDepartmentPopup} close={() => setModifyDepartmentPopup(false)} />
                     <DeleteDepartment open={deleteDepartmentPopup} close={() => setDeleteDepartmentPopup(false)} />
-
+                    <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
 
                 </Box>
             </Bbox>

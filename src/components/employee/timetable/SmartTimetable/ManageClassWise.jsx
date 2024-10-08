@@ -5,9 +5,13 @@ import {
   Button,
   Divider,
   Typography,
-  Autocomplete,
-  TextField,
   Radio,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  IconButton,
+  Menu
 } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
@@ -15,20 +19,84 @@ import Banner from '../Banner'
 import { useState } from 'react'
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import AssignTeacher from './popup/AssignTeacher'
+import EditTeacher from './popup/EditTeacher'
+import PublishPopup from './popup/PublishPopup'
+import useClasses from '@/hooks/useClasses'
+import { MoreVert as MoreVertIcon } from '@mui/icons-material';
+
+const ActionCell = ({ params, onEdit, onDelete }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEdit = () => {
+    onEdit(params.id);
+    handleClose();
+  };
+
+  const handleDelete = () => {
+    onDelete(params.id);
+    handleClose();
+  };
+
+  return (
+    <>
+      <IconButton onClick={handleClick}>
+        <MoreVertIcon />
+      </IconButton>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleEdit}>Edit</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+      </Menu>
+    </>
+  );
+};
 
 const Manage = ({ setMapping }) => {
-  const [selectedRow, setSelectedRow] = useState('');
+  const { classes, sections, acYear, curYear } = useClasses();
+
+  const [academicYear, setAcademicYear] = useState(curYear);
+  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedSection, setSelectedSection] = useState('');
+
+  const [classWiseRows, setClassWiseRows] = useState([{
+    id: 1,
+    subject: 'Mathematics',
+    assigned_teacher: 'Satish Mehra',
+    periods_per_week: 5,
+    class_teacher: 'Rajesh Kumar'
+  },
+  {
+    id: 2,
+    subject: 'Science',
+    assigned_teacher: 'Anita Sharma',
+    periods_per_week: 5,
+    class_teacher: 'Meena Gupta'
+  },
+  {
+    id: 3,
+    subject: 'English',
+    assigned_teacher: 'Rajesh Kumar',
+    periods_per_week: 5,
+    class_teacher: 'Satish Mehra'
+  },]);
+
   const [assignTeacher, setAssignTeacher] = useState(false);
   const [editMapping, setEditMapping] = useState(false);
+  const [publishPopup, setPublishPopup] = useState(false);
+  const [selectedRow, setSelectedRow] = useState('');
 
   const classWisecolumns = [
-    // {
-    //   field: "id", headerName: "Application ID", flex: 1, renderCell: (params) => (
-    //     <Typography sx={{ cursor: "pointer", color: "primary.main" }}>
-    //       {params.value}
-    //     </Typography>
-    //   ),
-    // },
     {
       field: "space", headerName: "", flex: 0.2
     },
@@ -50,29 +118,13 @@ const Manage = ({ setMapping }) => {
         />
       ),
     },
-  ];
-
-  const classWiseRows = [
     {
-      id: 1,
-      subject: 'Mathematics',
-      assigned_teacher: 'Satish Mehra',
-      periods_per_week: 5,
-      class_teacher: 'Rajesh Kumar'
-    },
-    {
-      id: 2,
-      subject: 'Science',
-      assigned_teacher: 'Anita Sharma',
-      periods_per_week: 5,
-      class_teacher: 'Meena Gupta'
-    },
-    {
-      id: 3,
-      subject: 'English',
-      assigned_teacher: 'Rajesh Kumar',
-      periods_per_week: 5,
-      class_teacher: 'Satish Mehra'
+      field: "actions",
+      headerName: "Actions",
+      flex: 0.5,
+      renderCell: (params) => (
+        <ActionCell params={params} onEdit={handleEdit} onDelete={handleDelete} />
+      ),
     },
   ];
 
@@ -84,60 +136,58 @@ const Manage = ({ setMapping }) => {
     </div >
   );
 
-  // Columns definition
   const columns = [
-    { field: 'day', headerName: 'Day', flex: 1 },
+    { field: 'day', headerName: 'Day', width: 120 },
     {
       field: '10am',
       headerName: '10am - 10:30am',
-      flex: 1,
+      width: 150,
       renderCell: (params) => <SubjectTeacherCell value={params.value} />
     },
     {
       field: '1030am',
       headerName: '10:30am - 11am',
-      flex: 1,
+      width: 150,
       renderCell: (params) => <SubjectTeacherCell value={params.value} />
     },
     {
       field: '11am',
       headerName: '11am - 11:30am',
-      flex: 1,
+      width: 150,
       renderCell: (params) => <SubjectTeacherCell value={params.value} />
     },
     {
       field: '1130am',
       headerName: '11:30am - 12pm',
-      flex: 1,
+      width: 150,
       renderCell: (params) => <SubjectTeacherCell value={params.value} />
     },
     {
       field: '12pm',
       headerName: '12pm - 12:30pm',
-      flex: 1,
+      width: 150,
       renderCell: (params) => <SubjectTeacherCell value={params.value} />
     },
     {
       field: '1230pm',
       headerName: '12:30pm - 1:00pm',
-      flex: 1,
+      width: 150,
       renderCell: (params) => <SubjectTeacherCell value={params.value} />
     },
     {
       field: '1pm',
       headerName: '1:00pm - 1:30pm',
-      flex: 1,
+      width: 150,
       renderCell: (params) => <SubjectTeacherCell value={params.value} />
     },
     {
       field: '130pm',
       headerName: '1:30pm - 2:00pm',
-      flex: 1,
+      width: 150,
       renderCell: (params) => <SubjectTeacherCell value={params.value} />
     },
   ];
 
-  // Rows data
   const rows = [
     {
       id: 1,
@@ -321,6 +371,15 @@ const Manage = ({ setMapping }) => {
     }
   ];
 
+  const handleEdit = (id) => {
+    console.log(`Edit row with id: ${id}`);
+    setEditMapping(true);
+  };
+
+  const handleDelete = (id) => {
+    setClassWiseRows((prevRows) => prevRows.filter((row) => row.id !== id));
+  };
+
   return (
     <>
 
@@ -332,7 +391,6 @@ const Manage = ({ setMapping }) => {
           borderRadius={2}
           overflow="hidden"
         >
-          {/* top bulk text */}
           <Box
             bgcolor="white"
             py={1.3}
@@ -347,19 +405,24 @@ const Manage = ({ setMapping }) => {
             </Typography>
 
 
-            <Autocomplete
-              options={["Student 1", "Student 2"]}
-              filterSelectedOptions
-              freeSolo={false}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Academic Year"
-                  label="Academic Year"
-                />
-              )}
-              sx={{ width: "20%" }}
-            />
+            <FormControl sx={{ width: "20%" }}>
+              <InputLabel>Academic Year</InputLabel>
+              <Select
+                label="Academic Year"
+                onChange={(e) =>
+                  setAcademicYear(e.target.value)
+                }
+                value={academicYear}
+                size="small"
+              >
+                {acYear.map((year) => (
+                  <MenuItem key={year} value={year}>
+                    {year}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
           </Box>
 
           <Divider />
@@ -381,41 +444,46 @@ const Manage = ({ setMapping }) => {
               height={50}
               gap={4}
             >
+              <FormControl sx={{ width: "20%" }}>
+                <InputLabel>Class</InputLabel>
+                <Select
+                  label="Class"
+                  onChange={(e) =>
+                    setSelectedClass(e.target.value)
+                  }
+                  value={selectedClass}
+                >
+                  {classes.map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
-              <Autocomplete
-                options={["Student 1", "Student 2"]}
-                filterSelectedOptions
-                freeSolo={false}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="Class"
-                    label="Class"
-                  />
-                )}
-                sx={{ width: "20%" }}
-              />
-
-              <Autocomplete
-                options={["Student 1", "Student 2"]}
-                filterSelectedOptions
-                freeSolo={false}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="Section"
-                    label="Section"
-                  />
-                )}
-                sx={{ width: "20%" }}
-              />
+              <FormControl sx={{ width: "20%" }}>
+                <InputLabel>Section</InputLabel>
+                <Select
+                  label="Section"
+                  onChange={(e) =>
+                    setSelectedSection(e.target.value)
+                  }
+                  value={selectedSection}
+                >
+                  {sections.map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
               <Button variant="contained">Submit</Button>
             </Box>
 
 
             {/* Table */}
-            <Box mt={2} mb={5} style={{ height: "100%" }}>
+            <Box mt={2} mb={5} px={2} style={{ height: "100%" }}>
               <DataGrid
                 rows={classWiseRows}
                 columns={classWisecolumns}
@@ -433,6 +501,7 @@ const Manage = ({ setMapping }) => {
             </Box>
 
             <AssignTeacher open={assignTeacher} close={() => setAssignTeacher(false)} />
+            <EditTeacher open={editMapping} close={() => setEditMapping(false)} />
           </Box>
 
           <Box marginY={4} mx={2}>
@@ -476,6 +545,7 @@ const Manage = ({ setMapping }) => {
                 <Button
                   color="primary"
                   variant="contained"
+                  onClick={() => setPublishPopup(true)}
                 >
                   Publish
                 </Button>
@@ -486,6 +556,8 @@ const Manage = ({ setMapping }) => {
                   Download
                 </Button>
               </Box>
+
+              <PublishPopup open={publishPopup} close={() => setPublishPopup(false)} />
             </Box>
           </Box>
 

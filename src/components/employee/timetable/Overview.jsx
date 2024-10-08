@@ -2,68 +2,90 @@ import {
     Box,
     Divider,
     Typography,
-    Autocomplete,
-    TextField,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select
 } from "@mui/material";
 import Bbox from "../../UiComponents/Bbox";
 import RevealCard from "../../AnimationComponents/RevealCard";
 import { DataGrid } from "@mui/x-data-grid";
 import { ToastContainer } from "react-toastify";
+import { useState } from 'react';
+import useClasses from '@/hooks/useClasses'
 
 export default function ManageApplications() {
+    const { curYear, acYear } = useClasses();
+    const [academicYear, setAcademicYear] = useState(curYear);
 
     const columns = [
         { field: 'space', headerName: '', flex: 0.2 },
-        { field: 'class', headerName: 'Class', flex: 1 },
+        {
+            field: 'class', headerName: 'Class',
+            width: 100,
+        },
         {
             field: 'A_mapped',
             headerName: 'Mapped',
+            width: 100,
             renderCell: (params) => params.value ? '✅' : '⚠️'
         },
         {
             field: 'A_published',
             headerName: 'Published',
+            width: 100,
             renderCell: (params) => params.value ? '✅' : '⚠️'
         },
-        // { field: 'space', headerName: '', width: 25 },
+        { field: 'space', headerName: '', width: 10 },
         {
             field: 'B_mapped',
             headerName: 'Mapped',
+            width: 100,
             renderCell: (params) => params.value ? '✅' : '⚠️'
         },
         {
             field: 'B_published',
             headerName: 'Published',
+            width: 100,
             renderCell: (params) => params.value ? '✅' : '⚠️'
         },
+        { field: 'space', headerName: '', width: 10 },
         {
             field: 'C_mapped',
             headerName: 'Mapped',
+            width: 100,
             renderCell: (params) => params.value ? '✅' : '⚠️'
         },
         {
             field: 'C_published',
             headerName: 'Published',
+            width: 100,
             renderCell: (params) => params.value ? '✅' : '⚠️'
         },
+        { field: 'space', headerName: '', width: 10 },
         {
             field: 'D_mapped',
             headerName: 'Mapped',
+            width: 100,
             renderCell: (params) => params.value ? '✅' : '⚠️'
         },
         {
             field: 'D_published',
             headerName: 'Published',
+            width: 100,
             renderCell: (params) => params.value ? '✅' : '⚠️'
         },
+        { field: 'space', headerName: '', width: 10 },
         {
             field: 'E_mapped',
             headerName: 'Mapped',
+            width: 100,
             renderCell: (params) => params.value ? '✅' : '⚠️'
         },
         {
             field: 'E_published',
             headerName: 'Published',
+            width: 100,
             renderCell: (params) => params.value ? '✅' : '⚠️'
         },
     ];
@@ -195,19 +217,25 @@ export default function ManageApplications() {
                         Overview
                     </Typography>
 
-                    <Autocomplete
-                        options={["Student 1", "Student 2"]}
-                        filterSelectedOptions
-                        freeSolo={false}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder="Academic Year"
-                                label="Academic Year"
-                            />
-                        )}
-                        sx={{ width: "20%" }}
-                    />
+
+
+                    <FormControl sx={{ width: "20%" }}>
+                        <InputLabel>Academic Year</InputLabel>
+                        <Select
+                            label="Academic Year"
+                            onChange={(e) =>
+                                setAcademicYear(e.target.value)
+                            }
+                            size="small"
+                            value={academicYear}
+                        >
+                            {acYear.map((year) => (
+                                <MenuItem key={year} value={year}>
+                                    {year}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Box>
 
                 <Divider />

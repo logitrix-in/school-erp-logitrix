@@ -2,8 +2,6 @@ import {
     Box,
 } from "@mui/material";
 import LeaveManagement from "../../components/employee/leave/LeaveManagement";
-import Record from "../../components/employee/leave/Record";
-import Configure from "../../components/employee/leave/Configure";
 import { useNavigate } from "react-router-dom";
 
 const EmployeeLeave = () => {

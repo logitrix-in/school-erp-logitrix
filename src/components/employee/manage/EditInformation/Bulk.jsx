@@ -1,108 +1,61 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import Bbox from "../../../UiComponents/Bbox";
 import {
   Box,
   Button,
   Divider,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   Typography,
-  Checkbox,
-  ListItemText,
-  OutlinedInput,
-  ListItemIcon,
 } from "@mui/material";
-import { useMediaQuery } from "@material-ui/core";
-import useclasses from "../../../../hooks/useClasses";
-import { ToastContainer, toast } from "react-toastify";
+import useEmployees from "@/hooks/useEmployees";
+import { toast } from "react-toastify";
+import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
 import Popup from "../../../UiComponents/Popup";
+import EmployeePopup from '../../EmployeePopup'
 
 const Bulk = () => {
-  // breakpoints
-  const isSmall = useMediaQuery("(max-width: 1364px)");
-  const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
-  const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-  const isDesktop = useMediaQuery(
-    "(min-width: 1707px) and (max-width: 1919px)"
-  );
-  const isLarge = useMediaQuery("(min-width: 1920px)");
-  const isXlarge = useMediaQuery("(min-width: 2560px)");
-
-  // dropdowns states
-  const [filter, setFilter] = useState({});
-  const { classes, sections, roll } = useclasses();
-  const curYear = new Date().getFullYear();
-  const academicYear = `${curYear}-${(curYear + 1).toString().slice(2, 4)}`;
-
-  // states
-  const [acYear, setAcYear] = useState(academicYear);
-  const [curclass, setclass] = useState([]);
-  const [curSection, setSection] = useState([]);
-  const [rollNo, setRollNo] = useState([]);
-  const [type, setType] = useState("all");
   const [showModal, setShowModal] = useState(false);
   const [showUploadArea, setShowUploadArea] = useState(false);
   const [isUploadEnabled, setIsUploadEnabled] = useState(false);
   const [isUploadOccurred, setIsUploadOccurred] = useState(false);
 
-  // context useEffect
+  const { employeeType, employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment, employeeGrade } = useEmployees();
+
+  const [selectedEmployeeType, setSelectedEmployeeType] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedGrade, setSelectedGrade] = useState('');
+  const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
+
+  const [employeePopup, setEmployeePopup] = useState(false);
+
   useEffect(() => {
-    const _filter = {
-      academic_year: acYear,
-      class: curclass,
-      roll: rollNo,
-      section: curSection,
-      type: type,
-    };
-    setFilter(_filter);
-  }, [rollNo, acYear, curclass, curSection, type]);
+    console.log(selectedEmployeeType);
+    let departments = [];
 
-  // handle class dropdown change
-  const handleclassChange = (e) => {
-    const {
-      target: { value },
-    } = e;
-    setclass(
-      value.includes("all")
-        ? curclass.length === classes.length
-          ? []
-          : classes
-        : value
-    );
-  };
+    if (selectedEmployeeType === '') {
+      return;
+    }
 
-  // handle section dropdown change
-  const handleSectionChange = (e) => {
-    const {
-      target: { value },
-    } = e;
-    setSection(
-      value.includes("all")
-        ? curSection.length === sections.length
-          ? []
-          : sections
-        : value
-    );
-  };
+    selectedEmployeeType.forEach(type => {
+      switch (type) {
+        case 'Management':
+          departments = [...departments, ...employeeManagementDepartment];
+          break;
+        case 'Teaching Staff':
+          departments = [...departments, ...employeeTeachingDepartment];
+          break;
+        case 'Support Staff':
+          departments = [...departments, ...employeeSupportStaffDepartment];
+          break;
+        default:
+          break;
+      }
+    });
 
-  // handle roll no dropdown change
-  const handleRollChange = (e) => {
-    const {
-      target: { value },
-    } = e;
-    setRollNo(
-      value.includes("all")
-        ? rollNo.length === roll.length
-          ? []
-          : roll
-        : value
-    );
-  };
+    setEmployeeDepartment(departments);
+  }, [selectedEmployeeType]);
 
   // Function to handle drag over event
   const handleDragOver = (e) => {
@@ -135,9 +88,21 @@ const Bulk = () => {
     setIsUploadEnabled(true);
   };
 
-  // table columns
   const columns = [
-    { field: "id", headerName: "Employee ID", flex: 1 },
+    {
+      field: "id", headerName: "Employee ID", flex: 1,
+      renderCell: (params) => (
+        <Typography>
+          <Typography
+            component="span"
+            sx={{ color: "primary.main", cursor: "pointer" }}
+            onClick={() => setEmployeePopup(true)}
+          >
+            {params.id}
+          </Typography>
+        </Typography>
+      ),
+    },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "emp_type", headerName: "Employee Type", flex: 1 },
     { field: "department", headerName: "Department", flex: 1 },
@@ -175,7 +140,6 @@ const Bulk = () => {
     },
   ];
 
-  // table rows
   const rows = [
     {
       id: "AG240001",
@@ -249,128 +213,43 @@ const Bulk = () => {
               p={2}
               mt={4}
               height={50}
+              gap={4}
             >
-              {/* class dropdown */}
-              <FormControl style={{ width: "21%", marginRight: "30px" }}>
-                <InputLabel>Employee Type</InputLabel>
-                <Select
-                  placeholder="All"
-                  multiple
-                  value={curclass}
-                  onChange={handleclassChange}
-                  MenuProps={{ PaperProps: { style: { maxHeight: 300 } } }}
-                  input={<OutlinedInput label="class" />}
-                  renderValue={(selected) =>
-                    selected.length === classes.length
-                      ? "All"
-                      : selected.join(", ")
-                  }
-                >
-                  <MenuItem value="all">
-                    <ListItemIcon>
-                      <Checkbox
-                        checked={
-                          classes.length > 0 &&
-                          curclass.length === classes.length
-                        }
-                        indeterminate={
-                          curclass.length > 0 &&
-                          curclass.length < classes.length
-                        }
-                      />
-                    </ListItemIcon>
-                    <ListItemText primary="Select All" />
-                  </MenuItem>
-                  {classes.map((name) => (
-                    <MenuItem key={name} value={name}>
-                      <Checkbox
-                        size="small"
-                        checked={curclass.indexOf(name) > -1}
-                      />
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
 
-              {/* section dropdown */}
-              <FormControl style={{ width: "21%", marginRight: "30px" }}>
-                <InputLabel>Department</InputLabel>
-                <Select
-                  placeholder="All"
-                  multiple
-                  value={curSection}
-                  onChange={handleSectionChange}
-                  MenuProps={{ PaperProps: { style: { maxHeight: 300 } } }}
-                  input={<OutlinedInput label="Section" />}
-                  renderValue={(selected) =>
-                    selected.length === sections.length
-                      ? "All"
-                      : selected.join(", ")
-                  }
-                >
-                  <MenuItem value="all">
-                    <ListItemIcon>
-                      <Checkbox
-                        checked={curSection.length === sections.length}
-                        indeterminate={
-                          curSection.length > 0 &&
-                          curSection.length < sections.length
-                        }
-                      />
-                    </ListItemIcon>
-                    <ListItemText primary="Select All" />
-                  </MenuItem>
-                  {sections.map((section) => (
-                    <MenuItem key={section} value={section}>
-                      <Checkbox
-                        size="small"
-                        checked={curSection.indexOf(section) > -1}
-                      />
-                      <ListItemText primary={section} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <ReignsSelect
+                items={employeeType}
+                multiple
+                label="Employee Type"
+                defaultValues={employeeType}
+                onChange={setSelectedEmployeeType}
+                value={selectedEmployeeType}
+                sx={{
+                  width: '20%'
+                }}
+              />
+              <ReignsSelect
+                items={employeeDepartment}
+                multiple
+                defaultValues={employeeDepartment}
+                onChange={setSelectedDepartment}
+                value={selectedDepartment}
+                label="Department"
+                sx={{
+                  width: '20%'
+                }}
+              />
+              <ReignsSelect
+                items={employeeGrade}
+                multiple
+                label="Grade"
+                defaultValues={employeeGrade}
+                onChange={setSelectedGrade}
+                value={selectedGrade}
+                sx={{
+                  width: '20%'
+                }}
+              />
 
-              {/* roll no dropdown */}
-              <FormControl style={{ width: "21%" }}>
-                <InputLabel>Grade</InputLabel>
-                <Select
-                  placeholder="All"
-                  multiple
-                  value={rollNo}
-                  onChange={handleRollChange}
-                  MenuProps={{ PaperProps: { style: { maxHeight: 300 } } }}
-                  input={<OutlinedInput label="Roll #" />}
-                  renderValue={(selected) =>
-                    selected.length === roll.length
-                      ? "All"
-                      : selected.join(", ")
-                  }
-                >
-                  <MenuItem value="all">
-                    <ListItemIcon>
-                      <Checkbox
-                        checked={rollNo.length === roll.length}
-                        indeterminate={
-                          rollNo.length > 0 && rollNo.length < roll.length
-                        }
-                      />
-                    </ListItemIcon>
-                    <ListItemText primary="Select All" />
-                  </MenuItem>
-                  {roll.map((rollNumber) => (
-                    <MenuItem key={rollNumber} value={rollNumber}>
-                      <Checkbox
-                        size="small"
-                        checked={rollNo.indexOf(rollNumber) > -1}
-                      />
-                      <ListItemText primary={rollNumber} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
 
               {/* Spacer */}
               <Box flex={1} />
@@ -470,6 +349,8 @@ const Bulk = () => {
               <ConfirmationModal showModal={showModal} setShowModal={setShowModal} handleConfirmation={handleConfirmation} />
             </>
           )}
+
+          <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
         </Box>
       </Bbox>
     </RevealCard>

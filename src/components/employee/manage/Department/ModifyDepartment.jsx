@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Box,
     Button,
@@ -6,17 +5,69 @@ import {
     TextField,
     IconButton,
     Typography,
-    Autocomplete
+    FormControl,
+    MenuItem,
+    InputLabel,
+    Select,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
-
+import { useState } from 'react'
 
 const ModifyDepartment = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
+    const [selectedEmployee, setSelectedEmployee] = useState('');
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const names = [
+        "Arindam Das (AUG202365) Teaching Staff (Physics)",
+        "Arindam Dey (AUG205665) Support Staff (Accounts)",
+        "Arinesh Ghosh (AUG200165) Teaching Staff (Geography)",
+        "Arinika Ghosh (AUG200065) Teaching Staff (History)"
+    ];
+
+    const renderEmployeeContent = (item) => {
+        const match = item.match(/(.*\s*\(AUG\d+\))\s*(.*)/);
+
+        if (match) {
+            const [_, nameWithId, role] = match;
+            return (
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    alignItems: 'center'
+                }}>
+                    <span>
+                        {nameWithId}
+                    </span>
+                    <span style={{
+                        backgroundColor: '#e0e0e0',
+                        padding: '2px 6px',
+                        borderRadius: '16px',
+                        fontSize: '0.9em'
+                    }}>
+                        {role}
+                    </span>
+                </div>
+            );
+        }
+        return item;
+    };
+
+    const renderMenuItem = (item) => {
+        return (
+            <MenuItem
+                value={item}
+                key={item}
+                sx={{
+                    width: '100%',
+                    '& .MuiTouchRipple-root': {
+                        width: '100%'
+                    }
+                }}
+            >
+                {renderEmployeeContent(item)}
+            </MenuItem>
+        );
     };
 
     return (
@@ -65,20 +116,20 @@ const ModifyDepartment = ({ open, close }) => {
                         fullWidth
                     />
 
-                    <Autocomplete
-                        options={["Student 1", "Student 2"]}
-                        filterSelectedOptions
-                        freeSolo={false}
-                        fullWidth
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder="Head of the Department"
-                                label="Head of the Department"
-                            />
-                        )}
-                    />
+                    <FormControl sx={{ width: "100%" }}>
+                        <InputLabel id="claim-request-type">Enter Head of the Department</InputLabel>
+                        <Select
+                            id="claim-request-type"
+                            label="Enter Head of the Department"
+                            placeholder="Enter Head of the Department"
+                            value={selectedEmployee}
+                            onChange={(e) => setSelectedEmployee(e.target.value)}
+                            renderValue={(selected) => renderEmployeeContent(selected)}
 
+                        >
+                            {names.map((item) => renderMenuItem(item))}
+                        </Select>
+                    </FormControl>
                     <Box marginY={2} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="primary" fullWidth onClick={() => {
                             toast.success("Updated Successfully");

@@ -8,9 +8,10 @@ const AppContextProvider = ({ children }) => {
   const [quickTabs, setQuickTabs] = useState({});
   const [classes, setClasses] = useState([]);
   const [sections, setSections] = useState([]);
+  const [roll, setRoll] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [status, setStatus] = useState([]);
   const [days, setDays] = useState([]);
-  const [roll, setRoll] = useState([]);
   const [role, setRole] = useState([]);
 
   const [employeeRole, setEmployeeRole] = useState([]);
@@ -29,6 +30,7 @@ const AppContextProvider = ({ children }) => {
   const [nonCompliance, setNonCompliance] = useState([]);
   const [suspend, setSuspend] = useState([]);
   const [activeButton, setActiveButton] = useState("New Incident");
+
   const [mediaTypes, setMediaTypes] = useState([]);
   const [mediaCategory, setMediaCategory] = useState([]);
   const [mediaLanguage, setMediaLanguage] = useState([]);
@@ -166,21 +168,8 @@ const AppContextProvider = ({ children }) => {
   };
 
 
-
-  //? classes
+  // ? MEDIAS
   useEffect(() => {
-    if (user != null)
-      api
-        .get("/admission/get-all-classes")
-        .then((res) => {
-          setClasses(res.data);
-          // console.log(res.data);
-        })
-        .catch((err) => console.log(err));
-  }, [user]);
-
-  useEffect(() => {
-    // Generate section values
     setMediaTypes(generateMediaTypes());
   }, []);
 
@@ -189,7 +178,6 @@ const AppContextProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    // Generate section values
     setMediaLanguage(generateMediaLanguage());
   }, []);
 
@@ -208,7 +196,6 @@ const AppContextProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    // Generate section values
     setMediaCategory(generateMediaCategory());
   }, []);
 
@@ -237,33 +224,76 @@ const AppContextProvider = ({ children }) => {
     ];
   }
 
-  // sections
+
+  // ? CLASSES
   useEffect(() => {
-    // Generate section values
+    if (user != null)
+      api
+        .get("/admission/get-all-classes")
+        .then((res) => {
+          setClasses(res.data);
+          // console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+  }, [user]);
+
+  const generateSections = () => {
+    return ["A", "B", "C", "D"];
+  };
+
+  useEffect(() => {
     setSections(generateSections());
   }, []);
 
-  // status
+  const generateRoll = () => {
+    return ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+  };
+
   useEffect(() => {
-    // Generate section values
+    setSubjects(generateSubjects());
+  }, []);
+
+  const generateSubjects = () => {
+    return ["English",
+      "Bengali",
+      "Hindi",
+      "Sanskrit",
+      "History",
+      "Geography",
+      "Political Science",
+      "Economics",
+      "Music",
+      "Psychology",
+      "Sociology",
+      "Physical Education",
+      "Mathematics",
+      "Physics",
+      "Chemistry",
+      "Biology",
+      "Computer Science",
+      "Statistics",
+      "Accountancy",
+      "Business Studies"];
+  };
+
+  useEffect(() => {
+    setRoll(generateRoll());
+  }, []);
+
+  useEffect(() => {
     setStatus(generateStatus());
   }, []);
 
   // days
   useEffect(() => {
-    // Generate section values
     setDays(generateDays());
-  }, []);
-
-  // roll no
-  useEffect(() => {
-    setRoll(generateRoll());
   }, []);
 
   // assign role
   useEffect(() => {
     setRole(generateRoles());
   }, []);
+
   // non-compliance
   useEffect(() => {
     setNonCompliance(generateNonCompliance());
@@ -274,11 +304,6 @@ const AppContextProvider = ({ children }) => {
     setSuspend(generateSuspendAccess());
   }, []);
 
-  // function to generate section values
-  const generateSections = () => {
-    return ["A", "B", "C", "D"];
-  };
-
   // function to generate status values
   const generateStatus = () => {
     return ["Active", "Suspended", "Separated"];
@@ -287,11 +312,6 @@ const AppContextProvider = ({ children }) => {
   // function to generate days values
   const generateDays = () => {
     return ["Today", "Last 7 days", "Last 15 days", "Last 30 days", "Last 60 days"];
-  };
-
-  // function to generate roll no values
-  const generateRoll = () => {
-    return ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
   };
 
   // academic year
@@ -343,12 +363,8 @@ const AppContextProvider = ({ children }) => {
     setUser,
     setQuickTabs,
     quickTabs,
-    classes,
     acYear,
     curAcademicYear,
-    setClasses,
-    sections,
-    setSections,
     status,
     setStatus,
     days,
@@ -363,6 +379,12 @@ const AppContextProvider = ({ children }) => {
     setSuspend,
     activeButton,
     setActiveButton,
+
+    classes,
+    setClasses,
+    sections,
+    setSections,
+
     mediaTypes,
     setMediaTypes,
     mediaCategory,
@@ -394,6 +416,8 @@ const AppContextProvider = ({ children }) => {
     setEmployeeCategories,
     employeeCreditCycle,
     setEmployeeCreditCycle,
+    subjects,
+    setSubjects,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -54,7 +54,7 @@ const DeleteDepartment = ({ open, close }) => {
                 <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"80%"} margin="auto" alignItems="center">
 
                     <Box sx={{ border: '1px solid gray', borderRadius: '100%', padding: '12px' }}>
-                        <AlertTriangle size={80} color="#c4673b" />
+                        <AlertTriangle size={60} color="#c4673b" />
                     </Box>
 
                     <Box display={'flex'} justifyContent={'space-between'} sx={{ width: '100%', mt: 2 }}>
@@ -69,7 +69,7 @@ const DeleteDepartment = ({ open, close }) => {
                             my: '16px'
                         }}
                     >
-                        The department would be deleted permanently. All employees under this department will be assigned to the unallocated pool
+                        The department would be deleted permanently. All employees under this department will be assigned to the unallocated pool.
                     </Typography>
 
                     <Typography
@@ -84,7 +84,7 @@ const DeleteDepartment = ({ open, close }) => {
                         sx={{
                             display: "flex",
                             justifyContent: "center",
-                            marginTop: "20px",
+                            marginY: "20px",
                             gap: 4
                         }}
                     >

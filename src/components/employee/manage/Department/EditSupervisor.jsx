@@ -1,22 +1,74 @@
-import React from "react";
 import {
     Box,
     Button,
     Dialog,
-    TextField,
     IconButton,
     Typography,
-    Autocomplete
+    Select,
+    FormControl,
+    MenuItem,
+    InputLabel
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
+import { useState } from 'react'
 
 
 const EditSupervisor = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
+    const [selectedEmployee, setSelectedEmployee] = useState('');
+
+    const names = [
+        "Arindam Das (AUG202365) Teaching Staff (Physics)",
+        "Arindam Dey (AUG205665) Support Staff (Accounts)",
+        "Arinesh Ghosh (AUG200165) Teaching Staff (Geography)",
+        "Arinika Ghosh (AUG200065) Teaching Staff (History)"
+    ];
+
+    const renderEmployeeContent = (item) => {
+        const match = item.match(/(.*\s*\(AUG\d+\))\s*(.*)/);
+
+        if (match) {
+            const [_, nameWithId, role] = match;
+            return (
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    alignItems: 'center'
+                }}>
+                    <span>
+                        {nameWithId}
+                    </span>
+                    <span style={{
+                        backgroundColor: '#e0e0e0',
+                        padding: '2px 6px',
+                        borderRadius: '16px',
+                        fontSize: '0.9em'
+                    }}>
+                        {role}
+                    </span>
+                </div>
+            );
+        }
+        return item;
+    };
+
+    const renderMenuItem = (item) => {
+        return (
+            <MenuItem
+                value={item}
+                key={item}
+                sx={{
+                    width: '100%',
+                    '& .MuiTouchRipple-root': {
+                        width: '100%'
+                    }
+                }}
+            >
+                {renderEmployeeContent(item)}
+            </MenuItem>
+        );
     };
 
     return (
@@ -85,19 +137,20 @@ const EditSupervisor = ({ open, close }) => {
                         </Box>
                     </Box>
 
-                    <Autocomplete
-                        options={["Student 1", "Student 2"]}
-                        filterSelectedOptions
-                        freeSolo={false}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder="Enter Employee Name or ID"
-                                label="New Supervisor"
-                            />
-                        )}
-                        sx={{ width: "90%" }}
-                    />
+                    <FormControl sx={{ width: "90%" }}>
+                        <InputLabel id="claim-request-type">New Supervisor</InputLabel>
+                        <Select
+                            id="claim-request-type"
+                            label="Enter Employee Name or ID"
+                            placeholder="New Supervisor"
+                            value={selectedEmployee}
+                            onChange={(e) => setSelectedEmployee(e.target.value)}
+                            renderValue={(selected) => renderEmployeeContent(selected)}
+                            sx={{ width: '100%' }}
+                        >
+                            {names.map((item) => renderMenuItem(item))}
+                        </Select>
+                    </FormControl>
 
                     <Box marginY={2} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="primary" fullWidth onClick={() => {

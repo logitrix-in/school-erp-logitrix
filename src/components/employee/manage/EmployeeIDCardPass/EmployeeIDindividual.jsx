@@ -1,50 +1,26 @@
-import React, { useState, useEffect } from "react";
-import RevealCard from "../../../AnimationComponents/RevealCard";
+import { useState } from "react";
 import {
   Box,
-  TextField,
-  InputAdornment,
   Button,
   Radio,
-  Link
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import RevealCard from "../../../AnimationComponents/RevealCard";
 import "react-toastify/dist/ReactToastify.css";
-import { useMediaQuery } from "@material-ui/core";
 import { DataGrid } from "@mui/x-data-grid";
 import Preview from "./Preview";
+import EmployeePopup from '../../EmployeePopup'
 
 const EmployeeIDindividual = () => {
-  const [selectedValue, setSelectedValue] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [startTime, setStartTime] = useState(null);
-  const [showPrompt, setShowPrompt] = useState(false);
   const [selectedRow, setSelecetedRow] = useState(null);
   const [previewPopup, setPreviewPopup] = useState(false);
 
-  const [filter, setFilter] = useState({
-    start_date: "",
-    end_date: "",
-  });
+  const [employeePopup, setEmployeePopup] = useState(false);
 
-  useEffect(() => {
-    if (endDate == "") setEndDate(startDate);
-
-    const _filter = {
-      start_date: startDate && new Date(startDate).toLocaleDateString("en-CA"),
-      end_date: endDate && new Date(endDate).toLocaleDateString("en-CA"),
-    };
-    setFilter(_filter);
-  }, [startDate, endDate]);
-
-
-  // handle closing the prompt dialog
-  const handleClosePrompt = () => {
-    setShowPrompt(false);
-  };
-
-  // table columns
   const columns = [
     {
       field: "radioButtons",
@@ -67,9 +43,13 @@ const EmployeeIDindividual = () => {
     {
       field: "id", headerName: "Employee ID", flex: 1,
       renderCell: (params) => (
-        <Link underline="hover" color="primary">
+        <Typography
+          component="span"
+          sx={{ color: "primary.main", cursor: "pointer" }}
+          onClick={() => setEmployeePopup(true)}
+        >
           {params.value}
-        </Link>
+        </Typography>
       ),
     },
     { field: "name", headerName: "Name", flex: 1 },
@@ -79,7 +59,6 @@ const EmployeeIDindividual = () => {
     { field: "last_issue_date", headerName: "Last Issue Date", flex: 1 },
   ];
 
-  // table rows
   const rows = [
     {
       id: "AG240001",
@@ -110,29 +89,25 @@ const EmployeeIDindividual = () => {
   return (
     <RevealCard>
 
-      {/* Render context based on selected dropdown value */}
-
       <Box>
-        {/* Search input area and search button */}
-        <Box ml={3} mt={3}>
-          {/* Search input area */}
-          <TextField
-            variant="outlined"
-            placeholder="Search by Employee ID / Employee Name"
-            size="small"
-            sx={{ width: 400 }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Search sx={{ fontSize: "1.3rem", cursor: "pointer" }} />
-                </InputAdornment>
-              ),
-            }}
-          />
-
+        <Box display={"flex"} gap={1} sx={{ width: '35%', marginY: '16px' }} mx={2} >
+          <FormControl fullWidth>
+            <InputLabel>Search by Employee Name or Employee ID</InputLabel>
+            <Select
+              label="Search by Employee Name or Employee ID"
+              // value={selectedLibraryCard}
+              required
+            // onChange={(e) => setSelectedLibraryCard(e.target.value)}
+            >
+              {/* {
+								libraryCardNumbers?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							} */}
+            </Select>
+          </FormControl>
         </Box>
 
-        {/* Table */}
         <Box m={2} mt={4} height="100%">
           <DataGrid
             rows={rows}
@@ -143,11 +118,9 @@ const EmployeeIDindividual = () => {
               },
             }}
             pageSizeOptions={[5, 10, 20, 50]}
-          // checkboxSelection
           />
         </Box>
 
-        {/* Buttons */}
         <Box
           display="flex"
           justifyContent="flex-end"
@@ -155,7 +128,6 @@ const EmployeeIDindividual = () => {
           marginRight={2}
           gap={2}
         >
-          {/* Issue button */}
           <Button
             color="primary"
             variant="contained"
@@ -164,7 +136,6 @@ const EmployeeIDindividual = () => {
             Issue ID Card
           </Button>
 
-          {/* Print button */}
           <Button
             color="primary"
             variant="outlined"
@@ -173,8 +144,8 @@ const EmployeeIDindividual = () => {
           </Button>
         </Box>
 
-        {/* Prompt dialog */}
         <Preview open={previewPopup} close={() => setPreviewPopup(false)} />
+        <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
 
       </Box>
     </RevealCard >

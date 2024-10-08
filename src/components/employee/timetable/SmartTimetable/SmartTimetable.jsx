@@ -1,22 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import RevealCard from "../../../AnimationComponents/RevealCard";
-import Bbox from "../../../UiComponents/Bbox";
-import {
-    Box,
-    Divider,
-    Typography,
-    Button,
-    TextField,
-    Link,
-    FormControlLabel,
-    Switch,
-    Autocomplete,
-    IconButton
-} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { DataGrid } from "@mui/x-data-grid";
-import { ToastContainer } from "react-toastify";
-import CloseIcon from "@mui/icons-material/Close";
 import GenerateTimetable from './GenerateTimetable'
 import ManageClassWise from './ManageClassWise'
 import ManageFacultyWise from './ManageFacultyWise'
@@ -89,12 +73,6 @@ const SmartTimetable = () => {
                     </button>
                 </div>
             </div>
-
-            <RevealCard>
-                <Bbox borderRadius={2} overflow={"hidden"} my={2}>
-                    <ToastContainer />
-                </Bbox>
-            </RevealCard >
 
             {
                 mapping === 'class' ?

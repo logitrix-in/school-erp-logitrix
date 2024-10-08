@@ -7,13 +7,10 @@ import {
 } from "@mui/material";
 import Bbox from "../../../UiComponents/Bbox";
 import RevealCard from "../../../AnimationComponents/RevealCard";
-import { ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import PublishSmartTimeTablePopup from './popup/PublishSmartTimetablePopup'
 import GenerateSmartTimeTablePopup from './popup/GenerateSmartTimetablePopup'
 
 export default function GenerateTimetable() {
-    const navigate = useNavigate();
     const [generateSmartTimeTable, setGenerateSmartTimeTable] = useState(false);
     const [publishSmartTimeTable, setPublishSmartTimeTable] = useState(false);
 
@@ -36,13 +33,8 @@ export default function GenerateTimetable() {
 
                 <Divider />
 
-                <ToastContainer />
-                <GenerateSmartTimeTablePopup open={generateSmartTimeTable} close={() => setGenerateSmartTimeTable(false)} />
-                <PublishSmartTimeTablePopup open={publishSmartTimeTable} close={() => setPublishSmartTimeTable(false)} />
-
-                <Box display="grid"
-                    gridTemplateColumns="repeat(3, 1fr)"
-                    gap={2} px={3} py={4}>
+                <Box display="flex" flexDirection={'row'} justifyContent={'space-between'}
+                    gap={2} px={24} py={4}>
                     <Button variant="contained" color="primary" fullWidth onClick={() => setGenerateSmartTimeTable(true)}>
                         Generate Smart Timetable
                     </Button>
@@ -50,6 +42,9 @@ export default function GenerateTimetable() {
                         Publish Smart Timetable
                     </Button>
                 </Box>
+
+                <GenerateSmartTimeTablePopup open={generateSmartTimeTable} close={() => setGenerateSmartTimeTable(false)} />
+                <PublishSmartTimeTablePopup open={publishSmartTimeTable} close={() => setPublishSmartTimeTable(false)} />
             </Bbox>
         </RevealCard>
     )

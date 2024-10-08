@@ -71,7 +71,6 @@ const Raise = ({ open, close }) => {
         return item;
     };
 
-
     const renderMenuItem = (item) => {
         return (
             <MenuItem
@@ -147,7 +146,7 @@ const Raise = ({ open, close }) => {
                         </FormControl>
 
                         <FormControl sx={{ width: "48%" }}>
-                            <InputLabel id="claim-request-type">Claim Request Type</InputLabel>
+                            <InputLabel id="claim-request-type">Select Employee(s)</InputLabel>
                             <Select
                                 id="claim-request-type"
                                 label="Select Employee(s)"
