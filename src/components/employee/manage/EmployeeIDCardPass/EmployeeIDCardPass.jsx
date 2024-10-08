@@ -29,8 +29,6 @@ const EmployeeIDCardPass = () => {
 
   return (
     <RevealCard>
-      {/* top navigation buttons */}
-      {/* top navigation buttons */}
       <div
         style={{
           backgroundColor: "#E5F3FB",
@@ -217,10 +215,8 @@ const EmployeeIDCardPass = () => {
           </button>
         </Box>
 
-        {/* Divider */}
         <Divider style={{ marginTop: "-10px" }} />
 
-        {/* Render the selected component */}
         {renderComponent()}
       </Bbox>
     </RevealCard>

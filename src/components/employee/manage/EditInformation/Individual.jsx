@@ -1,31 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import Bbox from "../../../UiComponents/Bbox";
-import { Box, Divider, Typography, Radio, Button, Link } from "@mui/material";
+import { Box, Divider, Typography, Radio, Button, FormControl, Select, InputLabel, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useMediaQuery } from "@material-ui/core";
 import { DataGrid } from "@mui/x-data-grid";
+import EmployeePopup from '../../EmployeePopup'
 import "./styles.css";
 
 const Individual = () => {
-  // breakpoints
-  const isSmall = useMediaQuery("(max-width: 1364px)");
-  const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
-  const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-  const isDesktop = useMediaQuery(
-    "(min-width: 1707px) and (max-width: 1919px)"
-  );
-  const isLarge = useMediaQuery("(min-width: 1920px)");
-  const isXlarge = useMediaQuery("(min-width: 2560px)");
-
-  // States
-  const [isEditButtonActive, setIsEditButtonActive] = useState(false);
+  const [employeePopup, setEmployeePopup] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-  const [showEditBtn, setShowEditBtn] = useState(true);
 
   const navigate = useNavigate();
 
-  // table columns
   const columns = [
     {
       field: "radioButtons",
@@ -33,20 +20,32 @@ const Individual = () => {
       flex: 0.2,
       renderCell: (params) => (
         <Radio
-          checked={params.row.id === selectedRow}
+          checked={params.row.id === selectedRow?.id}
           color="primary"
           sx={{
             transform: "scale(0.6)",
           }}
           inputProps={{ "aria-label": params.row.id }}
           onChange={() => {
-            setSelectedRow(params.row.id);
-            setIsEditButtonActive(true);
+            setSelectedRow(params.row);
           }}
         />
       ),
     },
-    { field: "id", headerName: "Employee ID", flex: 1 },
+    {
+      field: "id", headerName: "Employee ID", flex: 1,
+      renderCell: (params) => (
+        <Typography>
+          <Typography
+            component="span"
+            sx={{ color: "primary.main", cursor: "pointer" }}
+            onClick={() => setEmployeePopup(true)}
+          >
+            {params.id}
+          </Typography>
+        </Typography>
+      ),
+    },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "emp_type", headerName: "Employee Type", flex: 1 },
     { field: "department", headerName: "Department", flex: 1 },
@@ -84,7 +83,6 @@ const Individual = () => {
     },
   ];
 
-  // table rows
   const rows = [
     {
       id: "AG240001",
@@ -129,7 +127,6 @@ const Individual = () => {
         borderRadius={2}
         overflow="hidden"
       >
-        {/* Individual text */}
         <Box
           bgcolor="white"
           py={1.3}
@@ -144,10 +141,8 @@ const Individual = () => {
           </Typography>
         </Box>
 
-        {/* Divider */}
         <Divider />
 
-        {/* Search area and buttons */}
         <Box
           display="flex"
           flexDirection="row"
@@ -157,44 +152,40 @@ const Individual = () => {
           height={70}
           width={"100%"}
         >
-          {/* Search input and Search button container */}
-          <Box display="flex" alignItems="center">
-            <input
-              type="text"
-              placeholder="Search by Employee ID or Employee Name"
-              style={{
-                width: 420,
-                height: "39px",
-                borderRadius: "7px",
-                border: "1px solid #ccc",
-                paddingLeft: "10px",
-              }}
-            />
 
-
+          <Box display={"flex"} gap={1} sx={{ width: '35%', marginY: '16px' }} >
+            <FormControl fullWidth>
+              <InputLabel>Search by Employee Name or Employee ID</InputLabel>
+              <Select
+                label="Search by Employee Name or Employee ID"
+                // value={selectedLibraryCard}
+                required
+              // onChange={(e) => setSelectedLibraryCard(e.target.value)}
+              >
+                {/* {
+								libraryCardNumbers?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							} */}
+              </Select>
+            </FormControl>
           </Box>
 
-          {/* Spacer */}
           <Box flex={1} />
 
-          {/* Edit button */}
-          {
-            showEditBtn && (
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: isEditButtonActive ? "#C4673B" : "#ccc",
-                  "&:hover": {
-                    backgroundColor: isEditButtonActive ? "#A14E2C" : "#ccc",
-                  },
-                }}
-                onClick={() => navigate("/employee/manage/OnBoardingDetails")}
-                disabled={!isEditButtonActive}
-              >
-                View / Edit
-              </Button>
-            )
-          }
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#C4673B",
+              "&:hover": {
+                backgroundColor: "#A14E2C",
+              },
+            }}
+            onClick={() => navigate("/employee/manage/OnBoardingDetails")}
+            disabled={!selectedRow}
+          >
+            View / Edit
+          </Button>
 
         </Box>
 
@@ -209,11 +200,12 @@ const Individual = () => {
               },
             }}
             pageSizeOptions={[5, 10]}
-          // checkboxSelection
           />
         </Box>
+
+        <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
       </Bbox>
-    </RevealCard>
+    </RevealCard >
   );
 };
 

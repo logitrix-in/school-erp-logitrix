@@ -7,8 +7,11 @@ import {
     Typography,
     Button,
     TextField,
-    Link,
     Autocomplete,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
@@ -17,20 +20,32 @@ import { toast } from "react-toastify";
 import IncidentHeaderBanner from "./Banner";
 import EditLetter from "./EditLetter";
 import EditReleaseDate from "./EditReleaseDate";
+import useEmployees from '@/hooks/useEmployees'
+import EmployeePopup from '../../EmployeePopup'
+import ReignsSelect from "../../../UiComponents/ReignsSelect";
 
 const PromotionLetterIssuance = () => {
+    const { employeeGrade } = useEmployees();
+
     const navigate = useNavigate();
+
     const [setTemplatePopup, setSetTemplatePopup] = useState(false);
     const [setReleaseDatePopup, setSetReleaseDatePopup] = useState(false);
+    const [selectedGrade, setSelectedGrade] = useState('');
+    const [employeePopup, setEmployeePopup] = useState(false);
 
-    // table columns
+
     const columns = [
         {
             field: "id", headerName: "Employee ID", flex: 1,
             renderCell: (params) => (
-                <Link underline="hover" color="primary">
+                <Typography
+                    component="span"
+                    sx={{ color: "primary.main", cursor: "pointer" }}
+                    onClick={() => setEmployeePopup(true)}
+                >
                     {params.value}
-                </Link>
+                </Typography>
             ),
         },
         { field: "name", headerName: "Name", flex: 1.5 },
@@ -87,7 +102,6 @@ const PromotionLetterIssuance = () => {
 
     return (
         <RevealCard>
-            {/* top navigation buttons */}
             <div
                 style={{
                     backgroundColor: "#E5F3FB",
@@ -224,20 +238,21 @@ const PromotionLetterIssuance = () => {
                         <RevealCard>
                             <Bbox borderRadius={2} overflow={"hidden"} my={2}>
                                 <ToastContainer />
+
                                 <Box ml={3} mt={3} display={'flex'} alignItems={'center'} gap={4}>
-                                    <Autocomplete
-                                        options={["Student 1", "Student 2"]}
-                                        filterSelectedOptions
-                                        freeSolo={false}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                placeholder="Grade"
-                                                label="Grade"
-                                            />
-                                        )}
+
+
+                                    <ReignsSelect
+                                        multiple
+                                        items={employeeGrade}
+                                        defaultValues={employeeGrade}
+                                        onChange={setSelectedGrade}
+                                        value={selectedGrade}
+                                        label="Department"
                                         sx={{ width: "20%" }}
                                     />
+
+
                                     <Autocomplete
                                         options={["Student 1", "Student 2"]}
                                         filterSelectedOptions
@@ -380,6 +395,8 @@ const PromotionLetterIssuance = () => {
                     </Box>
                 </Bbox>
             </RevealCard >
+
+            <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
 
         </RevealCard>
     );

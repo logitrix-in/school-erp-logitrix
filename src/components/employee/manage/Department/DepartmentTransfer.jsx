@@ -1,28 +1,24 @@
-import React from "react";
+import { useState } from "react";
 import {
     Box,
     Button,
     Dialog,
     InputLabel,
-    Divider,
-    TextField,
     IconButton,
-    Tab,
-    Tabs,
     Typography,
-    Autocomplete
+    FormControl,
+    Select,
+    MenuItem,
 } from "@mui/material";
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
-
+import { toast } from "react-toastify";
+import useEmployees from '@/hooks/useEmployees'
 
 const DepartmentTransfer = ({ open, close }) => {
-    const [value, setValue] = React.useState(0);
+    const { employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment } = useEmployees();
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
 
     return (
         <Dialog
@@ -90,19 +86,24 @@ const DepartmentTransfer = ({ open, close }) => {
                         </Box>
                     </Box>
 
-                    <Autocomplete
-                        options={["Student 1", "Student 2"]}
-                        filterSelectedOptions
-                        freeSolo={false}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder="Enter New Department Name"
-                                label="New Department"
-                            />
-                        )}
-                        sx={{ width: "90%" }}
-                    />
+                    <FormControl sx={{ width: "90%" }}>
+                        <InputLabel>New Department Name</InputLabel>
+                        <Select
+                            label="New Department Name"
+                            onChange={(e) =>
+                                setSelectedDepartment(e.target.value)
+                            }
+                            value={selectedDepartment}
+                            sx={{ width: "100%" }}
+                        >
+                            {employeeDepartment.map((year) => (
+                                <MenuItem key={year} value={year}>
+                                    {year}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
 
                     <Box marginY={2} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="primary" fullWidth onClick={() => {

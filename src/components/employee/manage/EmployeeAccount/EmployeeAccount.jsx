@@ -120,11 +120,7 @@ const StudentAccount = () => {
         </div>
       </div>
 
-
-      {/* individual component */}
       <EmployeeIndividual />
-
-      {/* bulk component */}
       <EmployeeBulk />
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import Bbox from "../../../UiComponents/Bbox";
 import {
@@ -10,8 +10,11 @@ import {
   Link,
   FormControlLabel,
   Switch,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Autocomplete,
-  IconButton
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
@@ -19,36 +22,67 @@ import { ToastContainer } from "react-toastify";
 import Accept from "./Accept";
 import Reject from "./Reject";
 import PromotionIncrement from "./PromotionIncrement";
-import CloseIcon from "@mui/icons-material/Close";
+import EmployeePopup from '../../EmployeePopup'
 
 const Promotion = () => {
   const navigate = useNavigate();
   const [promotionEligibility, setPromotionEligibility] = useState(false);
-  const [promotionLetterIssuance, setPromotionLetterIssuance] = useState(false);
   const [promotionIncrement, setPromotionIncrement] = useState(false);
   const [acceptPopup, setAcceptPopup] = useState(false);
   const [rejectPopup, setRejectPopup] = useState(false);
+  const [employeePopup, setEmployeePopup] = useState(false);
 
-  // table columns
   const columns = [
     {
-      field: "id", headerName: "Employee ID", flex: 1,
+      field: "id", headerName: "Employee ID", width: 120,
       renderCell: (params) => (
-        <Link underline="hover" color="primary">
+        <Typography
+          component="span"
+          sx={{ color: "primary.main", cursor: "pointer" }}
+          onClick={() => setEmployeePopup(true)}
+        >
           {params.value}
-        </Link>
+        </Typography>
       ),
     },
-    { field: "name", headerName: "Name", flex: 1.5 },
-    { field: "emp_status", headerName: "Employee Status", flex: 1.5 },
-    { field: "department", headerName: "Department", flex: 2 },
-    { field: "promotion_eligibility", headerName: "Promotion Eligibility", flex: 2 },
-    { field: "curr_grade", headerName: "Current Grade", flex: 1.5 },
-    { field: "supervisor_name", headerName: "Supervisor Name", flex: 1 },
-    { field: "supervisor_recommendation", headerName: "Supervisor Recommendation", flex: 1 },
-    { field: "department_head_name", headerName: "Department Head Name", flex: 1 },
-    { field: "department_head_recommendation", headerName: "Department Head Recommendation", flex: 1 },
-    { field: "approved_for_upcoming_cycle", headerName: "Approved for Upcoming Cycle", flex: 1 },
+    { field: "name", headerName: "Name", width: 120 },
+    {
+      field: "emp_status", headerName: "Employee Status", width: 120,
+      renderCell: (params) => (
+        <Box
+          style={{
+            backgroundColor:
+              params.value === "Active"
+                ? "#C6F6D5"
+                : params.value === "Inactive"
+                  ? "#FFCCCC"
+                  : "transparent",
+            borderRadius: "6px",
+            display: "inline-block",
+            width:
+              params.value === "Active" || params.value === "Inactive"
+                ? "60px"
+                : "auto",
+            paddingLeft:
+              params.value === "Active"
+                ? "11px"
+                : params.value === "Inactive"
+                  ? "7px"
+                  : "0px",
+          }}
+        >
+          {params.value}
+        </Box>
+      ),
+    },
+    { field: "department", headerName: "Department", width: 120 },
+    { field: "promotion_eligibility", headerName: "Promotion Eligibility", width: 150 },
+    { field: "curr_grade", headerName: "Current Grade", width: 120 },
+    { field: "supervisor_name", headerName: "Supervisor Name", width: 120 },
+    { field: "supervisor_recommendation", headerName: "Supervisor Recommendation", width: 120 },
+    { field: "department_head_name", headerName: "Department Head Name", width: 120 },
+    { field: "department_head_recommendation", headerName: "Department Head Recommendation", width: 120 },
+    { field: "approved_for_upcoming_cycle", headerName: "Approved for Upcoming Cycle", width: 120 },
   ];
 
   const rows = [
@@ -95,7 +129,6 @@ const Promotion = () => {
 
   return (
     <RevealCard>
-      {/* top navigation buttons */}
       <div
         style={{
           backgroundColor: "#E5F3FB",
@@ -228,7 +261,7 @@ const Promotion = () => {
 
           <ToastContainer />
 
-          <Box ml={3} mt={3} display={'flex'} justifyContent={'space-between'}>
+          <Box mt={3} mx={3} display={'flex'} justifyContent={'space-between'}>
             <Autocomplete
               options={["Student 1", "Student 2"]}
               filterSelectedOptions
@@ -248,28 +281,28 @@ const Promotion = () => {
                 control={<Switch />}
                 label="Regular Promotion"
               />
-              <Typography color="primary.main" sx={{ width: '30%' }}>Non Permanent to full time conversion</Typography>
+              <Typography color="primary.main" fontWeight={'600'} sx={{ width: '30%' }}>Non Permanent to full time conversion</Typography>
             </Box>
           </Box>
 
-          <Box ml={3} mt={3}>
-            <Autocomplete
-              options={["Student 1", "Student 2"]}
-              filterSelectedOptions
-              freeSolo={false}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Search by Employee ID / Employee Name"
-                  label="Search by Employee ID / Employee Name"
-                />
-              )}
-              sx={{ width: "30%" }}
-            />
-
+          <Box display={"flex"} gap={1} sx={{ width: '35%', marginY: '16px' }} mx={3} >
+            <FormControl fullWidth>
+              <InputLabel>Search by Employee Name or Employee ID</InputLabel>
+              <Select
+                label="Search by Employee Name or Employee ID"
+                // value={selectedLibraryCard}
+                required
+              // onChange={(e) => setSelectedLibraryCard(e.target.value)}
+              >
+                {/* {
+								libraryCardNumbers?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							} */}
+              </Select>
+            </FormControl>
           </Box>
 
-          {/* Table */}
           <Box m={2} mt={4} height="100%">
             <DataGrid
               rows={rows}
@@ -284,7 +317,6 @@ const Promotion = () => {
             />
           </Box>
 
-          {/* Buttons */}
           <Box
             display="flex"
             justifyContent="flex-end"
@@ -355,6 +387,7 @@ const Promotion = () => {
           </Box>
 
           <PromotionIncrement open={promotionIncrement} close={() => setPromotionIncrement(false)} />
+          <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
 
         </Bbox>
       </RevealCard>

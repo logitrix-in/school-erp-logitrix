@@ -4,24 +4,28 @@ import {
     Button,
     Divider,
     Typography,
-    Autocomplete,
-    TextField,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import Bbox from "../../../UiComponents/Bbox";
 import RevealCard from "../../../AnimationComponents/RevealCard";
-import { ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 // import UploadPopup from './popups/UploadPopup'
 import Banner from './Banner'
 import PublishPopup from './popups/PublishPopup'
 import { DataGrid } from "@mui/x-data-grid";
+import useClasses from '@/hooks/useClasses'
 
 export default function GenerateTimetable() {
-    const navigate = useNavigate();
+    const { classes, sections } = useClasses();
+
+    const [selectedClass, setSelectedClass] = useState('');
+    const [selectedSection, setSelectedSection] = useState('');
+
     const [uploadPopup, setUploadPopup] = useState(false)
     const [publishPopup, setPublishPopup] = useState(false)
 
-    // Custom cell renderer
     const SubjectTeacherCell = ({ value }) => (
         <div>
             <Typography variant="body2">{value.subject}</Typography>
@@ -29,9 +33,8 @@ export default function GenerateTimetable() {
         </div >
     );
 
-    // Columns definition
     const columns = [
-        { field: 'day', headerName: 'Day', flex: 1 },
+        { field: 'day', headerName: 'Day', width: 120 },
         {
             field: '10am',
             headerName: '10am - 10:30am',
@@ -41,48 +44,47 @@ export default function GenerateTimetable() {
         {
             field: '1030am',
             headerName: '10:30am - 11am',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '11am',
             headerName: '11am - 11:30am',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '1130am',
             headerName: '11:30am - 12pm',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '12pm',
             headerName: '12pm - 12:30pm',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '1230pm',
             headerName: '12:30pm - 1:00pm',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '1pm',
             headerName: '1:00pm - 1:30pm',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '130pm',
             headerName: '1:30pm - 2:00pm',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
     ];
 
-    // Rows data
     const rows = [
         {
             id: 1,
@@ -295,40 +297,45 @@ export default function GenerateTimetable() {
                     gap={4}
                 >
 
-                    <Autocomplete
-                        options={["Student 1", "Student 2"]}
-                        filterSelectedOptions
-                        freeSolo={false}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder="Class"
-                                label="Class"
-                            />
-                        )}
-                        sx={{ width: "20%" }}
-                    />
+                    <FormControl sx={{ width: "20%" }}>
+                        <InputLabel>Class</InputLabel>
+                        <Select
+                            label="Class"
+                            onChange={(e) =>
+                                setSelectedClass(e.target.value)
+                            }
+                            value={selectedClass}
+                        >
+                            {classes.map((year) => (
+                                <MenuItem key={year} value={year}>
+                                    {year}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
-                    <Autocomplete
-                        options={["Student 1", "Student 2"]}
-                        filterSelectedOptions
-                        freeSolo={false}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder="Section"
-                                label="Section"
-                            />
-                        )}
-                        sx={{ width: "20%" }}
-                    />
+                    <FormControl sx={{ width: "20%" }}>
+                        <InputLabel>Section</InputLabel>
+                        <Select
+                            label="Section"
+                            onChange={(e) =>
+                                setSelectedSection(e.target.value)
+                            }
+                            value={selectedSection}
+                        >
+                            {sections.map((year) => (
+                                <MenuItem key={year} value={year}>
+                                    {year}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
                     <Button variant="contained">Submit</Button>
                 </Box>
 
-                <Box display="grid"
-                    gridTemplateColumns="repeat(3, 1fr)"
-                    gap={2} px={3} py={4}>
+                <Box display="flex" flexDirection={'row'} justifyContent={'space-between'}
+                    gap={2} px={24} py={4}>
                     <Button variant="contained" color="primary" fullWidth>
                         Download Template
                     </Button>
@@ -336,10 +343,6 @@ export default function GenerateTimetable() {
                         Upload
                     </Button>
                 </Box>
-
-                <ToastContainer />
-                {/* <UploadPopup open={uploadPopup} close={() => setUploadPopup(false)} /> */}
-                <PublishPopup open={publishPopup} close={() => setPublishPopup(false)} />
 
                 <Box marginY={4} mx={2}>
                     <Banner text={'Timetable'} />
@@ -393,6 +396,9 @@ export default function GenerateTimetable() {
                             </Button>
                         </Box>
                     </Box>
+
+                    {/* <UploadPopup open={uploadPopup} close={() => setUploadPopup(false)} /> */}
+                    <PublishPopup open={publishPopup} close={() => setPublishPopup(false)} />
                 </Box>
             </Bbox>
         </RevealCard>

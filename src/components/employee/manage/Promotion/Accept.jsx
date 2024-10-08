@@ -5,12 +5,20 @@ import {
     TextField,
     IconButton,
     Typography,
-    Autocomplete,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
+import useEmployees from '@/hooks/useEmployees'
+import { useState } from 'react'
 
 const Accept = ({ open, close }) => {
+    const { employeeGrade } = useEmployees()
+
+    const [selectedGrade, setSelectedGrade] = useState('');
 
     return (
         <Dialog
@@ -57,20 +65,23 @@ const Accept = ({ open, close }) => {
 
                     <TextField label="Increment in Percentage" fullWidth />
 
-                    <Autocomplete
-                        options={["Student 1", "Student 2"]}
-                        filterSelectedOptions
+                    <FormControl sx={{ width: "100%" }}>
+                        <InputLabel>Select Grade</InputLabel>
+                        <Select
+                            label="Select Grade"
+                            onChange={(e) =>
+                                setSelectedGrade(e.target.value)
+                            }
+                            value={selectedGrade}
+                        >
+                            {employeeGrade.map((year) => (
+                                <MenuItem key={year} value={year}>
+                                    {year}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
 
-                        freeSolo={false}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                placeholder="Select Grade"
-                                label="Select Grade"
-                            />
-                        )}
-                        sx={{ width: "100%" }}
-                    />
 
                     <Typography fontWeight={"medium"} textAlign={"left"} marginY={1}>To complete the promotion process, ensure that the promotion letter is issued through Letter Issuance section</Typography>
 

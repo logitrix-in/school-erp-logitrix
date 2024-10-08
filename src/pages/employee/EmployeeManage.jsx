@@ -1,15 +1,12 @@
-import React from "react";
 import Individual from "../../components/employee/manage/EditInformation/Individual";
 import Bulk from "../../components/employee/manage/EditInformation/Bulk";
 import { useNavigate } from "react-router-dom";
 
-// edit information page
 const EmployeeManage = () => {
     const navigate = useNavigate();
 
     return (
         <>
-            {/* top navigation buttons */}
             <div
                 style={{
                     backgroundColor: "#E5F3FB",
@@ -122,10 +119,7 @@ const EmployeeManage = () => {
                 </div>
             </div>
 
-            {/* individual component */}
             <Individual />
-
-            {/* bulk component */}
             <Bulk />
         </>
     );

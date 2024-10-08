@@ -9,15 +9,24 @@ import {
     Autocomplete,
     TextField,
     Radio,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import { useState } from 'react';
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
 import Banner from '../Banner'
+import useClasses from '@/hooks/useClasses'
+import useEmployees from '@/hooks/useEmployees'
 
 const Manage = ({ setMapping }) => {
-    const navigate = useNavigate();
-    const [selectedRow, setSelectedRow] = useState(null);
+    const { acYear, curYear } = useClasses();
+    const { employeeTeachingDepartment } = useEmployees();
+
+    const [academicYear, setAcademicYear] = useState(curYear);
+    const [selectedDepartment, setSelectedDepartment] = useState('');
 
     // Custom cell renderer
     const SubjectTeacherCell = ({ value }) => (
@@ -29,60 +38,58 @@ const Manage = ({ setMapping }) => {
         </div >
     );
 
-    // Columns definition
     const columns = [
-        { field: 'teacher_name', headerName: 'Teacher Name', flex: 1 },
+        { field: 'teacher_name', headerName: 'Teacher Name', width: 150 },
         {
             field: '10am',
             headerName: '10am - 10:30am',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '1030am',
             headerName: '10:30am - 11am',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '11am',
             headerName: '11am - 11:30am',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '1130am',
             headerName: '11:30am - 12pm',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '12pm',
             headerName: '12pm - 12:30pm',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '1230pm',
             headerName: '12:30pm - 1:00pm',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '1pm',
             headerName: '1:00pm - 1:30pm',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
         {
             field: '130pm',
             headerName: '1:30pm - 2:00pm',
-            flex: 1,
+            width: 150,
             renderCell: (params) => <SubjectTeacherCell value={params.value} />
         },
     ];
 
-    // Rows data
     const rows = [
         {
             id: 1,
@@ -148,7 +155,6 @@ const Manage = ({ setMapping }) => {
 
     return (
         <>
-
             <RevealCard>
                 <Bbox
                     mt={3}
@@ -171,20 +177,23 @@ const Manage = ({ setMapping }) => {
                             Manage
                         </Typography>
 
-
-                        <Autocomplete
-                            options={["Student 1", "Student 2"]}
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Academic Year"
-                                    label="Academic Year"
-                                />
-                            )}
-                            sx={{ width: "20%" }}
-                        />
+                        <FormControl sx={{ width: "20%" }}>
+                            <InputLabel>Academic Year</InputLabel>
+                            <Select
+                                label="Academic Year"
+                                onChange={(e) =>
+                                    setAcademicYear(e.target.value)
+                                }
+                                value={academicYear}
+                                size="small"
+                            >
+                                {acYear.map((year) => (
+                                    <MenuItem key={year} value={year}>
+                                        {year}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Box>
 
                     {/* divider */}
@@ -210,19 +219,23 @@ const Manage = ({ setMapping }) => {
                             gap={4}
                         >
 
-                            <Autocomplete
-                                options={["Student 1", "Student 2"]}
-                                filterSelectedOptions
-                                freeSolo={false}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        placeholder="Department"
-                                        label="Department"
-                                    />
-                                )}
-                                sx={{ width: "20%" }}
-                            />
+
+                            <FormControl sx={{ width: "30%" }}>
+                                <InputLabel>Department</InputLabel>
+                                <Select
+                                    label="Department"
+                                    onChange={(e) =>
+                                        setSelectedDepartment(e.target.value)
+                                    }
+                                    value={selectedDepartment}
+                                >
+                                    {employeeTeachingDepartment.map((year) => (
+                                        <MenuItem key={year} value={year}>
+                                            {year}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
 
                             <Button variant="contained">Submit</Button>
                         </Box>
@@ -270,7 +283,6 @@ const Manage = ({ setMapping }) => {
                         </Box>
 
                     </Box>
-
                 </Bbox>
             </RevealCard>
         </>

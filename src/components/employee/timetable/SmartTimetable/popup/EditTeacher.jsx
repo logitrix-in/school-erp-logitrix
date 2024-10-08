@@ -15,7 +15,7 @@ import { toast } from 'react-toastify'
 import { useState } from 'react'
 import useClasses from '@/hooks/useClasses'
 
-const AssignTeacher = ({ open, close }) => {
+const EditTeacher = ({ open, close }) => {
     const { subjects } = useClasses();
     const [selectedSubject, setSelectedSubject] = useState('');
     const [selectedEmployee, setSelectedEmployee] = useState('');
@@ -100,7 +100,7 @@ const AssignTeacher = ({ open, close }) => {
                 >
                     <Box />
                     <Typography fontSize={"1.1rem"} textAlign={"center"}>
-                        Assign Teacher
+                        Edit Mapping
                     </Typography>
                     <IconButton
                         edge="start"
@@ -168,4 +168,4 @@ const AssignTeacher = ({ open, close }) => {
     );
 };
 
-export default AssignTeacher;
+export default EditTeacher;
