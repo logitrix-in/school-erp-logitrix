@@ -7,7 +7,6 @@ const StudentAccount = () => {
 
   return (
     <>
-      {/* top navigation buttons */}
       <div
         style={{
           backgroundColor: "#E5F3FB",
