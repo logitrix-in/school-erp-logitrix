@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import Bbox from "../../../UiComponents/Bbox";
 import {
@@ -7,16 +7,55 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
+import useEmployees from "@/hooks/useEmployees";
 import { toast } from "react-toastify";
+import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 import "react-toastify/dist/ReactToastify.css";
+import { DataGrid } from "@mui/x-data-grid";
 import Popup from "../../../UiComponents/Popup";
+import EmployeePopup from '../../EmployeePopup'
 
-const StudentBulk = () => {
-  const [isUploaded, setIsUploaded] = useState(false);
+const Bulk = () => {
   const [showModal, setShowModal] = useState(false);
-  const [showUndoButton, setShowUndoButton] = useState(false);
+  const [showUploadArea, setShowUploadArea] = useState(false);
+  const [isUploadEnabled, setIsUploadEnabled] = useState(false);
+  const [isUploadOccurred, setIsUploadOccurred] = useState(false);
 
-  const [showUploadArea, setShowUploadArea] = useState(true);
+  const { employeeType, employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment, employeeGrade } = useEmployees();
+
+  const [selectedEmployeeType, setSelectedEmployeeType] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedGrade, setSelectedGrade] = useState('');
+  const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
+
+  const [employeePopup, setEmployeePopup] = useState(false);
+
+  useEffect(() => {
+    console.log(selectedEmployeeType);
+    let departments = [];
+
+    if (selectedEmployeeType === '') {
+      return;
+    }
+
+    selectedEmployeeType.forEach(type => {
+      switch (type) {
+        case 'Management':
+          departments = [...departments, ...employeeManagementDepartment];
+          break;
+        case 'Teaching Staff':
+          departments = [...departments, ...employeeTeachingDepartment];
+          break;
+        case 'Support Staff':
+          departments = [...departments, ...employeeSupportStaffDepartment];
+          break;
+        default:
+          break;
+      }
+    });
+
+    setEmployeeDepartment(departments);
+  }, [selectedEmployeeType]);
 
   // Function to handle drag over event
   const handleDragOver = (e) => {
@@ -27,10 +66,8 @@ const StudentBulk = () => {
   const handleDrop = (e) => {
     e.preventDefault();
     const files = e.dataTransfer.files;
-    // Handle the dropped files here
     console.log(files);
-    // Set isUploaded to true when files are dropped
-    setIsUploaded(true);
+    setIsUploadOccurred(true);
   };
 
   // Function to handle the confirmation of submission
@@ -41,16 +78,113 @@ const StudentBulk = () => {
     } catch (error) {
       console.error("Error while displaying toast:", error);
     }
+    // setShowPrompt(false);
     setShowModal(false);
     setShowUploadArea(false);
   };
 
-  // Function to handle the undo action
-  const handleUndo = () => {
-    setShowUndoButton(false);
-    // Reset isUploaded state when undo action is performed
-    setIsUploaded(false);
+  // Function to enable the Upload button
+  const enableUploadButton = () => {
+    setIsUploadEnabled(true);
   };
+
+  const columns = [
+    {
+      field: "id", headerName: "Employee ID", flex: 0.8,
+      renderCell: (params) => (
+        <Typography>
+          <Typography
+            component="span"
+            sx={{ color: "primary.main", cursor: "pointer" }}
+            onClick={() => setEmployeePopup(true)}
+          >
+            {params.id}
+          </Typography>
+        </Typography>
+      ),
+    },
+    { field: "name", headerName: "Name", flex: 1 },
+    { field: "emp_type", headerName: "Employee Type", flex: 0.8 },
+    { field: "department", headerName: "Department", flex: 0.8 },
+    { field: "grade", headerName: "Grade", flex: 0.5 },
+    {
+      field: "account_access",
+      headerName: "Account Access",
+      flex: 0.8,
+      renderCell: (params) => (
+        <Box
+          style={{
+            backgroundColor:
+              params.value === "Enabled"
+                ? "#C6F6D5"
+                : params.value === "Disabled"
+                  ? "#FFCCCC"
+                  : "transparent",
+            borderRadius: "6px",
+            display: "inline-block",
+            width:
+              params.value === "Enabled" || params.value === "Disabled"
+                ? "70px"
+                : "auto",
+            paddingLeft:
+              params.value === "Enabled"
+                ? "11px"
+                : params.value === "Disabled"
+                  ? "7px"
+                  : "0px",
+            paddingRight:
+              params.value === "Enabled"
+                ? "11px"
+                : params.value === "Disabled"
+                  ? "7px"
+                  : "0px",
+          }}
+        >
+          {params.value}
+        </Box>
+      ),
+    },
+    { field: "assigned_role", headerName: "Assigned Role", flex: 0.8 },
+  ];
+
+  const rows = [
+    {
+      id: "AG240001",
+      name: "Saunav Ray",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
+      account_access: "Enabled",
+      assigned_role: "House Coordinator"
+    },
+    {
+      id: "AG240002",
+      name: "Saunav Ray",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
+      account_access: "Enabled",
+      assigned_role: "House Coordinator"
+    },
+    {
+      id: "AG240003",
+      name: "Saunav Ray",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
+      account_access: "Disabled",
+      assigned_role: "House Coordinator"
+    },
+    {
+      id: "AG240004",
+      name: "Saunav Ray",
+      emp_type: "Teaching Staff",
+      department: "Science",
+      grade: 'B2',
+      account_access: "Disabled",
+      assigned_role: "House Coordinator"
+    }
+  ];
 
   return (
     <RevealCard>
@@ -61,6 +195,7 @@ const StudentBulk = () => {
         borderRadius={2}
         overflow="hidden"
       >
+        {/* top bulk text */}
         <Box
           bgcolor="white"
           py={1.3}
@@ -71,36 +206,145 @@ const StudentBulk = () => {
           alignItems="center"
         >
           <Typography fontWeight={700} fontSize="1.1rem">
-            Bulk Manage
+            Bulk
           </Typography>
-
-          {showUndoButton && (
-            <Button variant="outlined" onClick={handleUndo}>
-              Undo
-            </Button>
-          )}
         </Box>
 
+        {/* divider */}
         <Divider />
 
+        {/* Conditional rendering for the table or the upload area */}
+        {!showUploadArea ? (
+          <Box>
+            {/* dropdowns and search button section */}
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              p={2}
+              mt={4}
+              height={50}
+              gap={4}
+            >
+
+              <ReignsSelect
+                items={employeeType}
+                multiple
+                label="Employee Type"
+                defaultValues={employeeType}
+                onChange={setSelectedEmployeeType}
+                value={selectedEmployeeType}
+                sx={{
+                  width: '20%'
+                }}
+              />
+              <ReignsSelect
+                items={employeeDepartment}
+                multiple
+                defaultValues={employeeDepartment}
+                onChange={setSelectedDepartment}
+                value={selectedDepartment}
+                label="Department"
+                sx={{
+                  width: '20%'
+                }}
+              />
+              <ReignsSelect
+                items={employeeGrade}
+                multiple
+                label="Grade"
+                defaultValues={employeeGrade}
+                onChange={setSelectedGrade}
+                value={selectedGrade}
+                sx={{
+                  width: '20%'
+                }}
+              />
+
+
+              {/* Spacer */}
+              <Box flex={1} />
+
+              {/* search button */}
+              <Button variant="contained">Search</Button>
+            </Box>
+
+            {/* total number of results found */}
+            <Box pr={2} mt={1} display="flex" justifyContent="flex-end">
+              <Box
+                style={{
+                  backgroundColor: "#E1EEFB",
+                  border: "1px solid #3381A5",
+                  borderRadius: "16px",
+                  width: 102,
+                  height: 22,
+                  padding: "3.5px 12px",
+                }}
+              >
+                <Typography
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: "400",
+                    color: "#3381A5",
+                  }}
+                >
+                  {rows.length} Results found
+                </Typography>
+              </Box>
+            </Box>
+
+
+            {/* table */}
+            <Box m={2} height={"100%"}>
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 5 },
+                  },
+                }}
+                pageSizeOptions={[5, 10]}
+                checkboxSelection
+              />
+            </Box>
+          </Box>
+        ) : (
+          // upload area
+          <UploadArea
+            setShowUploadArea={setShowUploadArea}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+          />
+        )}
+
+        {/* Buttons section */}
         <Box style={{ marginLeft: "1%", marginBottom: "2%" }}>
           {!showUploadArea ? (
+            // table buttons
             <>
-              <Button variant="contained">
+              <Button variant="contained" onClick={enableUploadButton}>
                 Download Template
               </Button>
-
               <Button
                 variant="contained"
                 sx={{ marginLeft: "20px" }}
                 onClick={() => setShowUploadArea(true)}
+                disabled={!isUploadEnabled}
               >
                 Upload
               </Button>
             </>
           ) : (
+            // upload buttons
             <>
-              <Button variant="contained" disabled={!isUploaded}>
+              <Button
+                variant="contained"
+                disabled={!isUploadOccurred}
+                style={{
+                  backgroundColor: !isUploadOccurred ? "#e0e0e0" : undefined,
+                }}
+              >
                 Re-Upload
               </Button>
 
@@ -112,15 +356,12 @@ const StudentBulk = () => {
                 Submit
               </Button>
 
+              {/* Modal for confirmation */}
               <ConfirmationModal showModal={showModal} setShowModal={setShowModal} handleConfirmation={handleConfirmation} />
-              <UploadArea
-                setShowUploadArea={setShowUploadArea}
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-              />
-
             </>
           )}
+
+          <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
         </Box>
       </Bbox>
     </RevealCard>
@@ -192,4 +433,4 @@ const ConfirmationModal = ({ showModal, setShowModal, handleConfirmation }) => {
   );
 };
 
-export default StudentBulk;
+export default Bulk;

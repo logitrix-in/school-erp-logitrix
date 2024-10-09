@@ -6,8 +6,6 @@ import {
     Divider,
     Typography,
     Button,
-    TextField,
-    Autocomplete,
     FormControl,
     InputLabel,
     Select,
@@ -20,20 +18,25 @@ import { toast } from "react-toastify";
 import IncidentHeaderBanner from "./Banner";
 import EditLetter from "./EditLetter";
 import EditReleaseDate from "./EditReleaseDate";
+import SetReleaseDate from "./SetReleaseDate";
 import useEmployees from '@/hooks/useEmployees'
 import EmployeePopup from '../../EmployeePopup'
 import ReignsSelect from "../../../UiComponents/ReignsSelect";
+import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
 
 const PromotionLetterIssuance = () => {
     const { employeeGrade } = useEmployees();
 
     const navigate = useNavigate();
 
-    const [setTemplatePopup, setSetTemplatePopup] = useState(false);
-    const [setReleaseDatePopup, setSetReleaseDatePopup] = useState(false);
     const [selectedGrade, setSelectedGrade] = useState('');
-    const [employeePopup, setEmployeePopup] = useState(false);
+    const [selectedPromotionCycle, setSelectedPromotionCycle] = useState("");
+    const promotionCycle = ["June", "September", "December", "March"];
 
+    const [setReleaseDatePopup, setSetReleaseDatePopup] = useState(false);
+    const [editReleaseDatePopup, setEditReleaseDatePopup] = useState(false);
+    const [setTemplatePopup, setSetTemplatePopup] = useState(false);
+    const [employeePopup, setEmployeePopup] = useState(false);
 
     const columns = [
         {
@@ -49,11 +52,71 @@ const PromotionLetterIssuance = () => {
             ),
         },
         { field: "name", headerName: "Name", flex: 1.5 },
-        { field: "emp_status", headerName: "Employee Status", flex: 1.5 },
+        {
+            field: "emp_status", headerName: "Employee Status", flex: 1.5,
+            renderCell: (params) => (
+                <Box
+                    style={{
+                        backgroundColor:
+                            params.value === "Active"
+                                ? "#C6F6D5"
+                                : params.value === "Inactive"
+                                    ? "#FFCCCC"
+                                    : "transparent",
+                        borderRadius: "6px",
+                        display: "inline-block",
+                        width:
+                            params.value === "Active" || params.value === "Inactive"
+                                ? "60px"
+                                : "auto",
+                        paddingLeft:
+                            params.value === "Active"
+                                ? "11px"
+                                : params.value === "Inactive"
+                                    ? "7px"
+                                    : "0px",
+                    }}
+                >
+                    {params.value}
+                </Box>
+            ),
+        },
         { field: "department", headerName: "Department", flex: 1.5 },
         { field: "promotion_eligibility", headerName: "Promotion Eligibility", flex: 2 },
         { field: "curr_grade", headerName: "Current Grade", flex: 1.5 },
-        { field: "approved_for_upcoming_cycle", headerName: "Approved for Upcoming Cycle", flex: 2.5 },
+        {
+            field: "approved_for_upcoming_cycle", headerName: "Approved for Upcoming Cycle", flex: 2.5,
+            renderCell: (params) => (
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={'center'}>
+                    <Box
+                        mr={2}
+                        style={{
+                            backgroundColor: "#30B0C7",
+                            color: "#fff",
+                            borderRadius: "6px",
+                            display: "inline-block",
+                            width:
+                                params.value === "Yes" || params.value === "No"
+                                    ? "44px"
+                                    : "auto",
+                            paddingLeft:
+                                params.value === "Yes"
+                                    ? "11px"
+                                    : params.value === "No"
+                                        ? "7px"
+                                        : "0px",
+                        }}
+                    >
+                        {params.value}
+                    </Box>
+
+                    <Box display={"flex"} justifyContent={"space-between"} alignItems={'center'}>
+                        <ShowChartOutlinedIcon color="success" />
+                        <Typography color={'#34C759'}>5%</Typography>
+                    </Box>
+                </Box>
+            ),
+        },
     ];
 
     const rows = [
@@ -67,7 +130,7 @@ const PromotionLetterIssuance = () => {
             approved_for_upcoming_cycle: "Yes",
         },
         {
-            id: "AG240003",
+            id: "AG240002",
             name: "Saunav Ray",
             emp_status: "Active",
             department: "Science",
@@ -88,8 +151,9 @@ const PromotionLetterIssuance = () => {
 
     // table 2 columns
     const columns2 = [
-        { field: "grade", headerName: "Grade", flex: 1 },
-        { field: "letter_release_date", headerName: "Letter Release Date", flex: 1 },
+        { field: "space", headerName: "", flex: 0.2 },
+        { field: "grade", headerName: "Grade", flex: 0.5 },
+        { field: "letter_release_date", headerName: "Letter Release Date", flex: 0.5 },
     ];
 
     // table 2 rows
@@ -241,31 +305,32 @@ const PromotionLetterIssuance = () => {
 
                                 <Box ml={3} mt={3} display={'flex'} alignItems={'center'} gap={4}>
 
-
                                     <ReignsSelect
                                         multiple
                                         items={employeeGrade}
                                         defaultValues={employeeGrade}
                                         onChange={setSelectedGrade}
                                         value={selectedGrade}
-                                        label="Department"
+                                        label="Grade"
                                         sx={{ width: "20%" }}
                                     />
 
-
-                                    <Autocomplete
-                                        options={["Student 1", "Student 2"]}
-                                        filterSelectedOptions
-                                        freeSolo={false}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                placeholder="Promotion Cycle"
-                                                label="Promotion Cycle"
-                                            />
-                                        )}
-                                        sx={{ width: "20%" }}
-                                    />
+                                    <FormControl sx={{ width: "20%" }}>
+                                        <InputLabel>Promotion Cycle</InputLabel>
+                                        <Select
+                                            label="Promotion Cycle"
+                                            onChange={(e) =>
+                                                setSelectedPromotionCycle(e.target.value)
+                                            }
+                                            value={selectedPromotionCycle}
+                                        >
+                                            {promotionCycle.map((month) => (
+                                                <MenuItem key={month} value={month}>
+                                                    {month}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
 
                                     <Button
                                         variant="contained"
@@ -274,7 +339,6 @@ const PromotionLetterIssuance = () => {
                                     </Button>
                                 </Box>
 
-                                {/* Table */}
                                 <Box m={2} mt={4} height="100%">
                                     <Typography my={2}>List of employees approved for promotion for upcoming cycle</Typography>
                                     <DataGrid
@@ -336,6 +400,7 @@ const PromotionLetterIssuance = () => {
                                             color="primary"
                                             variant="contained"
                                             sx={{ ml: 2 }}
+                                            onClick={() => setSetReleaseDatePopup(true)}
                                         >Set Release Date</Button>
                                     </Box>
 
@@ -356,13 +421,15 @@ const PromotionLetterIssuance = () => {
                                             <Button
                                                 color="secondary"
                                                 variant="contained"
-                                                onClick={() => setSetReleaseDatePopup(true)}
+                                                onClick={() => setEditReleaseDatePopup(true)}
                                             >
                                                 Edit
                                             </Button>
                                         </Box>
 
-                                        <EditReleaseDate open={setReleaseDatePopup} close={() => setSetReleaseDatePopup(false)} />
+
+                                        <SetReleaseDate open={setReleaseDatePopup} close={() => setSetReleaseDatePopup(false)} />
+                                        <EditReleaseDate open={editReleaseDatePopup} close={() => setEditReleaseDatePopup(false)} />
 
                                     </Box>
                                 </Box>

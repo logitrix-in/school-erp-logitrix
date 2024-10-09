@@ -39,7 +39,7 @@ const EditReleaseDate = ({ open, close }) => {
                 >
                     <Box />
                     <Typography fontSize={"1.1rem"} textAlign={"center"}>
-                        Edit Release Date
+                        Set Release Date
                     </Typography>
                     <IconButton
                         edge="start"

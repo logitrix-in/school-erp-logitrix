@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import Bbox from "../../../UiComponents/Bbox";
 import {
   Box,
   Divider,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   FormControl,
   InputLabel,
   Select,
@@ -21,77 +17,34 @@ import {
   Checkbox,
   Chip,
   TextField,
-  Link
 } from "@mui/material";
-import { useMediaQuery } from "@material-ui/core";
 import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import "./styles.css";
 import useClasses from "../../../../hooks/useClasses";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
-import axios from "axios";
 import Popup from "../../../UiComponents/Popup";
+import EmployeePopup from '../../EmployeePopup'
+import ReignsSelect from "@/components/UiComponents/ReignsSelect";
 
 const StudentIndividual = () => {
-  // breakpoints
-  const isSmall = useMediaQuery("(max-width: 1364px)");
-  const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
-  const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-  const isDesktop = useMediaQuery(
-    "(min-width: 1707px) and (max-width: 1919px)"
-  );
-  const isLarge = useMediaQuery("(min-width: 1920px)");
-  const isXlarge = useMediaQuery("(min-width: 2560px)");
+  const { employeeRole } = useClasses();
 
-  // States
+  const [selectedEmployeeRole, setSelectedEmployeeRole] = useState('');
+
   const [selectedRow, setSelectedRow] = useState(null);
+  const [employeePopup, setEmployeePopup] = useState(false);
+
   const [openDialog, setOpenDialog] = useState(false);
   const [accessStatus, setAccessStatus] = useState("");
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState("");
-  const [isEditButtonActive, setIsEditButtonActive] = useState(false);
-  const [row, setRow] = useState([]);
   const [resetDialog, setResetDialog] = useState(false);
   const [disableDialog, setDisableDialog] = useState(false);
 
-  const [curRole, setRole] = useState([]);
-  const [filter, setFilter] = useState({});
-  const [type, setType] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResult, setSearchResult] = useState(null);
-
   const [resetPassword, setResetPassword] = useState(false);
 
-  const { employeeRole } = useClasses();
-
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(
-        "https://server.sociolinq.com/api/students/manage/edit-information/individual/edit/",
-        {
-          params: {
-            name: searchQuery,
-          },
-        }
-      );
-      console.log(response.data);
-      setSearchResult(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  // context useEffect
-  useEffect(() => {
-    const _filter = {
-      curRole: curRole,
-      type: type,
-    };
-    setFilter(_filter);
-  }, [curRole, type]);
 
   const columns = [
     {
@@ -108,12 +61,24 @@ const StudentIndividual = () => {
           inputProps={{ "aria-label": params.row.id }}
           onChange={() => {
             setSelectedRow(params.row.id);
-            setIsEditButtonActive(true);
           }}
         />
       ),
     },
-    { field: "id", headerName: "Employee ID", flex: 1 },
+    {
+      field: "id", headerName: "Employee ID", flex: 1,
+      renderCell: (params) => (
+        <Typography>
+          <Typography
+            component="span"
+            sx={{ color: "primary.main", cursor: "pointer" }}
+            onClick={() => setEmployeePopup(true)}
+          >
+            {params.id}
+          </Typography>
+        </Typography>
+      ),
+    },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "emp_type", headerName: "Employee Type", flex: 1 },
     { field: "department", headerName: "Department", flex: 1 },
@@ -152,7 +117,6 @@ const StudentIndividual = () => {
     { field: "role", headerName: "Assigned Role", flex: 1 },
   ];
 
-  // table rows
   const rows = [
     {
       id: "AG240001",
@@ -192,21 +156,6 @@ const StudentIndividual = () => {
     }
   ];
 
-  // useEffect(() => {
-  //   // Find the selected row based on selectedRow ID
-  //   const selectedRowData = rows.find((row) => row.id === selectedRow);
-
-  //   // If selectedRowData exists, update accessStatus
-  //   if (selectedRowData) {
-  //     setAccessStatus(
-  //       selectedRowData.access === "Enabled" ? "Enabled" : "Disabled"
-  //     );
-  //   } else {
-  //     // If no row is selected, reset accessStatus
-  //     setAccessStatus("Change Access");
-  //   }
-  // }, [selectedRow, rows]);
-
   // handle notifying inactive users
   const handleAssignRoleSubmit = () => {
     try {
@@ -220,32 +169,9 @@ const StudentIndividual = () => {
     setShowConfirmationDialog(false);
   };
 
-  // handle assign role dropdown change
-  const handleRoleChange = (e) => {
-    const {
-      target: { value },
-    } = e;
-
-    // Check if "all" is selected
-    if (value.includes("all")) {
-      // If "all" is selected and all rolles are already selected, deselect all
-      if (curRole.length === employeeRole.length) {
-        setRole([]);
-      } else {
-        // If "all" is selected and not all rolles are selected, select all
-        setRole(employeeRole);
-      }
-      return;
-    }
-
-    console.log(curRole)
-    // Set the selected rolles
-    setRole(value);
-  };
-
   const handleSubmit = () => {
-    const newRoles = curRole.filter((r) => !employeeRole.includes(r));
-    setRole((prevRole) => [...prevRole, ...newRoles]);
+    const newRoles = selectedEmployeeRole.filter((r) => !employeeRole.includes(r));
+    setSelectedEmployeeRole((prevRole) => [...prevRole, ...newRoles]);
 
     setConfirmationMessage("Are you sure you want to change the role?");
     setShowConfirmationDialog(true);
@@ -329,21 +255,27 @@ const StudentIndividual = () => {
           height={70}
           width="100%"
         >
-          {/* search input */}
-          <input
-            type="text"
-            placeholder="Search by Employee ID or Employee Name"
-            style={{
-              width: isLaptop ? 420 : "50%",
-              height: "100%",
-              borderRadius: "7px",
-              border: "1px solid #ccc",
-              paddingLeft: "10px",
-            }}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+
+          <Box display={"flex"} gap={1} sx={{ width: '35%', marginY: '16px' }} >
+            <FormControl fullWidth>
+              <InputLabel>Search by Employee Name or Employee ID</InputLabel>
+              <Select
+                label="Search by Employee Name or Employee ID"
+                // value={selectedLibraryCard}
+                required
+              // onChange={(e) => setSelectedLibraryCard(e.target.value)}
+              >
+                {/* {
+								libraryCardNumbers?.map((type) => (
+									<MenuItem key={type} value={type}>{type}</MenuItem>
+								))
+							} */}
+              </Select>
+            </FormControl>
+          </Box>
         </Box>
+
+        <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
 
         {/* Table */}
         <Box m={2} style={{ height: "100%" }}>
@@ -356,7 +288,6 @@ const StudentIndividual = () => {
               },
             }}
             pageSizeOptions={[5, 10]}
-          // checkboxSelection
           />
         </Box>
 
@@ -400,7 +331,6 @@ const StudentIndividual = () => {
           </Stack>
         </Box>
 
-        {/* Dialog box for Assigning Role */}
         <Popup title={"Assign Role"} open={openDialog}
           close={handleCloseDialog}
           fullWidth
@@ -409,7 +339,7 @@ const StudentIndividual = () => {
 
             <Box display={"flex"} flexDirection={"row"} sx={{ marginBottom: "2rem" }}>
               {
-                curRole.length == 0 ? (
+                selectedEmployeeRole.length == 0 ? (
                   <Typography textAlign={'center'} sx={{ width: '100%', margin: 'auto' }}>No role has been assigned currently</Typography>
                 ) : (
                   <>
@@ -424,7 +354,7 @@ const StudentIndividual = () => {
                     </Typography>
                     <Box sx={{ width: "auto" }}>
                       {
-                        curRole.map((role, idx) => (
+                        selectedEmployeeRole.map((role, idx) => (
                           <Chip
                             key={idx}
                             label={role}
@@ -441,52 +371,16 @@ const StudentIndividual = () => {
               }
             </Box>
 
-            {/* assign role dropdown */}
-            <FormControl fullWidth>
-              <InputLabel>Select Role</InputLabel>
-              <Select
-                placeholder="All"
-                multiple
-                value={curRole}
-                onChange={handleRoleChange}
-                MenuProps={{
-                  PaperProps: {
-                    style: {
-                      maxHeight: 300,
-                    },
-                  },
-                }}
-                input={<OutlinedInput label="Select Role" />}
-                renderValue={(selected) =>
-                  selected.length === employeeRole.length ? "All" : selected.join(", ")
-                }
-              >
-                {/* Select All option */}
-                <MenuItem value="all">
-                  <ListItemIcon>
-                    <Checkbox
-                      checked={curRole.length === employeeRole.length}
-                      indeterminate={
-                        curRole.length > 0 && curRole.length < employeeRole.length
-                      }
-                    />
-                  </ListItemIcon>
-                  <ListItemText primary="Select All" />
-                </MenuItem>
-                {/* roll options */}
-                {employeeRole.map((roleOption) => (
-                  <MenuItem key={roleOption} value={roleOption}>
-                    <Checkbox
-                      size="small"
-                      checked={curRole.indexOf(roleOption) > -1}
-                    />
-                    <ListItemText primary={roleOption} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <ReignsSelect
+              multiple
+              items={employeeRole}
+              defaultValues={employeeRole}
+              onChange={setSelectedEmployeeRole}
+              value={selectedEmployeeRole}
+              label="Select Role"
+              sx={{ mb: 2 }}
+            />
 
-            {/* submit button */}
             <Box mt={4} textAlign="center" sx={{ width: '100%' }}>
               <Button
                 variant="contained"
@@ -500,7 +394,6 @@ const StudentIndividual = () => {
           </Box>
         </Popup >
 
-        {/* Confirmation Dialog for role change */}
         <Popup title={"Confirmation"} open={showConfirmationDialog} close={cancelRoleChange}>
           <Box p={5} component={"form"} height={"20vh"} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
 
@@ -523,8 +416,7 @@ const StudentIndividual = () => {
           </Box>
         </Popup >
 
-        {/* Reset Password Dialog */}
-        <Popup title={"Reset Password"} open={resetDialog} close={handleClose}>
+        <Popup title={"Reset Password"} open={resetDialog} close={handleClose} sx={{ width: '50%', margin: 'auto' }}>
           <Box p={5} component={"form"} height={"20vh"} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
             <TextField
               name="critical_ailment"
@@ -544,8 +436,7 @@ const StudentIndividual = () => {
           </Box>
         </Popup >
 
-        {/* Disable/Enable Dialog */}
-        <Popup title={"Enable Access"} open={disableDialog} close={handleCloseDisable}>
+        <Popup title={"Enable Access"} open={disableDialog} close={handleCloseDisable} sx={{ width: '50%', margin: 'auto' }}>
           <Box p={5} component={"form"} height={"20vh"} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
 
             <Box p={2} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
@@ -555,11 +446,12 @@ const StudentIndividual = () => {
                 the employee's account?
               </Typography>
 
-              <Box mt={2} gap={4} display="flex" >
+              <Box mt={2} gap={4} display="flex" sx={{ width: '100%' }} >
                 <Button
                   color="primary"
                   variant="contained"
                   onClick={handleConfirmDisable}
+                  sx={{ width: '100%' }}
                 >
                   Yes
                 </Button>
@@ -567,6 +459,7 @@ const StudentIndividual = () => {
                   color="primary"
                   variant="outlined"
                   onClick={handleCloseDisable}
+                  sx={{ width: '100%' }}
                 >
                   No
                 </Button>
