@@ -16,7 +16,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import useEmployees from "@/hooks/useEmployees";
 
-const SetCompensationImpact = ({ open, close }) => {
+const EditCompensationImpact = ({ open, close }) => {
     const { employeeGrade } = useEmployees();
 
     const [rows, setRows] = useState([
@@ -143,4 +143,4 @@ const SetCompensationImpact = ({ open, close }) => {
     );
 }
 
-export default SetCompensationImpact;
+export default EditCompensationImpact;

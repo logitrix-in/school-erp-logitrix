@@ -1,17 +1,17 @@
-import React from "react";
 import {
     Box,
     Button,
     Dialog,
-    TextField,
     IconButton,
     Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
-
+import { useState } from "react";
+import { DatePicker } from "@mui/x-date-pickers";
 
 const Extend = ({ open, close }) => {
+    const [showDate, setShowDate] = useState(false);
 
     return (
         <Dialog
@@ -19,7 +19,7 @@ const Extend = ({ open, close }) => {
             PaperProps={{
                 sx: {
                     maxHeight: "90%",
-                    width: "50%",
+                    width: "60%",
                 },
             }}
             maxWidth="lg"
@@ -83,19 +83,38 @@ const Extend = ({ open, close }) => {
                         </Box>
                     </Box>
 
-                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to revise probation period?</Typography>
+                    {
+                        !showDate ?
+                            <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Are you sure you want to revise probation period?</Typography> :
+                            <DatePicker
+                                sx={{ width: "80%" }}
+                                label="Revised End Date of Probation"
+                                format="DD MMM YYYY"
+                            />
+                    }
 
-                    <Box marginY={2} width={"100%"} display="flex" gap={2}>
-                        <Button variant="contained" color="primary" fullWidth onClick={() => {
-                            toast.success("Probation period extended successfully");
-                            close();
-                        }}>Yes</Button>
-                        <Button variant="outlined" color="primary" fullWidth onClick={() => {
-                            close();
-                        }}>No</Button>
-                    </Box>
+                    {
+                        !showDate ?
+                            <Box marginY={2} width={"80%"} display="flex" gap={2}>
+                                <Button variant="contained" color="primary" fullWidth onClick={() => {
+                                    setShowDate(true);
+                                }}>Yes</Button>
+                                <Button variant="outlined" color="primary" fullWidth onClick={() => {
+                                    close();
+                                }}>No</Button>
+                            </Box>
+                            :
+                            <Box marginY={2} width={"80%"} display="flex" gap={2}>
+                                <Button variant="contained" color="primary" fullWidth onClick={() => {
+                                    toast.success("Probation period extended successfully");
+                                    close();
+                                    setShowDate(false);
+                                }}>Submit</Button>
+                            </Box>
+                    }
                 </Box>
             </Box>
+
         </Dialog >
     );
 };
