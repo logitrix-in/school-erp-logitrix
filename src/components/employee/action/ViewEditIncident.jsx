@@ -27,10 +27,12 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import SVG from './SVG';
 import ListOfStudents from "./ListStudents";
 import DisplayCardSingle from "./DisplayCardSingle";
+import EmployeePopup from '../EmployeePopup';
 
 const ViewEditIncident = () => {
   const statuses = ["Open", "Cancelled", "Closed", "All"];
 
+  const [applicationIDPopup, setApplicationIDPopup] = useState(false);
   const [openId, setOpenId] = useState(null);
 
   const handleToggle = (id) => {
@@ -49,7 +51,12 @@ const ViewEditIncident = () => {
     {
       field: "id",
       headerName: "Employee ID",
-      flex: 1,
+      flex: 0.8,
+      renderCell: (params) => (
+        <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setApplicationIDPopup(true)}>
+          {params.value}
+        </Typography>
+      ),
     },
     {
       field: "name",
@@ -120,7 +127,7 @@ const ViewEditIncident = () => {
     {
       field: "incidentid",
       headerName: "Open Incident(s)",
-      flex: 1.5,
+      flex: 1.2,
       renderCell: (params) => (
         <Box sx={{ display: "flex", gap: "8px" }}>
           {params.row.incidentid.map((incident, index) => (
@@ -157,28 +164,6 @@ const ViewEditIncident = () => {
       dueAmount: "₹50",
       incidentid: ["#112334"],
     },
-    {
-      id: "AG240001",
-      name: "Saurav Ray",
-      employeeType: "Teaching Staff",
-      department: "Physics",
-      grade: "C1",
-      status: "Inactive",
-      lastSuspensionPeriod: "N/A",
-      dueAmount: "₹50",
-      incidentid: ["#112334", "#456636"],
-    },
-    {
-      id: "AG240001",
-      name: "Saurav Ray",
-      employeeType: "Teaching Staff",
-      department: "Physics",
-      grade: "C1",
-      status: "Active",
-      lastSuspensionPeriod: "N/A",
-      dueAmount: "₹50",
-      incidentid: ["#112334", "#456636"],
-    }
   ];
 
   return (
@@ -340,6 +325,7 @@ const ViewEditIncident = () => {
         </Box>
 
         {showList && <ListOfStudents open={showList} close={() => setShowList(false)} />}
+        <EmployeePopup open={applicationIDPopup} close={() => setApplicationIDPopup(false)} />
 
         <Box
           sx={{

@@ -78,14 +78,15 @@ export default function Claims() {
         },
         {
             field: "working_days", headerName: "No of Working Days",
-            flex: 1.2,
+            flex: 1.1,
         },
         {
             field: "leave_period", headerName: "Leave Period", flex: 1.8,
         },
         {
-            field: "attachment", headerName: "Attachment",
+            field: "attachment", headerName: "Supporting Documents",
             flex: 1,
+            renderHeader: (params) => <MultilineHeader colDef={params.colDef} />,
             renderCell: (params) => (
                 <Box
                     style={{
@@ -98,6 +99,14 @@ export default function Claims() {
             ),
         },
     ];
+
+    const MultilineHeader = ({ colDef }) => {
+        return (
+            <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.4', fontWeight: '600' }}>
+                {colDef.headerName}
+            </div>
+        );
+    };
 
     const rows = [
         {
@@ -130,7 +139,7 @@ export default function Claims() {
         {
             field: "radioButtons",
             headerName: "",
-            flex: 0.4,
+            flex: 0.5,
             renderCell: (params) => (
                 <Radio
                     checked={params.row.id === selectedRow2?.id}
@@ -167,6 +176,32 @@ export default function Claims() {
         },
         {
             field: "status", headerName: "Status", flex: 1,
+            renderCell: (params) => (
+                <Box
+                    style={{
+                        backgroundColor:
+                            params.value === "Active"
+                                ? "#C6F6D5"
+                                : params.value === "Inactive"
+                                    ? "#FFCCCC"
+                                    : "transparent",
+                        borderRadius: "6px",
+                        display: "inline-block",
+                        width:
+                            params.value === "Active" || params.value === "Inactive"
+                                ? "60px"
+                                : "auto",
+                        paddingLeft:
+                            params.value === "Active"
+                                ? "11px"
+                                : params.value === "Inactive"
+                                    ? "7px"
+                                    : "0px",
+                    }}
+                >
+                    {params.value}
+                </Box>
+            ),
         },
         {
             field: "supervisor", headerName: "Supervisor", flex: 1,
@@ -176,7 +211,7 @@ export default function Claims() {
 
     const rows2 = [
         {
-            id: "E001",
+            id: "EMP001",
             emp_name: "John Doe",
             department: "Science",
             grade: "B2",
@@ -184,7 +219,7 @@ export default function Claims() {
             supervisor: "Topesh Pattu",
         },
         {
-            id: "E002",
+            id: "EMP002",
             emp_name: "Jane Smith",
             department: "Science",
             grade: "B2",
@@ -192,7 +227,7 @@ export default function Claims() {
             supervisor: "Topesh Pattu",
         },
         {
-            id: "E003",
+            id: "EMP003",
             emp_name: "Alice Johnson",
             department: "Science",
             grade: "B2",
@@ -329,7 +364,7 @@ export default function Claims() {
                             onClick={() => setApplyLeavePopup(true)}
                             disabled={!selectedRow2}
                         >
-                            Apply
+                            Apply Leave
                         </Button>
 
                         <Button

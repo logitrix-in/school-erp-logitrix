@@ -16,7 +16,7 @@ const Confirm = ({ open, close, openEditLetter }) => {
             PaperProps={{
                 sx: {
                     maxHeight: "90%",
-                    width: "50%",
+                    width: "60%",
                 },
             }}
             maxWidth="lg"
@@ -27,7 +27,6 @@ const Confirm = ({ open, close, openEditLetter }) => {
             <Box overflow={"hidden"}>
                 <Box
                     p={1}
-                    py={1}
                     bgcolor={"primary.main"}
                     color={"white"}
                     display={"flex"}
@@ -50,7 +49,7 @@ const Confirm = ({ open, close, openEditLetter }) => {
 
                 <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"95%"} margin="auto" alignItems="center">
                     <Box display="flex" justifyContent="center" width="100%" alignItems="center">
-                        <Box display="flex" gap={2} width="48%" justifyContent="center">
+                        <Box display="flex" gap={2} width="50%" justifyContent="center">
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
                                 <Typography mb={2}>Employee Name</Typography>
                                 <Typography mb={2}>Employee Type</Typography>
@@ -64,7 +63,7 @@ const Confirm = ({ open, close, openEditLetter }) => {
                                 <Typography fontWeight="medium" ml={1} mb={2}>: B2</Typography>
                             </Box>
                         </Box>
-                        <Box display="flex" gap={2} width="48%" justifyContent="center">
+                        <Box display="flex" gap={2} width="50%" justifyContent="center">
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
                                 <Typography mb={2}>Employee ID</Typography>
                                 <Typography mb={2}>Role</Typography>

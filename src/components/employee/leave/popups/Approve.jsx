@@ -53,6 +53,7 @@ const Approve = ({ open, close }) => {
                     <Box display="flex" justifyContent="flex-start" width="100%" alignItems="flex-start" >
                         <Box display="flex" gap={0} width="70%" justifyContent="space-between" >
                             <Box display="flex" flexDirection="column" justifyContent="space-between" >
+                                <Typography mb={2}>Employee ID</Typography>
                                 <Typography mb={2}>Employee Name</Typography>
                                 <Typography mb={2}>Department</Typography>
                                 <Typography mb={2}>Status</Typography>
@@ -61,6 +62,7 @@ const Approve = ({ open, close }) => {
                                 <Typography mb={2}>Overlapping Leave Summary</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography fontWeight="medium" ml={1} mb={2}>: EMP1234</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Priya Naskar</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Physics</Typography>
                                 <Box display={'flex'} alignItems={'center'} ml={1} mb={2}>

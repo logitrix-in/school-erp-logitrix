@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   Typography,
+  InputLabel,
 } from "@mui/material";
 import useEmployees from "@/hooks/useEmployees";
 import { toast } from "react-toastify";
@@ -384,7 +385,12 @@ const UploadArea = ({ setShowUploadArea, onDrop, onDragOver }) => {
         Click / Drag & Drop to upload Excel
       </Typography>
       <Box display={'flex'} justifyContent={'center'} mt={2} gap={4}>
-        <Button color="primary" variant="contained">Browse</Button>
+        <input type="file" style={{ display: "none" }} name="browse-file" id="browse-file" />
+        <InputLabel htmlFor="browse-file">
+          <Button color="primary" variant="contained" component="span">
+            Browse
+          </Button>
+        </InputLabel>
         <Button color="primary" variant="outlined" onClick={() => setShowUploadArea(false)}>Cancel</Button>
       </Box>
     </Box>

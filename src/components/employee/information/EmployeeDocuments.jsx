@@ -33,7 +33,7 @@ const EmployeeDocuments = () => {
 		{
 			field: "name",
 			headerName: "Name",
-			flex: 1.2,
+			flex: 1,
 		},
 		{
 			field: "emp_type",
@@ -43,7 +43,7 @@ const EmployeeDocuments = () => {
 		{
 			field: "gender",
 			headerName: "Gender",
-			flex: 1,
+			flex: 0.7,
 		},
 		{
 			field: "department",
@@ -53,7 +53,7 @@ const EmployeeDocuments = () => {
 		{
 			field: "grade",
 			headerName: "Grade",
-			flex: 1,
+			flex: 0.7,
 		},
 		{
 			field: "role",
@@ -162,11 +162,11 @@ const EmployeeDocuments = () => {
 							<Box>
 								<Box display="flex" justifyContent="space-between" mb={4}>
 									<Typography >Offer Letter</Typography>
-									<DescriptionOutlinedIcon />
+									<DescriptionOutlinedIcon cursor="pointer" />
 								</Box>
 								<Box display="flex" justifyContent="space-between">
 									<Typography>Relieving Letter</Typography>
-									<DescriptionOutlinedIcon />
+									<DescriptionOutlinedIcon cursor="pointer" />
 								</Box>
 							</Box>
 						</Grid>
@@ -174,11 +174,11 @@ const EmployeeDocuments = () => {
 							<Box>
 								<Box display="flex" justifyContent="space-between" mb={4}>
 									<Typography>Joining Letter</Typography>
-									<DescriptionOutlinedIcon />
+									<DescriptionOutlinedIcon cursor="pointer" />
 								</Box>
 								<Box display="flex" justifyContent="space-between">
 									<Typography>Full & Final Settlement Letter</Typography>
-									<DescriptionOutlinedIcon />
+									<DescriptionOutlinedIcon cursor="pointer" />
 								</Box>
 							</Box>
 						</Grid>
@@ -186,11 +186,11 @@ const EmployeeDocuments = () => {
 							<Box>
 								<Box display="flex" justifyContent="space-between" mb={4}>
 									<Typography>Last Annual Compensation Letter</Typography>
-									<DescriptionOutlinedIcon />
+									<DescriptionOutlinedIcon cursor="pointer" />
 								</Box>
 								<Box display="flex" justifyContent="space-between">
 									<Typography>Experience Letter</Typography>
-									<DescriptionOutlinedIcon />
+									<DescriptionOutlinedIcon cursor="pointer" />
 								</Box>
 							</Box>
 						</Grid>
@@ -198,11 +198,11 @@ const EmployeeDocuments = () => {
 							<Box>
 								<Box display="flex" justifyContent="space-between" mb={4}>
 									<Typography>Last Promotion Letter</Typography>
-									<DescriptionOutlinedIcon />
+									<DescriptionOutlinedIcon cursor="pointer" />
 								</Box>
 								<Box display="flex" justifyContent="space-between">
 									<Typography>Payslip</Typography>
-									<DescriptionOutlinedIcon />
+									<DescriptionOutlinedIcon cursor="pointer" />
 								</Box>
 							</Box>
 						</Grid>

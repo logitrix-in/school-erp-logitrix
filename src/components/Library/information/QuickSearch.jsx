@@ -56,11 +56,11 @@ const QuickSearch = () => {
 		},
 	];
 
-	const columns = [
+	const EmployeeColumns = [
 		{
 			field: "library_card_number",
 			headerName: "Library Card",
-			width: 140,
+			flex: 1,
 			renderCell: (params) => {
 				return (
 					<Typography
@@ -69,7 +69,7 @@ const QuickSearch = () => {
 							cursor: "pointer",
 							":hover": { textDecoration: "underline" },
 						}}
-						onClick={() => handleLibIdClick(params.value)}
+						onClick={() => setModalVisible(true)}
 					>
 						{params.value}
 					</Typography>
@@ -77,13 +77,13 @@ const QuickSearch = () => {
 			},
 		},
 		{
-			field: "employee_name",
+			field: "name",
 			headerName: "Name",
 			flex: 1,
 		},
 		{
-			field: "category",
-			headerName: "Category",
+			field: "type",
+			headerName: "Type",
 			flex: 1,
 		},
 		{
@@ -125,63 +125,227 @@ const QuickSearch = () => {
 		},
 	];
 
-	const [modalVisible, setModalVisible] = useState(false);
-	const [activeLibId, setActiveLibId] = useState(null);
-	const [libraryCardNumbers, setLibraryCardNumbers] = useState([]);
-	const [selectedLibraryCard, setSelectedLibraryCard] = useState('');
-	const [employeeRows, setEmployeeRows] = useState([]);
+	const StudentColumns = [
+		{
+			field: "library_card_number",
+			headerName: "Library Card",
+			flex: 1,
+			renderCell: (params) => {
+				return (
+					<Typography
+						color={"#19469F"}
+						sx={{
+							cursor: "pointer",
+							":hover": { textDecoration: "underline" },
+						}}
+						onClick={() => setModalVisible(true)}
+					>
+						{params.value}
+					</Typography>
+				);
+			},
+		},
+		{
+			field: "name",
+			headerName: "Name",
+			flex: 1,
+		},
+		{
+			field: "class",
+			headerName: "Class",
+			flex: 1,
+		},
+		{
+			field: "section",
+			headerName: "Section",
+			flex: 1,
+		},
+		{
+			field: "roll",
+			headerName: "Roll #",
+			flex: 1,
+		},
+		{
+			field: "current_borrowings",
+			headerName: "current Borrowing",
+			renderCell: (params) => (
+				<div style={{ whiteSpace: "normal", wordBreak: "break-word" }}>
+					{params.value}
+				</div>
+			),
+			flexWrap: true,
+			flex: 2,
+			sortable: true,
+		},
+		{
+			field: "current_status",
+			headerName: "Library Card Status",
+			flex: 1,
+			renderCell: (params) => {
+				console.log(params);
+				return (
+					<Box
+						sx={{
+							bgcolor: "#C6F6D5",
+							borderRadius: 1,
+							px: 2,
+							py: 0.5,
+						}}
+					>
+						{params.value}
+					</Box>
+				);
+			},
+		},
+	];
 
-	const handleLibIdClick = (libId) => {
-		setActiveLibId(libId);
-		setModalVisible(true);
-	};
+	const MediaColumns = [
+		{
+			field: "media_id",
+			headerName: "Media ID",
+			flex: 1,
+			renderCell: (params) => {
+				return (
+					<Typography
+						color={"#19469F"}
+						sx={{
+							cursor: "pointer",
+							":hover": { textDecoration: "underline" },
+						}}
+					// onClick={() => handleLibIdClick(params.value)}
+					>
+						{params.value}
+					</Typography>
+				);
+			},
+		},
+		{
+			field: "type",
+			headerName: "Type",
+			flex: 1,
+		},
+		{
+			field: "category",
+			headerName: "Category",
+			flex: 1,
+		},
+		{
+			field: "name",
+			headerName: "Name",
+			flex: 1,
+		},
+		{
+			field: "current_borrower",
+			headerName: "current Borrower",
+			renderCell: (params) => (
+				<div style={{ whiteSpace: "normal", wordBreak: "break-word" }}>
+					{params.value}
+				</div>
+			),
+			flexWrap: true,
+			flex: 2,
+			sortable: true,
+		},
+		{
+			field: "note",
+			headerName: "Note",
+			flex: 1,
+		},
+	];
+
+	const [modalVisible, setModalVisible] = useState(false);
+	const [searchQueryList, setSearchQueryList] = useState([]);
+	const [selectedSearchQuery, setSelectedSearchQuery] = useState('');
+	const [rows, setRows] = useState([]);
 
 	async function getLibraryCardDetail() {
 		try {
-			if (!selectedLibraryCard) return;
+			if (!selectedSearchQuery) return;
 
-			const response = await api.get(`/library/library-cards/?card_number=${selectedLibraryCard}`);
-			console.log(response.data);
+			if (selectedSearchQuery.startsWith('LIB')) {
+				const response = await api.get(`/library/library-cards/?card_number=${selectedSearchQuery}`);
+				console.log(response.data);
 
-			if (response.data.length > 0) {
-				const cardData = response.data[0];
-				const newRow = {
-					id: cardData.id,
-					library_card_number: cardData.card_number,
-					employee_name: `${cardData.employee.employee_personal_details.first_name} ${cardData.employee.employee_personal_details.last_name}`,
-					category: cardData.employee.employee_type, // Note: 'category' is not directly available, using 'employee_type' instead
-					department: cardData.employee.department,
-					current_borrowings: cardData.current_borrowings,
-					current_status: cardData.is_active ? 'Active' : 'Inactive'
-				};
+				if (response.data.length > 0) {
+					const cardData = response.data[0];
+					const newRow = {
+						id: cardData.id,
+						library_card_number: cardData.card_number,
+						name: `${cardData.employee.employee_personal_details.first_name} ${cardData.employee.employee_personal_details.last_name}`,
+						type: cardData.employee.employee_type, // Note: 'category' is not directly available, using 'employee_type' instead
+						department: cardData.employee.department,
+						current_borrowings: cardData.current_borrowings,
+						current_status: cardData.is_active ? 'Active' : 'Inactive'
+					};
 
-				console.log('New row:', newRow);
-				setEmployeeRows([newRow]); // Set as an array with a single item
+					console.log('New row:', newRow);
+					setRows([newRow]); // Set as an array with a single item
+				} else {
+					setRows([]); // Set to empty array if no data returned
+				}
+			} else if (selectedSearchQuery.startsWith('M')) {
+				const response = await api.get(`/library/media/?media_id=${selectedSearchQuery}`);
+				console.log(response.data);
+
+				if (response.data) {
+					const newRow = {
+						id: response.data.id,
+						media_id: response.data.media_id,
+						type: response.data.media_type,
+						category: response.data.category,
+						name: response.data.media_name,
+						current_borrower: response.data.current_borrower || 'null',
+						note: response.data.note
+					};
+
+					console.log('New row:', newRow);
+					setRows([newRow]); // Set as an array with a single item
+				} else {
+					setRows([]); // Set to empty array if no data returned
+				}
 			} else {
-				setEmployeeRows([]); // Set to empty array if no data returned
-			}
+				// const response = await api.get(`/library/library-cards/?card_number=${selectedSearchQuery}`);
+				// console.log(response.data);
 
+				// if (response.data.length > 0) {
+				// 	const cardData = response.data[0];
+				// 	const newRow = {
+				// 		id: cardData.id,
+				// 		library_card_number: cardData.card_number,
+				// 		name: `${cardData.employee.employee_personal_details.first_name} ${cardData.employee.employee_personal_details.last_name}`,
+				// 		class: cardData.employee.class, // Note: 'category' is not directly available, using 'employee_type' instead
+				// 		section: cardData.employee.department,
+				// 		current_borrowings: cardData.current_borrowings,
+				// 		current_status: cardData.is_active ? 'Active' : 'Inactive'
+				// 	};
+
+				// 	console.log('New row:', newRow);
+				// 	setRows([newRow]); // Set as an array with a single item
+				// } else {
+				// 	setRows([]); // Set to empty array if no data returned
+				// }
+			}
 		} catch (error) {
 			console.log(error);
 			toast.error('Error Loading Data.')
 		}
 	}
 
-	useEffect(() => { getLibraryCardDetail() }, [selectedLibraryCard])
+	useEffect(() => { getLibraryCardDetail() }, [selectedSearchQuery])
 
 	useEffect(() => {
-		async function getLibraryCardDetails() {
+		async function getLibraryCards() {
 			try {
 				const response = await api.get('/library/library-cards/?display_type=list_view');
 				console.log(response.data);
 
-				setLibraryCardNumbers(response.data.library_cards);
+				setSearchQueryList([...response.data.library_cards, "M24090001"]);
 			} catch (err) {
 				console.log(err);
 				toast.error('Error Occured!');
 			}
 		}
-		getLibraryCardDetails();
+		getLibraryCards();
 	}, []);
 
 	return (
@@ -200,12 +364,12 @@ const QuickSearch = () => {
 						<InputLabel>Search by Library Card # or Media #</InputLabel>
 						<Select
 							label="Search by Library Card # or Media #"
-							value={selectedLibraryCard}
+							value={selectedSearchQuery}
 							required
-							onChange={(e) => setSelectedLibraryCard(e.target.value)}
+							onChange={(e) => setSelectedSearchQuery(e.target.value)}
 						>
 							{
-								libraryCardNumbers?.map((type) => (
+								searchQueryList?.map((type) => (
 									<MenuItem key={type} value={type}>{type}</MenuItem>
 								))
 							}
@@ -213,19 +377,49 @@ const QuickSearch = () => {
 					</FormControl>
 				</Box>
 				<Box sx={{ width: "100%" }}>
-					<DataGrid
-						rows={employeeRows}
-						columns={columns}
-						initialState={{
-							pagination: {
-								paginationModel: {
-									pageSize: 5,
-								},
-							},
-						}}
-						pageSizeOptions={[5]}
-						disableRowSelectionOnClick
-					/>
+					{
+						selectedSearchQuery.startsWith('LIB') ?
+							<DataGrid
+								columns={EmployeeColumns}
+								rows={rows}
+								initialState={{
+									pagination: {
+										paginationModel: {
+											pageSize: 5,
+										},
+									},
+								}}
+								pageSizeOptions={[5]}
+								disableRowSelectionOnClick
+							/> :
+							selectedSearchQuery.startsWith('M') ?
+								<DataGrid
+									columns={MediaColumns}
+									rows={rows}
+									initialState={{
+										pagination: {
+											paginationModel: {
+												pageSize: 5,
+											},
+										},
+									}}
+									pageSizeOptions={[5]}
+									disableRowSelectionOnClick
+								/> :
+								<DataGrid
+									columns={StudentColumns}
+									rows={rows}
+									initialState={{
+										pagination: {
+											paginationModel: {
+												pageSize: 5,
+											},
+										},
+									}}
+									pageSizeOptions={[5]}
+									disableRowSelectionOnClick
+								/>
+					}
 				</Box>
 			</Stack>
 
@@ -318,7 +512,7 @@ const QuickSearch = () => {
 									<Entries
 										w={"7rem"}
 										title={"Library Card #"}
-										val={activeLibId}
+									// val={activeLibId}
 									/>
 									<Entries
 										title={"Employee Id"}
@@ -335,7 +529,7 @@ const QuickSearch = () => {
 									/>
 									<Entries
 										title={"Department"}
-										val={activeLibId}
+										// val={activeLibId}
 										w={"8rem"}
 									/>
 									<Entries
@@ -509,25 +703,6 @@ const Entries = ({ title, val, w }) => {
 				{val}
 			</Typography>
 		</Typography>
-	);
-};
-
-const SearchBox = () => {
-	return (
-		<Box
-			sx={{
-				border: "1px solid #28282836",
-				p: 0.7,
-				px: 3,
-				borderRadius: 1,
-				width: "30rem",
-				display: "flex",
-				alignItems: "center",
-			}}
-		>
-
-
-		</Box>
 	);
 };
 

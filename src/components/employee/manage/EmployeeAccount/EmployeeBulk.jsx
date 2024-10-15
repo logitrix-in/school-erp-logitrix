@@ -92,14 +92,12 @@ const Bulk = () => {
     {
       field: "id", headerName: "Employee ID", flex: 0.8,
       renderCell: (params) => (
-        <Typography>
-          <Typography
-            component="span"
-            sx={{ color: "primary.main", cursor: "pointer" }}
-            onClick={() => setEmployeePopup(true)}
-          >
-            {params.id}
-          </Typography>
+        <Typography
+          component="span"
+          sx={{ color: "primary.main", cursor: "pointer" }}
+          onClick={() => setEmployeePopup(true)}
+        >
+          {params.id}
         </Typography>
       ),
     },

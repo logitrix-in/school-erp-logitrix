@@ -10,17 +10,27 @@ import CloseIcon from "@mui/icons-material/Close";
 import { DataGrid } from "@mui/x-data-grid";
 import Bbox from "../../../UiComponents/Bbox";
 import RevealCard from "../../../AnimationComponents/RevealCard";
+import { useState } from "react";
+import ApplicationID from "../popup/ApplicationID";
 
 const InternalReferrals = ({ open, close }) => {
+    const [popup, setPopup] = useState(false);
 
     const columns = [
-        { field: 'id', headerName: 'Job ID', flex: 1 },
+        {
+            field: 'id', headerName: 'Job ID', flex: 1,
+            renderCell: (params) => (
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setPopup(true)}>
+                    {params.value}
+                </Typography>
+            ),
+        },
         { field: 'employeeType', headerName: 'Employee Type', flex: 1 },
         { field: 'department', headerName: 'Department', flex: 1 },
-        { field: 'grade', headerName: 'Grade', flex: 1 },
-        { field: 'roleSpecialization', headerName: 'Role/Specialization', flex: 1 },
+        { field: 'grade', headerName: 'Grade', flex: 0.6 },
+        { field: 'roleSpecialization', headerName: 'Role/Specialization', flex: 1.4 },
         { field: 'classScope', headerName: 'Class Scope', flex: 1 },
-        { field: 'openPositions', headerName: 'Open Position(s)', type: 'number', flex: 1 },
+        { field: 'openPositions', headerName: 'Open Positions', type: 'number', flex: 1 },
         {
             field: 'referralEnablement',
             headerName: 'Referral Enablement Status',
@@ -33,7 +43,7 @@ const InternalReferrals = ({ open, close }) => {
 
     const rows = [
         {
-            id: 'EMP3543543443',
+            id: 'EMP354442',
             employeeType: 'Teaching Staff',
             department: 'Science',
             grade: 'B2',
@@ -43,7 +53,7 @@ const InternalReferrals = ({ open, close }) => {
             referralEnablement: true,
         },
         {
-            id: 'EMP3543543443',
+            id: 'EMP354443',
             employeeType: 'Teaching Staff',
             department: 'Science',
             grade: 'B2',
@@ -53,7 +63,7 @@ const InternalReferrals = ({ open, close }) => {
             referralEnablement: false,
         },
         {
-            id: 'EMP3543543443',
+            id: 'EMP354444',
             employeeType: 'Teaching Staff',
             department: 'Science',
             grade: 'B2',
@@ -70,6 +80,7 @@ const InternalReferrals = ({ open, close }) => {
             PaperProps={{
                 sx: {
                     maxHeight: "100%",
+                    width: "70%",
                 },
             }}
             maxWidth="lg"
@@ -80,7 +91,6 @@ const InternalReferrals = ({ open, close }) => {
             <Box>
                 <Box
                     p={1}
-                    py={1}
                     bgcolor={"primary.main"}
                     color={"white"}
                     display={"flex"}
@@ -103,8 +113,6 @@ const InternalReferrals = ({ open, close }) => {
 
                 <RevealCard>
                     <Bbox
-                        my={3}
-                        mx={4}
                         pt={2}
                         pb={4}
                         width='100%'
@@ -126,6 +134,8 @@ const InternalReferrals = ({ open, close }) => {
                         </Box>
                     </Bbox>
                 </RevealCard>
+
+                <ApplicationID open={popup} close={() => setPopup(false)} />
             </Box>
         </Dialog >
     );

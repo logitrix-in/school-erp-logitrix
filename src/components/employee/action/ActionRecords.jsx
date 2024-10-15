@@ -8,6 +8,7 @@ import useClasses from "../../../hooks/useClasses";
 import useEmployees from "../../../hooks/useEmployees";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import EmployeePopup from '../EmployeePopup';
 
 const ActionRecords = () => {
   const { acYear, curYear, nonCompliance } = useClasses();
@@ -22,11 +23,18 @@ const ActionRecords = () => {
   const [selectedCompliance, setSelectedCompliance] = useState('');
   const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
 
+  const [applicationIDPopup, setApplicationIDPopup] = useState(false);
+
   const columns = [
     {
       field: "id",
       headerName: "Employee ID",
       flex: 1,
+      renderCell: (params) => (
+        <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setApplicationIDPopup(true)}>
+          {params.value}
+        </Typography>
+      ),
     },
     {
       field: "name",
@@ -91,7 +99,7 @@ const ActionRecords = () => {
     },
     {
       field: "dueAmount",
-      headerName: "Penalty Due amount",
+      headerName: "Due Amount",
       flex: 0.8,
     },
     {
@@ -135,7 +143,7 @@ const ActionRecords = () => {
       incidentid: ["#112334"],
     },
     {
-      id: "AG240001",
+      id: "AG240002",
       name: "Saurav Ray",
       employeeType: "Teaching Staff",
       department: "Physics",
@@ -146,7 +154,7 @@ const ActionRecords = () => {
       incidentid: ["#112334", "#456636"],
     },
     {
-      id: "AG240001",
+      id: "AG240003",
       name: "Saurav Ray",
       employeeType: "Teaching Staff",
       department: "Physics",
@@ -319,8 +327,10 @@ const ActionRecords = () => {
         </Box>
 
         <Box display="flex" justifyContent="flex-end" mr={3} mt={3}>
-          <Button variant="outlined">Download Student List</Button>
+          <Button variant="outlined">Download Detailed Report</Button>
         </Box>
+
+        <EmployeePopup open={applicationIDPopup} close={() => setApplicationIDPopup(false)} />
       </Box>
     </RevealCard>
   );

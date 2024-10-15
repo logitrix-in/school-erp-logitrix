@@ -83,7 +83,7 @@ const Accept = ({ open, close }) => {
                     </FormControl>
 
 
-                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={1}>To complete the promotion process, ensure that the promotion letter is issued through Letter Issuance section</Typography>
+                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={1} fontStyle={"italic"}>To complete the promotion process, ensure that the promotion letter is issued through Letter Issuance section</Typography>
 
                     <Box marginY={1} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="primary" fullWidth onClick={() => {

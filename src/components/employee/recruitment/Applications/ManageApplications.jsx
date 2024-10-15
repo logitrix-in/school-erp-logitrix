@@ -7,7 +7,6 @@ import {
 } from "@mui/material";
 import Bbox from "../../../UiComponents/Bbox";
 import RevealCard from "../../../AnimationComponents/RevealCard";
-import { ToastContainer } from "react-toastify";
 import NewCandidateInvitation from '../popup/NewCandidateInvitation';
 import InternalReferrals from '../popup/InternalReferrals';
 import { useNavigate } from "react-router-dom";
@@ -37,7 +36,6 @@ export default function ManageApplications() {
 
                 <Divider />
 
-                <ToastContainer />
                 <NewCandidateInvitation open={inviteNewCandidatePopup} close={() => setInviteNewCandidatePopup(false)} />
                 <InternalReferrals open={internalReferralPopup} close={() => setInternalReferralPopup(false)} />
 

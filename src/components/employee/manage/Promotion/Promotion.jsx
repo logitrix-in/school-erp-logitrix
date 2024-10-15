@@ -7,7 +7,6 @@ import {
   Typography,
   Button,
   TextField,
-  Link,
   FormControlLabel,
   Switch,
   FormControl,
@@ -23,11 +22,22 @@ import Accept from "./Accept";
 import Reject from "./Reject";
 import PromotionIncrement from "./PromotionIncrement";
 import EmployeePopup from '../../EmployeePopup'
+import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
 
 const Promotion = () => {
   const navigate = useNavigate();
+
   const [promotionEligibility, setPromotionEligibility] = useState(false);
   const [promotionIncrement, setPromotionIncrement] = useState(false);
+  const [promotionStatus, setPromotionStatus] = useState([
+    "View All",
+    "Approved for Promotion",
+    "Eligible for Promotion",
+    "Recommended for Promotion by Supervisor",
+    "Recommended for Promotion by Dept Head"
+  ]);
+  const [selectedPromotionStatus, setSelectedPromotionStatus] = useState("Recommended for Promotion by Dept Head");
+
   const [acceptPopup, setAcceptPopup] = useState(false);
   const [rejectPopup, setRejectPopup] = useState(false);
   const [employeePopup, setEmployeePopup] = useState(false);
@@ -79,11 +89,66 @@ const Promotion = () => {
     { field: "promotion_eligibility", headerName: "Promotion Eligibility", width: 150 },
     { field: "curr_grade", headerName: "Current Grade", width: 120 },
     { field: "supervisor_name", headerName: "Supervisor Name", width: 120 },
-    { field: "supervisor_recommendation", headerName: "Supervisor Recommendation", width: 120 },
-    { field: "department_head_name", headerName: "Department Head Name", width: 120 },
-    { field: "department_head_recommendation", headerName: "Department Head Recommendation", width: 120 },
-    { field: "approved_for_upcoming_cycle", headerName: "Approved for Upcoming Cycle", width: 120 },
+    {
+      field: "supervisor_recommendation", headerName: "Supervisor Recommendation", width: 120,
+      renderHeader: (params) => <MultilineHeader colDef={params.colDef} />
+    },
+    {
+      field: "department_head_name", headerName: "Department Head Name", width: 150,
+      renderHeader: (params) => <MultilineHeader colDef={params.colDef} />
+    },
+    {
+      field: "department_head_recommendation", headerName: "Department Head Recommendation", width: 120,
+      renderHeader: (params) => <MultilineHeader colDef={params.colDef} />
+    },
+    {
+      field: "approved_for_upcoming_cycle", headerName: "Approved for Upcoming Cycle", width: 150,
+      renderHeader: (params) => <MultilineHeader colDef={params.colDef} />,
+      renderCell: (params) => (
+        <Box display={"flex"} justifyContent={"space-between"} alignItems={'center'}>
+          <Box
+            mr={2}
+            style={{
+              color: "#fff",
+              borderRadius: "6px",
+              display: "inline-block",
+              backgroundColor:
+                params.value === "Yes"
+                  ? "#30B0C7"
+                  : params.value === "No"
+                    ? "#C4673B"
+                    : "inherit",
+              width:
+                params.value === "Yes" || params.value === "No"
+                  ? "44px"
+                  : "auto",
+              paddingLeft:
+                params.value === "Yes"
+                  ? "11px"
+                  : params.value === "No"
+                    ? "7px"
+                    : "0px",
+            }}
+          >
+            {params.value}
+          </Box>
+
+          <Box display={"flex"} justifyContent={"space-between"} alignItems={'center'}>
+            <ShowChartOutlinedIcon color="success" />
+            <Typography color={'#34C759'}>5%</Typography>
+          </Box>
+        </Box >
+      ),
+    },
   ];
+
+  const MultilineHeader = ({ colDef }) => {
+    return (
+      <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.4', fontWeight: '600' }}>
+        {colDef.headerName}
+      </div>
+    );
+  };
 
   const rows = [
     {
@@ -110,7 +175,7 @@ const Promotion = () => {
       supervisor_recommendation: "Yes",
       department_head_name: "Jane Smith",
       department_head_recommendation: "Yes",
-      approved_for_upcoming_cycle: "Yes",
+      approved_for_upcoming_cycle: "No",
     },
     {
       id: "AG240003",
@@ -151,7 +216,7 @@ const Promotion = () => {
               fontSize: "16px",
               fontWeight: 400,
             }}
-            onClick={() => navigate("/employee/manage/")}
+            onClick={() => navigate("/employee/manage/edit-information")}
           >
             Edit Information
           </button>
@@ -262,26 +327,30 @@ const Promotion = () => {
           <ToastContainer />
 
           <Box mt={3} mx={3} display={'flex'} justifyContent={'space-between'}>
-            <Autocomplete
-              options={["Student 1", "Student 2"]}
-              filterSelectedOptions
-              freeSolo={false}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Recommended for Promotion by Department Head"
-                  label="Recommended for Promotion by Department Head"
-                />
-              )}
-              sx={{ width: "40%" }}
-            />
+
+            <FormControl sx={{ width: "30%" }}>
+              <InputLabel>Promotion Status</InputLabel>
+              <Select
+                label="Academic Year"
+                onChange={(e) =>
+                  setSelectedPromotionStatus(e.target.value)
+                }
+                value={selectedPromotionStatus}
+              >
+                {promotionStatus.map((year) => (
+                  <MenuItem key={year} value={year}>
+                    {year}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
             <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'}>
+              <Typography color="primary.main" fontWeight={'600'} sx={{ width: '30%' }}>Regular Promotion</Typography>
               <FormControlLabel
                 control={<Switch />}
-                label="Regular Promotion"
               />
-              <Typography color="primary.main" fontWeight={'600'} sx={{ width: '30%' }}>Non Permanent to full time conversion</Typography>
+              <Typography color="primary.main" fontWeight={'600'} sx={{ width: '40%' }}>Non Permanent to full time conversion</Typography>
             </Box>
           </Box>
 

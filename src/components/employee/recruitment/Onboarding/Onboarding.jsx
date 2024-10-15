@@ -9,6 +9,10 @@ import {
     Autocomplete,
     TextField,
     Radio,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
@@ -18,19 +22,38 @@ import Manage from "./Manage";
 import Reject from './popups/Reject'
 import Initiate from './popups/Initiate'
 import ReleaseJoiningLetter from './popups/ReleaseJoiningLetter'
+import ReignsSelect from '@/components/UiComponents/ReignsSelect'
+import useEmployees from '@/hooks/useEmployees'
+import useClasses from '@/hooks/useClasses'
+import ApplicationID from "../popup/ApplicationID";
 
 const StudentAccount = () => {
     const navigate = useNavigate();
+
+    const { acYear, curYear } = useClasses();
+    const [academicYear, setAcademicYear] = useState(curYear);
+
+    const { employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment } = useEmployees();
+
+    const [status, setStatus] = useState(["Selected", "Pending", "Rejected"]);
+
+    const [selectedStatus, setSelectedStatus] = useState('');
+    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [selectedJobID, setSelectedJobID] = useState('');
+    const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
+
+    const [candidateName, setCandidateName] = useState('');
     const [selectedRow, setSelectedRow] = useState(null);
     const [rejectPopup, setRejectPopup] = useState(false);
     const [initiatePopup, setInitiatePopup] = useState(false);
     const [releaseJoiningLetter, setReleaseJoiningLetter] = useState(false);
+    const [applicationIDPopup, setApplicationIDPopup] = useState(false);
 
     const columns = [
         {
             field: "radioButtons",
             headerName: "",
-            flex: 0.6,
+            flex: 0.5,
             renderCell: (params) => (
                 <Radio
                     checked={params.row.id === selectedRow}
@@ -45,20 +68,75 @@ const StudentAccount = () => {
                 />
             ),
         },
-        { field: 'applicationId', headerName: 'Application ID', flex: 1 },
-        { field: 'candidateName', headerName: 'Candidate Name', flex: 1 },
-        { field: 'onboardingStatus', headerName: 'Onboarding Status', flex: 1.4 },
-        { field: 'jobId', headerName: 'Job ID', flex: 0.8 },
+        {
+            field: 'applicationId', headerName: 'Application ID', flex: 1,
+            renderCell: (params) => (
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setApplicationIDPopup(true)}>
+                    {params.value}
+                </Typography>
+            ),
+        },
+        { field: 'candidateName', headerName: 'Candidate Name', flex: 1.5 },
+        {
+            field: 'onboardingStatus', headerName: 'Onboarding Status', flex: 1.4,
+            renderCell: (params) => (
+                <Box
+                    style={{
+                        backgroundColor:
+                            params.value === "Not Initiated"
+                                ? "#FEEBCB"
+                                : params.value === "Pending with Employee"
+                                    ? "#BEE3F8"
+                                    : "transparent",
+                        color:
+                            params.value === "Not Initiated"
+                                ? "#7B341E"
+                                : params.value === "Pending with Employee"
+                                    ? "#2A4365"
+                                    : "transparent",
+                        borderRadius: "6px",
+                        fontSize: "12px",
+                        fontWeight: "500",
+                        display: "inline-block",
+                        paddingLeft: "7px",
+                        paddingRight: "7px",
+                        paddingTop: "2px",
+                        paddingBottom: "2px",
+                    }}
+                >
+                    {params.value}
+                </Box>
+            ),
+        },
+        {
+            field: 'jobId', headerName: 'Job ID', flex: 0.8,
+            renderCell: (params) => (
+                <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setApplicationIDPopup(true)}>
+                    {params.value}
+                </Typography>
+            ),
+        },
         { field: 'department', headerName: 'Department', flex: 1 },
-        { field: 'grade', headerName: 'Grade', flex: 0.8 },
-        { field: 'offeredCTC', headerName: 'Offered CTC/Contract Payment', flex: 1.8 },
+        { field: 'grade', headerName: 'Grade', flex: 0.7 },
+        {
+            field: 'offeredCTC', headerName: 'Offered CTC/\nContract Payment', flex: 1.4,
+            renderHeader: (params) => <MultilineHeader colDef={params.colDef} />
+        },
         { field: 'expectedJoiningDate', headerName: 'Expected Date of Joining', flex: 1.6 }
     ];
+
+    const MultilineHeader = ({ colDef }) => {
+        return (
+            <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.4', fontWeight: '600' }}>
+                {colDef.headerName}
+            </div>
+        );
+    };
 
     const rows = [
         {
             id: 1,
-            applicationId: 'EMP35443443',
+            applicationId: 'EMP354434',
             candidateName: 'Debarati Ghosh',
             onboardingStatus: 'Not Initiated',
             jobId: 'CHN2401',
@@ -69,7 +147,7 @@ const StudentAccount = () => {
         },
         {
             id: 2,
-            applicationId: 'EMP35443442',
+            applicationId: 'EMP354435',
             candidateName: 'Debarati Ghosh',
             onboardingStatus: 'Pending with Employee',
             jobId: 'CHN2401',
@@ -80,12 +158,8 @@ const StudentAccount = () => {
         }
     ];
 
-    const [applicationIDPopup, setApplicationIDPopup] = useState(false);
-
-
     return (
         <>
-            {/* top navigation buttons */}
             <div
                 style={{
                     backgroundColor: "#E5F3FB",
@@ -206,7 +280,6 @@ const StudentAccount = () => {
                     borderRadius={2}
                     overflow="hidden"
                 >
-                    {/* top bulk text */}
                     <Box
                         bgcolor="white"
                         py={1.3}
@@ -221,11 +294,9 @@ const StudentAccount = () => {
                         </Typography>
                     </Box>
 
-                    {/* divider */}
                     <Divider />
 
                     <Box>
-                        {/* dropdowns and search button section */}
                         <Box
                             display="flex"
                             flexDirection="row"
@@ -235,81 +306,79 @@ const StudentAccount = () => {
                             height={50}
                             gap={4}
                         >
+                            <FormControl sx={{ width: "30%" }}>
+                                <InputLabel>Academic Year</InputLabel>
+                                <Select
+                                    label="Academic Year"
+                                    onChange={(e) =>
+                                        setAcademicYear(e.target.value)
+                                    }
+                                    value={academicYear}
+                                >
+                                    {acYear.map((year) => (
+                                        <MenuItem key={year} value={year}>
+                                            {year}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
 
-                            <Autocomplete
-                                options={["Student 1", "Student 2"]}
-                                filterSelectedOptions
-                                freeSolo={false}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        placeholder="Academic Year"
-                                        label="Academic Year"
-                                    />
-                                )}
-                                sx={{ width: "20%" }}
+                            <ReignsSelect
+                                multiple
+                                label="Job ID"
+                                items={[]}
+                                defaultValues={[]}
+                                onChange={setSelectedJobID}
+                                value={selectedJobID}
+                                sx={{
+                                    width: '20%'
+                                }}
                             />
 
-                            <Autocomplete
-                                options={["Student 1", "Student 2"]}
-                                filterSelectedOptions
-                                freeSolo={false}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        placeholder="Job ID"
-                                        label="Job ID"
-                                    />
-                                )}
-                                sx={{ width: "20%" }}
+                            <ReignsSelect
+                                multiple
+                                label="Department"
+                                items={employeeDepartment}
+                                defaultValues={employeeDepartment}
+                                onChange={setSelectedDepartment}
+                                value={selectedDepartment}
+                                sx={{
+                                    width: '20%'
+                                }}
                             />
 
-                            <Autocomplete
-                                options={["Student 1", "Student 2"]}
-                                filterSelectedOptions
-                                freeSolo={false}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        placeholder="Department"
-                                        label="Department"
-                                    />
-                                )}
-                                sx={{ width: "20%" }}
-                            />
-
-                            <Autocomplete
-                                options={["Student 1", "Student 2"]}
-                                filterSelectedOptions
-                                freeSolo={false}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        placeholder="Onboarding Status"
-                                        label="Onboarding Status"
-                                    />
-                                )}
-                                sx={{ width: "20%" }}
+                            <ReignsSelect
+                                multiple
+                                label="Onboarding Status"
+                                items={status}
+                                defaultValues={status}
+                                onChange={setSelectedStatus}
+                                value={selectedStatus}
+                                sx={{
+                                    width: '20%'
+                                }}
                             />
                             <Button variant="contained">Submit</Button>
                         </Box>
 
                         {/* total number of results found */}
                         <Box p={2} mt={1} display="flex" justifyContent="space-between" alignItems={'flex-end'}>
-                            <Autocomplete
-                                options={['stud 1', 'stud 2', 'stud 3', 'stud 4']}
-                                filterSelectedOptions
-                                freeSolo={false}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Search by Candidate Name or Application ID"
-                                        placeholder="Search by Student ID / Student Name"
-                                        variant="outlined"
-                                    />
-                                )}
-                                sx={{ width: "35%" }}
-                            />
+                            <FormControl sx={{ width: "30%" }}>
+                                <InputLabel>Search by Candidate Name or Application ID</InputLabel>
+                                <Select
+                                    label="Search by Candidate Name or Application ID"
+                                    onChange={(e) =>
+                                        setCandidateName(e.target.value)
+                                    }
+                                    value={candidateName}
+                                >
+                                    {[].map((year) => (
+                                        <MenuItem key={year} value={year}>
+                                            {year}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
 
                             <Box
                                 style={{
@@ -333,8 +402,6 @@ const StudentAccount = () => {
                             </Box>
                         </Box>
 
-
-                        {/* table */}
                         <Box m={2} height={"100%"}>
                             <DataGrid
                                 rows={rows}
@@ -400,6 +467,8 @@ const StudentAccount = () => {
                     <Reject open={rejectPopup} close={() => setRejectPopup(false)} />
                     <Initiate open={initiatePopup} close={() => setInitiatePopup(false)} />
                     <ReleaseJoiningLetter open={releaseJoiningLetter} close={() => setReleaseJoiningLetter(false)} />
+
+                    <ApplicationID open={applicationIDPopup} close={() => setApplicationIDPopup(false)} />
 
                 </Bbox>
             </RevealCard >

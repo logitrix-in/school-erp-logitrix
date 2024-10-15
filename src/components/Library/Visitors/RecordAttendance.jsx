@@ -25,7 +25,7 @@ const employeeColumns = [
 	{
 		field: "employee_id",
 		headerName: "Employee ID",
-		flex: 1,
+		flex: 0.5,
 	},
 	{
 		field: "employee_name",
@@ -44,10 +44,38 @@ const employeeColumns = [
 	},
 ];
 
+const studentColumns = [
+	{
+		field: "library_card_number",
+		headerName: "Library Card #",
+		flex: 0.5,
+	},
+	{
+		field: "student_id",
+		headerName: "Student ID",
+		flex: 1,
+	},
+	{
+		field: "student_name",
+		headerName: "Student Name",
+		flex: 1,
+	},
+	{
+		field: "section",
+		headerName: "Section",
+		flex: 1,
+	},
+	{
+		field: "roll",
+		headerName: "Roll #",
+		flex: 1,
+	},
+];
+
 const QuickSearch = ({ libraryCardNumbers }) => {
 	const [showPopup, setShowPopup] = useState(false);
 	const [selectedLibraryCard, setSelectedLibraryCard] = useState(null);
-	const [employeeRows, setEmployeeRows] = useState([]);
+	const [rows, setRows] = useState([]);
 
 	async function getLibraryCardDetail() {
 		try {
@@ -72,9 +100,9 @@ const QuickSearch = ({ libraryCardNumbers }) => {
 				};
 
 				console.log('New row:', newRow);
-				setEmployeeRows([newRow]); // Set as an array with a single item
+				setRows([newRow]); // Set as an array with a single item
 			} else {
-				setEmployeeRows([]); // Set to empty array if no data returned
+				setRows([]); // Set to empty array if no data returned
 			}
 
 		} catch (error) {
@@ -89,7 +117,7 @@ const QuickSearch = ({ libraryCardNumbers }) => {
 		try {
 			console.log(selectedLibraryCard);
 
-			const response = await api.get(`/library/visitors-attendance/`, {
+			const response = await api.post(`/library/visitors-attendance/`, {
 				"library_card": selectedLibraryCard
 			});
 			console.log(response.data);
@@ -117,7 +145,7 @@ const QuickSearch = ({ libraryCardNumbers }) => {
 							onChange={(e) => setSelectedLibraryCard(e.target.value)}
 						>
 							{
-								libraryCardNumbers.map((item, index) => (
+								libraryCardNumbers?.map((item, index) => (
 									<MenuItem key={index} value={item}>{item}</MenuItem>
 								))
 							}
@@ -125,12 +153,21 @@ const QuickSearch = ({ libraryCardNumbers }) => {
 					</FormControl>
 				</Box>
 				<Box sx={{ width: "100%" }}>
-					<DataGrid
-						autoHeight
-						rows={employeeRows}
-						columns={employeeColumns}
-						disableRowSelectionOnClick
-					/>
+					{
+						selectedLibraryCard?.startsWith('LIB18') ?
+							<DataGrid
+								autoHeight
+								rows={rows}
+								columns={employeeColumns}
+								disableRowSelectionOnClick
+							/> : <DataGrid
+								autoHeight
+								rows={rows}
+								columns={studentColumns}
+								disableRowSelectionOnClick
+							/>
+					}
+
 				</Box>
 
 				<ToastContainer />

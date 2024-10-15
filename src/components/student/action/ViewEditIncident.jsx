@@ -28,22 +28,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import Frame from "../../../assets/icons/frame.png";
 import Invoice from "../../../assets/icons/invoice-dollar.png";
 import Suspend from "../../../assets/icons/suspend.png";
-import Profile from "../../../assets/icons/photo.png";
 import { DataGrid } from "@mui/x-data-grid";
 
 const ViewEditIncident = () => {
-  const isSmall = useMediaQuery("(max-width: 1364px)");
-  const isTablet = useMediaQuery("(min-width: 1365px) and (max-width: 1535px)");
   const isLaptop = useMediaQuery("(min-width: 1536px) and (max-width: 1706px)");
-  const isDesktop = useMediaQuery(
-    "(min-width: 1707px) and (max-width: 1919px)"
-  );
-  const isLarge = useMediaQuery("(min-width: 1920px)");
-  const isXlarge = useMediaQuery("(min-width: 2560px)");
 
   const statuses = ["Open", "Cancelled", "Closed", "All"];
-
-  const [openId, setOpenId] = useState(null);
 
   const columns = [
     { field: "space", headerName: "", width: 50 },
@@ -85,8 +75,8 @@ const ViewEditIncident = () => {
               params.value === "Active"
                 ? "#C6F6D5"
                 : params.value === "Inactive"
-                ? "#FFCCCC"
-                : "transparent",
+                  ? "#FFCCCC"
+                  : "transparent",
             borderRadius: "6px",
             display: "inline-block",
             width:
@@ -97,8 +87,8 @@ const ViewEditIncident = () => {
               params.value === "Active"
                 ? "11px"
                 : params.value === "Inactive"
-                ? "7px"
-                : "0px",
+                  ? "7px"
+                  : "0px",
           }}
         >
           {params.value}

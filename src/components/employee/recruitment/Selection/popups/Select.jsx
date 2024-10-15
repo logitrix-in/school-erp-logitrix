@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Box,
     Button,
@@ -8,7 +7,7 @@ import {
     Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import IncidentHeaderBanner from "../Banner";
 import { DatePicker } from "@mui/x-date-pickers";
 
@@ -74,7 +73,7 @@ const Approve = ({ open, close }) => {
                         </Box>
                     </Box>
 
-                    <IncidentHeaderBanner text="Applied For" />
+                    <IncidentHeaderBanner text="Applied For" style={{ marginTop: '-16px' }} />
 
                     <Box display="flex" justifyContent="center" width="100%" alignItems="flex-start" >
                         <Box display="flex" gap={0} width="50%" justifyContent="space-between" >
@@ -107,8 +106,6 @@ const Approve = ({ open, close }) => {
                     <Box display={"flex"} gap={2} sx={{ width: '100%' }}>
                         <DatePicker
                             label="Expected Date of Joining"
-                            // onChange={(e) => setStartDate(e)}
-                            // minDate={dayjs()}
                             format="DD MMM YYYY"
                             sx={{ width: '100%' }}
                         />

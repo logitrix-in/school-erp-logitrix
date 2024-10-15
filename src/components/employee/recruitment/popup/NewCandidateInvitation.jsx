@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Box,
     Button,
@@ -9,9 +8,12 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { toast } from "react-toastify";
-
+import ReignsSelect from "../../../UiComponents/ReignsSelect";
+import { useState } from "react";
 
 const NewCandidateInvitation = ({ open, close }) => {
+
+    const [selectedJobID, setSelectedJobID] = useState([]);
 
     return (
         <Dialog
@@ -55,7 +57,18 @@ const NewCandidateInvitation = ({ open, close }) => {
 
                     <TextField placeholder="Enter Name" label="Name of the New Candidate" fullWidth></TextField>
                     <TextField placeholder="Enter Email ID" label="Email ID of the New Candidate" fullWidth></TextField>
-                    <TextField placeholder="Job ID" label="Job ID" fullWidth></TextField>
+
+                    <ReignsSelect
+                        multiple
+                        label="Job ID"
+                        items={[]}
+                        defaultValues={[]}
+                        onChange={setSelectedJobID}
+                        value={selectedJobID}
+                        sx={{
+                            width: '100%'
+                        }}
+                    />
 
                     <Box display="flex" justifyContent="space-between" width="100%" alignItems="flex-start" gap={4}>
                         <Box display="flex" gap={2} justifyContent="center">

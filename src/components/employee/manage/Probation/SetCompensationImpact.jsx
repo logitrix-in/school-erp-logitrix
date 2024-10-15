@@ -12,13 +12,15 @@ import {
     IconButton
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Delete } from "@mui/icons-material";
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import useEmployees from "@/hooks/useEmployees";
 
 const SetCompensationImpact = ({ open, close }) => {
+    const { employeeGrade } = useEmployees();
+
     const [rows, setRows] = useState([
         { id: 1, grade: 10, increment: '' },
-        { id: 2, grade: 10, increment: '' },
     ]);
 
     const handleAddRow = () => {
@@ -42,7 +44,6 @@ const SetCompensationImpact = ({ open, close }) => {
 
     const handleSubmit = () => {
         console.log('Submitted data:', rows);
-        // Here you can perform further actions with the data, such as sending it to an API
         close();
     };
 
@@ -71,7 +72,7 @@ const SetCompensationImpact = ({ open, close }) => {
                 >
                     <Box />
                     <Typography fontSize={"1.1rem"} textAlign={"center"}>
-                        Set Compensation Impact
+                        Edit Compensation Impact
                     </Typography>
                     <IconButton
                         edge="start"
@@ -93,16 +94,20 @@ const SetCompensationImpact = ({ open, close }) => {
                 <Box mt={6}>
                     {rows.map((row) => (
                         <Box key={row.id} display="flex" alignItems="center" gap={4} mt={4}>
-                            <FormControl fullWidth>
+
+                            <FormControl sx={{ width: "100%" }}>
+                                <InputLabel>Grade</InputLabel>
                                 <InputLabel id={`grade-label-${row.id}`}>Grade</InputLabel>
                                 <Select
-                                    value={row.grade}
                                     label="Grade"
+                                    value={row.grade}
                                     onChange={(e) => handleChange(row.id, 'grade', e.target.value)}
                                 >
-                                    <MenuItem value={10}>Grade 1</MenuItem>
-                                    <MenuItem value={20}>Grade 2</MenuItem>
-                                    <MenuItem value={30}>Grade 3</MenuItem>
+                                    {employeeGrade.map((grade) => (
+                                        <MenuItem key={grade} value={grade}>
+                                            {grade}
+                                        </MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
 
@@ -113,7 +118,7 @@ const SetCompensationImpact = ({ open, close }) => {
                                 value={row.increment}
                                 onChange={(e) => handleChange(row.id, 'increment', e.target.value)}
                             />
-                            <Delete color="error" onClick={() => handleDeleteRow(row.id)} sx={{ cursor: 'pointer' }} />
+                            <DeleteOutlinedIcon color="error" onClick={() => handleDeleteRow(row.id)} sx={{ cursor: 'pointer' }} />
                         </Box>
                     ))}
 

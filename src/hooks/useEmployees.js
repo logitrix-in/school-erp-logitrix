@@ -16,6 +16,14 @@ const useEmployees = () => {
         employeeLeaveTypes: context.employeeLeaveTypes,
         employeeCategories: context.employeeCategories,
         employeeCreditCycle: context.employeeCreditCycle,
+        employeeClassScope: context.employeeClassScope,
+        employeeClassType: context.employeeClassType,
+        employeeMedium: context.employeeMedium,
+        employeeBoard: context.employeeBoard,
+        employeeCasteCategory: context.employeeCasteCategory,
+        employeeUniversity: context.employeeUniversity,
+        employeeDegree: context.employeeDegree,
+        employeeSpecialisation: context.employeeSpecialisation,
     };
 };
 

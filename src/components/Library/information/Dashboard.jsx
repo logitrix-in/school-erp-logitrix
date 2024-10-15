@@ -1,43 +1,50 @@
 import { Box, Divider, Grid, Typography, IconButton } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Bbox from "../../UiComponents/Bbox";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
-import { AppContext } from "../../../context/AppContext";
 import useClasses from "../../../hooks/useClasses";
+import useEmployees from "../../../hooks/useEmployees";
 import { Icon } from "@iconify/react";
 import api from "../../../config/api";
+import {
+	FormControl,
+	InputLabel,
+	Select,
+	MenuItem
+} from "@mui/material";
 
 const Dashboard = () => {
-	const ctx = useContext(AppContext);
-	const { classes, sections, acYear, curYear, status, employeeType } = useClasses();
+	const { classes, sections, acYear, curYear, status } = useClasses();
+	const { employeeType } = useEmployees();
 	const [academicYear, setAcademicYear] = useState(curYear);
-	const [selectedClasses, setSelectedClasses] = useState(classes);
-	const [selectedSections, setSelectedSections] = useState(sections);
-	const [selectedEmployeeTypes, setSelectedEmployeeTypes] = useState(["Management", "Teaching Staff", "Support Staff"]);
-	const [selectedStatus, setSelectedStatus] = useState(status);
+	const [selectedClasses, setSelectedClasses] = useState('');
+	const [selectedSections, setSelectedSections] = useState('');
+	const [selectedEmployeeTypes, setSelectedEmployeeTypes] = useState('');
+	const [selectedStatus, setSelectedStatus] = useState('');
 	const [dashboardData, setDashboardData] = useState(null);
 
 	useEffect(() => {
 		fetchDashboardData();
 	}, []);
 
+	useEffect(() => {
+		fetchDashboardData();
+	}, [academicYear, selectedClasses, selectedSections, selectedEmployeeTypes, selectedStatus]);
+
 	const fetchDashboardData = async () => {
 		try {
 			const response = await api.post('/library/information/inventory-dashboard', {
-				academic_year: academicYear,
-				classes: selectedClasses,
-				sections: selectedSections,
-				employee_types: selectedEmployeeTypes,
-				status: selectedStatus
+				// academic_year: "2024-25",
+				// class_name: selectedClasses,
+				// section: selectedSections,
+				// employee_type: selectedEmployeeTypes,
+				// current_status: selectedStatus
 			});
+			console.log(response.data);
 			setDashboardData(response.data);
 		} catch (error) {
 			console.error("Error fetching dashboard data:", error);
 		}
-	};
-
-	const handleAcademicYearChange = (e) => {
-		setAcademicYear(e?.target?.value ?? curYear);
 	};
 
 	return (
@@ -66,16 +73,27 @@ const Dashboard = () => {
 					flexDirection={"column"}
 					gap={2}
 				>
+
+					<FormControl>
+						<InputLabel>Academic Year</InputLabel>
+						<Select
+							label="Academic Year"
+							onChange={(e) =>
+								setAcademicYear(e.target.value)
+							}
+							value={academicYear}
+
+						>
+							{acYear.map((year) => (
+								<MenuItem key={year} value={year}>
+									{year}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
 					<ReignsSelect
-						items={acYear}
-						label="Academic Year"
-						defaultVal={curYear}
-						onChange={handleAcademicYearChange}
-						value={academicYear}
-					/>
-					<ReignsSelect
-						multiple
 						items={classes}
+						multiple
 						label="Class"
 						defaultValues={classes}
 						onChange={setSelectedClasses}

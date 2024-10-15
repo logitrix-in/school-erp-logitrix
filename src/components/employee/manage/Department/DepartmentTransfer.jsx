@@ -59,14 +59,16 @@ const DepartmentTransfer = ({ open, close }) => {
                 </Box>
 
                 <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"95%"} margin="auto" alignItems="center">
-                    <Box display="flex" justifyContent="center" width="100%" alignItems="center" mt={2}>
+                    <Box display="flex" justifyContent="center" width="100%" alignItems="start" mt={2}>
                         <Box display="flex" gap={2} width="48%" justifyContent="center">
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography mb={2}>Employee ID</Typography>
                                 <Typography mb={2}>Employee Name</Typography>
                                 <Typography mb={2}>Department</Typography>
                                 <Typography mb={2}>Role</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography fontWeight="medium" ml={1} mb={2}>: EMP1234</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Priya Naskar</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Physics</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Laboratory Assistant</Typography>

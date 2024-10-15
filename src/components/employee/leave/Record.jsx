@@ -20,6 +20,7 @@ import IncidentHeaderBanner from "./Banner";
 import { DataGrid } from "@mui/x-data-grid";
 import useEmployees from '@/hooks/useEmployees';
 import LeaveRequestID from "./LeaveRequestID";
+import EmployeePopup from '../EmployeePopup';
 
 export default function Record() {
 
@@ -31,12 +32,14 @@ export default function Record() {
     const [endDate, setEndDate] = useState(null);
     const [leaveRequestPopup, setLeaveRequestPopup] = useState(false);
 
+    const [employeeIDPopup, setEmployeeIDPopup] = useState(false);
+
     const columns = [
         { field: "space", headerName: "", flex: 0.2 },
         {
             field: "id",
             headerName: "Leave Request ID",
-            flex: 1,
+            flex: 0.6,
             renderCell: (params) => (
                 <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setLeaveRequestPopup(true)}>
                     {params.value}
@@ -51,17 +54,18 @@ export default function Record() {
         {
             field: "leave_duration",
             headerName: "Leave Duration",
-            flex: 1
+            flex: 0.8
         },
         {
             field: "no_of_working_days",
-            headerName: "No. of Working Days",
-            flex: 1
+            headerName: "No. of Working\n Days",
+            renderHeader: (params) => <MultilineHeader colDef={params.colDef} />,
+            flex: 0.5
         },
         {
             field: "status",
             headerName: "Status",
-            flex: 1,
+            flex: 0.4,
             renderCell: (params) => (
                 <Box
                     style={{
@@ -92,9 +96,28 @@ export default function Record() {
         {
             field: "approver_details",
             headerName: "Approver Details ",
-            flex: 1
+            flex: 1,
+            renderCell: (params) => (
+                <Box display={'flex'}>
+                    <Typography>
+                    </Typography>
+                    {params.value.name}
+                    <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setEmployeeIDPopup(true)}>
+                        ({params.value.id})
+                    </Typography>
+                </Box>
+
+            ),
         },
     ];
+
+    const MultilineHeader = ({ colDef }) => {
+        return (
+            <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.4', fontWeight: '600' }}>
+                {colDef.headerName}
+            </div>
+        );
+    };
 
     const rows = [
         {
@@ -103,7 +126,10 @@ export default function Record() {
             leave_duration: "4 Mar 2024 - 10 Mar 2024",
             no_of_working_days: 3,
             status: "Active",
-            approver_details: "John Doe",
+            approver_details: {
+                name: "John Doe",
+                id: "AUG123456",
+            },
         },
         {
             id: "LR002",
@@ -111,7 +137,10 @@ export default function Record() {
             leave_duration: "4 Mar 2024 - 10 Mar 2024",
             no_of_working_days: 10,
             status: "Inactive",
-            approver_details: "Jane Smith",
+            approver_details: {
+                name: "Alice Johnson",
+                id: "AUG123457",
+            }
         },
         {
             id: "LR003",
@@ -119,7 +148,10 @@ export default function Record() {
             leave_duration: "4 Mar 2024 - 10 Mar 2024",
             no_of_working_days: 30,
             status: "Active",
-            approver_details: "Alice Johnson",
+            approver_details: {
+                name: "Jane Smith",
+                id: "AUG123458",
+            },
         },
     ];
 
@@ -173,10 +205,12 @@ export default function Record() {
                             <Box display="flex" justifyContent="center" width="100%" alignItems="flex-start" gap={10}>
                                 <Box display="flex" gap={0} width="30%" justifyContent="space-between" >
                                     <Box display="flex" flexDirection="column" justifyContent="space-between" >
+                                        <Typography mb={2}>Employee ID</Typography>
                                         <Typography mb={2}>Employee Name</Typography>
                                         <Typography mb={1}>Grade</Typography>
                                     </Box>
                                     <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                        <Typography fontWeight="medium" ml={1} mb={2}>: EMP1234</Typography>
                                         <Typography fontWeight="medium" ml={1} mb={2}>: Priya Naskar</Typography>
                                         <Typography fontWeight="medium" ml={1} mb={1}>: B2</Typography>
                                     </Box>
@@ -184,20 +218,24 @@ export default function Record() {
                                 <Box display="flex" gap={0} width="30%" justifyContent="space-between" alignItems={"flex-start"}>
                                     <Box display="flex" flexDirection="column" justifyContent="space-between">
                                         <Typography mb={2}>Employee Type</Typography>
-                                        <Typography mb={1}>Status</Typography>
+                                        <Typography mb={2}>Status</Typography>
+                                        <Typography mb={2}>Department</Typography>
                                     </Box>
                                     <Box display="flex" flexDirection="column" justifyContent="space-between">
                                         <Typography fontWeight="medium" ml={1} mb={2}>: Teaching Staff</Typography>
-                                        <Typography fontWeight="medium" ml={1} mb={1}>: Active</Typography>
+
+                                        <Box display={'flex'} justifyContent={'start'} alignItems={'center'} ml={1} mb={2}>
+                                            <Typography fontWeight="medium">:</Typography>
+                                            <Typography fontWeight="medium" ml={1} bgcolor={'#C6F6D5'} paddingX={'8px'} borderRadius={'6px'} fontSize={'0.8rem'}>Active</Typography>
+                                        </Box>
                                     </Box>
+                                    <Typography fontWeight="medium" ml={1} mb={2}>: Physics</Typography>
                                 </Box>
                                 <Box display="flex" gap={0} width="30%" justifyContent="space-between" >
                                     <Box display="flex" flexDirection="column" justifyContent="space-between" >
-                                        <Typography mb={2}>Department</Typography>
                                         <Typography mb={1}>Supervisor</Typography>
                                     </Box>
                                     <Box display="flex" flexDirection="column" justifyContent="space-between">
-                                        <Typography fontWeight="medium" ml={1} mb={2}>: Physics</Typography>
                                         <Typography fontWeight="medium" ml={1} mb={1}>: Ratan Basak (AUG5658965)</Typography>
                                     </Box>
                                 </Box>
@@ -316,6 +354,7 @@ export default function Record() {
             </RevealCard >
 
             <LeaveRequestID open={leaveRequestPopup} close={() => { setLeaveRequestPopup(false) }} />
+            <EmployeePopup open={employeeIDPopup} close={() => setEmployeeIDPopup(false)} />
         </>
     )
 }

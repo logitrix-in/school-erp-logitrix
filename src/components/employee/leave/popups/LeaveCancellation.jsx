@@ -12,8 +12,10 @@ import { toast } from "react-toastify";
 import IncidentHeaderBanner from "../Banner";
 import { DataGrid } from "@mui/x-data-grid";
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import LeaveRequestID from "../LeaveRequestID";
 
 const LeaveCancellation = ({ open, close }) => {
+    const [leaveRequestID, setLeaveRequestID] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
 
     const columns = [{
@@ -37,7 +39,12 @@ const LeaveCancellation = ({ open, close }) => {
     {
         field: "id",
         headerName: "Leave Request ID",
-        flex: 1
+        flex: 1,
+        renderCell: (params) => (
+            <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setLeaveRequestID(true)}>
+                {params.value}
+            </Typography>
+        ),
     },
     {
         field: "leave_type",
@@ -168,8 +175,7 @@ const LeaveCancellation = ({ open, close }) => {
                 <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"95%"} margin="auto" alignItems="center" my={4} sx={{
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                     borderRadius: '8px',
-                    background: 'linear-gradient(0deg, rgba(255, 255, 255, 0.6) 20.84%, rgba(229, 243, 251, 0.6) 101.46%)'
-
+                    background: 'linear-gradient(0deg, rgba(255, 255, 255, 0.6) 9.9%, rgba(255, 224, 209, 0.264) 100%)'
                 }}>
 
                     <Box display="flex" justifyContent="center" width="100%" alignItems="flex-start" gap={8}>
@@ -242,6 +248,8 @@ const LeaveCancellation = ({ open, close }) => {
                             No
                         </Button>
                     </Box>
+
+                    <LeaveRequestID open={leaveRequestID} close={() => setLeaveRequestID(false)} />
                 </Box >
             </Box >
         </Dialog >

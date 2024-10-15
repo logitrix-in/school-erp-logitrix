@@ -93,7 +93,7 @@ const Inventory = () => {
 			<Box p={2}>
 				<Stack flex={1}>
 					<Box p={2} gap={2} display={"flex"}>
-						<ReignsSelect
+						{/* <ReignsSelect
 							items={mediaTypes}
 							defaultValues={mediaTypes}
 							label="Media Type"
@@ -105,7 +105,7 @@ const Inventory = () => {
 							defaultVal="Today"
 							label="Time Frame"
 							sx={{ width: "17rem" }}
-						/>
+						/> */}
 					</Box>
 					<Chart
 						options={options}

@@ -1,11 +1,7 @@
-import React from "react";
-import Bbox from "../../components/UiComponents/Bbox";
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import RevealCard from "../../components/AnimationComponents/RevealCard";
 import Dashboard from "../../components/employee/recruitment/openPositions/Dashboard";
 import ManageOpenPositions from "../../components/employee/recruitment/openPositions/ManageOpenPositions";
-// import QuickSearch from "../../components/employee/recruitment/QuickSearch";
 
 const EmployeeRecruitment = () => {
     const navigate = useNavigate();
@@ -126,7 +122,6 @@ const EmployeeRecruitment = () => {
 
             <Dashboard />
             <ManageOpenPositions />
-            {/* <QuickSearch /> */}
         </Box>
     );
 };

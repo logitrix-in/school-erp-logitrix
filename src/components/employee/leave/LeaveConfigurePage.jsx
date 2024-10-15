@@ -31,7 +31,7 @@ const EmployeeLeave = () => {
                             fontSize: "16px",
                             fontWeight: 400,
                         }}
-                        onClick={() => navigate("/employee/leave/")}
+                        onClick={() => navigate("/employee/leave/leave-management")}
                     >
                         Leave Management
                     </button>

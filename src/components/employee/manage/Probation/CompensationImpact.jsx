@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import RevealCard from "../../../AnimationComponents/RevealCard";
 import Bbox from "../../../UiComponents/Bbox";
 import {
@@ -7,22 +7,20 @@ import {
     Typography,
     Button,
 } from "@mui/material";
-import { useMediaQuery } from "@material-ui/core";
-import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
-import { ToastContainer } from "react-toastify";
+import EditCompensationImpact from "./EditCompensationImpact";
 import SetCompensationImpact from "./SetCompensationImpact";
 
 function CompensationImpact() {
     const [setCompensationImpactPopup, setSetCompensationImpactPopup] = useState(false);
+    const [editCompensationImpactPopup, setEditCompensationImpactPopup] = useState(false);
 
-    // table 2 columns
     const columns = [
-        { field: "grade", headerName: "Grade", flex: 1 },
-        { field: "increment", headerName: "Increment %", flex: 1 },
+        { field: "space", headerName: "", flex: 0.2 },
+        { field: "grade", headerName: "Grade", flex: 0.5 },
+        { field: "increment", headerName: "Increment %", flex: 0.4 },
     ];
 
-    // table 2 rows
     const rows = [
         { id: 1, grade: "A", increment: "19" },
         { id: 2, grade: "B", increment: "20" },
@@ -48,14 +46,13 @@ function CompensationImpact() {
 
                 <Divider />
 
-                <ToastContainer />
-
                 {/* <Box display="flex" justifyContent="center" mt={2} mb={5} mr={2}>
                     <Button
                         color="primary"
                         variant="contained"
                         sx={{ mr: 2 }}
                         onClick={() => setSetCompensationImpactPopup(true)}
+                        value={setCompensationImpactPopup}
                     >
                         Set Compensation Impact
                     </Button>
@@ -80,12 +77,13 @@ function CompensationImpact() {
                             color="primary"
                             variant="contained"
                             sx={{ mr: 2 }}
-                            onClick={() => setSetCompensationImpactPopup(true)}
+                            onClick={() => setEditCompensationImpactPopup(true)}
                         >
                             Edit Impact
                         </Button>
                     </Box>
 
+                    <EditCompensationImpact open={editCompensationImpactPopup} close={() => setEditCompensationImpactPopup(false)} />
                     <SetCompensationImpact open={setCompensationImpactPopup} close={() => setSetCompensationImpactPopup(false)} />
                 </Box>
             </Bbox>

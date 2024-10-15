@@ -19,7 +19,7 @@ const Reject = ({ open, close }) => {
             PaperProps={{
                 sx: {
                     maxHeight: "90%",
-                    width: "50%",
+                    width: "60%",
                 },
             }}
             maxWidth="lg"

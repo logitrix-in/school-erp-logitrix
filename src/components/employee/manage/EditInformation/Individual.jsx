@@ -15,25 +15,10 @@ const Individual = () => {
 
   const columns = [
     {
-      field: "radioButtons",
-      headerName: "",
-      flex: 0.2,
-      renderCell: (params) => (
-        <Radio
-          checked={params.row.id === selectedRow?.id}
-          color="primary"
-          sx={{
-            transform: "scale(0.6)",
-          }}
-          inputProps={{ "aria-label": params.row.id }}
-          onChange={() => {
-            setSelectedRow(params.row);
-          }}
-        />
-      ),
+      field: "space", headerName: "", flex: 0.2,
     },
     {
-      field: "id", headerName: "Employee ID", flex: 1,
+      field: "id", headerName: "Employee ID", flex: 0.6,
       renderCell: (params) => (
         <Typography>
           <Typography
@@ -49,7 +34,7 @@ const Individual = () => {
     { field: "name", headerName: "Name", flex: 1 },
     { field: "emp_type", headerName: "Employee Type", flex: 1 },
     { field: "department", headerName: "Department", flex: 1 },
-    { field: "grade", headerName: "Grade", flex: 1 },
+    { field: "grade", headerName: "Grade", flex: 0.5 },
     {
       field: "status",
       headerName: "Status",
@@ -86,30 +71,6 @@ const Individual = () => {
   const rows = [
     {
       id: "AG240001",
-      name: "Saunav Ray",
-      emp_type: "Teaching Staff",
-      department: "Science",
-      grade: 'B2',
-      status: "Active",
-    },
-    {
-      id: "AG240002",
-      name: "Saunav Ray",
-      emp_type: "Teaching Staff",
-      department: "Science",
-      grade: 'B2',
-      status: "Active",
-    },
-    {
-      id: "AG240003",
-      name: "Saunav Ray",
-      emp_type: "Teaching Staff",
-      department: "Science",
-      grade: 'B2',
-      status: "Active",
-    },
-    {
-      id: "AG240004",
       name: "Saunav Ray",
       emp_type: "Teaching Staff",
       department: "Science",

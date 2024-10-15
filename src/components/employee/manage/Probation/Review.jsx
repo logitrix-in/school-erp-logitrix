@@ -7,8 +7,9 @@ import {
     Typography,
     FormControl,
     Button,
-    Autocomplete,
-    TextField,
+    MenuItem,
+    InputLabel,
+    Select,
     Radio,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -17,20 +18,25 @@ import Confirm from './Confirm'
 import Extend from './Extend'
 import Reject from './Reject'
 import EditLetter from './EditLetter'
+import EmployeePopup from '../../EmployeePopup'
 
 function Review() {
+    const [probationStatus, setProbationStatus] = useState(['Pending', 'Approved', 'Rejected', 'All']);
+    const [selectedProbationStatus, setSelectedProbationStatus] = useState('');
+
+    const [employeePopup, setEmployeePopup] = useState(false);
+
     const [confirmPopup, setConfirmPopup] = useState(false);
     const [rejectPopup, setRejectPopup] = useState(false);
     const [extendPopup, setExtendPopup] = useState(false);
-    const [editLetterPopup, setEditLetterPopup] = React.useState(false);
+    const [editLetterPopup, setEditLetterPopup] = useState(false);
 
     const [selectedRow, setSelectedRow] = useState(null);
-
-    // table 2 columns
     const columns = [
         {
             field: "radioButtons",
             headerName: "",
+            width: 50,
             renderCell: (params) => (
                 <Radio
                     checked={params.row.id === selectedRow}
@@ -45,34 +51,45 @@ function Review() {
                 />
             ),
         },
-        { field: "id", headerName: "Student ID", flex: 1 },
-        { field: "name", headerName: "Name", flex: 1 },
-        { field: "class", headerName: "Class", flex: 1 },
-        { field: "section", headerName: "Section", flex: 1 },
-        { field: "roll", headerName: "Roll #", flex: 1 },
         {
-            field: "status",
-            headerName: "Status",
-            flex: 1,
+            field: "employeeId", headerName: "Employee ID", width: 120,
+            renderCell: (params) => (
+                <Typography
+                    component="span"
+                    sx={{ color: "primary.main", cursor: "pointer" }}
+                    onClick={() => setEmployeePopup(true)}
+                >
+                    {params.value}
+                </Typography>
+            ),
+        },
+        { field: "employeeName", headerName: "Employee Name", width: 150 },
+        { field: "employeeType", headerName: "Employee Type", width: 150 },
+        { field: "department", headerName: "Department", width: 120 },
+        { field: "grade", headerName: "Grade", width: 100 },
+        {
+            field: "employeeStatus",
+            headerName: "Employee Status",
+            width: 120,
             renderCell: (params) => (
                 <Box
                     style={{
                         backgroundColor:
-                            params.value === "Promoted"
+                            params.value === "Active"
                                 ? "#C6F6D5"
-                                : params.value === "Not Promoted"
+                                : params.value === "Inactive"
                                     ? "#FFCCCC"
                                     : "transparent",
                         borderRadius: "6px",
                         display: "inline-block",
                         width:
-                            params.value === "Promoted" || params.value === "Not Promoted"
-                                ? "100px"
+                            params.value === "Active" || params.value === "Inactive"
+                                ? "60px"
                                 : "auto",
                         paddingLeft:
-                            params.value === "Promoted"
-                                ? "19px"
-                                : params.value === "Not Promoted"
+                            params.value === "Active"
+                                ? "11px"
+                                : params.value === "Inactive"
                                     ? "7px"
                                     : "0px",
                     }}
@@ -81,34 +98,94 @@ function Review() {
                 </Box>
             ),
         },
+        { field: "probationEndDate", headerName: "Probation End Date", width: 150, },
+        { field: "supervisorName", headerName: "Supervisor Name", width: 150 },
+        {
+            field: "supervisorRecommendation",
+            headerName: "Supervisor Recommendation",
+            width: 120,
+            renderCell: (params) => (
+                <Box
+                    style={{
+                        backgroundColor: "#BEE3F8",
+                        borderRadius: "6px",
+                        display: "inline-block",
+                        width: "88px",
+                        paddingLeft: "11px"
+                    }}
+                >
+                    {params.value}
+                </Box>
+            ),
+        },
+        {
+            field: "probationStatus",
+            headerName: "Probation Status",
+            width: 120,
+            renderCell: (params) => (
+                <Box
+                    style={{
+                        backgroundColor: "#FFEDD5",
+                        borderRadius: "6px",
+                        display: "inline-block",
+                        width: "72px",
+                        paddingLeft: "11px"
+                    }}
+                >
+                    {params.value}
+                </Box>
+            ),
+        },
+        {
+            field: "probationConfirmationDate",
+            headerName: "Probation Confirmation Date",
+            width: 150
+        },
     ];
 
-    // table 2 rows
     const rows = [
         {
-            id: "AG240001",
-            name: "Saunav Ray",
-            class: "VI",
-            section: "A",
-            roll: "19",
-            status: "Promoted",
+            id: 1,
+            employeeId: "EMP354443",
+            employeeName: "Debarati Ghosh",
+            employeeType: "Teaching Staff",
+            department: "Chemistry",
+            grade: "B2",
+            employeeStatus: "Active",
+            probationEndDate: "12 Jul 2024",
+            supervisorName: "Ratan Basak",
+            supervisorRecommendation: "Confirmed",
+            probationStatus: "Pending",
+            probationConfirmationDate: "N/A"
         },
         {
-            id: "AG240002",
-            name: "Saunav Ray",
-            class: "VI",
-            section: "A",
-            roll: "19",
-            status: "Not Promoted",
+            id: 2,
+            employeeId: "EMP354443",
+            employeeName: "Debarati Ghosh",
+            employeeType: "Teaching Staff",
+            department: "Chemistry",
+            grade: "B2",
+            employeeStatus: "Active",
+            probationEndDate: "12 Jul 2024",
+            supervisorName: "Ratan Basak",
+            supervisorRecommendation: "Confirmed",
+            probationStatus: "Pending",
+            probationConfirmationDate: "N/A"
         },
         {
-            id: "AG240003",
-            name: "Saunav Ray",
-            class: "VI",
-            section: "A",
-            roll: "19",
-            status: "Not Promoted",
-        },
+            id: 3,
+            employeeId: "EMP354443",
+            employeeName: "Debarati Ghosh",
+            employeeType: "Teaching Staff",
+            department: "Chemistry",
+            grade: "B2",
+            employeeStatus: "Active",
+            probationEndDate: "12 Jul 2024",
+            supervisorName: "Ratan Basak",
+            supervisorRecommendation: "Confirmed",
+            probationStatus: "Pending",
+            probationConfirmationDate: "N/A"
+        }
     ];
 
     return (
@@ -139,21 +216,21 @@ function Review() {
                     height={50}
                 >
 
-                    <FormControl fullWidth style={{ width: "21%", marginRight: "30px" }}>
-                        <Autocomplete
-                            options={['Pending', 'Approved', 'Rejected', 'All']}
-                            multiple
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="Probation Status"
-                                    placeholder="Probation Status"
-                                />
-                            )}
-                            sx={{ width: "70%" }}
-                        />
+                    <FormControl sx={{ width: "30%" }}>
+                        <InputLabel>Probation Status</InputLabel>
+                        <Select
+                            label="Probation Status"
+                            onChange={(e) =>
+                                setSelectedProbationStatus(e.target.value)
+                            }
+                            value={selectedProbationStatus}
+                        >
+                            {probationStatus.map((status) => (
+                                <MenuItem key={status} value={status}>
+                                    {status}
+                                </MenuItem>
+                            ))}
+                        </Select>
                     </FormControl>
                 </Box>
 
@@ -177,12 +254,13 @@ function Review() {
                     />
                 </Box>
 
-                <ToastContainer />
-
                 <Confirm open={confirmPopup} close={() => setConfirmPopup(false)} openEditLetter={() => setEditLetterPopup(true)} />
                 <Extend open={extendPopup} close={() => setExtendPopup(false)} />
                 <Reject open={rejectPopup} close={() => setRejectPopup(false)} />
+
                 <EditLetter open={editLetterPopup} close={() => setEditLetterPopup(false)} />
+
+                <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
 
                 <Box display="flex" justifyContent="flex-end" mt={2} mb={5} mr={2}>
                     <Button
