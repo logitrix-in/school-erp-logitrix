@@ -6,13 +6,16 @@ import {
     TextField,
     IconButton,
     Typography,
-    Autocomplete,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { toast, ToastContainer } from "react-toastify";
-
+import { toast } from "react-toastify";
+import ReignsSelect from '@/components/UiComponents/ReignsSelect'
+import { useNavigate } from 'react-router-dom';
 
 const Approve = ({ open, close }) => {
+    const navigate = useNavigate();
+
+    const [selectedDocuments, setSelectedDocuments] = useState([])
     const [comments, setComments] = useState('')
 
     return (
@@ -60,18 +63,14 @@ const Approve = ({ open, close }) => {
 
                         <Typography sx={{ fontWeight: '600' }}>Select the documents those require re-submission</Typography>
 
-                        <Autocomplete
-                            options={["Student 1", "Student 2"]}
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Select Documents"
-                                    label="Select Documents"
-                                />
-                            )}
-                            sx={{ width: "100%" }}
+                        <ReignsSelect
+                            multiple
+                            items={["Document 1", "Document 2", "Document 3"]}
+                            defaultValues={["Document 1", "Document 2", "Document 3"]}
+                            onChange={setSelectedDocuments}
+                            value={selectedDocuments}
+                            label="Select Documents"
+                            sx={{ mb: 2 }}
                         />
                         <TextField
                             id="comments"
@@ -89,6 +88,7 @@ const Approve = ({ open, close }) => {
                     <Box marginY={2} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="primary" fullWidth onClick={() => {
                             toast.success("Updated Successfully");
+                            navigate('/employee/recruitment/onboarding/');
                             close();
                         }}>Resend Onboarding Form</Button>
                     </Box>

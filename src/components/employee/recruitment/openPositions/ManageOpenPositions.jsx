@@ -5,29 +5,68 @@ import {
     Button,
     Divider,
     Typography,
-    Autocomplete,
-    TextField,
+    IconButton,
+    Menu,
+    MenuItem
 } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import NewJobRequirement from "../popup/NewJobRequirement";
-import { useState } from "react";
+import EditJobRequirement from "../popup/EditJobRequirement";
+import ApplicationID from "../popup/ApplicationID";
+import { useState, useEffect } from "react";
+import useEmployees from '@/hooks/useEmployees';
+import ReignsSelect from "@/components/UiComponents/ReignsSelect";
+import { MoreVert as MoreVertIcon } from '@mui/icons-material';
+
+const ActionCell = ({ params, onEdit, onDelete }) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleEdit = () => {
+        onEdit(params.id);
+        handleClose();
+    };
+
+    const handleDelete = () => {
+        onDelete(params.id);
+        handleClose();
+    };
+
+    return (
+        <>
+            <IconButton onClick={handleClick}>
+                <MoreVertIcon />
+            </IconButton>
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+            >
+                <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                <MenuItem onClick={handleDelete}>Delete</MenuItem>
+            </Menu>
+        </>
+    );
+};
 
 function ManageOpenPositions() {
+    const { employeeType, employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment, employeeGrade } = useEmployees();
 
-    const columns = [
-        { field: "id", headerName: "Job ID", flex: 0.8 },
-        { field: "emp_type", headerName: "Employee Type", flex: 1 },
-        { field: "department", headerName: "Department", flex: 1 },
-        { field: "grade", headerName: "Grade", flex: 1 },
-        { field: "role", headerName: "Role", flex: 1 },
-        { field: "class_scope", headerName: "Class Scope", flex: 1 },
-        { field: "open_positions", headerName: "Open Positions", flex: 0.8 },
-        { field: "comments", headerName: "Comments", flex: 1 },
-    ];
+    const [selectedEmployeeType, setSelectedEmployeeType] = useState('');
+    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [selectedGrade, setSelectedGrade] = useState('');
+    const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
 
-    const rows = [
+    const [rows, setRows] = useState([
         {
             id: 1,
             emp_type: "Full-Time",
@@ -58,10 +97,77 @@ function ManageOpenPositions() {
             open_positions: 1,
             comments: "Replacement",
         }
-    ];
+    ]);
 
     const [newJobPopup, setNewJobPopup] = useState(false);
+    const [editJobPopup, setEditJobPopup] = useState(false);
+    const [jobIdPopup, setJobIdPopup] = useState(false);
 
+    useEffect(() => {
+        console.log(selectedEmployeeType);
+        let departments = [];
+
+        if (selectedEmployeeType === '') {
+            return;
+        }
+
+        selectedEmployeeType.forEach(type => {
+            switch (type) {
+                case 'Management':
+                    departments = [...departments, ...employeeManagementDepartment];
+                    break;
+                case 'Teaching Staff':
+                    departments = [...departments, ...employeeTeachingDepartment];
+                    break;
+                case 'Support Staff':
+                    departments = [...departments, ...employeeSupportStaffDepartment];
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        setEmployeeDepartment(departments);
+    }, [selectedEmployeeType]);
+
+    const columns = [
+        {
+            field: "id", headerName: "Job ID", flex: 0.8,
+            renderCell: (params) => (
+                <Typography
+                    component="span"
+                    sx={{ color: "primary.main", cursor: "pointer" }}
+                    onClick={() => setJobIdPopup(true)}
+                >
+                    {params.id}
+                </Typography>
+            ),
+        },
+        { field: "emp_type", headerName: "Employee Type", flex: 1 },
+        { field: "department", headerName: "Department", flex: 1 },
+        { field: "grade", headerName: "Grade", flex: 1 },
+        { field: "role", headerName: "Role", flex: 1 },
+        { field: "class_scope", headerName: "Class Scope", flex: 1 },
+        { field: "open_positions", headerName: "Open Positions", flex: 0.8 },
+        { field: "comments", headerName: "Comments", flex: 1 },
+        {
+            field: "actions",
+            headerName: "Actions",
+            flex: 0.5,
+            renderCell: (params) => (
+                <ActionCell params={params} onEdit={handleEdit} onDelete={handleDelete} />
+            ),
+        },
+    ];
+
+    const handleEdit = (id) => {
+        console.log(`Edit row with id: ${id}`);
+        setEditJobPopup(true);
+    };
+
+    const handleDelete = (id) => {
+        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+    };
     return (
         <RevealCard>
             <Bbox
@@ -82,15 +188,13 @@ function ManageOpenPositions() {
                     alignItems="center"
                 >
                     <Typography fontWeight={700} fontSize="1.1rem">
-                        Bulk
+                        Manage Open Position(s)
                     </Typography>
                 </Box>
 
-                {/* divider */}
                 <Divider />
 
                 <Box>
-                    {/* dropdowns and search button section */}
                     <Box
                         display="flex"
                         flexDirection="row"
@@ -100,47 +204,38 @@ function ManageOpenPositions() {
                         height={50}
                         gap={4}
                     >
-
-                        <Autocomplete
-                            options={["Student 1", "Student 2"]}
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Employee Type"
-                                    label="Search by Employee Type"
-                                />
-                            )}
-                            sx={{ width: "20%" }}
+                        <ReignsSelect
+                            items={employeeType}
+                            multiple
+                            label="Employee Type"
+                            defaultValues={employeeType}
+                            onChange={setSelectedEmployeeType}
+                            value={selectedEmployeeType}
+                            sx={{
+                                width: '20%'
+                            }}
                         />
-
-                        <Autocomplete
-                            options={["Student 1", "Student 2"]}
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Department"
-                                    label="Search by Department"
-                                />
-                            )}
-                            sx={{ width: "20%" }}
+                        <ReignsSelect
+                            items={employeeDepartment}
+                            multiple
+                            defaultValues={employeeDepartment}
+                            onChange={setSelectedDepartment}
+                            value={selectedDepartment}
+                            label="Department"
+                            sx={{
+                                width: '20%'
+                            }}
                         />
-
-                        <Autocomplete
-                            options={["Student 1", "Student 2"]}
-                            filterSelectedOptions
-                            freeSolo={false}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Grade"
-                                    label="Search by Grade"
-                                />
-                            )}
-                            sx={{ width: "20%" }}
+                        <ReignsSelect
+                            items={employeeGrade}
+                            multiple
+                            label="Grade"
+                            defaultValues={employeeGrade}
+                            onChange={setSelectedGrade}
+                            value={selectedGrade}
+                            sx={{
+                                width: '20%'
+                            }}
                         />
                         <Button variant="contained">Submit</Button>
                     </Box>
@@ -210,7 +305,10 @@ function ManageOpenPositions() {
                             Add New
                         </Button>
                     </Box>
+
                     <NewJobRequirement open={newJobPopup} close={() => setNewJobPopup(false)} />
+                    <EditJobRequirement open={editJobPopup} close={() => setEditJobPopup(false)} />
+                    <ApplicationID open={jobIdPopup} close={() => setJobIdPopup(false)} />
 
                 </Box>
             </Bbox>

@@ -96,7 +96,7 @@ const OnboardingDetails = () => {
           }}
         >
           <Icon
-            onClick={() => navigate("/employee/manage/")}
+            onClick={() => navigate("/employee/manage/edit-information")}
             icon="fa:close"
             fontSize={"1.2rem"}
             color="inherit"

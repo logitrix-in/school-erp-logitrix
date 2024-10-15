@@ -186,7 +186,7 @@ const OnboardingDetails = () => {
               type="submit"
               variant="contained"
               sx={{ mt: 2 }}
-              onClick={() => navigate("/employee/manage/onboarding")}
+              onClick={() => navigate("/employee/recruitment/onboarding")}
             >
               Mark as Reviewed
             </Button>
@@ -196,7 +196,10 @@ const OnboardingDetails = () => {
               type="submit"
               variant="outlined"
               sx={{ mt: 2 }}
-              onClick={() => setResubmissionPopup(true)}
+              onClick={() => {
+                setResubmissionPopup(true);
+                navigate("/employee/recruitment/onboarding");
+              }}
             >
               Send for Re-submission
             </Button>
@@ -207,6 +210,7 @@ const OnboardingDetails = () => {
               color="secondary"
               variant="contained"
               sx={{ mt: 2 }}
+              onClick={() => navigate("/employee/recruitment/onboarding")}
             >
               Reject
             </Button>

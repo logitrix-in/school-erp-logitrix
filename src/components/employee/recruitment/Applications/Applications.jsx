@@ -6,14 +6,22 @@ import {
   Button,
   Divider,
   Typography,
-  Autocomplete,
-  TextField,
 } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { DataGrid } from "@mui/x-data-grid";
 import ApplicationID from "../popup/ApplicationID";
 import ManageApplications from "./ManageApplications";
 import { useState } from "react";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
+} from "@mui/material";
+import useClasses from '@/hooks/useClasses'
+import useEmployees from '@/hooks/useEmployees'
+import ReignsSelect from "../../../UiComponents/ReignsSelect";
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 
 const StudentAccount = () => {
   const navigate = useNavigate();
@@ -26,54 +34,75 @@ const StudentAccount = () => {
         </Typography>
       ),
     },
-    { field: "candidate_name", headerName: "Candidate Name", flex: 0.8 },
-    { field: "job_id", headerName: "Job ID", flex: 0.8 },
+    { field: "candidate_name", headerName: "Candidate Name", flex: 1 },
+    {
+      field: "job_id", headerName: "Job ID", flex: 0.8,
+      renderCell: (params) => (
+        <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setApplicationIDPopup(true)}>
+          {params.value}
+        </Typography>
+      ),
+    },
     { field: "emp_type", headerName: "Employee Type", flex: 1 },
     { field: "department", headerName: "Department", flex: 1 },
-    { field: "grade", headerName: "Grade", flex: 1 },
+    { field: "grade", headerName: "Grade", flex: 0.6 },
     { field: "application_date", headerName: "Application Date", flex: 1 },
-    { field: "resume", headerName: "Resume", flex: 1 },
+    {
+      field: "resume", headerName: "", flex: 0.4,
+      renderCell: (params) => (
+        <Box>
+          <DescriptionOutlinedIcon />
+        </Box>
+      ),
+    },
   ];
 
   const rows = [
     {
       id: "EMP35435443",
       candidate_name: "John Doe",
-      job_id: 101,
+      job_id: "JOB101",
       emp_type: "Full-Time",
       department: "Engineering",
       grade: "A",
       application_date: "2023-10-01",
-      resume: "john_doe_resume.pdf"
+      resume: "pdf"
     },
     {
       id: "EMP35435444",
       candidate_name: "Jane Smith",
-      job_id: 102,
+      job_id: "JOB102",
       emp_type: "Part-Time",
       department: "Marketing",
       grade: "B",
       application_date: "2023-10-02",
-      resume: "jane_smith_resume.pdf"
+      resume: "pdf"
     },
     {
       id: "EMP35435445",
       candidate_name: "Alice Johnson",
-      job_id: 103,
+      job_id: "JOB103",
       emp_type: "Contract",
       department: "HR",
       grade: "C",
       application_date: "2023-10-03",
-      resume: "alice_johnson_resume.pdf"
+      resume: "pdf"
     }
   ];
+  const { acYear, curYear } = useClasses();
+  const [academicYear, setAcademicYear] = useState(curYear);
+
+  const { employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment } = useEmployees();
+
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  const [selectedJobID, setSelectedJobID] = useState('');
+  const [candidateName, setCandidateName] = useState('');
+  const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
 
   const [applicationIDPopup, setApplicationIDPopup] = useState(false);
 
-
   return (
     <>
-      {/* top navigation buttons */}
       <div
         style={{
           backgroundColor: "#E5F3FB",
@@ -194,7 +223,6 @@ const StudentAccount = () => {
           borderRadius={2}
           overflow="hidden"
         >
-          {/* top bulk text */}
           <Box
             bgcolor="white"
             py={1.3}
@@ -209,83 +237,80 @@ const StudentAccount = () => {
             </Typography>
           </Box>
 
-          {/* divider */}
           <Divider />
 
           <Box>
-            {/* dropdowns and search button section */}
             <Box
               display="flex"
               flexDirection="row"
               alignItems="center"
               p={2}
               mt={4}
-              height={50}
               gap={4}
             >
 
-              <Autocomplete
-                options={["Student 1", "Student 2"]}
-                filterSelectedOptions
-                freeSolo={false}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="Academic Year"
-                    label="Academic Year"
-                  />
-                )}
-                sx={{ width: "20%" }}
+              <FormControl sx={{ width: "30%" }}>
+                <InputLabel>Academic Year</InputLabel>
+                <Select
+                  label="Academic Year"
+                  onChange={(e) =>
+                    setAcademicYear(e.target.value)
+                  }
+                  value={academicYear}
+                >
+                  {acYear.map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <ReignsSelect
+                multiple
+                label="Job ID"
+                items={[]}
+                defaultValues={[]}
+                onChange={setSelectedJobID}
+                value={selectedJobID}
+                sx={{
+                  width: '30%'
+                }}
               />
 
-              <Autocomplete
-                options={["Student 1", "Student 2"]}
-                filterSelectedOptions
-                freeSolo={false}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="Job ID"
-                    label="Job ID"
-                  />
-                )}
-                sx={{ width: "20%" }}
+              <ReignsSelect
+                multiple
+                label="Department"
+                items={employeeDepartment}
+                defaultValues={employeeDepartment}
+                onChange={setSelectedDepartment}
+                value={selectedDepartment}
+                sx={{
+                  width: '30%'
+                }}
               />
 
-              <Autocomplete
-                options={["Student 1", "Student 2"]}
-                filterSelectedOptions
-                freeSolo={false}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="Department"
-                    label="Department"
-                  />
-                )}
-                sx={{ width: "20%" }}
-              />
               <Button variant="contained">Submit</Button>
             </Box>
 
-
-
-            {/* total number of results found */}
             <Box p={2} mt={1} display="flex" justifyContent="space-between" alignItems={'flex-end'}>
-              <Autocomplete
-                options={['stud 1', 'stud 2', 'stud 3', 'stud 4']}
-                filterSelectedOptions
-                freeSolo={false}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Search by Candidate Name or Application ID"
-                    placeholder="Search by Student ID / Student Name"
-                    variant="outlined"
-                  />
-                )}
-                sx={{ width: "35%" }}
-              />
+
+              <FormControl sx={{ width: "30%" }}>
+                <InputLabel>Search by Candidate Name or Application ID</InputLabel>
+                <Select
+                  label="Search by Candidate Name or Application ID"
+                  onChange={(e) =>
+                    setCandidateName(e.target.value)
+                  }
+                  value={candidateName}
+                >
+                  {[].map((year) => (
+                    <MenuItem key={year} value={year}>
+                      {year}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
               <Box
                 style={{
@@ -309,8 +334,6 @@ const StudentAccount = () => {
               </Box>
             </Box>
 
-
-            {/* table */}
             <Box m={2} height={"100%"}>
               <DataGrid
                 rows={rows}
@@ -323,18 +346,20 @@ const StudentAccount = () => {
                 pageSizeOptions={[5, 10]}
                 columnGroupingModel={[
                   {
-                    groupId: "applied_for",
-                    headerName: "Applied For",
+                    groupId: 'applied_for',
+                    headerName: 'Applied For',
                     headerAlign: 'center',
                     children: [
-                      { field: "job_id" },
-                      { field: "emp_type" },
-                      { field: "department" },
-                      { field: "grade" },
+                      { field: 'job_id' },
+                      { field: 'emp_type' },
+                      { field: 'department' },
+                      { field: 'grade' },
                     ],
                   },
                 ]}
-                disableRowSelectionOnClick
+                experimentalFeatures={{
+                  columnGrouping: true
+                }}
               />
             </Box>
             <ApplicationID open={applicationIDPopup} close={() => setApplicationIDPopup(false)} />
@@ -342,6 +367,7 @@ const StudentAccount = () => {
           </Box>
         </Bbox>
       </RevealCard>
+
       <ManageApplications />
     </>
   );

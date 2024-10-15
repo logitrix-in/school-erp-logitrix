@@ -5,7 +5,6 @@ import {
 	Stack,
 	Typography,
 	AppBar,
-	Autocomplete,
 	Dialog,
 	TextField,
 	IconButton,
@@ -13,7 +12,8 @@ import {
 	FormControl,
 	Select,
 	InputLabel,
-	MenuItem
+	MenuItem,
+	Radio
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { DataGrid } from "@mui/x-data-grid";
@@ -26,18 +26,49 @@ import { DatePicker } from "@mui/x-date-pickers";
 import api from '../../../config/api'
 import { toast } from 'react-toastify'
 import { useNavigate } from "react-router-dom";
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import Tooltip from '@mui/material/Tooltip';
 
 const Inventory = ({ libraryCardNumbers }) => {
 	const [returnState, setReturnState] = useState(false);
 	const [issueState, setIssueState] = useState(false);
-	const [selectedLibraryCard, setSelectedLibraryCard] = useState(null);
-	const [employeeRows, setEmployeeRows] = useState([]);
 	const [issuePopup, setIssuePopup] = useState(false)
 	const [mediaId, setMediaId] = useState('');
 
+	const [selectedLibraryCard, setSelectedLibraryCard] = useState(null);
+	const [rows, setRows] = useState([]);
+	const [mediaRows, setMediaRows] = useState([]);
+	const [selectedRow, setSelectedRow] = useState(null);
+
 	const navigate = useNavigate();
 
+	const truncateText = (text, maxLength) => {
+		if (text.length <= maxLength) {
+			return text;
+		}
+		return text.substring(0, maxLength) + '...';
+	};
+
 	const employeeColumns = [
+		{
+			field: "radioButtons",
+			headerName: "",
+			flex: 0.5,
+			renderCell: (params) => (
+				<Radio
+					checked={selectedRow?.id === params.row.id}
+					color="primary"
+					sx={{
+						transform: "scale(0.6)",
+					}}
+					inputProps={{ "aria-label": params.row.id }}
+					onChange={() => {
+						setSelectedRow(params.row);  // Store the entire row object
+						console.log('Selected Row Data:', params.row);
+					}}
+				/>
+			),
+		},
 		{
 			field: "library_card_number",
 			headerName: "Library Card #",
@@ -46,7 +77,7 @@ const Inventory = ({ libraryCardNumbers }) => {
 		{
 			field: "employee_id",
 			headerName: "Employee ID",
-			flex: 1,
+			flex: 0.7,
 		},
 		{
 			field: "employee_name",
@@ -61,6 +92,98 @@ const Inventory = ({ libraryCardNumbers }) => {
 		{
 			field: "department",
 			headerName: "Department",
+			flex: 0.8,
+		},
+		{
+			field: "mediaID",
+			headerName: "Media ID",
+			flex: 0.7,
+		},
+		{
+			field: "mediaName",
+			headerName: "Media Name",
+			flex: 2,
+			renderCell: (params) => (
+				<Box
+					display="flex"
+					alignItems="center"
+					sx={{
+						width: '100%',
+						height: '100%',
+						padding: '0px',
+						borderRadius: '8px',
+					}}
+				>
+					<Tooltip title="Book">
+						<MenuBookOutlinedIcon sx={{ color: '#3b98c4' }} />
+					</Tooltip>
+					<Box display="flex" flexDirection="column" marginX={1}>
+						<Tooltip title="Harry Potter and the Goblet of Fire">
+							<Typography variant="subtitle1" fontWeight="semibold">
+								{truncateText("Harry Potter and the Goblet of Fire", 22)}
+								{/* {params.value} */}
+							</Typography>
+						</Tooltip>
+						<Tooltip title="D. S. C. Publication">
+							<Typography variant="body2" color="textSecondary">
+								{truncateText("D. S. C. Publication", 22)}
+								{/* {params.value} */}
+							</Typography>
+						</Tooltip>
+					</Box>
+					<Box
+						display="flex"
+						alignItems="center"
+						justifyContent="center"
+						bgcolor="#E2E8F0"
+						borderRadius={1}
+						px={1}
+						py={0.5}
+					>
+						<Typography variant="body2" fontWeight="bold">
+							IV
+						</Typography>
+					</Box>
+				</Box>
+			),
+		},
+		{
+			field: "timeOfIssue",
+			headerName: "Time of Issue",
+			flex: 1,
+		},
+	];
+
+
+	const studentColumns = [
+		{
+			field: "library_card_number",
+			headerName: "Library Card #",
+			flex: 0.8,
+		},
+		{
+			field: "student_id",
+			headerName: "Student ID",
+			flex: 1,
+		},
+		{
+			field: "student_name",
+			headerName: "Student Name",
+			flex: 1,
+		},
+		{
+			field: "class",
+			headerName: "Class",
+			flex: 1,
+		},
+		{
+			field: "section",
+			headerName: "Section",
+			flex: 1,
+		},
+		{
+			field: "roll",
+			headerName: "Roll #",
 			flex: 1,
 		},
 		{
@@ -80,32 +203,75 @@ const Inventory = ({ libraryCardNumbers }) => {
 		},
 	];
 
+	const media_columns = [
+		{ field: "media_id", headerName: "Media ID", flex: 1 },
+		{ field: "type", headerName: "Media Type", flex: 1 },
+		{ field: "category", headerName: "Category", flex: 1 },
+		{ field: "name", headerName: "Media Name", flex: 1 },
+		{ field: "note", headerName: "Notes", flex: 1 },
+		{ field: "current_borrower", headerName: "Current Borrower", flex: 2 },
+	];
+
 	async function getLibraryCardDetail() {
 		try {
 			if (!selectedLibraryCard) return;
 
-			const response = await api.get(`/library/library-cards/?card_number=${selectedLibraryCard}`);
-			console.log(response.data);
+			if (selectedLibraryCard?.startsWith('LIB')) {
+				const response = await api.get(`/library/library-cards/?card_number=${selectedLibraryCard}`);
+				console.log(response.data);
 
-			if (response.data.length > 0) {
-				const cardData = response.data[0];
-				const newRow = {
-					id: cardData.id,
-					library_card_number: cardData.card_number,
-					employee_id: cardData.employee.employee_id,
-					employee_name: cardData.employee.employee_id,
-					employee_type: cardData.employee.employee_type,
-					department: cardData.employee.department,
-					current_borrowings: cardData.current_borrowings,
-					issued_on: cardData.issued_on,
-					valid_till: cardData.valid_till,
-					is_active: cardData.is_active
-				};
+				if (response.data.length > 0) {
+					const cardData = response.data[0];
 
-				console.log('New row:', newRow);
-				setEmployeeRows([newRow]); // Set as an array with a single item
-			} else {
-				setEmployeeRows([]); // Set to empty array if no data returned
+					const newRow = {
+						id: cardData.id,
+						library_card_number: cardData.card_number,
+						employee_id: cardData.employee.employee_id,
+						employee_name: `${cardData.employee.employee_personal_details.first_name} ${cardData.employee.employee_personal_details.last_name}`,
+						employee_type: cardData.employee.employee_type,
+						department: cardData.employee.department,
+						mediaID: cardData.card_number,
+						mediaName: cardData.card_number,
+						timeOfIssue: cardData.card_number,
+						current_borrowings: cardData.current_borrowings,
+						issued_on: cardData.issued_on,
+						valid_till: cardData.valid_till,
+						is_active: cardData.is_active
+					};
+
+					console.log('New row:', newRow);
+					setRows([newRow]); // Set as an array with a single item
+				} else {
+					setRows([]);
+				}
+			} else if (selectedLibraryCard?.startsWith('LIB0')) {
+				const response = await api.get(`/library/library-cards/?card_number=${selectedLibraryCard}`);
+				console.log(response.data);
+
+				if (response.data.length > 0) {
+					const cardData = response.data[0];
+
+					const newRow = {
+						id: cardData.id,
+						library_card_number: cardData.card_number,
+						employee_id: cardData.employee.employee_id,
+						employee_name: `${cardData.employee.employee_personal_details.first_name} ${cardData.employee.employee_personal_details.last_name}`,
+						employee_type: cardData.employee.employee_type,
+						department: cardData.employee.department,
+						mediaID: cardData.current_borrowings,
+						mediaName: cardData.current_borrowings,
+						timeOfIssue: cardData.current_borrowings,
+						current_borrowings: cardData.current_borrowings,
+						issued_on: cardData.issued_on,
+						valid_till: cardData.valid_till,
+						is_active: cardData.is_active
+					};
+
+					console.log('New row:', newRow);
+					setRows([newRow]); // Set as an array with a single item
+				} else {
+					setRows([]);
+				}
 			}
 
 		} catch (error) {
@@ -118,23 +284,52 @@ const Inventory = ({ libraryCardNumbers }) => {
 
 	async function handleReturn() {
 		try {
-			console.log(selectedLibraryCard);
+			// console.log(selectedLibraryCard);
 
-			const response = await api.get(`/library/visitors-attendance/`, {
-				"library_card": selectedLibraryCard
-			});
-			console.log(response.data);
+			// const response = await api.get(`/library/visitor-media-activity/`, {
+			// 	"library_card": selectedLibraryCard
+			// });
+			// console.log(response.data);
 
-			if (response.status === 201) {
-				console.log(response.data);
-				setReturnState("auth-success");
-				toast.success("Attendance Recorded Successfully");
-			}
+			// if (response.status === 201) {
+			// 	console.log(response.data);
+			// 	setReturnState("auth-success");
+			// 	toast.success("Attendance Recorded Successfully");
+			// }
 			// if fine then
 			// setReturnState("auth-delayed-return");
 		} catch (err) {
 			console.log(err);
 			toast.error('Error Loading Data.')
+		}
+	}
+
+	async function handleMediaSearch() {
+		try {
+			const response = await api.get(`/library/media/?media_id=${mediaId}`);
+			console.log(response.data);
+
+			if (response.data) {
+				const newRow = {
+					id: response.data.id,
+					media_id: response.data.media_id,
+					type: response.data.media_type,
+					category: response.data.category,
+					name: response.data.media_name,
+					current_borrower: response.data.current_borrower || 'null',
+					note: response.data.note
+				};
+
+				console.log('New row:', newRow);
+				setMediaRows([newRow]); // Set as an array with a single item
+			} else {
+				setMediaRows([]); // Set to empty array if no data returned
+			}
+		} catch (error) {
+			console.log(error);
+			toast.error('Error Loading Data.')
+		} finally {
+			setIssuePopup(true);
 		}
 	}
 
@@ -158,27 +353,51 @@ const Inventory = ({ libraryCardNumbers }) => {
 					</FormControl>
 				</Box>
 				<Box sx={{ width: "100%" }}>
-					<DataGrid
-						autoHeight
-						rows={employeeRows}
-						columns={employeeColumns}
-						columnGroupingModel={[
-							{
-								groupId: "Current Borrowing (Same Day)",
-								headerName: 'Current Borrowing (Same Day)',
-								headerAlign: 'center',
-								children: [
-									{ field: "mediaName" },
-									{ field: "mediaID" },
-									{ field: "timeOfIssue" },
-								],
-							},
-						]}
-						experimentalFeatures={{
-							columnGrouping: true,
-						}}
-						disableRowSelectionOnClick
-					/>
+					{
+						selectedLibraryCard?.startsWith('LIB') ?
+							<DataGrid
+								autoHeight
+								rows={rows}
+								columns={employeeColumns}
+								columnGroupingModel={[
+									{
+										groupId: "Current Borrowing (Same Day)",
+										headerName: 'Current Borrowing (Same Day)',
+										headerAlign: 'center',
+										children: [
+											{ field: "mediaName" },
+											{ field: "mediaID" },
+											{ field: "timeOfIssue" },
+										],
+									},
+								]}
+								experimentalFeatures={{
+									columnGrouping: true,
+								}}
+								disableRowSelectionOnClick
+							/> :
+							<DataGrid
+								autoHeight
+								rows={rows}
+								columns={studentColumns}
+								columnGroupingModel={[
+									{
+										groupId: "Current Borrowing (Same Day)",
+										headerName: 'Current Borrowing (Same Day)',
+										headerAlign: 'center',
+										children: [
+											{ field: "mediaName" },
+											{ field: "mediaID" },
+											{ field: "timeOfIssue" },
+										],
+									},
+								]}
+								experimentalFeatures={{
+									columnGrouping: true,
+								}}
+								disableRowSelectionOnClick
+							/>
+					}
 				</Box>
 
 				<Flex justifyContent={"flex-end"}>
@@ -260,8 +479,7 @@ const Inventory = ({ libraryCardNumbers }) => {
 								variant={"contained"}
 								fullWidth
 								onClick={() => {
-									console.log('hii')
-									setIssuePopup(true);
+									handleMediaSearch();
 								}}
 							>
 								Submit
@@ -355,7 +573,7 @@ const Inventory = ({ libraryCardNumbers }) => {
 							height={"10rem"}
 							mx={10}
 						>
-							<TextField label={"Media ID"} />
+							<TextField label={"Media ID"} value={mediaId} onChange={(e) => setMediaId(e.target.value)} />
 							<Button
 								variant={"contained"}
 								fullWidth
@@ -495,24 +713,26 @@ const Inventory = ({ libraryCardNumbers }) => {
 				)}
 			</Popup>
 
-			<IssuePage issuePopup={issuePopup} setIssuePopup={setIssuePopup} mediaId={mediaId} setIssueState={setIssueState} />
+			<IssuePage issuePopup={issuePopup} setIssuePopup={setIssuePopup} mediaRows={mediaRows} media_columns={media_columns} setIssueState={setIssueState} />
 		</Section>
 	);
 };
 
-const IssuePage = ({ issuePopup, setIssuePopup, mediaId, setIssueState }) => {
+const IssuePage = ({ issuePopup, setIssuePopup, mediaRows, media_columns, setIssueState }) => {
 	const [newIssueOpen, setNewIssueOpen] = useState(false);
 	const [notes, setNotes] = useState('');
 	const [returnDate, setReturnDate] = useState(null);
 
-	const issue_columns = [
-		{ field: "id", headerName: "Media ID", flex: 1 },
-		{ field: "mediaType", headerName: "Media Type", flex: 1 },
-		{ field: "studentName", headerName: "Media Name", flex: 1 },
-		{ field: "author", headerName: "Author", flex: 1 },
-		{ field: "note", headerName: "Section", flex: 1 },
-		{ field: "mediaId", headerName: "Notes", flex: 2 },
-	];
+	async function handleIssueMedia() {
+		try {
+			console.log('hi');
+		} catch (error) {
+			console.log(error);
+			toast.error('Error Loading Data.')
+		} finally {
+			setNewIssueOpen(false);
+		}
+	}
 
 	return (
 		<Dialog fullScreen open={issuePopup}>
@@ -555,7 +775,7 @@ const IssuePage = ({ issuePopup, setIssuePopup, mediaId, setIssueState }) => {
 						*/}
 					</Flex>
 
-					<DataGrid columns={issue_columns} rows={[]} autoHeight />
+					<DataGrid columns={media_columns} rows={mediaRows} autoHeight />
 					<Typography textAlign={"right"} mt={2}>
 						Copies Available: 12/100
 					</Typography>
@@ -601,7 +821,7 @@ const IssuePage = ({ issuePopup, setIssuePopup, mediaId, setIssueState }) => {
 					</Typography>
 					<Flex gap={2}>
 						<Button variant="contained" sx={{ width: "8rem" }}
-							onClick={() => setNewIssueOpen(false)}
+							onClick={() => handleIssueMedia()}
 						>
 							Yes
 						</Button>

@@ -131,7 +131,7 @@ export const navigations = [
 			},
 			{
 				name: "Leave",
-				path: "employee/leave/",
+				path: "employee/leave/leave-management",
 				icon: "material-symbols:folder",
 			},
 			{
@@ -147,6 +147,24 @@ export const navigations = [
 			{
 				name: "Claims & Bonuses",
 				path: "employee/claims&bonuses/",
+				icon: "material-symbols:folder",
+			},
+		],
+	},
+	{
+		name: "Examination \nManagement",
+		path: "examination-management/",
+		icon: "solar:library-bold-duotone",
+		dropdown: true,
+		subMenu: [
+			{
+				name: "Pre-Examination",
+				path: "examination-management/pre-examination/",
+				icon: "material-symbols:folder",
+			},
+			{
+				name: "Post-Examination",
+				path: "examination-management/post-examination/",
 				icon: "material-symbols:folder",
 			},
 		],

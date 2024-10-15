@@ -1,21 +1,26 @@
-import { Box, Divider, Grid, Typography, IconButton } from "@mui/material";
-import { useEffect, useState, MenuItem, Select, FormControl, InputLabel } from "react";
+import { Box, Divider, Grid, Typography, IconButton, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import { useEffect, useState, } from "react";
 import Bbox from "../../UiComponents/Bbox";
 import ReignsSelect from "../../UiComponents/ReignsSelect";
 import useClasses from "../../../hooks/useClasses";
+import useEmployees from "../../../hooks/useEmployees";
 import { Icon } from "@iconify/react";
 import api from "../../../config/api";
-import { toast } from 'react-toastify';
 
 const Dashboard = () => {
-	const { classes, sections, acYear, curYear, days, employeeType } = useClasses();
+	const { classes, sections, acYear, curYear, days } = useClasses();
+	const { employeeType } = useEmployees();
+
 	const [academicYear, setAcademicYear] = useState(curYear);
-	const [selectedClass, setSelectedClass] = useState([]);
-	const [selectedSection, setSelectedSection] = useState([]);
-	const [selectedEmployeeType, setSelectedEmployeeType] = useState([]);
-	const [selectedDays, setSelectedDays] = useState('');
+	const [selectedClass, setSelectedClass] = useState('');
+	const [selectedSection, setSelectedSection] = useState('');
+	const [selectedEmployeeType, setSelectedEmployeeType] = useState('');
+	const [selectedDays, setSelectedDays] = useState(days[1]);
 	const [dashboardData, setDashboardData] = useState(null);
-	const [selectedAcademicYear, setSelectedAcademicYear] = useState();
+
+	useEffect(() => {
+		fetchDashboardData();
+	}, []);
 
 	useEffect(() => {
 		fetchDashboardData();
@@ -23,14 +28,14 @@ const Dashboard = () => {
 
 	const fetchDashboardData = async () => {
 		try {
-			const response = await api.post('/api/library/information/inventory-dashboard', {
-				academic_year: academicYear,
-				classes: selectedClass,
-				sections: selectedSection,
-				employee_types: selectedEmployeeType,
-				days: selectedDays
+			const response = await api.post('/library/visitors/dashboard', {
+				// academic_year: academicYear,
+				// class_name: selectedClass,
+				// section: selectedSection,
+				// employee_type: selectedEmployeeType,
+				// days: selectedDays
 			});
-			console.log(response)
+			console.log(response.data)
 			setDashboardData(response.data);
 		} catch (error) {
 			console.error("Error fetching dashboard data:", error);
@@ -48,23 +53,34 @@ const Dashboard = () => {
 			<Divider />
 			<Box p={2} display={"flex"} gap={1} flexDirection={{ sm: "column", md: "row" }}>
 				<Bbox width={"23rem"} p={2} borderRadius={1} display={"flex"} flexDirection={"column"} gap={2}>
-					<FormControl style={{ width: "100%" }}>
+					<FormControl sx={{ width: "100%" }}>
 						<InputLabel>Academic Year</InputLabel>
 						<Select
 							label="Academic Year"
+							onChange={(e) =>
+								setAcademicYear(e.target.value)
+							}
 							value={academicYear}
-							onChange={(e) => setAcademicYear(e.target.value)}
-							defaultValue={acYear}
 						>
-							<MenuItem value={"2021-22"}>2021-22</MenuItem>
-							<MenuItem value={"2023-24"}>2023-24</MenuItem>
-							<MenuItem value={"2024-25"}>2024-25</MenuItem>
-							<MenuItem value={"2025-26"}>2025-26</MenuItem>
+							{acYear.map((year) => (
+								<MenuItem key={year} value={year}>
+									{year}
+								</MenuItem>
+							))}
 						</Select>
 					</FormControl>
 
 					<ReignsSelect items={classes} multiple label="Class" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)} defaultValues={classes} />
-					<ReignsSelect items={sections} multiple label="Section" value={selectedSection} onChange={(e) => setSelectedSection(e.target.value)} defaultValues={sections} />
+
+					<ReignsSelect
+						multiple
+						items={sections}
+						defaultValues={sections}
+						onChange={setSelectedSection}
+						value={selectedSection}
+						label="Section"
+					/>
+
 					<ReignsSelect
 						items={employeeType}
 						multiple
@@ -73,7 +89,23 @@ const Dashboard = () => {
 						onChange={(e) => setSelectedEmployeeType(e.target.value)}
 						defaultValues={employeeType}
 					/>
-					<ReignsSelect items={days} label="Days" value={selectedDays} onChange={(e) => setSelectedDays(e.target.value)} />
+
+					<FormControl>
+						<InputLabel>Days</InputLabel>
+						<Select
+							label="Days"
+							onChange={(e) =>
+								setSelectedDays(e.target.value)
+							}
+							value={selectedDays}
+						>
+							{days.map((day) => (
+								<MenuItem key={day} value={day}>
+									{day}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
 				</Bbox>
 				<Grid container flex={2} spacing={1}>
 					{dashboardData && (
@@ -81,11 +113,11 @@ const Dashboard = () => {
 							<DisplayCard
 								bgColor={"#D9EBF4"}
 								color={"#3B98C4"}
-								header="Borrowers"
-								value={dashboardData.borrowers.total_borrowed.toString()}
+								header="Footfalls"
+								value={dashboardData.footfall.total_visitors.toString()}
 								data={[
-									{ title: "Students", val: dashboardData.borrowers.students },
-									{ title: "Employees", val: dashboardData.borrowers.employees },
+									{ title: "Students", val: dashboardData.footfall.students },
+									{ title: "Employees", val: dashboardData.footfall.employees },
 								]}
 							/>
 							<DisplayCard
@@ -102,18 +134,18 @@ const Dashboard = () => {
 							<DisplayCard
 								bgColor={"#FAD2C0"}
 								color={"#B34A19"}
-								header="Media in Circulation"
-								value={dashboardData.media_in_circulation.media_circulation.toString()}
+								header="Media Issued (Visitors)"
+								value={dashboardData.media_issued.total_media_issued.toString()}
 								data={[
-									{ title: "Books", val: dashboardData.media_in_circulation.books },
-									{ title: "Periodicals", val: dashboardData.media_in_circulation.periodicals },
-									{ title: "Research Papers", val: dashboardData.media_in_circulation.research_papers },
+									{ title: "Books", val: dashboardData.media_issued.total_books_issued },
+									{ title: "Periodicals", val: dashboardData.media_issued.total_periodicals_issued },
+									{ title: "Research Papers", val: dashboardData.media_issued.total_research_papers_issued },
 								]}
 							/>
 							<DisplayCard
 								bgColor={"#D9EBF4"}
 								color={"#3B98C4"}
-								header="Current Defaulters"
+								header="Current Defaulters (Visitors)"
 								value={dashboardData.current_defaulters.total_defaulters.toString()}
 								data={[
 									{ title: "Students", val: dashboardData.current_defaulters.students },

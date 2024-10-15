@@ -1,7 +1,6 @@
-import { Box, Divider, Grid, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import { Box, Divider, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
 import Bbox from "../../UiComponents/Bbox";
-import ReignsSelect from "../../UiComponents/ReignsSelect";
 import { Stack } from "@mui/system";
 import { Icon } from "@iconify/react";
 import api from '../../../config/api'

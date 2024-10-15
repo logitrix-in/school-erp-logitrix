@@ -61,7 +61,7 @@ const EmployeeAccount = () => {
 		},
 		{
 			field: "status",
-			headerName: "Status",
+			headerName: "Account Status",
 			flex: 1,
 			renderCell: (params) => (
 				<Box
@@ -248,14 +248,22 @@ const EmployeeAccount = () => {
 							value={selectedGrade}
 						/>
 
-						<ReignsSelect
-							items={days}
-							multiple
-							label="Days"
-							defaultValues={days}
-							onChange={setSelectedDays}
-							value={selectedDays}
-						/>
+						<FormControl sx={{ width: "100%" }}>
+							<InputLabel>Days</InputLabel>
+							<Select
+								label="Days"
+								onChange={(e) =>
+									setSelectedDays(e.target.value)
+								}
+								value={selectedDays}
+							>
+								{days.map((day) => (
+									<MenuItem key={day} value={day}>
+										{day}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
 					</Bbox>
 
 					<Bbox

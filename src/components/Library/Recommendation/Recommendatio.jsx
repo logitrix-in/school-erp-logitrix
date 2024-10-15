@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import Tooltip from '@mui/material/Tooltip';
-import { DataGrid, selectedGridRowsCountSelector } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import useClasses from "../../../hooks/useClasses";
 import Section from "../../Section";
 import { Icon } from "@iconify/react";
@@ -28,19 +28,22 @@ import { toast } from 'react-toastify'
 
 const Recommendation = () => {
 	const { acYear, curYear } = useClasses();
+
+	const [academicYear, setAcademicYear] = useState(curYear);
+	const [libraryCardNumbers, setLibraryCardNumbers] = useState([]);
+	const [selectedLibraryCard, setSelectedLibraryCard] = useState('');
+	const [bookDetails, setBookDetails] = useState({})
+	const [rows, setRows] = useState([])
+
 	const [acceptPopup, setAcceptPopup] = useState(false);
 	const [rejectPopup, setRejectPopup] = useState(false);
 	const [fulfillPopup, setFulfillPopup] = useState(false);
 	const [requestDetailsPopup, setRequestDetailsPopup] = useState(false);
-	const [libraryCardNumbers, setLibraryCardNumbers] = useState([]);
-	const [academicYear, setAcademicYear] = useState(curYear);
-	const [selectedLibraryCard, setSelectedLibraryCard] = useState('');
-	const [rows, setRows] = useState([])
+
 	const [selectedRow, setSelectedRow] = useState('');
-	const [bookDetails, setBookDetails] = useState({})
 
 	useEffect(() => {
-		async function getLibraryCardDetails() {
+		async function getLibraryCardsList() {
 			try {
 				const response = await api.get('/library/library-cards/?display_type=list_view');
 				console.log(response.data);
@@ -51,12 +54,12 @@ const Recommendation = () => {
 				toast.error('Error Occured!');
 			}
 		}
-		getLibraryCardDetails();
+		getLibraryCardsList();
 	}, []);
 
 	async function handleGetDetails() {
 		try {
-			const response = await api.get(`/library/recommendation/?library_card=${selectedLibraryCard}`);
+			const response = await api.get(`/library/recommendation/?library_card=${selectedLibraryCard}&academic_year=${academicYear}`);
 			console.log(response.data);
 
 			const transformedRows = transformApiData(response.data);
@@ -67,6 +70,10 @@ const Recommendation = () => {
 			toast.error('Error Occured!');
 		}
 	}
+
+	useEffect(() => {
+		handleGetDetails();
+	}, [selectedLibraryCard, academicYear]);
 
 	function transformApiData(apiData) {
 		return apiData.map(item => ({
@@ -126,6 +133,13 @@ const Recommendation = () => {
 			default:
 				return value;
 		}
+	};
+
+	const truncateText = (text, maxLength) => {
+		if (text.length <= maxLength) {
+			return text;
+		}
+		return text.substring(0, maxLength) + '...';
 	};
 
 	const columns = [
@@ -195,12 +209,14 @@ const Recommendation = () => {
 					<Box display="flex" flexDirection="column" marginX={1}>
 						<Tooltip title="Harry Potter and the Goblet of Fire">
 							<Typography variant="subtitle1" fontWeight="semibold">
-								Harry Potter and the Goblet ...
+								{truncateText("Harry Potter and the Goblet of Fire", 22)}
+								{/* {params.value} */}
 							</Typography>
 						</Tooltip>
 						<Tooltip title="D. S. C. Publication">
 							<Typography variant="body2" color="textSecondary">
-								D. S. C. Publication
+								{truncateText("D. S. C. Publication", 22)}
+								{/* {params.value} */}
 							</Typography>
 						</Tooltip>
 					</Box>
@@ -277,7 +293,7 @@ const Recommendation = () => {
 				};
 
 				const options = [
-					"Open",
+					// ...(params.row.Status === "Open" ? ["In Review"] : []),
 					"In Review",
 					"Accept",
 					"Reject",
@@ -285,11 +301,10 @@ const Recommendation = () => {
 				];
 
 				const statusMap = {
-					"Open": "Open",
 					"In Review": "In Review",
 					"Accept": "Accept",
-					"Reject": "Rejected",
-					"Fulfill": "Fulfilled"
+					"Reject": "Reject",
+					"Fulfill": "Fulfill"
 				};
 
 				return (
@@ -384,7 +399,6 @@ const Recommendation = () => {
 							value={academicYear}
 							required
 							onChange={(e) => setAcademicYear(e.target.value)}
-							onBlur={handleGetDetails}
 						>
 							{
 								acYear?.map((type) => (

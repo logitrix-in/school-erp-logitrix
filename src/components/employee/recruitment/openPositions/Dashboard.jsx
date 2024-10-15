@@ -1,17 +1,91 @@
 import { Box, Divider, Grid, Typography, IconButton } from "@mui/material";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Bbox from "../../../UiComponents/Bbox";
 import ReignsSelect from "../../../UiComponents/ReignsSelect";
-import { AppContext } from "../../../../context/AppContext";
 import useClasses from "../../../../hooks/useClasses";
+import useEmployees from "../../../../hooks/useEmployees";
 import { Icon } from "@iconify/react";
-import { maxWidth } from "@mui/system";
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem
+} from "@mui/material";
 
 const Dashboard = () => {
-    const ctx = useContext(AppContext);
-    const { classes, sections, acYear, curYear, status } = useClasses();
+    const { acYear, curYear } = useClasses();
     const [academicYear, setAcademicYear] = useState(curYear);
-    console.log(classes);
+
+    const { employeeType, employeeManagementDepartment, employeeTeachingDepartment, employeeSupportStaffDepartment, employeeGrade } = useEmployees();
+
+    const [selectedEmployeeType, setSelectedEmployeeType] = useState('');
+    const [selectedDepartment, setSelectedDepartment] = useState('');
+    const [selectedGrade, setSelectedGrade] = useState('');
+    const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
+
+    const [rows, setRows] = useState([
+        {
+            id: 1,
+            emp_type: "Full-Time",
+            department: "Engineering",
+            grade: "A",
+            role: "Software Engineer",
+            class_scope: "Global",
+            open_positions: 5,
+            comments: "Urgent hiring",
+        },
+        {
+            id: 2,
+            emp_type: "Part-Time",
+            department: "Marketing",
+            grade: "B",
+            role: "Marketing Specialist",
+            class_scope: "Local",
+            open_positions: 2,
+            comments: "New project",
+        },
+        {
+            id: 3,
+            emp_type: "Contract",
+            department: "HR",
+            grade: "C",
+            role: "HR Manager",
+            class_scope: "Regional",
+            open_positions: 1,
+            comments: "Replacement",
+        }
+    ]);
+
+    const [newJobPopup, setNewJobPopup] = useState(false);
+    const [editJobPopup, setEditJobPopup] = useState(false);
+    const [jobIdPopup, setJobIdPopup] = useState(false);
+
+    useEffect(() => {
+        console.log(selectedEmployeeType);
+        let departments = [];
+
+        if (selectedEmployeeType === '') {
+            return;
+        }
+
+        selectedEmployeeType.forEach(type => {
+            switch (type) {
+                case 'Management':
+                    departments = [...departments, ...employeeManagementDepartment];
+                    break;
+                case 'Teaching Staff':
+                    departments = [...departments, ...employeeTeachingDepartment];
+                    break;
+                case 'Support Staff':
+                    departments = [...departments, ...employeeSupportStaffDepartment];
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        setEmployeeDepartment(departments);
+    }, [selectedEmployeeType]);
 
     return (
         <Bbox borderRadius={2} overflow={"hidden"}>
@@ -40,35 +114,54 @@ const Dashboard = () => {
                     justifyContent={'space-between'}
                     gap={2}
                 >
+                    <FormControl sx={{ width: "100%" }}>
+                        <InputLabel>Academic Year</InputLabel>
+                        <Select
+                            label="Academic Year"
+                            onChange={(e) =>
+                                setAcademicYear(e.target.value)
+                            }
+                            value={academicYear}
+                        >
+                            {acYear.map((year) => (
+                                <MenuItem key={year} value={year}>
+                                    {year}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                     <ReignsSelect
-                        items={acYear}
-                        onChange={(e) =>
-                            setAcademicYear(e?.target.value ?? academicYear)
-                        }
-                        label="Academic Year"
-                        value={academicYear}
-                    />
-                    <ReignsSelect
-                        items={[
-                            "Management",
-                            "Teaching Staff",
-                            "Support Staff",
-                        ]}
+                        items={employeeType}
                         multiple
                         label="Employee Type"
-                        defaultValues={["Management", "Teaching Staff", "Support Staff"]}
+                        defaultValues={employeeType}
+                        onChange={setSelectedEmployeeType}
+                        value={selectedEmployeeType}
+                        sx={{
+                            width: '100%'
+                        }}
                     />
                     <ReignsSelect
-                        items={classes}
+                        items={employeeDepartment}
                         multiple
+                        defaultValues={employeeDepartment}
+                        onChange={setSelectedDepartment}
+                        value={selectedDepartment}
                         label="Department"
-                        defaultValues={classes}
+                        sx={{
+                            width: '100%'
+                        }}
                     />
                     <ReignsSelect
-                        items={sections}
+                        items={employeeGrade}
                         multiple
                         label="Grade"
-                        defaultValues={sections}
+                        defaultValues={employeeGrade}
+                        onChange={setSelectedGrade}
+                        value={selectedGrade}
+                        sx={{
+                            width: '100%'
+                        }}
                     />
                 </Bbox>
                 <Grid container flex={2} spacing={1}>

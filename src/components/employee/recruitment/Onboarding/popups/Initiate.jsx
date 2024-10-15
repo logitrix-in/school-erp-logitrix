@@ -1,14 +1,12 @@
-import React from "react";
 import {
     Box,
     Button,
     Dialog,
-    TextField,
     IconButton,
     Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import IncidentHeaderBanner from "../Banner";
 
 const Approve = ({ open, close }) => {
@@ -73,7 +71,7 @@ const Approve = ({ open, close }) => {
                         </Box>
                     </Box>
 
-                    <IncidentHeaderBanner text="Applied For" />
+                    <IncidentHeaderBanner text="Applied For" style={{ marginTop: "-16px" }} />
 
                     <Box display="flex" justifyContent="center" width="100%" alignItems="flex-start" >
                         <Box display="flex" gap={0} width="50%" justifyContent="space-between" >

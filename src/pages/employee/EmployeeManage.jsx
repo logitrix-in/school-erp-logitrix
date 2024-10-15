@@ -29,7 +29,7 @@ const EmployeeManage = () => {
                             fontSize: "16px",
                             fontWeight: 400,
                         }}
-                        onClick={() => navigate("/employee/manage/")}
+                        onClick={() => navigate("/employee/manage/edit-information")}
                     >
                         Edit Information
                     </button>

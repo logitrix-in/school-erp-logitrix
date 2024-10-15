@@ -19,22 +19,22 @@ const Submit = () => {
 	const [authors, setAuthors] = useState([]);
 	const [publishers, setPublishers] = useState([]);
 
-	const [mediaType, setMediaType] = useState([]);
-	const [category, setCategory] = useState([]);
-	const [name, setName] = useState([]);
-	const [author, setAuthor] = useState([]);
-	const [publisher, setPublisher] = useState([]);
-	const [language, setLanguage] = useState([]);
+	const [selectedMediaType, setSelectedMediaType] = useState([]);
+	const [selectedCategory, setSelectedCategory] = useState([]);
+	const [selectedName, setSelectedName] = useState([]);
+	const [selectedAuthor, setSelectedAuthor] = useState([]);
+	const [selectedPublisher, setSelectedPublisher] = useState([]);
+	const [selectedLanguage, setSelectedLanguage] = useState([]);
 	const [rows, setRows] = useState([]);
 
 	const handleSubmit = async () => {
 		const formData = {
-			media_types: mediaType,
-			media_languages: language,
-			categories: category,
-			media_names: name,
-			authors: author,
-			publishers: publisher
+			media_types: selectedMediaType,
+			media_languages: selectedLanguage,
+			categories: selectedCategory,
+			media_names: selectedName,
+			authors: selectedAuthor,
+			publishers: selectedPublisher
 		};
 		console.log('Form data:', formData);
 
@@ -47,12 +47,6 @@ const Submit = () => {
 				id: item.media_id
 			})));
 
-			setMediaType([]);
-			setCategory([]);
-			setName([]);
-			setAuthor([]);
-			setPublisher([]);
-			setLanguage([]);
 		} catch (error) {
 			console.error('Error submitting form:', error);
 		}
@@ -110,7 +104,6 @@ const Submit = () => {
 				const response = await api.get('/library/catalogue/');
 				console.log(response.data);
 
-				// Extract and set the required data
 				setMediaNames(response.data.media_names);
 				setAuthors(response.data.authors);
 				setPublishers(response.data.publishers);
@@ -121,6 +114,17 @@ const Submit = () => {
 		};
 		fetchData();
 	}, [])
+
+	const handleClearAll = () => {
+		console.log('Clearing all fields');
+		setSelectedMediaType([]);
+		setSelectedCategory([]);
+		setSelectedName([]);
+		setSelectedAuthor([]);
+		setSelectedPublisher([]);
+		setSelectedLanguage([]);
+		console.log(selectedMediaType, selectedCategory, selectedName, selectedAuthor, selectedPublisher, selectedLanguage);
+	}
 
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
@@ -133,24 +137,15 @@ const Submit = () => {
 			<Divider />
 			<Box p={2}>
 				<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-					<Button variant="outlined">Clear All</Button>
+					<Button variant="outlined" onClick={() => handleClearAll()}>Clear All</Button>
 				</Box>
 				<Grid container spacing={2} mt={1}>
 					<Grid item xs={4}>
 						<AutocompleteWithAll
 							items={mediaTypes}
 							title="Media Type"
-							value={mediaType}
-							onChange={setMediaType}
-						/>
-					</Grid>
-					<Grid item xs={4}>
-						<AutocompleteWithAll
-							limitTags={2}
-							items={mediaCategories}
-							title="Select Category"
-							value={category}
-							onChange={setCategory}
+							value={selectedMediaType}
+							onChange={setSelectedMediaType}
 						/>
 					</Grid>
 					<Grid item xs={4}>
@@ -158,8 +153,17 @@ const Submit = () => {
 							limitTags={2}
 							items={mediaNames}
 							title="Select Name"
-							value={name}
-							onChange={setName}
+							value={selectedName}
+							onChange={setSelectedName}
+						/>
+					</Grid>
+					<Grid item xs={4}>
+						<AutocompleteWithAll
+							limitTags={2}
+							items={mediaCategories}
+							title="Select Category"
+							value={selectedCategory}
+							onChange={setSelectedCategory}
 						/>
 					</Grid>
 					<Grid item xs={4}>
@@ -167,8 +171,8 @@ const Submit = () => {
 							limitTags={2}
 							items={authors}
 							title="Select Author"
-							value={author}
-							onChange={setAuthor}
+							value={selectedAuthor}
+							onChange={setSelectedAuthor}
 						/>
 					</Grid>
 					<Grid item xs={4}>
@@ -176,8 +180,8 @@ const Submit = () => {
 							limitTags={2}
 							items={publishers}
 							title="Select Publisher"
-							value={publisher}
-							onChange={setPublisher}
+							value={selectedPublisher}
+							onChange={setSelectedPublisher}
 						/>
 					</Grid>
 					<Grid item xs={4}>
@@ -185,8 +189,8 @@ const Submit = () => {
 							title="Language"
 							limitTags={2}
 							items={mediaLanguages}
-							value={language}
-							onChange={setLanguage}
+							value={selectedLanguage}
+							onChange={setSelectedLanguage}
 						/>
 					</Grid>
 				</Grid>

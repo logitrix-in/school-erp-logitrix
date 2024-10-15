@@ -43,7 +43,6 @@ const Dashboard = () => {
 		setEmployeeDepartment(departments);
 	}, [selectedEmployeeType]);
 
-
 	return (
 		<Bbox borderRadius={2} overflow={"hidden"}>
 			<Box bgcolor={"white"} py={1.3} px={2} borderRadius={2}>
@@ -178,7 +177,7 @@ const Dashboard = () => {
 																	show: true,
 																	name: {
 																		show: true,
-																		fontSize: '16px',
+																		fontSize: '12px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 600,
 																		color: '#373d3f',
@@ -186,7 +185,7 @@ const Dashboard = () => {
 																	},
 																	value: {
 																		show: true,
-																		fontSize: '24px',
+																		fontSize: '20px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 600,
 																		color: '#373d3f',
@@ -196,7 +195,7 @@ const Dashboard = () => {
 																		show: true,
 																		label: 'Total',
 																		color: '#373d3f',
-																		fontSize: '16px',
+																		fontSize: '14px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 400,
 																	}
@@ -288,7 +287,7 @@ const Dashboard = () => {
 																	show: true,
 																	name: {
 																		show: true,
-																		fontSize: '16px',
+																		fontSize: '12px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 600,
 																		color: '#373d3f',
@@ -296,7 +295,7 @@ const Dashboard = () => {
 																	},
 																	value: {
 																		show: true,
-																		fontSize: '24px',
+																		fontSize: '20px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 600,
 																		color: '#373d3f',
@@ -306,7 +305,7 @@ const Dashboard = () => {
 																		show: true,
 																		label: 'Total',
 																		color: '#373d3f',
-																		fontSize: '16px',
+																		fontSize: '14px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 400,
 																	}
@@ -401,7 +400,7 @@ const Dashboard = () => {
 																	show: true,
 																	name: {
 																		show: true,
-																		fontSize: '16px',
+																		fontSize: '12px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 600,
 																		color: '#373d3f',
@@ -409,7 +408,7 @@ const Dashboard = () => {
 																	},
 																	value: {
 																		show: true,
-																		fontSize: '24px',
+																		fontSize: '20px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 600,
 																		color: '#373d3f',
@@ -419,7 +418,7 @@ const Dashboard = () => {
 																		show: true,
 																		label: 'Total',
 																		color: '#373d3f',
-																		fontSize: '16px',
+																		fontSize: '14px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 400,
 																	}
@@ -510,7 +509,7 @@ const Dashboard = () => {
 																	show: true,
 																	name: {
 																		show: true,
-																		fontSize: '16px',
+																		fontSize: '12px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 600,
 																		color: '#373d3f',
@@ -518,7 +517,7 @@ const Dashboard = () => {
 																	},
 																	value: {
 																		show: true,
-																		fontSize: '24px',
+																		fontSize: '20px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 600,
 																		color: '#373d3f',
@@ -528,7 +527,7 @@ const Dashboard = () => {
 																		show: true,
 																		label: 'Total',
 																		color: '#373d3f',
-																		fontSize: '16px',
+																		fontSize: '14px',
 																		fontFamily: 'Helvetica, Arial, sans-serif',
 																		fontWeight: 400,
 																	}

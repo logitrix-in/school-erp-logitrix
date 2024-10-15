@@ -1,17 +1,18 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { toast } from "react-toastify";
 import IncidentHeaderBanner from "../Banner";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useState } from 'react';
 import { TextField, Select, MenuItem, InputLabel, FormControl, Button, IconButton, Box, Typography, Dialog } from '@mui/material';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 const ReleaseOfferLetter = ({ open, close, setSetTemplatePopup }) => {
 
-    const [contractPeriod, setContractPeriod] = useState(null);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+    const [expectedDateOfJoining, setExpectedDateOfJoining] = useState(null);
     const [paymentFrequency, setPaymentFrequency] = useState('');
     const [periodicPayment, setPeriodicPayment] = useState('');
     const [emailList, setEmailList] = useState(['']);
@@ -38,8 +39,8 @@ const ReleaseOfferLetter = ({ open, close, setSetTemplatePopup }) => {
             fullWidth={false}
             PaperProps={{
                 sx: {
-                    maxHeight: "90%",
-                    width: "50%",
+                    height: "100%",
+                    width: "60%",
                 },
             }}
             maxWidth="lg"
@@ -93,28 +94,30 @@ const ReleaseOfferLetter = ({ open, close, setSetTemplatePopup }) => {
                         </Box>
                     </Box>
 
-                    <IncidentHeaderBanner text="Applied For" />
+                    <IncidentHeaderBanner text="Applied For" style={{ marginTop: '-16px' }} />
 
                     <Box display="flex" justifyContent="center" width="100%" alignItems="flex-start" >
                         <Box display="flex" gap={0} width="50%" justifyContent="space-between" >
                             <Box display="flex" flexDirection="column" justifyContent="space-between" >
+                                <Typography mb={2}>Employee ID</Typography>
                                 <Typography mb={2}>Employee Type</Typography>
                                 <Typography mb={2}>Department</Typography>
-                                <Typography mb={2}>Grade</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography fontWeight="medium" ml={1} mb={2}>: EMP1234</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Teaching Staff</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Physics</Typography>
-                                <Typography fontWeight="medium" ml={1} mb={2}>: B2</Typography>
                             </Box>
                             <Box />
                         </Box>
                         <Box display="flex" gap={0} width="50%" justifyContent="space-between" alignItems={"flex-start"}>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography mb={2}>Grade</Typography>
                                 <Typography mb={2}>Role</Typography>
                                 <Typography mb={2}>Class Scope</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography fontWeight="medium" ml={1} mb={2}>: B2</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Laboratory Assistant</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: High School</Typography>
                             </Box>
@@ -125,13 +128,25 @@ const ReleaseOfferLetter = ({ open, close, setSetTemplatePopup }) => {
                         <Box sx={{ width: '100%' }}>
 
                             <Box>
-                                <DatePicker
-                                    label="Contract Period"
-                                    value={contractPeriod}
-                                    sx={{ width: '100%' }}
-                                    onChange={(newValue) => setContractPeriod(newValue)}
-                                    renderInput={(params) => <TextField {...params} margin="normal" />}
-                                />
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <Box display="flex" gap={2}>
+                                        <DatePicker
+                                            label="Contract Period Starts"
+                                            onChange={(newValue) => setStartDate(newValue)}
+                                            value={startDate}
+                                            format="DD MMM YYYY"
+                                            slotProps={{ textField: { fullWidth: true } }}
+                                        />
+                                        <DatePicker
+                                            label="Contract Period Ends"
+                                            minDate={startDate}
+                                            value={endDate}
+                                            onChange={(newValue) => setEndDate(newValue)}
+                                            format="DD MMM YYYY"
+                                            slotProps={{ textField: { fullWidth: true } }}
+                                        />
+                                    </Box>
+                                </LocalizationProvider>
                             </Box>
 
                             <FormControl fullWidth margin="normal">
@@ -142,7 +157,6 @@ const ReleaseOfferLetter = ({ open, close, setSetTemplatePopup }) => {
                                     label="Payment Frequency"
                                 >
                                     <MenuItem value="Every 15 Days">Every 15 Days</MenuItem>
-                                    {/* Add other options as needed */}
                                 </Select>
                             </FormControl>
 
@@ -165,7 +179,6 @@ const ReleaseOfferLetter = ({ open, close, setSetTemplatePopup }) => {
                                     label="Joining Location"
                                 >
                                     <MenuItem value="Select">Select</MenuItem>
-                                    {/* Add other options as needed */}
                                 </Select>
                             </FormControl>
                         </Box>
@@ -186,9 +199,9 @@ const ReleaseOfferLetter = ({ open, close, setSetTemplatePopup }) => {
                             <Box>
                                 <DatePicker
                                     label="Expected Date of Joining"
-                                    value={contractPeriod}
+                                    value={expectedDateOfJoining}
                                     sx={{ width: '100%' }}
-                                    onChange={(newValue) => setContractPeriod(newValue)}
+                                    onChange={(newValue) => setExpectedDateOfJoining(newValue)}
                                     renderInput={(params) => <TextField {...params} margin="normal" />}
                                 />
                             </Box>
@@ -242,7 +255,7 @@ const ReleaseOfferLetter = ({ open, close, setSetTemplatePopup }) => {
                                     placeholder="E.g. john@example.com"
                                 />
                                 <IconButton onClick={() => handleRemoveEmail(index)} size="small">
-                                    <DeleteIcon />
+                                    <DeleteOutlineOutlinedIcon color="error" sx={{ cursor: 'pointer' }} />
                                 </IconButton>
                             </Box>
                         ))}

@@ -151,7 +151,7 @@ const OnBoardingEdit = () => {
     toast.success("Submitted Successfully", {
       autoClose: 2000,
     });
-    navigate("/employee/manage/");
+    navigate("/employee/manage/edit-information");
   };
 
   const handleClose = () => {
@@ -159,7 +159,7 @@ const OnBoardingEdit = () => {
     toast.error("Edit Details Cancelled", {
       autoClose: 2000,
     });
-    navigate("/employee/manage/");
+    navigate("/employee/manage/edit-information");
   };
 
   return (

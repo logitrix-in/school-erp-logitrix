@@ -1,5 +1,4 @@
-import { FC, useEffect, useState } from "react";
-
+import React, { useEffect } from "react";
 import {
 	TextField,
 	Autocomplete,
@@ -8,7 +7,6 @@ import {
 	Checkbox,
 	FormControlLabel,
 	Divider,
-	Chip,
 } from "@mui/material";
 
 export const AutocompleteWithAll = ({
@@ -18,21 +16,12 @@ export const AutocompleteWithAll = ({
 	value,
 	limitTags,
 }) => {
-	const [columns, setColumns] = useState([...(value ?? [])]);
-	const [selectAll, setSelectAll] = useState(false);
+	const allOptions = [...(items ?? [])];
+	const selectAll = value.length === allOptions.length;
 
 	const handleToggleSelectAll = () => {
-		setSelectAll((prev) => {
-			if (!prev) setColumns([...allOptions]);
-			else setColumns([]);
-			return !prev;
-		});
+		onChange(selectAll ? [] : [...allOptions]);
 	};
-	const allOptions = [...(items ?? [])];
-
-	useEffect(() => {
-		onChange(columns);
-	}, [columns, selectAll]);
 
 	return (
 		<Autocomplete
@@ -40,25 +29,21 @@ export const AutocompleteWithAll = ({
 			options={allOptions}
 			disableCloseOnSelect
 			limitTags={limitTags}
-			// filterSelectedOptions
 			freeSolo={false}
-			value={columns}
-			onChange={(_e, value, reason) => {
-				if (reason === "clear" || reason === "removeOption")
-					setSelectAll(false);
-				if (
-					reason === "selectOption" &&
-					value.length === allOptions.length
-				)
-					setSelectAll(true);
-				setColumns(value);
+			value={value}
+			onChange={(_e, newValue, reason) => {
+				if (reason === "selectOption" && newValue.length === allOptions.length) {
+					onChange([...allOptions]);
+				} else {
+					onChange(newValue);
+				}
 			}}
 			renderTags={(val, props, state) => {
-				return val.length == allOptions.length
+				return val.length === allOptions.length
 					? "All"
-					: columns.length > limitTags
+					: val.length > limitTags
 						? val.slice(0, limitTags).join(", ") +
-						` +${columns.length - limitTags}`
+						` +${val.length - limitTags}`
 						: val.join(", ");
 			}}
 			renderInput={(params) => <TextField {...params} label={title} />}

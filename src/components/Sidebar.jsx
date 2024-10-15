@@ -202,9 +202,11 @@ const Sidebar = () => {
                     <Icon icon={nav.icon} />
                     <Typography
                       textTransform={"capitalize"}
-                      lineHeight={"1ch"}
+                      lineHeight={"1.2rem"}
                       mr={"auto"}
                       fontSize={"0.9rem"}
+                      whiteSpace="pre-line"
+                      textAlign={"left"}
                     >
                       {nav.name}
                     </Typography>
@@ -250,9 +252,8 @@ const Sidebar = () => {
                         alignItems={"center"}
                         gap={1}
                         color={"#4d4d4d"}
-                        className={`${
-                          isPathActive(submenu.path) ? "active" : ""
-                        }`}
+                        className={`${isPathActive(submenu.path) ? "active" : ""
+                          }`}
                         sx={{
                           cursor: "pointer",
                           "&.active": {

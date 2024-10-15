@@ -118,6 +118,11 @@ import EmployeeProbation from "./components/employee/manage/Probation/Probation"
 import EmployeePromotion from "./components/employee/manage/Promotion/Promotion";
 import PromotionLetterIssuance from "./components/employee/manage/Promotion/PromotionLetterIssuance";
 
+import PreExamination from "./pages/examination-management/PreExamination";
+import PostExamination from "./pages/examination-management/PostExamination";
+import EditResults from "./components/examination-management/PostExamination/EditResultsTab/EditResults";
+import ReportCard from "./components/examination-management/PostExamination/ReportCardTab/ReportCard";
+
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
 const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
 const LibraryVisitors = lazy(() => import("./pages/Library/LibraryVisitors"));
@@ -458,7 +463,7 @@ function App() {
 						element={<EmployeeInformation />}
 					/>
 					<Route
-						path={"employee/manage/"}
+						path={"employee/manage/edit-information"}
 						element={<EmployeeManage />}
 					/>
 
@@ -501,7 +506,7 @@ function App() {
 					/>
 
 					<Route
-						path={"employee/leave/"}
+						path={"employee/leave/leave-management"}
 						element={<EmployeeLeave />}
 					/>
 					<Route
@@ -524,6 +529,27 @@ function App() {
 					<Route
 						path={"employee/claims&bonuses/"}
 						element={<ClaimsBonuses />}
+					/>
+
+					{/* EXAMINATION */}
+					<Route
+						path={"examination-management/pre-examination/"}
+						element={<PreExamination />}
+					/>
+
+					<Route
+						path={"examination-management/post-examination/"}
+						element={<PostExamination />}
+					/>
+
+					<Route
+						path={"examination-management/post-examination/edit-results/"}
+						element={<EditResults />}
+					/>
+
+					<Route
+						path={"examination-management/post-examination/report-card/"}
+						element={<ReportCard />}
 					/>
 
 					{/* <Route

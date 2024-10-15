@@ -72,7 +72,7 @@ const Reject = ({ open, close }) => {
                         </Box>
                     </Box>
 
-                    <IncidentHeaderBanner text="Applied For" />
+                    <IncidentHeaderBanner text="Applied For" style={{ marginTop: "-16px" }} />
 
                     <Box display="flex" justifyContent="center" width="100%" alignItems="flex-start" >
                         <Box display="flex" gap={0} width="50%" justifyContent="space-between" >

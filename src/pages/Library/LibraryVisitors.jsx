@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import RevealCard from "../../components/AnimationComponents/RevealCard";
 import Dashboard from "../../components/Library/Visitors/Dashboard";
 import Inventory from "../../components/Library/Visitors/Inventory";
-import QuickSearch from "../../components/Library/Visitors/QuickSearch";
+import RecordAttendance from "../../components/Library/Visitors/RecordAttendance";
 import api from '../../config/api'
 
 const LibraryVisitors = () => {
@@ -30,7 +30,7 @@ const LibraryVisitors = () => {
 				<Inventory libraryCardNumbers={libraryCardNumbers} />
 			</RevealCard>
 			<RevealCard>
-				<QuickSearch libraryCardNumbers={libraryCardNumbers} />
+				<RecordAttendance libraryCardNumbers={libraryCardNumbers} />
 			</RevealCard>
 		</Box>
 	);

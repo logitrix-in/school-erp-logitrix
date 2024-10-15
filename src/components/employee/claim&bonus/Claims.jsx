@@ -248,15 +248,12 @@ export default function Claims() {
                             sx={{ width: "25%" }}
                         />
 
-                        {/* Spacer */}
                         <Box flex={1} />
 
-                        {/* search button */}
                         <Button variant="outlined" color="primary" onClick={() => setRaisePopup(true)}>Raise New Request</Button>
                     </Box>
                 </Box>
 
-                {/* table */}
                 <Box mt={2} mb={5} style={{ height: "100%" }} mx={2}>
                     <DataGrid
                         rows={rows}

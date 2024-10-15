@@ -59,16 +59,13 @@ const Reject = ({ open, close }) => {
                     <Box display="flex" justifyContent="center" width="100%" alignItems="flex-start" >
                         <Box display="flex" gap={0} width="50%" justifyContent="space-between" >
                             <Box display="flex" flexDirection="column" justifyContent="space-between" >
+                                <Typography mb={2}>Employee ID</Typography>
                                 <Typography mb={2}>Employee Name</Typography>
-                                <Typography mb={2}>Status</Typography>
                                 <Typography mb={2}>Academic Year</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography fontWeight="medium" ml={1} mb={2}>: EMP1234</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Priya Naskar</Typography>
-                                <Box display={'flex'} justifyContent={'center'} alignItems={'center'} ml={-2} mb={2}>
-                                    <Typography fontWeight="medium">:</Typography>
-                                    <Typography fontWeight="medium" ml={1} bgcolor={'#C6F6D5'} paddingX={'8px'} borderRadius={'6px'} fontSize={'0.8rem'}>Active</Typography>
-                                </Box>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: 2024-25</Typography>
                             </Box>
                             <Box />
@@ -77,10 +74,15 @@ const Reject = ({ open, close }) => {
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
                                 <Typography mb={2}>Supervisor</Typography>
                                 <Typography mb={2}>Department</Typography>
+                                <Typography mb={2}>Status</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Physics</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Ratan Basak (AUG245698)</Typography>
+                                <Box display={'flex'} justifyContent={'start'} alignItems={'center'} ml={1} mb={2}>
+                                    <Typography fontWeight="medium">:</Typography>
+                                    <Typography fontWeight="medium" ml={1} bgcolor={'#C6F6D5'} paddingX={'8px'} borderRadius={'6px'} fontSize={'0.8rem'}>Active</Typography>
+                                </Box>
                             </Box>
                         </Box>
                     </Box>

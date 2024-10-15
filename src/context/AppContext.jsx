@@ -26,6 +26,13 @@ const AppContextProvider = ({ children }) => {
   const [employeeLeaveTypes, setEmployeeLeaveTypes] = useState([]);
   const [employeeCategories, setEmployeeCategories] = useState([]);
   const [employeeCreditCycle, setEmployeeCreditCycle] = useState([]);
+  const [employeeClassScope, setEmployeeClassScope] = useState([]);
+  const [employeeMedium, setEmployeeMedium] = useState([]);
+  const [employeeBoard, setEmployeeBoard] = useState([]);
+  const [employeeCasteCategory, setEmployeeCasteCategory] = useState([]);
+  const [employeeUniversity, setEmployeeUniversity] = useState([]);
+  const [employeeDegree, setEmployeeDegree] = useState([]);
+  const [employeeSpecialisation, setEmployeeSpecialisation] = useState([]);
 
   const [nonCompliance, setNonCompliance] = useState([]);
   const [suspend, setSuspend] = useState([]);
@@ -42,7 +49,25 @@ const AppContextProvider = ({ children }) => {
   }, []);
 
   const generateEmployeeRoles = () => {
-    return ["House Coordinator", "High School Coordinator", "Dance club supervisor", "No"];
+    return [
+      "Principal",
+      "Vice Principal",
+      "Head of the Department",
+      "Senior Teacher",
+      "Junior Teacher",
+      "Assistant Teacher",
+      "Laboratory Assistant",
+      "HR Manager",
+      "Admin Lead",
+      "Senior Admin",
+      "Junior Admin",
+      "Marketing Manager",
+      "Coordinator",
+      "Inventory Manager",
+      "Senior Accountant",
+      "Junior Accountant",
+      "Caretaker"
+    ];
   };
 
   useEffect(() => {
@@ -167,6 +192,146 @@ const AppContextProvider = ({ children }) => {
     ];
   };
 
+  useEffect(() => {
+    setEmployeeClassScope(generateEmployeeClassScope());
+  }, []);
+
+  const generateEmployeeClassScope = () => {
+    return [
+      "Pre-primary School",
+      "Primary School",
+      "High School"
+    ];
+  };
+
+  useEffect(() => {
+    setEmployeeMedium(generateEmployeeMedium());
+  }, []);
+
+  function generateEmployeeMedium() {
+    return [
+      "English",
+      "Bengali",
+      "Hindi",
+      "Others"
+    ];
+  }
+
+  useEffect(() => {
+    setEmployeeBoard(generateEmployeeBoard());
+  }, []);
+
+  function generateEmployeeBoard() {
+    return [
+      "CBSE",
+      "ICSE",
+      "ISC",
+      "WBBSE",
+      "WBCHSE",
+      "Other"
+    ];
+  }
+
+  useEffect(() => {
+    setEmployeeCasteCategory(generateEmployeeCasteCategory());
+  }, []);
+
+  function generateEmployeeCasteCategory() {
+    return [
+      "Unreserved",
+      "OBC-A",
+      "OBC-B",
+      "SC",
+      "ST",
+      "EWS",
+      "PwD"
+    ];
+  }
+
+  useEffect(() => {
+    setEmployeeUniversity(generateEmployeeUniversity());
+  }, []);
+
+  function generateEmployeeUniversity() {
+    return [
+      "Visva Bharati University",
+      "University of Calcutta",
+      "Jadavpur University",
+      "Presidency University",
+      "West Bengal State University",
+      "University of North Bengal",
+      "Jawaharlal Nehru University",
+      "University of Delhi",
+      "Banaras Hindu University",
+      "Jamia Millia Islamia",
+      "Aligarh Muslim University",
+      "University of Hyderabad",
+      "Pondicherry University",
+      "Central University of Punjab",
+      "University of Rajasthan",
+      "Rajiv Gandhi University",
+      "Others"
+    ];
+  }
+
+  useEffect(() => {
+    setEmployeeSpecialisation(generateEmployeeSpecialisation());
+  }, []);
+
+  function generateEmployeeSpecialisation() {
+    return [
+      "English",
+      "Bengali",
+      "Hindi",
+      "Sanskrit",
+      "History",
+      "Geography",
+      "Political Science",
+      "Economics",
+      "Music",
+      "Psychology",
+      "Sociology",
+      "Education",
+      "Physical Education",
+      "Mathematics",
+      "Physics",
+      "Chemistry",
+      "Biology",
+      "Botany",
+      "Zoology",
+      "Physiology",
+      "Computer Science",
+      "Statistics",
+      "Accountancy",
+      "Business Studies",
+      "Others"
+    ];
+  }
+
+  useEffect(() => {
+    setEmployeeDegree(generateEmployeeDegree());
+  }, []);
+
+  function generateEmployeeDegree() {
+    return [
+      "Diploma",
+      "Bachelor of Arts",
+      "Bachelor of Science",
+      "Bachelor of Commerce",
+      "Post Graduate Diploma",
+      "Master of Science",
+      "Master of Arts",
+      "Master of Commerce",
+      "Doctor of Philosophy",
+      "Post-doctorate Degree",
+      "Bachelor of Education",
+      "Master of Education",
+      "Master of Philosophy",
+      "Bachelor of Business Administration",
+      "Master of Business Administration",
+      "Others"
+    ];
+  }
 
   // ? MEDIAS
   useEffect(() => {
@@ -223,7 +388,6 @@ const AppContextProvider = ({ children }) => {
       "Others"
     ];
   }
-
 
   // ? CLASSES
   useEffect(() => {
@@ -384,6 +548,8 @@ const AppContextProvider = ({ children }) => {
     setClasses,
     sections,
     setSections,
+    subjects,
+    setSubjects,
 
     mediaTypes,
     setMediaTypes,
@@ -416,8 +582,20 @@ const AppContextProvider = ({ children }) => {
     setEmployeeCategories,
     employeeCreditCycle,
     setEmployeeCreditCycle,
-    subjects,
-    setSubjects,
+    employeeClassScope,
+    setEmployeeClassScope,
+    employeeMedium,
+    setEmployeeMedium,
+    employeeBoard,
+    setEmployeeBoard,
+    employeeCasteCategory,
+    setEmployeeCasteCategory,
+    employeeUniversity,
+    setEmployeeUniversity,
+    employeeDegree,
+    setEmployeeDegree,
+    employeeSpecialisation,
+    setEmployeeSpecialisation,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -72,28 +72,30 @@ const Reject = ({ open, close }) => {
                         </Box>
                     </Box>
 
-                    <IncidentHeaderBanner text="Applied For" />
+                    <IncidentHeaderBanner text="Applied For" style={{ marginTop: '-16px' }} />
 
                     <Box display="flex" justifyContent="center" width="100%" alignItems="flex-start" >
                         <Box display="flex" gap={0} width="50%" justifyContent="space-between" >
                             <Box display="flex" flexDirection="column" justifyContent="space-between" >
+                                <Typography mb={2}>Employee ID</Typography>
                                 <Typography mb={2}>Employee Type</Typography>
                                 <Typography mb={2}>Department</Typography>
-                                <Typography mb={2}>Grade</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Teaching Staff</Typography>
+                                <Typography fontWeight="medium" ml={1} mb={2}>: EMP1234</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Physics</Typography>
-                                <Typography fontWeight="medium" ml={1} mb={2}>: B2</Typography>
                             </Box>
                             <Box />
                         </Box>
                         <Box display="flex" gap={0} width="50%" justifyContent="space-between" alignItems={"flex-start"}>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography mb={2}>Grade</Typography>
                                 <Typography mb={2}>Role</Typography>
                                 <Typography mb={2}>Class Scope</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
+                                <Typography fontWeight="medium" ml={1} mb={2}>: B2</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Laboratory Assistant</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: High School</Typography>
                             </Box>

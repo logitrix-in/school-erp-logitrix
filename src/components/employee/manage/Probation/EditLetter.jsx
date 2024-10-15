@@ -82,11 +82,17 @@ const EditLetter = ({ open, close }) => {
                                 <MenuItem value={"2024-25"}>C</MenuItem>
                             </Select>
                         </FormControl>
+
+                        <Button variant="contained" color="primary" sx={{ ml: '16px' }} fullWidth onClick={() => {
+                        }}>
+                            Preview
+                        </Button>
+
                         <Button variant="contained" color="primary" sx={{ ml: '16px' }} fullWidth onClick={() => {
                             toast.success("Updated Successfully");
                             close();
                         }}>
-                            Save & Next
+                            Save
                         </Button>
                     </Box>
                 </Box>

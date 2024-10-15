@@ -4,7 +4,6 @@ import {
     Button,
     Dialog,
     TextField,
-    Autocomplete,
     IconButton,
     Typography,
     MenuItem,
@@ -24,7 +23,6 @@ import LeaveRequestID from "../LeaveRequestID";
 import useEmployees from "@/hooks/useEmployees";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-
 
 const ApplyLeave = ({ open, close }) => {
     const [leaveRequestID, setLeaveRequestID] = useState(false);
@@ -306,7 +304,12 @@ const ApplyLeave = ({ open, close }) => {
 
                     <Box display={'flex'} alignItems={'center'} sx={{ my: '16px' }}>
                         <Typography fontWeight={600}>Supporting Document</Typography>
-                        <Button color="primary" variant="contained" sx={{ ml: '16px' }} > Upload</Button>
+                        <input type="file" name="leave-upload" style={{ display: "none" }} id="leave-upload" />
+                        <InputLabel htmlFor="leave-upload">
+                            <Button color="primary" variant="contained" component="span" sx={{ ml: '16px' }}>
+                                Upload
+                            </Button>
+                        </InputLabel>
                     </Box>
 
                     <TextField

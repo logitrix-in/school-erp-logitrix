@@ -71,7 +71,7 @@ const PromotionIncrement = ({ open, close }) => {
                     </Box>
 
                     <Box>
-                        <Typography>Promotion increment can be further modified at the time of promotion approval.</Typography>
+                        <Typography fontStyle="italic">Promotion increment can be further modified at the time of promotion approval.</Typography>
                         <Button
                             variant={"contained"}
                             fullWidth

@@ -54,7 +54,7 @@ const EmployeeDepartment = () => {
         },
         {
             field: "id",
-            headerName: "Employee ID", flex: 1,
+            headerName: "Employee ID", flex: 0.8,
             renderCell: (params) => (
                 <Typography
                     component="span"
@@ -67,7 +67,7 @@ const EmployeeDepartment = () => {
         },
         {
             field: "name",
-            headerName: "Name", flex: 1.5
+            headerName: "Name", flex: 1.2
         },
         {
             field: "emp_type",
@@ -79,11 +79,11 @@ const EmployeeDepartment = () => {
         },
         {
             field: "grade",
-            headerName: "Grade", flex: 0.8
+            headerName: "Grade", flex: 0.5
         },
         {
             field: "supervisor",
-            headerName: "Supervisor", flex: 0.8
+            headerName: "Supervisor", flex: 1.2
         },
         {
             field: "roles",
@@ -142,7 +142,7 @@ const EmployeeDepartment = () => {
         },
         {
             field: "id",
-            headerName: "Employee ID", flex: 1,
+            headerName: "Employee ID", flex: 0.8,
             renderCell: (params) => (
                 <Typography
                     component="span"
@@ -155,7 +155,7 @@ const EmployeeDepartment = () => {
         },
         {
             field: "name",
-            headerName: "Name", flex: 1.5
+            headerName: "Name", flex: 1
         },
         {
             field: "emp_type",
@@ -167,15 +167,15 @@ const EmployeeDepartment = () => {
         },
         {
             field: "grade",
-            headerName: "Grade", flex: 0.8
+            headerName: "Grade", flex: 0.5
         },
         {
             field: "supervisor",
-            headerName: "Supervisor", flex: 0.8
+            headerName: "Supervisor", flex: 1
         },
         {
             field: "location",
-            headerName: "Location", flex: 0.8
+            headerName: "Location", flex: 1
         },
         {
             field: "status",
@@ -279,7 +279,7 @@ const EmployeeDepartment = () => {
                             fontSize: "16px",
                             fontWeight: 400,
                         }}
-                        onClick={() => navigate("/employee/manage/")}
+                        onClick={() => navigate("/employee/manage/edit-information")}
                     >
                         Edit Information
                     </button>

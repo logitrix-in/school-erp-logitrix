@@ -39,7 +39,7 @@ const DeleteDepartment = ({ open, close }) => {
                 >
                     <Box />
                     <Typography fontSize={"1.1rem"} textAlign={"center"}>
-                        Modify Department
+                        Delete Department
                     </Typography>
                     <IconButton
                         edge="start"
@@ -68,6 +68,7 @@ const DeleteDepartment = ({ open, close }) => {
                             fontSize: "16px",
                             my: '16px'
                         }}
+                        fontStyle={"italic"}
                     >
                         The department would be deleted permanently. All employees under this department will be assigned to the unallocated pool.
                     </Typography>
