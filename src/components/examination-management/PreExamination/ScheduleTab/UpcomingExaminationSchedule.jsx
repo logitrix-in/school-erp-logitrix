@@ -14,6 +14,7 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import { MoreVert as MoreVertIcon } from '@mui/icons-material';
 import EmployeePopup from "@/components/employee/EmployeePopup";
+import IncidentBanner from '@/components/Banner';
 
 const ActionCell = ({ params, onEdit, onDelete }) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -61,7 +62,7 @@ const UpcomingExaminationSchedule = () => {
 
     const [addPopup, setAddPopup] = useState(false);
     const [editPopup, setEditPopup] = useState(false);
-    const [postponePopup, setPostponePopup] = useState(false);
+    const [savePublishPopup, setSavePublishPopup] = useState(false);
     const [employeePopup, setEmployeePopup] = useState(false);
 
     const exams = ['Mid Term', 'Final Term', 'Unit Test 1', 'Unit Test 2'];
@@ -70,7 +71,25 @@ const UpcomingExaminationSchedule = () => {
         {
             field: "date", headerName: "Date", flex: 0.7,
         },
-        { field: "subject", headerName: "Subject", flex: 0.9 },
+        {
+            field: "subject", headerName: "Subject", flex: 1.2,
+            renderCell: (params) => (
+                <Typography
+                    sx={{
+                        backgroundColor: "#e8def8",
+                        borderRadius: "6px",
+                        fontSize: '12px',
+                        fontWeight: "600",
+                        display: "inline-block",
+                        width: "auto",
+                        paddingX: "7px",
+                        paddingY: "4px",
+                    }}
+                >
+                    {params.value}
+                </Typography>
+            )
+        },
         {
             field: "time_slot", headerName: "Time Slot", flex: 0.9,
         },
@@ -118,7 +137,7 @@ const UpcomingExaminationSchedule = () => {
         <Bbox borderRadius={2} overflow={"hidden"}>
             <Box bgcolor={"white"} py={1.3} px={2} borderRadius={2} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
                 <Typography fontWeight={"700"} fontSize={"1.1rem"}>
-                    Upcoming Examination Schedule
+                    Examination Schedule
                 </Typography>
 
                 <FormControl sx={{ width: "20%" }}>
@@ -144,14 +163,15 @@ const UpcomingExaminationSchedule = () => {
             <Box
                 p={2}
             >
-                <Typography>Upcoming Examination Schedule for all classes</Typography>
+
+                <IncidentBanner text="Class-Wise Manage" style={{ marginTop: '16px', marginBottom: '16px' }} />
+                <Typography>Schedule will be visible to students/parents only if the time table status is reflecting as published.</Typography>
                 <Box
                     display="flex"
                     flexDirection="row"
                     alignItems="flex-start"
                     justifyContent="flex-start"
                     py={2}
-                    mt={2}
                     gap={4}
                     sx={{ width: "100%" }}
                 >
@@ -191,7 +211,7 @@ const UpcomingExaminationSchedule = () => {
                     </FormControl>
                 </Box>
 
-                <Typography fontWeight={'600'}>Class I - Mid Term 2024-25</Typography>
+                <Typography fontWeight={'600'} my={1}>Class I - Mid Term 2024-25</Typography>
                 <Typography mt={2}>Unpublished: ⚠️</Typography>
 
                 <Box style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -261,11 +281,27 @@ const UpcomingExaminationSchedule = () => {
                     <Button
                         color="primary"
                         variant="outlined"
-                        onClick={() => { setPostponePopup(true) }}
+                        onClick={() => { setSavePublishPopup(true) }}
                     >
-                        Postpone
+                        Save & Publish
                     </Button>
                 </Box>
+
+
+                <IncidentBanner text="Bulk Manage" style={{ marginTop: '16px', marginBottom: '16px' }} />
+                <Box
+                    p={2}
+                >
+                    <Box display="flex" flexDirection={'row'} justifyContent={'space-between'}
+                        gap={2} px={24} py={2}>
+                        <Button variant="contained" color="primary" fullWidth>
+                            Download All Published Template
+                        </Button>
+                        <Button variant="outlined" color="primary" fullWidth onClick={() => setUploadPopup(true)}>
+                            Upload
+                        </Button>
+                    </Box>
+                </Box >
 
                 <EmployeePopup open={employeePopup} close={() => setEmployeePopup(false)} />
             </Box >

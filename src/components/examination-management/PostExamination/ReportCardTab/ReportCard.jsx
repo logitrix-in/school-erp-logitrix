@@ -15,7 +15,7 @@ const ReportCard = () => {
                     backgroundColor: "#E5F3FB",
                     display: "flex",
                     padding: "10px",
-                    maxWidth: "404px",
+                    maxWidth: "446px",
                     borderRadius: "10px",
                 }}
             >
@@ -39,7 +39,7 @@ const ReportCard = () => {
 
                     <button
                         style={{
-                            backgroundColor: "white",
+                            backgroundColor: "transparent",
                             border: "none",
                             color: "black",
                             marginRight: "10px",
@@ -51,12 +51,12 @@ const ReportCard = () => {
                         }}
                         onClick={() => navigate("/examination-management/post-examination/edit-results/")}
                     >
-                        Edit Results
+                        Edit/View Results
                     </button>
 
                     <button
                         style={{
-                            backgroundColor: "transparent",
+                            backgroundColor: "white",
                             border: "none",
                             color: "black",
                             marginRight: "10px",

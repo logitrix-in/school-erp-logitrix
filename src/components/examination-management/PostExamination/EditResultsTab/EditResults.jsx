@@ -14,7 +14,7 @@ const EditResults = () => {
                     backgroundColor: "#E5F3FB",
                     display: "flex",
                     padding: "10px",
-                    maxWidth: "404px",
+                    maxWidth: "446px",
                     borderRadius: "10px",
                 }}
             >
@@ -50,7 +50,7 @@ const EditResults = () => {
                         }}
                         onClick={() => navigate("/examination-management/post-examination/edit-results/")}
                     >
-                        Edit Results
+                        Edit/View Results
                     </button>
 
                     <button

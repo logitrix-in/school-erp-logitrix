@@ -349,7 +349,7 @@ const RaiseIncident = () => {
         <Box
           style={{
             backgroundColor:
-              params.value === "Active"
+              params.value === "Inactive"
                 ? "#C6F6D5"
                 : params.value === "Suspended"
                   ? "#FFCCCC"
