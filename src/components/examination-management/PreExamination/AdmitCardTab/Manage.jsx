@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Preview from "./Preview";
+import OnHold from "./OnHold";
+import Reject from "./Reject";
 
 const Manage = () => {
     const { acYear, curYear, classes, sections } = useClasses();
@@ -18,7 +20,9 @@ const Manage = () => {
     const [selectedExam, setSelectedExam] = useState('');
     const [selectedClass, setSelectedClass] = useState('');
     const [selectedSection, setSelectedSection] = useState('');
-    const [previewPopup, setPreviewPopup] = useState(false);
+    const [issuePopup, setIssuePopup] = useState(false);
+    const [onHoldPopup, setOnHoldPopup] = useState(false);
+    const [rejectPopup, setRejectPopup] = useState(false);
 
     const [selectedRow, setSelectedRow] = useState(null);
 
@@ -308,9 +312,25 @@ const Manage = () => {
                     <Button
                         color="primary"
                         variant="contained"
-                        onClick={() => { setPreviewPopup(true) }}
+                        onClick={() => { setIssuePopup(true) }}
                     >
                         Issue
+                    </Button>
+
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={() => { setOnHoldPopup(true) }}
+                    >
+                        On Hold
+                    </Button>
+
+                    <Button
+                        color="secondary"
+                        variant="contained"
+                        onClick={() => { setRejectPopup(true) }}
+                    >
+                        Reject
                     </Button>
 
                     <Button
@@ -321,7 +341,9 @@ const Manage = () => {
                     </Button>
                 </Box>
 
-                <Preview open={previewPopup} close={() => setPreviewPopup(false)} />
+                <Preview open={issuePopup} close={() => setIssuePopup(false)} />
+                <OnHold open={onHoldPopup} close={() => setOnHoldPopup(false)} />
+                <Reject open={rejectPopup} close={() => setRejectPopup(false)} />
 
             </Box >
         </Bbox >

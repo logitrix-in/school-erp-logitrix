@@ -121,7 +121,7 @@ export const navigations = [
 			},
 			{
 				name: "Manage",
-				path: "employee/manage/",
+				path: "employee/manage/edit-information",
 				icon: "material-symbols:folder",
 			},
 			{
