@@ -28,7 +28,7 @@ const StudentAccount = () => {
 
   const columns = [
     {
-      field: "id", headerName: "Application ID", flex: 1, renderCell: (params) => (
+      field: "id", headerName: "Application ID", flex: 0.8, renderCell: (params) => (
         <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setApplicationIDPopup(true)}>
           {params.value}
         </Typography>
@@ -48,7 +48,7 @@ const StudentAccount = () => {
     { field: "grade", headerName: "Grade", flex: 0.6 },
     { field: "application_date", headerName: "Application Date", flex: 1 },
     {
-      field: "resume", headerName: "", flex: 0.4,
+      field: "resume", headerName: "Attachment", flex: 0.6,
       renderCell: (params) => (
         <Box>
           <DescriptionOutlinedIcon />
@@ -65,7 +65,7 @@ const StudentAccount = () => {
       emp_type: "Full-Time",
       department: "Engineering",
       grade: "A",
-      application_date: "2023-10-01",
+      application_date: "30 Mar 2023",
       resume: "pdf"
     },
     {
@@ -75,7 +75,7 @@ const StudentAccount = () => {
       emp_type: "Part-Time",
       department: "Marketing",
       grade: "B",
-      application_date: "2023-10-02",
+      application_date: "30 Mar 2023",
       resume: "pdf"
     },
     {
@@ -85,7 +85,7 @@ const StudentAccount = () => {
       emp_type: "Contract",
       department: "HR",
       grade: "C",
-      application_date: "2023-10-03",
+      application_date: "30 Mar 2023",
       resume: "pdf"
     }
   ];

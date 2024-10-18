@@ -276,6 +276,8 @@ function ManageOpenPositions() {
                                 },
                             }}
                             pageSizeOptions={[5, 10]}
+
+                            
                             columnGroupingModel={[
                                 {
                                     groupId: "req_details",
@@ -292,6 +294,9 @@ function ManageOpenPositions() {
                                     ],
                                 },
                             ]}
+                            experimentalFeatures={{
+                                columnGrouping: true,
+                            }}
                             disableRowSelectionOnClick
                         />
 

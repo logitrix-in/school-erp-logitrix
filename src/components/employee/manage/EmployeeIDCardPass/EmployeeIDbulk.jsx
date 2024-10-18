@@ -53,7 +53,7 @@ const IDbulk = () => {
 
   const columns = [
     {
-      field: "id", headerName: "Employee ID", flex: 1,
+      field: "id", headerName: "Employee ID", flex: 0.7,
       renderCell: (params) => (
         <Typography
           component="span"
@@ -67,7 +67,7 @@ const IDbulk = () => {
     { field: "name", headerName: "Name", flex: 1 },
     { field: "emp_type", headerName: "Employee Type", flex: 1 },
     { field: "department", headerName: "Department", flex: 1 },
-    { field: "grade", headerName: "Grade", flex: 1 },
+    // { field: "grade", headerName: "Grade", flex: 1 },
     { field: "last_issue_date", headerName: "Last Issue Date", flex: 1 },
   ];
 
@@ -78,7 +78,7 @@ const IDbulk = () => {
       name: "Saunav Ray",
       emp_type: "Teaching Staff",
       department: "Science",
-      grade: "B2",
+      // grade: "B2",
       last_issue_date: "20-Sep-2023",
     },
     {
@@ -86,7 +86,7 @@ const IDbulk = () => {
       name: "Saunav Ray",
       emp_type: "Teaching Staff",
       department: "Science",
-      grade: "B2",
+      // grade: "B2",
       last_issue_date: "20-Sep-2023",
     },
     {
@@ -94,7 +94,7 @@ const IDbulk = () => {
       name: "Saunav Ray",
       emp_type: "Teaching Staff",
       department: "Science",
-      grade: "B2",
+      // grade: "B2",
       last_issue_date: "20-Sep-2023",
     },
   ];
@@ -110,7 +110,7 @@ const IDbulk = () => {
         py={4}
         display="flex"
         flexDirection="row"
-        justifyContent={"space-between"}
+        // justifyContent={"space-between"}
         gap={2}
         bgcolor="white"
       ><ReignsSelect
@@ -135,7 +135,7 @@ const IDbulk = () => {
             width: '30%'
           }}
         />
-        <ReignsSelect
+        {/* <ReignsSelect
           items={employeeGrade}
           multiple
           label="Grade"
@@ -145,7 +145,7 @@ const IDbulk = () => {
           sx={{
             width: '30%'
           }}
-        />
+        /> */}
       </Box>
 
       <Box style={{ display: "flex", justifyContent: "center" }}>

@@ -47,7 +47,7 @@ const StudentAccount = () => {
         {
             field: "radioButtons",
             headerName: "",
-            width: 60,
+            flex: 0.5,
             renderCell: (params) => (
                 <Radio
                     checked={params.row.id === selectedRow}
@@ -63,16 +63,16 @@ const StudentAccount = () => {
             ),
         },
         {
-            field: "id", headerName: "Application ID", width: 120,
+            field: "id", headerName: "Application ID", flex: 1,
             renderCell: (params) => (
                 <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setApplicationIDPopup(true)}>
                     {params.value}
                 </Typography>
             ),
         },
-        { field: "candidate_name", headerName: "Candidate Name", width: 140 },
+        { field: "candidate_name", headerName: "Candidate Name", flex: 1.5 },
         {
-            field: "selection_status", headerName: "Selection Status", width: 120,
+            field: "selection_status", headerName: "Selection Status", flex: 1,
             renderCell: (params) => (
                 <Box
                     style={{
@@ -101,19 +101,19 @@ const StudentAccount = () => {
             ),
         },
         {
-            field: "job_id", headerName: "Job ID", width: 100,
+            field: "job_id", headerName: "Job ID", flex: 1,
             renderCell: (params) => (
                 <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setApplicationIDPopup(true)}>
                     {params.value}
                 </Typography>
             ),
         },
-        { field: "employee_type", headerName: "Employee Type", width: 120, },
-        { field: "department", headerName: "Department", width: 120, },
-        { field: "grade", headerName: "Grade", width: 80 },
-        { field: "expected_ctc", headerName: "Expected CTC", width: 120, },
-        { field: "expected_date_of_joining", headerName: "Expected Date of Joining", width: 150, },
-        { field: "reason_for_selection", headerName: "Reason for Selection/Not Selection", width: 150, }
+        { field: "employee_type", headerName: "Employee Type", flex: 1, },
+        { field: "department", headerName: "Department", flex: 1, },
+        { field: "grade", headerName: "Grade", flex: 1 },
+        { field: "expected_ctc", headerName: "Expected CTC", flex: 1, },
+        { field: "expected_date_of_joining", headerName: "Expected Date of Joining", flex: 1, },
+        { field: "reason_for_selection", headerName: "Reason for Selection/Not Selection", flex: 1, }
     ];
 
     const rows = [

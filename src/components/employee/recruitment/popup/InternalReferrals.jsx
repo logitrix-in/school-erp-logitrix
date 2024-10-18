@@ -30,16 +30,35 @@ const InternalReferrals = ({ open, close }) => {
         { field: 'grade', headerName: 'Grade', flex: 0.6 },
         { field: 'roleSpecialization', headerName: 'Role/Specialization', flex: 1.4 },
         { field: 'classScope', headerName: 'Class Scope', flex: 1 },
-        { field: 'openPositions', headerName: 'Open Positions', type: 'number', flex: 1 },
+        { field: 'openPositions', headerName: 'Open Positions', flex: 1,
+            renderCell: (params) => (
+                <Box display={'flex'} justifyContent={'center'} alignItems={'center'} width={'100%'}>
+                <Typography>
+                    {params.value}
+                </Typography>
+                </Box>
+            ),
+         },
         {
             field: 'referralEnablement',
-            headerName: 'Referral Enablement Status',
-            flex: 1,
+            headerName: 'Referral Enablement \nStatus',
+            renderHeader: (params) => <MultilineHeader colDef={params.colDef} />,
+            flex: 1.4,
             renderCell: (params) => (
+                <Box display={'flex'} justifyContent={'center'} alignItems={'center'} width={'100%'}>
                 <Switch checked={params.value} />
+                </Box>
             ),
         },
     ];
+
+    const MultilineHeader = ({ colDef }) => {
+        return (
+            <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.4', fontWeight: '600' }}>
+                {colDef.headerName}
+            </div>
+        );
+    };
 
     const rows = [
         {

@@ -57,6 +57,22 @@ export default function AppraisalDetails() {
             field: "status",
             headerName: "Status",
             flex: 0.8,
+            renderCell: (params) => (
+                <Box
+                  style={{
+                    backgroundColor:
+                      params.value === "Active"
+                        ? "#C6F6D5"
+                        : params.value === "Inactive"
+                          ? "#FFCCCC"
+                          : "transparent",
+                    borderRadius: "6px",
+                    padding: "2px 8px"
+                  }}
+                >
+                  {params.value}
+                </Box>
+              ),
         },
         {
             field: "department",
@@ -65,45 +81,81 @@ export default function AppraisalDetails() {
         },
         {
             field: "cycle",
-            headerName: "Current Appraisal Cycle Stage",
-            flex: 1.5,
+            headerName: "Current Appraisal \nCycle Stage",
+            renderHeader: (params) => <MultilineHeader colDef={params.colDef} />,
+            flex: 1.2,
         },
         {
             field: "pending",
             headerName: "Pending With",
-            flex: 1,
+            flex: 1.5,
+            renderCell: (params) => {
+                const text = String(params.value);
+                const match = text.match(/(.*?)(\(AUG\d+\))/);
+                return (
+                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
+                            {match ? (
+                                <>
+                                    {match[1]}
+                                    <Typography sx={{ color: "primary.main", cursor: 'pointer' }} onClick={() => setEmployeePopup(true)}>{match[2]}</Typography>
+                                </>
+                            ) : (
+                                text
+                            )}
+                        </Box>
+                    </Box>
+                );
+            }
         },
         {
             field: "2024",
             headerName: "2024",
+            headerAlign: "center",
             flex: 0.6,
             renderCell: (params) => (
-                <Typography sx={{ cursor: "pointer", color: "primary.main" }}>
+                <Box sx={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+                <Typography sx={{ cursor: "pointer", color: "primary.main", textAlign: 'center' }}>
                     {params.value}
                 </Typography>
+                </Box>
             ),
         },
         {
             field: "2023",
             headerName: "2023",
+            headerAlign: "center",
             flex: 0.6,
             renderCell: (params) => (
+                <Box sx={{display: 'flex', justifyContent: 'center', width: '100%'}}>
                 <Typography sx={{ cursor: "pointer", color: "primary.main" }}>
                     {params.value}
                 </Typography>
+                </Box>
             ),
         },
         {
             field: "2022",
             headerName: "2022",
+            headerAlign: "center",
             flex: 0.6,
             renderCell: (params) => (
+                <Box sx={{display: 'flex', justifyContent: 'center', width: '100%'}}>
                 <Typography sx={{ cursor: "pointer", color: "primary.main" }}>
                     {params.value}
                 </Typography>
+                </Box>
             ),
         }
     ];
+
+    const MultilineHeader = ({ colDef }) => {
+        return (
+            <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.4', fontWeight: '600' }}>
+                {colDef.headerName}
+            </div>
+        );
+    };
 
     const rows = [
         {
@@ -113,7 +165,7 @@ export default function AppraisalDetails() {
             status: 'Active',
             department: 'English',
             cycle: 'Supervisor Review',
-            pending: 'Geography',
+            pending: 'Alok Sanpui (AUG236547)',
             2024: 2,
             2023: 1,
             2022: 2,
@@ -125,7 +177,7 @@ export default function AppraisalDetails() {
             status: 'Active',
             department: 'English',
             cycle: 'Supervisor Review',
-            pending: 'Geography',
+            pending: 'Alok Sanpui (AUG236547)',
             2024: 2,
             2023: 1,
             2022: 2,
@@ -137,7 +189,7 @@ export default function AppraisalDetails() {
             status: 'Active',
             department: 'English',
             cycle: 'Supervisor Review',
-            pending: 'Geography',
+            pending: 'Alok Sanpui (AUG236547)',
             2024: 2,
             2023: 1,
             2022: 2,

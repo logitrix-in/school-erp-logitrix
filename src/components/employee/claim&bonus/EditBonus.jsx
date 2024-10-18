@@ -26,7 +26,7 @@ const AddNewBonus = ({ open, close }) => {
     const [openIncidents, setOpenIncidents] = useState([]);
     const [appriasalRating, setAppraisalRating] = useState([]);
 
-    const { employeeStatus } = useEmployees();
+    const { employeeStatus, employeeGrade } = useEmployees();
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     const [rows, setRows] = useState([
@@ -89,7 +89,7 @@ const AddNewBonus = ({ open, close }) => {
                 >
                     <Box />
                     <Typography fontSize={"1.1rem"} textAlign={"center"}>
-                        Add New Bonus
+                        Edit Bonus
                     </Typography>
                     <IconButton
                         edge="start"
@@ -129,16 +129,18 @@ const AddNewBonus = ({ open, close }) => {
                                         label="Select Grade"
                                         onChange={(e) => handleGradeChange(row.id, e.target.value)}
                                     >
-                                        <MenuItem value="1">1</MenuItem>
-                                        <MenuItem value="2">2</MenuItem>
-                                        <MenuItem value="3">3</MenuItem>
+                                    {
+                                        employeeGrade.map(item => 
+                                            <MenuItem key={item} value={item}>{item}</MenuItem>
+                                        )
+                                    }
                                     </Select>
                                 </FormControl>
                                 <Box width="50%">
                                     <TextField
                                         id={`amount-${row.id}`}
                                         label="Amount"
-                                        type="text"
+                                        type="number"
                                         placeholder="Enter Amount in ₹"
                                         value={row.amount}
                                         onChange={(e) => handleAmountChange(row.id, e.target.value)}
