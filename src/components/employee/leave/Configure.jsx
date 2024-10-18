@@ -246,7 +246,7 @@ export default function Configure() {
                         alignItems={"center"}
                     >
                         <Typography fontWeight={"700"} borderRadius={1} fontSize={"1.1rem"}>
-                            Leave Report
+                            Set Rule
                         </Typography>
                     </Box>
 

@@ -9,7 +9,6 @@ import "./styles.css";
 
 const Individual = () => {
   const [employeePopup, setEmployeePopup] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
 
   const navigate = useNavigate();
 
@@ -143,7 +142,6 @@ const Individual = () => {
               },
             }}
             onClick={() => navigate("/employee/manage/OnBoardingDetails")}
-            disabled={!selectedRow}
           >
             View / Edit
           </Button>

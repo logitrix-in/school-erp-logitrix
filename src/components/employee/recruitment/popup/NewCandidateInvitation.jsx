@@ -55,8 +55,8 @@ const NewCandidateInvitation = ({ open, close }) => {
 
                 <Box display="flex" flexDirection="column" gap={2} p={2} justifyContent="space-between" width={"90%"} margin="auto" alignItems="center">
 
-                    <TextField placeholder="Enter Name" label="Name of the New Candidate" fullWidth></TextField>
-                    <TextField placeholder="Enter Email ID" label="Email ID of the New Candidate" fullWidth></TextField>
+                    <TextField placeholder="Enter Name" label="Name of the New Candidate" fullWidth required></TextField>
+                    <TextField placeholder="Enter Email ID" label="Email ID of the New Candidate" fullWidth required></TextField>
 
                     <ReignsSelect
                         multiple
@@ -64,6 +64,7 @@ const NewCandidateInvitation = ({ open, close }) => {
                         items={[]}
                         defaultValues={[]}
                         onChange={setSelectedJobID}
+                        required
                         value={selectedJobID}
                         sx={{
                             width: '100%'
@@ -73,12 +74,12 @@ const NewCandidateInvitation = ({ open, close }) => {
                     <Box display="flex" justifyContent="space-between" width="100%" alignItems="flex-start" gap={4}>
                         <Box display="flex" gap={2} justifyContent="center">
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
-                                <Typography mb={2}>Employee Name</Typography>
+                                <Typography mb={2}>Employee Type</Typography>
                                 <Typography mb={2}>Department</Typography>
                                 <Typography mb={2}>Grade</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" justifyContent="space-between">
-                                <Typography fontWeight="medium" ml={1} mb={2}>: Priya Naskar</Typography>
+                                <Typography fontWeight="medium" ml={1} mb={2}>: Teaching Staff</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: Physics</Typography>
                                 <Typography fontWeight="medium" ml={1} mb={2}>: B2</Typography>
                             </Box>
@@ -95,7 +96,7 @@ const NewCandidateInvitation = ({ open, close }) => {
                         </Box>
                     </Box>
 
-                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2}>Submission of this form will send the job application link to the candidate</Typography>
+                    <Typography fontWeight={"medium"} textAlign={"left"} marginY={2} fontStyle={"italic"}>Submission of this form will send the job application link to the candidate</Typography>
 
                     <Box marginY={2} width={"100%"} display="flex" gap={2}>
                         <Button variant="contained" color="primary" fullWidth onClick={() => {

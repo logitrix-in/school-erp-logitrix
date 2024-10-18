@@ -527,7 +527,7 @@ function App() {
 						element={<Appraisal />}
 					/>
 					<Route
-						path={"employee/claims&bonuses/"}
+						path={"employee/claims&bonuses/claims"}
 						element={<ClaimsBonuses />}
 					/>
 

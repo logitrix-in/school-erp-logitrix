@@ -146,7 +146,7 @@ export const navigations = [
 			},
 			{
 				name: "Claims & Bonuses",
-				path: "employee/claims&bonuses/",
+				path: "employee/claims&bonuses/claims",
 				icon: "material-symbols:folder",
 			},
 		],

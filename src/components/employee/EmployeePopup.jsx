@@ -150,7 +150,7 @@ const EmployeePopup = ({ open, close }) => {
                                             <Typography mb={2}>Date Of Joining</Typography>
                                         </Box>
                                         <Box display="flex" flexDirection="column" justifyContent="space-between">
-                                            <Box display={'flex'} flexDirection="row" gap={1} ml={1}><Typography fontWeight="medium">:</Typography>
+                                            <Box display={'flex'} flexDirection="row" gap={1} ml={1} mb={2}><Typography fontWeight="medium">:</Typography>
                                                 {Array.from({ length: 4 }).map((_, index) => (
                                                     <Typography
                                                         key={index}
@@ -167,7 +167,6 @@ const EmployeePopup = ({ open, close }) => {
                                                     </Typography>
                                                 ))}
                                             </Box>
-
 
                                             <Typography fontWeight="medium" ml={1} mb={2}>: High School</Typography>
                                             <Typography fontWeight="medium" ml={1} mb={2}>: 14 Jul 2020</Typography>

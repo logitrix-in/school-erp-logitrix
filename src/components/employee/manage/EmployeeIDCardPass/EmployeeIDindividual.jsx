@@ -16,32 +16,14 @@ import Preview from "./Preview";
 import EmployeePopup from '../../EmployeePopup'
 
 const EmployeeIDindividual = () => {
-  const [selectedRow, setSelecetedRow] = useState(null);
   const [previewPopup, setPreviewPopup] = useState(false);
 
   const [employeePopup, setEmployeePopup] = useState(false);
 
   const columns = [
+    {field: "space", headerName: "", flex: 0.2},
     {
-      field: "radioButtons",
-      headerName: "",
-      flex: 0.2,
-      renderCell: (params) => (
-        <Radio
-          checked={params.row.id === selectedRow}
-          color="primary"
-          sx={{
-            transform: "scale(0.6)",
-          }}
-          inputProps={{ "aria-label": params.row.id }}
-          onChange={() => {
-            setSelecetedRow(params.row.id);
-          }}
-        />
-      ),
-    },
-    {
-      field: "id", headerName: "Employee ID", flex: 1,
+      field: "id", headerName: "Employee ID", flex: 0.7,
       renderCell: (params) => (
         <Typography
           component="span"
@@ -55,7 +37,7 @@ const EmployeeIDindividual = () => {
     { field: "name", headerName: "Name", flex: 1 },
     { field: "emp_type", headerName: "Employee Type", flex: 1 },
     { field: "department", headerName: "Department", flex: 1 },
-    { field: "grade", headerName: "Grade", flex: 1 },
+    // { field: "grade", headerName: "Grade", flex: 1 },
     { field: "last_issue_date", headerName: "Last Issue Date", flex: 1 },
   ];
 
@@ -65,23 +47,7 @@ const EmployeeIDindividual = () => {
       name: "Saunav Ray",
       emp_type: "Teaching Staff",
       department: "Science",
-      grade: "B2",
-      last_issue_date: "20-Sep-2023",
-    },
-    {
-      id: "AG240002",
-      name: "Saunav Ray",
-      emp_type: "Teaching Staff",
-      department: "Science",
-      grade: "B2",
-      last_issue_date: "20-Sep-2023",
-    },
-    {
-      id: "AG240003",
-      name: "Saunav Ray",
-      emp_type: "Teaching Staff",
-      department: "Science",
-      grade: "B2",
+      // grade: "B2",
       last_issue_date: "20-Sep-2023",
     },
   ];

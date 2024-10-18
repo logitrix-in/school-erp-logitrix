@@ -56,7 +56,7 @@ export default function Claims() {
         },
         {
             field: "id", headerName: "Claim ID",
-            flex: 1,
+            flex: 0.8,
             renderCell: (params) => (
                 <Typography sx={{ cursor: "pointer", color: "primary.main" }} onClick={() => setClaimIDPopup(true)}>
                     {params.value}

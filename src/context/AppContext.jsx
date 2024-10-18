@@ -169,16 +169,10 @@ const AppContextProvider = ({ children }) => {
 
   const generateEmployeeCategories = () => {
     return [
-      "Privilege Leave",
-      "Casual Leave",
-      "Sick Leave",
-      "Maternity Leave",
-      "Paternity Leave",
-      "Optional Holiday",
-      "Bereavement Leave",
-      "Leave without Pay",
-      "Loss of Pay",
-      "Special Leave"
+      "Full-time Employee",
+      "Probationer",
+      "Contractual Employee",
+      "Intern",
     ];
   };
 

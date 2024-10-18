@@ -184,7 +184,7 @@ const NewJobRequirement = ({ open, close }) => {
                                                 </Select>
                                             </FormControl>
 
-                                            <TextField label="Number of Open Position(s)" fullWidth sx={{ mb: 2 }} />
+                                            <TextField label="Number of Open Position(s)" fullWidth sx={{ mb: 2 }} type="number" />
                                         </Box>
                                     </Box>
                                 </Grid>
@@ -271,14 +271,14 @@ const NewJobRequirement = ({ open, close }) => {
                                     </Grid>
                                     <Grid item xs={12} md={6}>
                                         <Box display={'flex'} gap={2}>
-                                            <TextField label="Minimum Age" fullWidth />
-                                            <TextField label="Maximum Age" fullWidth />
+                                            <TextField label="Minimum Age" fullWidth type="number" />
+                                            <TextField label="Maximum Age" fullWidth type="number" />
                                         </Box>
                                     </Grid>
                                     <Grid item xs={12} md={6}>
                                         <Box display={'flex'} gap={2}>
-                                            <TextField label="Minimum Year(s) of Relevant Experience" fullWidth />
-                                            <TextField label="Minimum Year(s) of Total Experience" fullWidth />
+                                            <TextField label="Minimum Year(s) of Relevant Experience" fullWidth type="number" />
+                                            <TextField label="Minimum Year(s) of Total Experience" fullWidth type="number" />
                                         </Box>
 
                                     </Grid>

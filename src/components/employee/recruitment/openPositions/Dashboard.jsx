@@ -23,43 +23,6 @@ const Dashboard = () => {
     const [selectedGrade, setSelectedGrade] = useState('');
     const [employeeDepartment, setEmployeeDepartment] = useState([...employeeManagementDepartment, ...employeeTeachingDepartment, ...employeeSupportStaffDepartment]);
 
-    const [rows, setRows] = useState([
-        {
-            id: 1,
-            emp_type: "Full-Time",
-            department: "Engineering",
-            grade: "A",
-            role: "Software Engineer",
-            class_scope: "Global",
-            open_positions: 5,
-            comments: "Urgent hiring",
-        },
-        {
-            id: 2,
-            emp_type: "Part-Time",
-            department: "Marketing",
-            grade: "B",
-            role: "Marketing Specialist",
-            class_scope: "Local",
-            open_positions: 2,
-            comments: "New project",
-        },
-        {
-            id: 3,
-            emp_type: "Contract",
-            department: "HR",
-            grade: "C",
-            role: "HR Manager",
-            class_scope: "Regional",
-            open_positions: 1,
-            comments: "Replacement",
-        }
-    ]);
-
-    const [newJobPopup, setNewJobPopup] = useState(false);
-    const [editJobPopup, setEditJobPopup] = useState(false);
-    const [jobIdPopup, setJobIdPopup] = useState(false);
-
     useEffect(() => {
         console.log(selectedEmployeeType);
         let departments = [];

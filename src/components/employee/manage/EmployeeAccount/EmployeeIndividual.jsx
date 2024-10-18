@@ -47,26 +47,9 @@ const StudentIndividual = () => {
 
 
   const columns = [
+    {field: "space", headerName: "", flex: 0.2},
     {
-      field: "radioButtons",
-      headerName: "",
-      flex: 0.2,
-      renderCell: (params) => (
-        <Radio
-          checked={params.row.id === selectedRow}
-          color="primary"
-          sx={{
-            transform: "scale(0.6)",
-          }}
-          inputProps={{ "aria-label": params.row.id }}
-          onChange={() => {
-            setSelectedRow(params.row.id);
-          }}
-        />
-      ),
-    },
-    {
-      field: "id", headerName: "Employee ID", flex: 1,
+    field: "id", headerName: "Employee ID", flex: 1,
       renderCell: (params) => (
         <Typography>
           <Typography
@@ -127,33 +110,6 @@ const StudentIndividual = () => {
       access: "Enabled",
       role: "House Coordinator",
     },
-    {
-      id: "AG240002",
-      name: "Saunav Ray",
-      emp_type: "Teaching Staff",
-      department: "Science",
-      grade: 'B2',
-      access: "Enabled",
-      role: "House Coordinator",
-    },
-    {
-      id: "AG240003",
-      name: "Saunav Ray",
-      emp_type: "Teaching Staff",
-      department: "Science",
-      grade: 'B2',
-      access: "Disabled",
-      role: "House Coordinator",
-    },
-    {
-      id: "AG240004",
-      name: "Saunav Ray",
-      emp_type: "Teaching Staff",
-      department: "Science",
-      grade: 'B2',
-      access: "Enabled",
-      role: "House Coordinator",
-    }
   ];
 
   // handle notifying inactive users
