@@ -170,6 +170,54 @@ export const navigations = [
 		],
 	},
 	{
+		name: "Payroll",
+		path: "payroll/",
+		icon: "solar:library-bold-duotone",
+		dropdown: true,
+		subMenu: [
+    {
+        name: "Payroll Manager",
+        path: "payroll/payroll-manager/",
+        icon: "material-symbols:folder",
+    },
+    {
+        name: "Configure",
+        path: "payroll/configure/organization-profile",
+        icon: "material-symbols:folder",
+    },
+    {
+        name: "Compensation",
+        path: "payroll/compensation/",
+        icon: "material-symbols:folder",
+    },
+    {
+        name: "Off Payroll Payout",
+        path: "payroll/off-payroll-payout/",
+        icon: "material-symbols:folder",
+    },
+    {
+        name: "Investment Declaration",
+        path: "payroll/investment-declaration/",
+        icon: "material-symbols:folder",
+    },
+    {
+        name: "Taxes",
+        path: "payroll/taxes/",
+        icon: "material-symbols:folder",
+    },
+    {
+        name: "FFS & Arrers",
+        path: "payroll/ffs-arrers/",
+        icon: "material-symbols:folder",
+    },
+    {
+        name: "Reports",
+        path: "payroll/reports/",
+        icon: "material-symbols:folder",
+    },
+]
+	},
+	{
 		name: "Utilities",
 		path: "utilities/",
 		icon: "solar:document-bold",
