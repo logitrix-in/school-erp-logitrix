@@ -123,13 +123,18 @@ import PostExamination from "./pages/examination-management/PostExamination";
 import EditResults from "./components/examination-management/PostExamination/EditResultsTab/EditResults";
 import ReportCard from "./components/examination-management/PostExamination/ReportCardTab/ReportCard";
 
+import PayrollManager from "./pages/payroll/PayrollManager";
+import PayrollCostOverview from "./pages/payroll/PayrollCostOverview";
+import OrganisationProfile from "./pages/payroll/configure/OrganisationProfile";
+import Location from "./pages/payroll/configure/Location";
+import StatutoryComponents from "./pages/payroll/configure/StatutoryComponents";
+
 const LibraryCatalogue = lazy(() => import("./pages/Library/LibraryCatalogue"));
 const LibraryManage = lazy(() => import("./pages/Library/LibraryManage"));
 const LibraryVisitors = lazy(() => import("./pages/Library/LibraryVisitors"));
 const LibraryRecommandation = lazy(() =>
 	import("./pages/Library/LibraryRecommandation")
 );
-import { PDFViewer } from '@react-pdf/renderer';
 
 dayjs.locale("en-in");
 
@@ -541,6 +546,41 @@ function App() {
 						path={"examination-management/post-examination/"}
 						element={<PostExamination />}
 					/>
+
+					{/* PAYROLL */}
+					<Route
+						path={"payroll/payroll-manager/"}
+						element={<PayrollManager />}
+					/>
+
+					<Route
+						path={"payroll/payroll-manager/overview"}
+						element={<PayrollCostOverview />}
+					/>
+					
+					<Route
+						path={"payroll/configure/"}
+						element={<OrganisationProfile />}
+					/>
+
+					<Route
+						path={"payroll/configure/organization-profile"}
+						element={<OrganisationProfile />}
+					/>
+
+					<Route
+						path={"payroll/configure/location"}
+						element={<Location />}
+					/>
+
+					<Route
+						path={"payroll/configure/statutory-components"}
+						element={<StatutoryComponents />}
+					/>
+
+
+
+
 
 					<Route
 						path={"examination-management/post-examination/edit-results/"}
